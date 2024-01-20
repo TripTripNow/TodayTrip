@@ -33,7 +33,7 @@ jobs:
         if: failure()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          content: '<@&1192747539124977736> ${{ github.event.action }} ${{ toJson(github) }}'
+          content: '<@&1192747539124977736> ${{ github.actor }} 확인해주세요! ( っ •‌ᜊ•‌ )う'
           title: ❗️ failed ❗️
           color: FF0000
           username: GitHub Actions
