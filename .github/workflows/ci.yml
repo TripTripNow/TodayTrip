@@ -38,4 +38,13 @@ jobs:
           title: ❗️ failed ❗️
           color: FF0000
 
+      - name: action-discord-success
+        uses: sarisia/actions-status-discord@v1
+        if: success()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          title: ✅ success ✅
+          color: 00FF00
+
       - run: echo '${{github.actor}}님 에러 확인 확인해주세요 ( っ •‌ᜊ•‌ )う'
