@@ -33,7 +33,7 @@ jobs:
         if: failure()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          content: '<@gugagagagguugyugouggo> <@dam19065> <@kimsoeun0825> <@homin2> <@jeonsoob>'
+          content: '@gugagagagguugyugouggo <@dam19065> <@kimsoeun0825> <@homin2> <@jeonsoob>'
           title: ❗️ failed ❗️
           color: FF0000
           username: GitHub Actions
