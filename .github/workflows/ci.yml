@@ -28,4 +28,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: action-discord
+        uses: sarisia/actions-status-discord@v1
+        if: failure()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: '<@gugagagagguugyugouggo> <@dam19065> <@kimsoeun0825> <@homin2> <@jeonsoob>'
+          title: ❗️ failed ❗️
+          color: FF0000
+
       - run: echo '${{github.actor}}님 에러 확인 확인해주세요 ( っ •‌ᜊ•‌ )う'
