@@ -1,0 +1,26 @@
+*,
+*::after,
+*::before {
+  font-family: Pretendard, 'sans-serif';
+}
+
+html {
+  font-size: 62.5%;
+}
+
+html,
+body,
+button,
+input,
+h1,
+h2 {
+  line-height: normal;
+  font-style: normal;
+  font-weight: 400;
+  word-break: keep-all;
+}
+
+a,
+button {
+  cursor: pointer;
+}
