@@ -11,8 +11,7 @@
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
     "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint"
+    "plugin:@typescript-eslint/recommended"
   ],
   "overrides": [],
   "parserOptions": {
