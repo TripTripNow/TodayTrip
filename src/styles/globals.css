@@ -1,45 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  *,
-  *::after,
-  *::before {
-    font-family: Pretendard, 'sans-serif';
-  }
-
-  html {
-    font-size: 62.5%;
-  }
-
-  html,
-  body,
-  button,
-  input,
-  h1,
-  h2 {
-    line-height: normal;
-    font-style: normal;
-    font-weight: 400;
-    word-break: keep-all;
-  }
-
-  a,
-  button {
-    cursor: pointer;
-  }
+*,
+*::after,
+*::before {
+  font-family: Pretendard, 'sans-serif';
 }
 
-/* 전역으로 사용할 className(CSS) */
-@layer components {
-  .flex-center {
-    @apply flex flex-row justify-center items-center;
-  }
-  .flex-col-center {
-    @apply flex flex-col justify-center items-center;
-  }
+html {
+  font-size: 62.5%;
 }
 
-@layer utilities {
+html,
+body,
+button,
+input,
+h1,
+h2 {
+  line-height: normal;
+  font-style: normal;
+  font-weight: 400;
+  word-break: keep-all;
+}
+
+a,
+button {
+  cursor: pointer;
 }
