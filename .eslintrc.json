@@ -30,7 +30,7 @@
     "prettier/prettier": [
       "error",
       {
-        "endOfLine": "0"
+        "endOfLine": "auto"
       }
     ]
   },
