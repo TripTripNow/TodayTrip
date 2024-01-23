@@ -1,14 +1,20 @@
 import { MouseEventHandler } from 'react';
 import styles from './Button.module.css';
+import clsx from 'clsx';
 
-interface ButtonProps {
+export interface ButtonProps {
   text: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  outline?: boolean;
+  inactive?: boolean;
 }
 
-function Button({ text, onClick }: ButtonProps) {
+function Button({ text, onClick, outline, inactive }: ButtonProps) {
   return (
-    <button onClick={onClick} className={styles.button}>
+    <button
+      onClick={onClick}
+      className={clsx(styles.button, styles.common, outline && styles.outline, inactive && styles.inactive)}
+    >
       {text}
     </button>
   );
