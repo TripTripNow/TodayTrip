@@ -1,9 +1,9 @@
-import Button from '@/components/common/Button/Button';
+import AuthButton from '@/components/common/Button/Auth/AuthButton';
 
 function Home() {
   return (
     <div>
-      <Button text="로그인" />
+      <AuthButton text="로그인" />
     </div>
   );
 }
