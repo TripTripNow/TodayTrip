@@ -1,0 +1,40 @@
+.wrapper {
+  display: flex;
+  padding: 2.4rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  background-color: var(--whiteFF);
+  border-radius: 0.8rem;
+}
+
+.span {
+  color: var(--black-black_1B1B1B, #1b1b1b);
+  text-align: center;
+  font-size: 1.6rem;
+
+  marign-bottom: 1.6rem;
+}
+.buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.button {
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-radius: 0.6rem;
+  width: 10rem;
+  padding: 1rem 2rem;
+  border: 1px solid var(--nomad_black);
+  text-align: center;
+}
+
+.white {
+  color: var(--nomad_black);
+}
+
+.primary {
+  color: var(--whiteFF);
+  background: var(--nomad_black);
+}
