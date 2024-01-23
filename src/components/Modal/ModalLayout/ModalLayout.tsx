@@ -26,11 +26,10 @@ function ModalLayout({ children, handleModalClose }: ModalLayoutProp) {
         handleModalClose();
       }
     };
-
     // 이벤트 리스너 등록
     document.addEventListener('keydown', handleEscape);
 
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    // handleModalClose에 변화가 생길 떄 즉, 다른 모달이 뜰 때 기존 이벤트 리스너 제거
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
