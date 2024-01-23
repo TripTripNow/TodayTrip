@@ -4,6 +4,7 @@ import styles from './ModalLayout.module.css';
 
 interface ModalLayoutProp {
   children: ReactNode;
+
   handleModalClose: () => void;
 }
 
