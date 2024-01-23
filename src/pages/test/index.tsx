@@ -5,12 +5,16 @@ function Test() {
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
+    defaultValues: {
+      nickName: '',
+      email: '',
+    },
   });
 
   const { handleSubmit, control } = methods;
 
-  const handleOnSubmit = () => {
-    console.log('submit');
+  const handleOnSubmit = (data: FieldValues) => {
+    console.log(data);
   };
 
   return (
@@ -41,6 +45,7 @@ function Test() {
           isRequired={true}
           label="이메일"
         />
+        <button type="submit">submit</button>
       </form>
     </div>
   );
