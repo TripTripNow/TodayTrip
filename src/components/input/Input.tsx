@@ -8,9 +8,10 @@ interface InputProps {
   name: FieldPath<FieldValues>;
   type: 'text' | 'email' | 'password';
   isRequired: boolean;
+  state?: 'user' | 'default';
 }
 
-function Input({ label, placeholder, control, name, type, isRequired }: InputProps) {
+function Input({ label, placeholder, control, name, type, isRequired, state = 'default' }: InputProps) {
   const {
     field,
     fieldState: { error },
@@ -25,7 +26,7 @@ function Input({ label, placeholder, control, name, type, isRequired }: InputPro
   });
 
   return (
-    <div className={Style.inputContainer}>
+    <div className={`${state === 'default' ? Style.inputContainer : Style.userInputContainer} `}>
       <label className={Style.label}>{label}</label>
       <input
         className={Style.input}
