@@ -31,9 +31,12 @@
   background: var(--whiteFF);
   color: var(--black1B);
   font-size: 1.6rem;
-  font-weight: 400;
   line-height: 2.6rem;
   width: 100%;
+}
+
+.errorInput {
+  border: 0.1rem solid var(--redFF4);
 }
 
 .userInputContainer > .input {
@@ -44,13 +47,11 @@
 .input::placeholder {
   color: var(--grayA4);
   font-size: 1.6rem;
-  font-weight: 400;
   line-height: 2.6rem;
 }
 
 .errorMessage {
   color: var(--redFF4);
   font-size: 1.2rem;
-  font-weight: 400;
   line-height: 1.6rem;
 }

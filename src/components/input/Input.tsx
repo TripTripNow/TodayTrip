@@ -32,7 +32,7 @@ function Input({ label, placeholder, control, name, type, isRequired, state = 'd
     <div className={`${state === 'default' ? Style.inputContainer : Style.userInputContainer} `}>
       <label className={Style.label}>{label}</label>
       <input
-        className={Style.input}
+        className={`${Style.input} ${error && Style.errorInput}`}
         placeholder={placeholder}
         type={type}
         id={field.name}
