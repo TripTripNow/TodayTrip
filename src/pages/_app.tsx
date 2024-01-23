@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 import '@/styles/globals.css';
 import '@/styles/reset.css';
+import '@/styles/variables.css';
 import '#/fonts/Pretandard/Pretandard.css';
-import Head from 'next/head';
 
 function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
@@ -29,7 +31,9 @@ function App({ Component, pageProps }: AppProps) {
         <HydrationBoundary state={pageProps.dehydratedState}>
           <Component {...pageProps} />
         </HydrationBoundary>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <div style={{ fontSize: '16px' }}>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </div>
       </QueryClientProvider>
     </>
   );
