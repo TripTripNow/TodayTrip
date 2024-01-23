@@ -1,5 +1,5 @@
 import { Control, FieldPath, FieldValues, useController } from 'react-hook-form';
-import Style from './Input.module.css';
+import styles from './Input.module.css';
 
 interface InputProps {
   label: string;
@@ -29,10 +29,10 @@ function Input({ label, placeholder, control, name, type, isRequired, state = 'd
   });
 
   return (
-    <div className={`${state === 'default' ? Style.inputContainer : Style.userInputContainer} `}>
-      <label className={Style.label}>{label}</label>
+    <div className={`${state === 'default' ? styles.inputContainer : styles.userInputContainer} `}>
+      <label className={styles.label}>{label}</label>
       <input
-        className={`${Style.input} ${error && Style.errorInput}`}
+        className={`${styles.input} ${error && styles.errorInput}`}
         placeholder={placeholder}
         type={type}
         id={field.name}
@@ -40,7 +40,7 @@ function Input({ label, placeholder, control, name, type, isRequired, state = 'd
         value={field.value}
         onChange={field.onChange}
       />
-      {error && <div className={Style.errorMessage}>{error.message}</div>}
+      {error && <div className={styles.errorMessage}>{error.message}</div>}
     </div>
   );
 }
