@@ -30,7 +30,9 @@ function Input({ label, placeholder, control, name, type, isRequired, state = 'd
 
   return (
     <div className={`${state === 'default' ? styles.inputContainer : styles.userInputContainer} `}>
-      <label className={styles.label}>{label}</label>
+      <label className={styles.label} htmlFor={field.name}>
+        {label}
+      </label>
       <input
         className={`${styles.input} ${error && styles.errorInput}`}
         placeholder={placeholder}
