@@ -1,0 +1,42 @@
+.layoutContainer {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10.4rem;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--whiteFF);
+}
+
+.topContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.logoImg {
+  width: 12.7rem;
+  height: auto;
+}
+
+.title {
+  color: var(--green0B);
+  font-weight: 700;
+  font-size: 6rem;
+}
+
+.memberStatusContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1.6rem;
+  color: var(--gray4B);
+  margin-top: 3.2rem;
+}
+
+.linkTitle {
+  color: var(--green0B);
+  text-decoration-line: underline;
+}
