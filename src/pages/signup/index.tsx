@@ -3,7 +3,10 @@ import UserLayout from '@/components/User/UserLayout';
 import { ReactElement, useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from '@/pages/signin/Signin.module.css';
+import { useRouter } from 'next/router';
+import CheckboxInput from '@/components/Input/CheckboxInput';
 function Signup() {
+  const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -12,6 +15,7 @@ function Signup() {
       nickName: '',
       password: '',
       passwordCheck: '',
+      checkbox: false,
     },
   });
 
@@ -19,12 +23,15 @@ function Signup() {
 
   const handleOnSubmit = (data: FieldValues) => {
     console.log(data);
+    router.push('/');
   };
 
   const [buttonActive, setButtonActive] = useState<'active' | 'inActive'>('inActive');
 
   const watchAll = Object.values(methods.watch());
   const { isValid } = methods.formState;
+
+  const isPasswordVisible = methods.watch('checkbox');
 
   useEffect(() => {
     if (watchAll.every((el) => el) && watchAll.length !== 0 && isValid) {
@@ -43,7 +50,7 @@ function Signup() {
         label={'이메일'}
         placeholder={'이메일을 입력해 주세요'}
         type={'email'}
-        isRequired={true}
+        isAutoFocus={true}
       />
       <Input
         state="user"
@@ -52,7 +59,6 @@ function Signup() {
         label={'닉네임'}
         placeholder={'닉네임을 입력해 주세요'}
         type={'text'}
-        isRequired={true}
       />
       <Input
         state="user"
@@ -60,8 +66,7 @@ function Signup() {
         control={control}
         label={'비밀번호'}
         placeholder={'비밀번호를 입력해주세요'}
-        type={'password'}
-        isRequired={true}
+        type={isPasswordVisible ? 'text' : 'password'}
       />
       <Input
         state="user"
@@ -69,9 +74,11 @@ function Signup() {
         control={control}
         label={'비밀번호 확인'}
         placeholder={'비밀번호를 한번 더 입력해 주세요'}
-        type={'password'}
-        isRequired={true}
+        type={isPasswordVisible ? 'text' : 'password'}
       />
+
+      <CheckboxInput control={control} name="checkbox" />
+
       <button className={`${styles.button} ${styles[buttonActive]}`} type="submit">
         회원가입하기
       </button>

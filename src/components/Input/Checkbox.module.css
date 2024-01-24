@@ -1,0 +1,8 @@
+.checkboxInput {
+  display: flex;
+  align-self: flex-start;
+  gap: 1rem;
+  align-items: center;
+  color: var(--gray4B);
+  font-size: 1.6rem;
+}
