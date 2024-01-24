@@ -26,18 +26,17 @@ function Signin() {
 
   const [buttonActive, setButtonActive] = useState<'active' | 'inActive'>('inActive');
 
-  const watchAll = Object.values(methods.watch());
   const { isValid } = methods.formState;
 
   const isPasswordVisible = methods.watch('checkbox');
 
   useEffect(() => {
-    if (watchAll.every((el) => el) && watchAll.length !== 0 && isValid) {
+    if (isValid) {
       setButtonActive('active');
       return;
     }
     setButtonActive('inActive');
-  }, [isValid, watchAll]);
+  }, [isValid]);
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
