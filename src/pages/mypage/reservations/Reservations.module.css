@@ -1,5 +1,17 @@
-.cardList {
+.container {
   display: flex;
   gap: 2.4rem;
   flex-direction: column;
+}
+
+.header {
+  display: flex;
+  width: 79.2rem;
+  justify-content: space-between;
+}
+
+.h2 {
+  color: var(--nomad_black);
+  font-size: 3.2rem;
+  font-weight: 700;
 }

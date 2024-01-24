@@ -2,6 +2,8 @@ import Image from 'next/image';
 import styles from './Card.module.css';
 import clsx from 'clsx';
 import formatDateString from '@/utils/formatDateString';
+import CancelModal from '@/components/Modal/CancelModal/CancelModal';
+import { useState } from 'react';
 
 type Activity = {
   bannerImageUrl: string;
@@ -27,6 +29,12 @@ export interface CardProps {
 }
 
 function Card({ data }: CardProps) {
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+
+  const handleModalToggle = () => {
+    setIsCancelModalOpen((prev) => !prev);
+  };
+
   const convertStatusToDisplayText = (status: Status) => {
     switch (status) {
       case 'pending':
@@ -60,7 +68,20 @@ function Card({ data }: CardProps) {
           <div>·</div>
           <span>{data.headCount}명</span>
         </div>
-        <span className={styles.price}>₩{data.totalPrice.toLocaleString('ko-KR')}</span>
+        <div className={styles.bottom}>
+          <span className={styles.price}>₩{data.totalPrice.toLocaleString('ko-KR')}</span>
+          {data.status === 'pending' && (
+            <button onClick={handleModalToggle} className={styles.button}>
+              예약 취소
+            </button>
+          )}
+          {isCancelModalOpen && <CancelModal handleModalClose={handleModalToggle} />}
+          {data.status === 'completed' && (
+            <button disabled={data.reviewSubmitted} className={styles.button}>
+              후기 작성
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

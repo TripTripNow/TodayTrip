@@ -108,17 +108,19 @@ function Reservation() {
         justifyContent: 'center',
       }}
     >
-      <label onClick={handleClickContainer}>
-        <button>Dropdown Menu{isDropdownView ? '▲' : '▼'}</button>
-      </label>
-      {isDropdownView && <DropDown />}
-      <div className="container" onBlur={handleBlurContainer}></div>
-
-      <div className={styles.cardList}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2 className={styles.h2}>예약 내역</h2>
+          <label onClick={handleClickContainer}>
+            <button>Dropdown Menu{isDropdownView ? '▲' : '▼'}</button>
+            {isDropdownView && <DropDown />}
+          </label>
+        </div>
         {reservations.map((reservation) => (
           <Card key={reservation.id} data={reservation} />
         ))}
       </div>
+      <div className="container" onBlur={handleBlurContainer}></div>
     </div>
   );
 }
