@@ -14,12 +14,10 @@ interface UserLayoutProps {
 function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildren<UserLayoutProps>) {
   return (
     <div className={styles.layoutContainer}>
-      <div className={styles.topContainer}>
-        <Link href="/">
-          <Image src={LogoIcon} alt="로고이미지" className={styles.logoImg} />
-        </Link>
-        <div className={styles.title}>TodayTrip</div>
-      </div>
+      <Link href="/" className={styles.topContainer}>
+        <Image src={LogoIcon} alt="로고이미지" className={styles.logoImg} />
+        <div className={styles.title}>TodayTrip</div>{' '}
+      </Link>
 
       {children}
 
