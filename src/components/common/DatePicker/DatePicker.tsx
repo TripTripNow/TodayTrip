@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from './DatePickerInput.module.css';
+import styles from './DatePicker.module.css';
 import CalendarIcon from '#/icons/icon-calendar.svg';
 
 interface Props {
@@ -24,7 +24,6 @@ function DatePickerInput() {
 
   return (
     <div>
-      <h3>Date Picker</h3>
       <DatePicker
         selected={startDate}
         onChange={(date: Date) => setStartDate(date)}
