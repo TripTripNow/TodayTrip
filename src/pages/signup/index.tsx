@@ -19,9 +19,17 @@ function Signup() {
     },
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, setError } = methods;
 
   const handleOnSubmit = (data: FieldValues) => {
+    if (data.passwordCheck !== data.password) {
+      setError('passwordCheck', {
+        type: 'validate',
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+      return;
+    }
+
     console.log(data);
     router.push('/');
   };
