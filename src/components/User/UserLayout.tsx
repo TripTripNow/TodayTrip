@@ -1,8 +1,7 @@
 import { PropsWithChildren, ReactNode } from 'react';
 import styles from './UserLayout.module.css';
 import Link from 'next/link';
-import LogoIcon from '#/images/img-logo.png';
-import Image from 'next/image';
+import LogoIcon from '#/icons/icon-logo.svg';
 import SocialLogin from '@/components/User/SocialLogin';
 
 interface UserLayoutProps {
@@ -16,7 +15,7 @@ function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildr
   return (
     <div className={styles.layoutContainer}>
       <Link href="/" className={styles.topContainer}>
-        <Image src={LogoIcon} alt="로고이미지" className={styles.logoImg} />
+        <LogoIcon className={styles.logoImg} />
         <div className={styles.title}>TodayTrip</div>{' '}
       </Link>
 
