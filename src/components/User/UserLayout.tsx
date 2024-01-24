@@ -3,6 +3,7 @@ import styles from './UserLayout.module.css';
 import Link from 'next/link';
 import LogoIcon from '#/images/img-logo.png';
 import Image from 'next/image';
+import SocialLogin from '@/components/User/SocialLogin';
 
 interface UserLayoutProps {
   children: ReactNode;
@@ -28,6 +29,8 @@ function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildr
           <span className={styles.linkTitle}>{linkTitle}</span>
         </Link>
       </div>
+
+      <SocialLogin />
     </div>
   );
 }
