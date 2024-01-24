@@ -5,6 +5,7 @@ function Document() {
     <Html lang="ko">
       <Head />
       <body>
+        <div id="modal"></div>
         <Main />
         <NextScript />
       </body>
