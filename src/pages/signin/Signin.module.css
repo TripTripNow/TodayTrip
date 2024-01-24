@@ -1,9 +1,15 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .form {
   width: 64rem;
   gap: 2.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media mobile {
+    width: 35rem;
+  }
 }
 
 .button {

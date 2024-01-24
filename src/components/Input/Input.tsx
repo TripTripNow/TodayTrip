@@ -58,6 +58,7 @@ function Input({ label, placeholder, control, name, type, state = 'default', isA
 
 export default Input;
 
+// input에 rule이 필요한 경우 type을 prop으로 넘긴 name 동일, rule 추가 후 사용
 const authInput = [
   {
     type: 'email',

@@ -4,6 +4,7 @@ import KaKaoImg from '#/images/img-kakao.png';
 import NaverImg from '#/images/img-naver.png';
 import GoogleImg from '#/images/img-google.png';
 
+//TODO api 연결 시 소셜로그인 연결
 function SocialLogin() {
   return (
     <div className={styles.socialLoginBtnContainer}>

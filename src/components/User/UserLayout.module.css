@@ -1,3 +1,5 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .layoutContainer {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,14 @@
   background-color: var(--whiteFF);
   overflow-x: hidden;
   padding-bottom: 10rem;
+
+  @media tablet {
+    padding-top: 7.2rem;
+  }
+
+  @media mobile {
+    padding-top: 4.4rem;
+  }
 }
 
 .topContainer {
@@ -16,18 +26,27 @@
   align-items: center;
   gap: 3rem;
   margin-bottom: 4rem;
+
+  @media mobile {
+    gap: 2.4rem;
+    margin-bottom: 2.4rem;
+  }
 }
 
 .logoImg {
   width: 12.7rem;
   height: auto;
+
+  @media mobile {
+    width: 10.1rem;
+  }
 }
 
 .title {
   color: var(--green0B);
-  font-weight: 700;
-  font-size: 6rem;
-  line-height: normal;
+  font-weight: 900;
+  font-size: 5.8rem;
+  line-height: 5.8rem;
 }
 
 .memberStatusContainer {
@@ -37,6 +56,10 @@
   font-size: 1.6rem;
   color: var(--gray4B);
   margin-top: 3.2rem;
+
+  @media mobile {
+    margin-top: 2.4rem;
+  }
 }
 
 .linkTitle {

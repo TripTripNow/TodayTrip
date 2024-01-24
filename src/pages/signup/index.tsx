@@ -30,6 +30,7 @@ function Signup() {
       return;
     }
 
+    //TODO api 연결 시 중복된 이메일 에러 처리, 회원가입 성공 및 실패 토스트 처리 추가
     console.log(data);
     router.push('/');
   };

@@ -36,10 +36,6 @@
   width: 100%;
 }
 
-.input::focus {
-  border: 0.1rem solid var(--blue00);
-}
-
 .errorInput {
   border: 0.1rem solid var(--redFF4);
 }
