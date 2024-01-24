@@ -75,7 +75,7 @@ function Card({ data }: CardProps) {
               예약 취소
             </button>
           )}
-          {isCancelModalOpen && <CancelModal handleModalClose={handleModalToggle} />}
+          {isCancelModalOpen && <CancelModal handleModalClose={handleModalToggle} handleCancel={handleModalToggle} />}
           {data.status === 'completed' && (
             <button disabled={data.reviewSubmitted} className={styles.button}>
               후기 작성
