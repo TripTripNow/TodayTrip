@@ -1,12 +1,21 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .container {
   display: flex;
   gap: 2.4rem;
   flex-direction: column;
+  width: 79.2rem;
+  @media tablet {
+    width: 42.9rem;
+  }
+  @media mobile {
+    width: 34.4rem;
+  }
 }
 
 .header {
   display: flex;
-  width: 79.2rem;
+  width: 100%;
   justify-content: space-between;
 }
 
