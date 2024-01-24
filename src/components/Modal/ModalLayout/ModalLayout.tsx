@@ -2,12 +2,12 @@ import { ReactNode, useEffect, useRef, MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './ModalLayout.module.css';
 
-interface ModalLayoutProp {
+interface ModalLayoutProps {
   children: ReactNode;
   handleModalClose: () => void;
 }
 
-function ModalLayout({ children, handleModalClose }: ModalLayoutProp) {
+function ModalLayout({ children, handleModalClose }: ModalLayoutProps) {
   const portalRoot = document.getElementById('modal') as HTMLElement;
 
   const modalOutsideRef = useRef<HTMLDivElement>(null);
