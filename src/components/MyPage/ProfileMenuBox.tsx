@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
 import styles from './ProfileMenuBox.module.css';
 import MypageIcon from '#/icons/icon-mypage.svg';
 import ReservationIcon from '#/icons/icon-reservation.svg';
@@ -8,9 +8,6 @@ import MypageActiveIcon from '#/icons/icon-mypage-active.svg';
 import ReservationActiveIcon from '#/icons/icon-reservation-active.svg';
 import ActivitiesActiveIcon from '#/icons/icon-activities-active.svg';
 import DashboardActiveIcon from '#/icons/icon-dashboard-active.svg';
-import LogoImg from '#/images/img-kakao.png';
-import Image from 'next/image';
-import EditIcon from '#/icons/icon-edit.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 
