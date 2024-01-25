@@ -47,7 +47,6 @@ function Signin() {
         label={'이메일'}
         placeholder={'이메일을 입력해 주세요'}
         type={'email'}
-        isAutoFocus={true}
       />
       <Input
         state="user"
