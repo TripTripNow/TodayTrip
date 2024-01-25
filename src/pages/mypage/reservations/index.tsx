@@ -1,20 +1,7 @@
-import DropDown from '@/components/Reservations/DropDown/DropDown';
 import styles from './Reservations.module.css';
 import { useState } from 'react';
 import Card, { CardProps } from '@/components/Reservations/Card/Card';
 function Reservation() {
-  const [isDropdownView, setDropdownView] = useState(false);
-
-  const handleClickContainer = () => {
-    setDropdownView(!isDropdownView);
-  };
-
-  const handleBlurContainer = () => {
-    setTimeout(() => {
-      setDropdownView(false);
-    }, 200);
-  };
-
   const reservations: CardProps['data'][] = [
     {
       id: 1,
@@ -97,7 +84,16 @@ function Reservation() {
       endTime: '16:00',
     },
   ];
+  // option들을 정의
+  const OPTIONS = [
+    { id: 1, value: 'pending', name: '예약 완료' },
+    { id: 2, value: 'canceled', name: '예약 취소' },
+    { id: 3, value: 'confirmed', name: '예약 승인' },
+    { id: 4, value: 'declined', name: '예약 거절' },
+    { id: 6, value: 'completed', name: '체험 완료' },
+  ];
 
+  const [selectedValue, setSelectedValue] = useState('all');
   return (
     <div
       style={{
@@ -111,36 +107,20 @@ function Reservation() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.h2}>예약 내역</h2>
-          <div className="container" onBlur={handleBlurContainer}>
-            <label onClick={handleClickContainer}>
-              <button>예약 상태{isDropdownView ? '▲' : '▼'}</button>
-              {isDropdownView && (
-                <ul>
-                  {['예약 완료', '예약 취소', '예약 승인', '예약 거절', '체험 완료'].map((li, i) => (
-                    <li
-                      style={{
-                        zIndex: '1',
-                        display: 'flex',
-                        width: '5rem',
-                        height: '3rem',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        textAlign: 'center',
-                      }}
-                      key={i}
-                    >
-                      {li}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </label>
-          </div>
+          <select defaultValue={'all'} onChange={(e) => setSelectedValue(e.target.value)}>
+            <option value="all">전체</option>
+            {OPTIONS.map((option) => (
+              <option key={option.id} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
         </div>
-        {reservations.map((reservation) => (
-          <Card key={reservation.id} data={reservation} />
-        ))}
+        {selectedValue === 'all'
+          ? reservations.map((reservation) => <Card key={reservation.id} data={reservation} />)
+          : reservations
+              .filter((reservation) => reservation.status === selectedValue)
+              .map((filteredReservation) => <Card key={filteredReservation.id} data={filteredReservation} />)}
       </div>
     </div>
   );
