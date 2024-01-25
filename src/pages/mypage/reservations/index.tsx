@@ -15,12 +15,12 @@ function Reservation() {
   ];
 
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [visibleReservations, setVisibleReservations] = useState(6);
-  const { isVisible, myRef } = useInfiniteScroll();
+  const [visibleReservations, setVisibleReservations] = useState(5);
+  const { isVisible, targetRef } = useInfiniteScroll();
 
   useEffect(() => {
     if (isVisible) {
-      setVisibleReservations((prev) => prev + 6);
+      setVisibleReservations((prev) => prev + 5);
     }
   }, [isVisible]);
 
@@ -43,7 +43,7 @@ function Reservation() {
         <div className={styles.header}>
           <h2 className={styles.h2}>예약 내역</h2>
           <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
-            <option disabled value="" hidden selected>
+            <option disabled value="" hidden>
               예약 상태
             </option>
             <option value="all">전체</option>
@@ -57,7 +57,7 @@ function Reservation() {
         {filteredReservations.map((reservation) => (
           <Card key={reservation.id} data={reservation} />
         ))}
-        <p ref={myRef}></p>
+        <div ref={targetRef}></div>
       </div>
     </div>
   );

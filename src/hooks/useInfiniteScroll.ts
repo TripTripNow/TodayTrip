@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const useInfiniteScroll = () => {
   // 보여지고 있는지를 나타내는 state
   const [isVisible, setIsVisible] = useState(false);
-  const myRef = useRef<HTMLParagraphElement>(null);
+  const targetRef = useRef<HTMLParagraphElement>(null);
 
   // new IntersectionObserver()로 생성한 인스턴스가 observer
   useEffect(() => {
@@ -16,10 +16,11 @@ const useInfiniteScroll = () => {
       setIsVisible(entry.isIntersecting);
     });
 
-    if (myRef.current) {
+    if (targetRef.current) {
       // 관찰할 대상 등록
-      observer.observe(myRef.current);
+      observer.observe(targetRef.current);
     }
+
     return () => {
       observer.disconnect();
     };
@@ -27,8 +28,7 @@ const useInfiniteScroll = () => {
 
   return {
     isVisible,
-    setIsVisible,
-    myRef,
+    targetRef,
   };
 };
 
