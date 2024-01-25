@@ -11,6 +11,7 @@ const lists = ['문화 예술', '식음료', '스포츠', '투어', '관광'];
 function Test() {
   return (
     <div style={{ margin: 10, display: 'flex', flexDirection: 'column', gap: 5 }}>
+      <DatePickerInput />
       <Dropdown lists={lists} />
       <AddActivityButton text="등록하기" />
       <AddActivityButton text="등록하기" inactive />
@@ -25,7 +26,6 @@ function Test() {
       <ModalButton text="14:00~15:00" type="time" outline />
       <CategoryButton text="문화예술" />
       <CategoryButton text="문화예술" outline />
-      <DatePickerInput />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
-@import url('react-datepicker/dist/react-datepicker.css');
 
 .container {
   display: flex;
@@ -38,7 +37,6 @@
   color: var(--grayA1);
   font-family: Pretendard;
   font-size: 1.6rem;
-  font-style: normal;
   font-weight: 400;
   line-height: 2.6rem; 
 }
@@ -50,4 +48,8 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+}
+
+.react-datepicker-custom :global(.react-datepicker__triangle) {
+  left: -3rem !important;
 }

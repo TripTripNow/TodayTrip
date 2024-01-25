@@ -5,30 +5,29 @@ import styles from './DatePicker.module.css';
 import CalendarIcon from '#/icons/icon-calendar.svg';
 
 interface Props {
-  value?: Date | string;
+  value: string;
   onClick?: () => void;
 }
 
-function DatePickerInput() {
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const CustomInput = forwardRef<HTMLButtonElement | null>(({ value, onClick }: Props, ref) => (
-    <label className={styles.container}>
-      <button className={styles.input} onClick={onClick} ref={ref}>
-        {value !== undefined ? String(value) : ''}
-      </button>
-      <CalendarIcon className={styles.icon} />
-    </label>
-  ));
+const CustomInput = ({ value, onClick }: Props) => (
+  <label className={styles.container}>
+    <button className={styles.input} onClick={onClick}>
+      {String(value)}
+    </button>
+    <CalendarIcon className={styles.icon} />
+  </label>
+);
 
-  CustomInput.displayName = 'CustomInput';
+function DatePickerInput() {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   return (
-    <div>
+    <div className={styles['react-datepicker-custom']}>
       <DatePicker
-        selected={startDate}
-        onChange={(date: Date) => setStartDate(date)}
+        selected={selectedDate}
+        onChange={(date: Date) => setSelectedDate(date)}
         dateFormat={'yy/MM/dd'}
-        customInput={<CustomInput />}
+        customInput={<CustomInput value={String(selectedDate)} />}
       />
     </div>
   );
