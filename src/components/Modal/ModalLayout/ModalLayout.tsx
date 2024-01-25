@@ -1,7 +1,6 @@
 import { ReactNode, useEffect, useRef, MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './ModalLayout.module.css';
-import clsx from 'clsx';
 
 interface ModalLayoutProps {
   children: ReactNode;
@@ -38,11 +37,7 @@ function ModalLayout({ children, handleModalClose, alarmModal }: ModalLayoutProp
   }, [handleModalClose]);
 
   return createPortal(
-    <div
-      onClick={modalOutsideClick}
-      ref={modalOutsideRef}
-      className={clsx(!alarmModal ? styles.root : styles.alarmModalCss)}
-    >
+    <div onClick={modalOutsideClick} ref={modalOutsideRef} className={!alarmModal ? styles.root : styles.alarmModalCss}>
       <div>{children}</div>
     </div>,
     portalRoot,

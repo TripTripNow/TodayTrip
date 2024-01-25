@@ -4,7 +4,6 @@ import LightCloseIcon from '#/icons/icon-lightClose.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
 import { Dispatch, SetStateAction, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import clsx from 'clsx';
 
 interface AlarmModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +28,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   const handleAlarmDelete = () => {};
   return (
     <ModalLayout handleModalClose={handleModalClose} alarmModal={true}>
-      <div className={clsx(openStatus ? styles.alarmModalContainer : styles.alarmModalCloseContainer)}>
+      <div className={openStatus ? styles.alarmModalContainer : styles.alarmModalCloseContainer}>
         <div className={styles.alarmModalHeader}>
           <div>알림 {count}개</div>
           <button onClick={handleModalClose}>
