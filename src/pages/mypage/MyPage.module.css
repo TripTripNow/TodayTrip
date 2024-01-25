@@ -1,8 +1,14 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .myPageContainer {
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
   width: 100%;
+
+  @media tablet {
+    gap: 1.6rem;
+  }
 }
 
 .titleContainer {

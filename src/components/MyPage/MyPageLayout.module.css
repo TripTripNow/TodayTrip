@@ -1,10 +1,30 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .layoutContainer {
   display: flex;
   gap: 2.4rem;
   justify-content: center;
   margin-top: 7.2rem;
+
+  @media tablet {
+    gap: 1.6rem;
+    margin-top: 2.4rem;
+  }
+
+  @media mobile {
+    margin-top: 2.4rem;
+    gap: 0;
+  }
 }
 
 .contentContainer {
   min-width: 79.2rem;
+
+  @media tablet {
+    min-width: 42.9rem;
+  }
+
+  @media mobile {
+    display: none;
+  }
 }
