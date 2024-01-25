@@ -25,6 +25,6 @@
   }
 
   @media mobile {
-    display: none;
+    min-width: 34.3rem;
   }
 }

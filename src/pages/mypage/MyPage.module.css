@@ -9,6 +9,16 @@
   @media tablet {
     gap: 1.6rem;
   }
+
+  @media mobile {
+    gap: 1.6rem;
+  }
+}
+
+.topContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
 }
 
 .titleContainer {
