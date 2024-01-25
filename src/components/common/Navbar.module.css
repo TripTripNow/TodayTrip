@@ -7,6 +7,26 @@
   align-items: center;
 }
 
+.logoWrapper {
+  width: 17rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoImg {
+  width: 2.8rem;
+  height: auto;
+}
+
+.logoTitle {
+  color: var(--green0B);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
 .wrapper {
   display: flex;
   align-items: center;

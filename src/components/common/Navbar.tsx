@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './Navbar.module.css';
-import LogoTitleIcon from '#/icons/icon-logoTitle.svg';
+import LogoIcon from '#/icons/icon-logo.svg';
 import ProfileIcon from '#/icons/icon-profile.svg';
 import AlarmIcon from '#/icons/icon-alarm.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
@@ -31,7 +31,12 @@ function Navbar() {
   return (
     <div className={styles.container}>
       <Link href="/">
-        <LogoTitleIcon />
+        <div className={styles.logoWrapper}>
+          <div className={styles.logoImg}>
+            <LogoIcon />
+          </div>
+          <div className={styles.logoTitle}>TodayTrip</div>
+        </div>
       </Link>
       <div></div>
       <div className={styles.wrapper}>
