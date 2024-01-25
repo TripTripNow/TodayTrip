@@ -10,7 +10,7 @@ function MyPageLayout({ children }: MyPageLayoutProps) {
   return (
     <div className={styles.layoutContainer}>
       <ProfileMenuBox />
-      {children}
+      <div className={styles.contentContainer}>{children}</div>
     </div>
   );
 }

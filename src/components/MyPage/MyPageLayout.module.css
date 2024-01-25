@@ -1,8 +1,10 @@
 .layoutContainer {
   display: flex;
   gap: 2.4rem;
-  width: 100vw;
-  align-items: center;
   justify-content: center;
   margin-top: 7.2rem;
+}
+
+.contentContainer {
+  min-width: 79.2rem;
 }
