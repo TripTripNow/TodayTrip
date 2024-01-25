@@ -13,7 +13,7 @@ function ProfileInput({ isProfileBox }: ProfileInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-  const { register, setValue } = useFormContext();
+  const { setValue } = useFormContext();
 
   const onUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
@@ -48,14 +48,7 @@ function ProfileInput({ isProfileBox }: ProfileInputProps) {
         height={160}
       />
       <EditIcon className={styles.editIcon} onClick={handleUploadImg} />
-      <input
-        {...register('profileImageUrl')}
-        type="file"
-        accept="image/*"
-        onChange={(e) => onUpload(e)}
-        ref={inputRef}
-        className={styles.imgInput}
-      />
+      <input type="file" accept="image/*" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
     </div>
   );
 }
