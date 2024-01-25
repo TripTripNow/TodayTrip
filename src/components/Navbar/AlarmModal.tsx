@@ -15,7 +15,7 @@ const TIME = '7분';
 const TITLE = '함께하면 즐거운 종민 댄스';
 const WHEN = '2023-01-14 15:00-18:00';
 const ALARMS = [1, 2, 3];
-const APPROVE_STATUS = true;
+const APPROVE_STATUS = false;
 
 function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   const [openStatus, setOpenStatus] = useState(true);
@@ -50,7 +50,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
                 <p className={styles.alarmModalContent}>
                   {TITLE}({WHEN}) 예약이{' '}
                   <span className={APPROVE_STATUS ? styles.approveTrue : styles.approveFalse}>
-                    {APPROVE_STATUS ? '승인' : '거부'}
+                    {APPROVE_STATUS ? '승인' : '거절'}
                   </span>
                   되었어요.
                 </p>
