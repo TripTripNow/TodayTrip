@@ -11,35 +11,42 @@ import DashboardActiveIcon from '#/icons/icon-dashboard-active.svg';
 import LogoImg from '#/images/img-kakao.png';
 import Image from 'next/image';
 import EditIcon from '#/icons/icon-edit.svg';
+import { useRouter } from 'next/router';
 
 const MENU_LIST = [
   {
     title: '내 정보',
     src: <MypageIcon />,
     activeSrc: <MypageActiveIcon />,
+    link: '/mypage',
   },
   {
     title: '예약 내역',
     src: <ReservationIcon />,
     activeSrc: <ReservationActiveIcon />,
+    link: '/mypage/reservations',
   },
   {
     title: '내 체험 관리',
     src: <ActivitiesIcon />,
     activeSrc: <ActivitiesActiveIcon />,
+    link: '/mypage/reservations',
   },
   {
     title: '예약 현황',
     src: <DashboardIcon />,
     activeSrc: <DashboardActiveIcon />,
+    link: '/mypage/reservations',
   },
 ];
 
 function ProfileMenuBox() {
+  const router = useRouter();
   const [isSelected, setIsSelected] = useState('내 정보');
 
-  const handleMenuItem = (item: string) => {
-    setIsSelected(item);
+  const handleMenuItem = (item: { title: string; link: string }) => {
+    setIsSelected(item.title);
+    router.push(item.link);
   };
 
   return (
@@ -54,7 +61,7 @@ function ProfileMenuBox() {
             <div
               className={`${styles.menuItem} ${e.title === isSelected && styles.active}`}
               key={index}
-              onClick={() => handleMenuItem(e.title)}
+              onClick={() => handleMenuItem(e)}
             >
               {e.title === isSelected ? e.activeSrc : e.src}
               <div className={styles.menuItemTitle}>{e.title}</div>
