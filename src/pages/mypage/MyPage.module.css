@@ -1,0 +1,27 @@
+.myPageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.titleContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--black1B);
+  font-weight: 700;
+}
+
+.titleContainer > .title {
+  font-size: 3.2rem;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
