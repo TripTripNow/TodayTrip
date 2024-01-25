@@ -1,89 +1,11 @@
+// Reservation.tsx
 import styles from './Reservations.module.css';
-import { useState } from 'react';
-import Card, { CardProps } from '@/components/Reservations/Card/Card';
+import { useEffect, useState } from 'react';
+import Card from '@/components/Reservations/Card/Card';
+import { reservations } from '@/pages/mypage/reservations/mock';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+
 function Reservation() {
-  const reservations: CardProps['data'][] = [
-    {
-      id: 1,
-      activity: {
-        bannerImageUrl: '/images/nextjs.png',
-        title: '함께 배우면 즐거운 스트릿 댄스',
-        id: 101,
-      },
-      scheduleId: 201,
-      status: 'pending',
-      reviewSubmitted: true,
-      totalPrice: 10000,
-      headCount: 10,
-      date: '2024-03-10',
-      startTime: '09:00',
-      endTime: '12:00',
-    },
-    {
-      id: 2,
-      activity: {
-        bannerImageUrl: '/images/flower.png',
-        title: 'Culinary Tour',
-        id: 202,
-      },
-      scheduleId: 303,
-      status: 'confirmed',
-      reviewSubmitted: false,
-      totalPrice: 20000,
-      headCount: 2,
-      date: '2024-03-15',
-      startTime: '18:30',
-      endTime: '21:30',
-    },
-    {
-      id: 3,
-      activity: {
-        bannerImageUrl: '/images/react.png',
-        title: 'Mountain Biking',
-        id: 303,
-      },
-      scheduleId: 404,
-      status: 'declined',
-      reviewSubmitted: false,
-      totalPrice: 3000,
-      headCount: 1,
-      date: '2024-03-20',
-      startTime: '14:00',
-      endTime: '16:00',
-    },
-    {
-      id: 4,
-      activity: {
-        bannerImageUrl: '/images/react.png',
-        title: 'Beach Picnic',
-        id: 404,
-      },
-      scheduleId: 505,
-      status: 'canceled',
-      reviewSubmitted: false,
-      totalPrice: 40000,
-      headCount: 4,
-      date: '2024-03-25',
-      startTime: '12:00',
-      endTime: '15:00',
-    },
-    {
-      id: 5,
-      activity: {
-        bannerImageUrl: '/images/react.png',
-        title: 'City Sightseeing',
-        id: 505,
-      },
-      scheduleId: 606,
-      status: 'completed',
-      reviewSubmitted: true,
-      totalPrice: 50000,
-      headCount: 2,
-      date: '2024-03-30',
-      startTime: '10:00',
-      endTime: '16:00',
-    },
-  ];
   const statusOptions = [
     { id: 1, value: 'pending', name: '예약 완료' },
     { id: 2, value: 'canceled', name: '예약 취소' },
@@ -93,11 +15,19 @@ function Reservation() {
   ];
 
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [visibleReservations, setVisibleReservations] = useState(6);
+  const { isVisible, myRef } = useInfiniteScroll();
+
+  useEffect(() => {
+    if (isVisible) {
+      setVisibleReservations((prev) => prev + 6);
+    }
+  }, [isVisible]);
 
   const filteredReservations =
     selectedStatus === 'all'
-      ? reservations
-      : reservations.filter((reservation) => reservation.status === selectedStatus);
+      ? reservations.slice(0, visibleReservations)
+      : reservations.filter((reservation) => reservation.status === selectedStatus).slice(0, visibleReservations);
 
   return (
     <div
@@ -114,7 +44,7 @@ function Reservation() {
           <h2 className={styles.h2}>예약 내역</h2>
           <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
             <option disabled value="" hidden selected>
-              상태 선택
+              예약 상태
             </option>
             <option value="all">전체</option>
             {statusOptions.map((option) => (
@@ -127,6 +57,7 @@ function Reservation() {
         {filteredReservations.map((reservation) => (
           <Card key={reservation.id} data={reservation} />
         ))}
+        <p ref={myRef}></p>
       </div>
     </div>
   );
