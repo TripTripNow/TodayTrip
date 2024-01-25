@@ -8,9 +8,10 @@ import { useState } from 'react';
 import AlarmModal from '@/components/Navbar/AlarmModal';
 import ProfileDropDown from '@/components/Navbar/ProfileDropDown';
 
+const USER_DATA = { name: '종민박' };
+const COUNT = 6;
+
 function Navbar() {
-  const userData = { name: '종민박' };
-  const count = 6;
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,34 +36,33 @@ function Navbar() {
           <div className={styles.logoImg}>
             <LogoIcon />
           </div>
-          <div className={styles.logoTitle}>TodayTrip</div>
+          <p className={styles.logoTitle}>TodayTrip</p>
         </div>
       </Link>
       <div></div>
       <div className={styles.wrapper}>
-        {userData ? (
+        {USER_DATA ? (
           <>
             <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              {' '}
-              <AlarmIcon /> {count ? <RedEllipse className={styles.isEllipse} /> : ''}
+              <AlarmIcon className={styles.alarmIcon} /> {COUNT && <RedEllipse className={styles.isEllipse} />}
             </button>
             {isModalOpen ? <AlarmModal setIsModalOpen={setIsModalOpen} /> : ''}
             <div className={styles.border}></div>
             <div onBlur={handleBlurDropDown}>
               <button className={styles.userName} onClick={handleDropDownClick}>
                 <ProfileIcon />
-                <div>{userData.name}</div>
+                <p>{USER_DATA.name}</p>
               </button>
             </div>
-            <div>{isDropDownOpen ? <ProfileDropDown /> : ''}</div>
+            <div>{isDropDownOpen && <ProfileDropDown />}</div>
           </>
         ) : (
           <>
             <Link href="/signin">
-              <div className={styles.loginContent}>로그인</div>
+              <p className={styles.loginContent}>로그인</p>
             </Link>
             <Link href="/signup">
-              <div className={styles.loginContent}>회원가입</div>
+              <p className={styles.loginContent}>회원가입</p>
             </Link>
           </>
         )}

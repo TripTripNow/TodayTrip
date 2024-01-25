@@ -42,7 +42,7 @@
 .alarmModalContainer {
   position: absolute;
   border: 0.1rem solid var(--grayDD);
-  border-radius: 0.8rem;
+  border-radius: 1rem;
   top: 6rem;
   right: 17rem;
   background-color: var(--greenCE);
@@ -92,7 +92,7 @@
   background-color: var(--whiteFF);
   width: 32.8rem;
   height: auto;
-  border-radius: 0.8rem;
+  border-radius: 0.5rem;
   padding: 1.6rem 1.2rem;
 
   @media mobile {
@@ -105,7 +105,23 @@
   justify-content: space-between;
 }
 
+.alarmModalContent {
+  color: var(--black1B);
+  font-size: 14px;
+  line-height: 2.2rem;
+}
+
+.approveTrue {
+  color: var(--blue00);
+}
+
+.approveFalse {
+  color: var(--redFF4);
+}
+
 .alarmModalContentTime {
   margin-top: 0.4rem;
   color: var(--grayA4);
+  font-size: 1.2rem;
+  line-height: 1.6rem;
 }
