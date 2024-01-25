@@ -1,5 +1,5 @@
 .container {
-  border: 0.1rem solid var(--black17);
+  border-bottom: 0.1rem solid var(--grayDD);
   width: 100%;
   height: 7rem;
   display: flex;
@@ -24,31 +24,23 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-.styledHr {
-  margin-bottom: 0.5rem;
-}
-.isOpen {
-  position: absolute;
-  background-color: var(--whiteFF);
-  top: 4.5rem;
-  z-index: 7;
-  padding-top: 0.5rem;
-  width: 100%;
-  height: 14rem;
-  border: 0.1rem solid var(--grayDD);
+  color: var(--black1B);
   font-size: 1.4rem;
-  border-radius: 0.8rem;
+  font-weight: 500;
 }
 
-.notOpen {
-  display: none;
+.loginContent {
+  color: var(--black17);
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
-.navDropDown {
-  margin: 0 0 0.5rem 1rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
+.alarmButton {
+  position: relative;
+}
+
+.isEllipse {
+  position: absolute;
+  top: 0;
+  right: 0.35rem;
 }

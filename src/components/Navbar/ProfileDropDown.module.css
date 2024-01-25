@@ -1,0 +1,36 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
+.profileDropDown {
+  margin: 0 0.5rem 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profileDropDownContainer {
+  position: absolute;
+  background-color: var(--whiteFF);
+  top: 4.5rem;
+  left: 6rem;
+  z-index: 7;
+  padding: 0.5rem 0;
+  width: 100%;
+  height: 14.3rem;
+  border: 0.1rem solid var(--grayDD);
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+
+  @media mobile {
+    left: 0;
+  }
+}
+
+.profileDropDownContent :hover {
+  border-radius: 0.8rem;
+  background-color: var(--greenCE);
+}
+
+.styledHr {
+  margin-bottom: 0.5rem;
+}

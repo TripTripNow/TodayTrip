@@ -9,6 +9,8 @@ import '@/styles/reset.css';
 import '@/styles/variables.css';
 import '#/fonts/Pretandard/Pretandard.css';
 import { NextPage } from 'next';
+import Navbar from '@/components/common/Navbar';
+import { useRouter } from 'next/router';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,7 +31,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         },
       }),
   );
-
+  const router = useRouter();
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -40,6 +42,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
+          {router.pathname.includes('sign') ? '' : <Navbar />}
           {getLayout(<Component {...pageProps} />)}
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
