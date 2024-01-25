@@ -6,7 +6,7 @@ import styles from '@/pages/signIn/Signin.module.css';
 import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
 
-function Signup() {
+function SignUp() {
   const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
@@ -84,9 +84,9 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default SignUp;
 
-Signup.getLayout = (page: ReactElement) => (
+SignUp.getLayout = (page: ReactElement) => (
   <UserLayout memberStatus="회원이신가요?" linkTitle="로그인하기" link="/signin">
     {page}
   </UserLayout>
