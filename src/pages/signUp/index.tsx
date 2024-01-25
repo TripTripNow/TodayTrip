@@ -2,7 +2,7 @@ import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
 import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import styles from '@/pages/signIn/Signin.module.css';
+import styles from '@/pages/signIn/SignIn.module.css';
 import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
 
