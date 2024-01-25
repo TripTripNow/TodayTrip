@@ -9,7 +9,7 @@ import CheckboxInput from '@/components/Input/CheckboxInput';
 function SignIn() {
   const router = useRouter();
   const methods = useForm<FieldValues>({
-    mode: 'onBlur',
+    mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: {
       email: '',
