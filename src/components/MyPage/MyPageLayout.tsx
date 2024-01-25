@@ -10,21 +10,13 @@ interface MyPageLayoutProps {
 
 function MyPageLayout({ children }: MyPageLayoutProps) {
   const methods = useForm();
-  const router = useRouter();
 
   return (
     <div className={styles.layoutContainer}>
-      {router.pathname === '/mypage' ? (
-        <FormProvider {...methods}>
-          <ProfileMenuBox />
-          <div className={styles.contentContainer}>{children}</div>
-        </FormProvider>
-      ) : (
-        <>
-          <ProfileMenuBox />
-          <div className={styles.contentContainer}>{children}</div>
-        </>
-      )}
+      <FormProvider {...methods}>
+        <ProfileMenuBox />
+        <div className={styles.contentContainer}>{children}</div>
+      </FormProvider>
     </div>
   );
 }
