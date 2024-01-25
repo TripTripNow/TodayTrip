@@ -1,6 +1,6 @@
 import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from '@/pages/signin/Signin.module.css';
 import { useRouter } from 'next/router';
@@ -35,49 +35,39 @@ function Signup() {
     router.push('/');
   };
 
-  const [buttonActive, setButtonActive] = useState<'active' | 'inActive'>('inActive');
-
   const { isValid } = methods.formState;
 
   const isPasswordVisible = methods.watch('checkbox');
 
-  useEffect(() => {
-    if (isValid) {
-      setButtonActive('active');
-      return;
-    }
-    setButtonActive('inActive');
-  }, [isValid]);
-
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
       <Input
-        state="user"
-        name="email"
+        state={'user'}
+        name={'email'}
         control={control}
         label={'이메일'}
         placeholder={'이메일을 입력해 주세요'}
         type={'email'}
       />
       <Input
-        state="user"
-        name="nickName"
+        state={'user'}
+        name={'nickName'}
         control={control}
         label={'닉네임'}
         placeholder={'닉네임을 입력해 주세요'}
         type={'text'}
       />
       <Input
-        state="user"
-        name="password"
+        state={'user'}
+        name={'password'}
         control={control}
         label={'비밀번호'}
         placeholder={'비밀번호를 입력해주세요'}
         type={isPasswordVisible ? 'text' : 'password'}
       />
       <Input
-        state="user"
-        name="passwordCheck"
+        state={'user'}
+        name={'passwordCheck'}
         control={control}
         label={'비밀번호 확인'}
         placeholder={'비밀번호를 한번 더 입력해 주세요'}
@@ -86,7 +76,7 @@ function Signup() {
 
       <CheckboxInput control={control} name="checkbox" />
 
-      <button className={`${styles.button} ${styles[buttonActive]}`} type="submit">
+      <button className={styles.button} type="submit" disabled={!isValid}>
         회원가입하기
       </button>
     </form>
