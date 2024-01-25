@@ -5,6 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import styles from '@/pages/signIn/Signin.module.css';
 import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
+
 function Signup() {
   const router = useRouter();
   const methods = useForm<FieldValues>({
