@@ -1,10 +1,4 @@
-import Footer from '@/components/Footer/Footer';
-
 function Test() {
-  return (
-    <>
-      <Footer />
-    </>
-  );
+  return <></>;
 }
 export default Test;
