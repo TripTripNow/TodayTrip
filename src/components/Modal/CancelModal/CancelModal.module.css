@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  padding: 2.4rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  background-color: var(--whiteFF);
+  border-radius: 0.8rem;
+}
+
+.span {
+  color: var(--black1B);
+  text-align: center;
+  font-size: 1.6rem;
+  marign-bottom: 1.6rem;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-radius: 0.6rem;
+  width: 8rem;
+  padding: 1rem 2rem;
+  border: 0.1rem solid var(--nomad_black);
+}
+
+.white {
+  color: var(--nomad_black);
+  background-color: var(--whiteFF);
+}
+
+.primary {
+  color: var(--whiteFF);
+  background: var(--nomad_black);
+}
