@@ -2,7 +2,7 @@ import styles from './Button.module.css';
 import clsx from 'clsx';
 import { ButtonProps } from '@/components/common/Button/Button';
 
-function ActivityButton({ text, onClick, outline, inactive }: ButtonProps) {
+function ReserveButton({ text, onClick, outline, inactive }: ButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -13,4 +13,4 @@ function ActivityButton({ text, onClick, outline, inactive }: ButtonProps) {
   );
 }
 
-export default ActivityButton;
+export default ReserveButton;
