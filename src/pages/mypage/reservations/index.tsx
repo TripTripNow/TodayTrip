@@ -84,8 +84,7 @@ function Reservation() {
       endTime: '16:00',
     },
   ];
-  // option들을 정의
-  const OPTIONS = [
+  const statusOptions = [
     { id: 1, value: 'pending', name: '예약 완료' },
     { id: 2, value: 'canceled', name: '예약 취소' },
     { id: 3, value: 'confirmed', name: '예약 승인' },
@@ -93,7 +92,13 @@ function Reservation() {
     { id: 6, value: 'completed', name: '체험 완료' },
   ];
 
-  const [selectedValue, setSelectedValue] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+
+  const filteredReservations =
+    selectedStatus === 'all'
+      ? reservations
+      : reservations.filter((reservation) => reservation.status === selectedStatus);
+
   return (
     <div
       style={{
@@ -107,20 +112,21 @@ function Reservation() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.h2}>예약 내역</h2>
-          <select defaultValue={'all'} onChange={(e) => setSelectedValue(e.target.value)}>
+          <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
+            <option disabled value="" hidden selected>
+              상태 선택
+            </option>
             <option value="all">전체</option>
-            {OPTIONS.map((option) => (
+            {statusOptions.map((option) => (
               <option key={option.id} value={option.value}>
                 {option.name}
               </option>
             ))}
           </select>
         </div>
-        {selectedValue === 'all'
-          ? reservations.map((reservation) => <Card key={reservation.id} data={reservation} />)
-          : reservations
-              .filter((reservation) => reservation.status === selectedValue)
-              .map((filteredReservation) => <Card key={filteredReservation.id} data={filteredReservation} />)}
+        {filteredReservations.map((reservation) => (
+          <Card key={reservation.id} data={reservation} />
+        ))}
       </div>
     </div>
   );
