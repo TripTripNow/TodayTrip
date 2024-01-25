@@ -1,7 +1,7 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement } from 'react';
 import styles from './MyPage.module.css';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import Input from '@/components/Input/Input';
 import { passwordCheck } from '@/utils/passwordCheck';
 import ProfileInput from '@/components/MyPage/ProfileInput';
@@ -14,7 +14,6 @@ function MyPage() {
       email: 'test@test.com',
       password: '',
       passwordCheck: '',
-      profileImageUrl: '',
     },
   });
 
@@ -26,8 +25,12 @@ function MyPage() {
     const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
     if (!isValidPwCheck) return;
 
+    // 생성된 프로필 이미지 url
+    console.log(getValues('profileImageUrl'));
     console.log(data);
   };
+
+  const { getValues } = useFormContext();
 
   return (
     <div className={styles.myPageContainer}>

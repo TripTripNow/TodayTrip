@@ -3,6 +3,7 @@ import styles from './profileInput.module.css';
 import LogoImg from '#/images/img-kakao.png';
 import EditIcon from '#/icons/icon-edit.svg';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 
 interface ProfileInputProps {
   isProfileBox: boolean;
@@ -11,6 +12,8 @@ interface ProfileInputProps {
 function ProfileInput({ isProfileBox }: ProfileInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  const { register, setValue } = useFormContext();
 
   const onUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
@@ -24,7 +27,8 @@ function ProfileInput({ isProfileBox }: ProfileInputProps) {
   const handlePostProfile = (imgUrl: File) => {
     const imgFormData = new FormData();
     imgFormData.append('image', imgUrl);
-    //TODO 이미지 url 생성 api 연동, imgFormData 넘겨주기
+    //TODO 이미지 url 생성 api 연동, imgFormData 넘겨주기, setValue에 응답값 넘겨주기
+    setValue('profileImageUrl', 'img');
   };
 
   const handleUploadImg = useCallback(() => {
@@ -44,7 +48,14 @@ function ProfileInput({ isProfileBox }: ProfileInputProps) {
         height={160}
       />
       <EditIcon className={styles.editIcon} onClick={handleUploadImg} />
-      <input type="file" accept="image/*" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
+      <input
+        {...register('profileImageUrl')}
+        type="file"
+        accept="image/*"
+        onChange={(e) => onUpload(e)}
+        ref={inputRef}
+        className={styles.imgInput}
+      />
     </div>
   );
 }
