@@ -8,7 +8,7 @@ export const ERROR_PASSWORD_EMPTY = '비밀번호를 입력해 주세요.';
 
 export const ERROR_PASSWORD_SECOND_EMPTY = '비밀번호를 한 번 더 입력해 주세요.';
 
-export const ERROR_NICKNAME_NEW = '닉네임은 10자 이하로 작성해주세요.';
+export const ERROR_NICKNAME_VALIDATION = '닉네임은 10자 이하로 작성해주세요.';
 export const ERROR_NICKNAME_EMPTY = '닉네임을 입력해 주세요.';
 
 //이메일 형식

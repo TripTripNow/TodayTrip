@@ -5,7 +5,7 @@ import {
   ERROR_EMAIL_CHECK,
   ERROR_EMAIL_EMPTY,
   ERROR_NICKNAME_EMPTY,
-  ERROR_NICKNAME_NEW,
+  ERROR_NICKNAME_VALIDATION,
   ERROR_PASSWORD_EMPTY,
   ERROR_PASSWORD_SECOND_EMPTY,
   ERROR_PASSWORD_VALIDATION,
@@ -82,7 +82,7 @@ const inputObj = [
     type: 'nickName',
     rule: {
       required: ERROR_NICKNAME_EMPTY,
-      maxLength: { value: 10, message: ERROR_NICKNAME_NEW },
+      maxLength: { value: 10, message: ERROR_NICKNAME_VALIDATION },
     },
   },
 ];
