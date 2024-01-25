@@ -1,6 +1,6 @@
-import ArrowDown from '#/icons/icon-arrowdown.svg';
-import ArrowUp from '#/icons/icon-arrowup.svg';
-import IconCheck from '#/icons/icon-checkmark.svg';
+import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
+import ArrowUpIcon from '#/icons/icon-arrowup.svg';
+import CheckIcon from '#/icons/icon-checkmark.svg';
 import { useState } from 'react';
 import styles from './Dropdown.module.css';
 
@@ -21,13 +21,13 @@ function Dropdown({ lists }: DropdownProps) {
         <button className={styles.button} onClick={handleClick}>
           카테고리
         </button>
-        {isOpen ? <ArrowUp /> : <ArrowDown />}
+        {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </label>
       <ul className={isOpen ? styles.lists : styles.none}>
         {isOpen &&
           lists.map((item, index) => (
             <li className={styles.list} key={index}>
-              <IconCheck style={{ marginRight: 8 }} />
+              <CheckIcon style={{ marginRight: 8 }} />
               {item}
             </li>
           ))}
