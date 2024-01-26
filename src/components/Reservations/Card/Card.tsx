@@ -31,7 +31,7 @@ export interface CardProps {
 function Card({ data }: CardProps) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
-  const handleModalToggle = () => {
+  const handleCancelModalToggle = () => {
     setIsCancelModalOpen((prev) => !prev);
   };
 
@@ -71,12 +71,14 @@ function Card({ data }: CardProps) {
         <div className={styles.bottom}>
           <span className={styles.price}>₩{data.totalPrice.toLocaleString('ko-KR')}</span>
           {data.status === 'pending' && (
-            <button onClick={handleModalToggle} className={styles.button}>
+            <button onClick={handleCancelModalToggle} className={styles.button}>
               예약 취소
             </button>
           )}
           {/* api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
-          {isCancelModalOpen && <CancelModal handleModalClose={handleModalToggle} handleCancel={handleModalToggle} />}
+          {isCancelModalOpen && (
+            <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
+          )}
           {data.status === 'completed' && (
             <button disabled={data.reviewSubmitted} className={styles.button}>
               후기 작성

@@ -1,0 +1,21 @@
+.wrapper {
+  width: 48rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2.8rem 2.4rem;
+  border-radius: 2.4rem;
+  background: var(--whiteFF);
+  gap: 2.4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.h2 {
+  color: var(--black1B);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 2.6rem; /* 92.857% */
+}
