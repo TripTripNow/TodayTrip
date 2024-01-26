@@ -2,8 +2,9 @@
 import styles from './Reservations.module.css';
 import { useEffect, useState } from 'react';
 import Card from '@/components/Reservations/Card/Card';
-import { reservations } from '@/pages/mypage/reservations/mock';
+import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import MyPageLayout from '@/components/MyPage/MyPageLayout';
 // import { useRouter } from 'next/router';
 
 function Reservation() {
@@ -16,12 +17,12 @@ function Reservation() {
   ];
 
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [visibleReservations, setVisibleReservations] = useState(5);
+  const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 
   useEffect(() => {
     if (isVisible) {
-      setVisibleReservations((prev) => prev + 5);
+      setVisibleReservations((prev) => prev + 6);
     }
   }, [isVisible]);
 
@@ -38,16 +39,7 @@ function Reservation() {
   // }, [selectedStatus]);
 
   return (
-    <div
-      // 수빈님 레이아웃으로 변경할 예정
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '3rem',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <MyPageLayout>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.h2}>예약 내역</h2>
@@ -73,7 +65,7 @@ function Reservation() {
         {/* 무한 스크롤을 위한 target */}
         <div ref={targetRef}></div>
       </div>
-    </div>
+    </MyPageLayout>
   );
 }
 
