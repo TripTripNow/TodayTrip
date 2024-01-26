@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import styles from './MyPageLayout.module.css';
 import ProfileMenuBox from '@/components/MyPage/ProfileMenuBox';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
 
 interface MyPageLayoutProps {
   children: ReactNode;
