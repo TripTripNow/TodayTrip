@@ -1,11 +1,57 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
+@keyframes slidein {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideout {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideinpc {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideoutpc {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .profileDropDown {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
-  padding: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0.8rem;
+  font-size: 1.4rem;
+
+  @media mobile {
+    padding: 2rem;
+    font-size: 2.3rem;
+  }
 }
 
 .profileDropDownContainer {
@@ -19,9 +65,24 @@
   border: 0.1rem solid var(--grayDD);
   border-radius: 0.8rem;
   font-size: 1.4rem;
+  animation: slideinpc 0.3s ease-out;
 
   @media mobile {
+    top: 7rem;
     left: 0;
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 0.8rem 0.8rem;
+    box-shadow: 0 0.5rem 0.5rem 0 var(--grayDD);
+    animation: slidein 0.3s ease-out;
+  }
+}
+
+.profileDropDownCloseContainer {
+  composes: profileDropDownContainer;
+  animation: slideoutpc 0.3s ease-out;
+  @media mobile {
+    animation: slideout 0.3s ease-out;
   }
 }
 
@@ -36,6 +97,7 @@
 
 .styledHr {
   background: var(--grayDD);
+  margin: 0.5rem 0;
   height: 0.1rem;
   border: 0;
 }

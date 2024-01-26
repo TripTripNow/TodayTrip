@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styles from './ProfileDropDown.module.css';
-import AlarmIcon from '#/icons/icon-alarm.svg';
+import { useEffect } from 'react';
 
 const DropDown_ARR = [
   { link: '/mypage', title: '내 정보' },
@@ -9,26 +9,27 @@ const DropDown_ARR = [
   { link: '/mypage/activities/dashboard', title: '예약 현황' },
 ];
 
-function ProfileDropDown() {
+interface ProfileDropDownProps {
+  isOpen: boolean;
+}
+
+function ProfileDropDown({ isOpen }: ProfileDropDownProps) {
+  useEffect(() => {
+    console.log(isOpen), [isOpen];
+  });
   return (
-    <div className={styles.profileDropDownContainer}>
+    <div className={isOpen ? styles.profileDropDownContainer : styles.profileDropDownCloseContainer}>
       {DropDown_ARR.map((item, index) => (
         <div className={styles.profileDropDownContent} key={index}>
           <Link href={item.link}>
-            <div className={styles.profileDropDown}>
-              <AlarmIcon />
-              <p>{item.title}</p>
-            </div>
+            <p className={styles.profileDropDown}>{item.title}</p>
           </Link>
         </div>
       ))}
       <hr className={styles.styledHr} />
       <div className={styles.profileDropDownContent}>
         <Link href="/">
-          <div className={styles.profileDropDown}>
-            <AlarmIcon />
-            <p>로그아웃</p>
-          </div>
+          <p className={styles.profileDropDown}>로그아웃</p>
         </Link>
       </div>
     </div>

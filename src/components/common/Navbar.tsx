@@ -8,21 +8,52 @@ import { useState } from 'react';
 import AlarmModal from '@/components/Navbar/AlarmModal';
 import ProfileDropDown from '@/components/Navbar/ProfileDropDown';
 
+const ALARM_COUNT = 6;
 const USER_DATA = { name: '종민박' };
-const COUNT = 6;
+const alarmData = {
+  notifications: [
+    {
+      id: 0,
+      content: '함께하면 즐거운 댄스(2023-01-14 15:00:~18:00) 예약이 거절되었어요.',
+      status: 'declined',
+      createdAt: '2024-01-26T06:23:36.209Z',
+    },
+    {
+      id: 1,
+      content: '함께하면 슬픈 댄스(2023-01-15 15:00:~18:00) 예약이 승인되었어요.',
+      status: 'approve',
+      createdAt: '2024-01-26T06:23:36.209Z',
+    },
+    {
+      id: 2,
+      content: '함께하는 종민 댄스(2023-01-16 15:00:~18:00) 예약이 거절되었어요.',
+      status: 'declined',
+      createdAt: '2024-01-26T06:23:36.209Z',
+    },
+  ],
+  totalCount: 3,
+};
 
 function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleDropDownClick = () => {
-    setIsDropDownOpen((prev) => !prev);
+    setIsOpen((prev) => !prev);
+    setTimeout(() => {
+      setIsDropDownOpen((prev) => !prev);
+    }, 250);
   };
 
   const handleBlurDropDown = () => {
+    if (isOpen) {
+      setIsOpen(false);
+    }
+
     setTimeout(() => {
       setIsDropDownOpen(false);
-    }, 100);
+    }, 250);
   };
 
   const handleAlarmModalClick = () => {
@@ -44,9 +75,9 @@ function Navbar() {
         {USER_DATA ? (
           <>
             <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              <AlarmIcon className={styles.alarmIcon} /> {COUNT && <RedEllipse className={styles.isEllipse} />}
+              <AlarmIcon className={styles.alarmIcon} /> {ALARM_COUNT && <RedEllipse className={styles.isEllipse} />}
             </button>
-            {isModalOpen ? <AlarmModal setIsModalOpen={setIsModalOpen} /> : ''}
+            {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
             <div className={styles.border}></div>
             <div onBlur={handleBlurDropDown}>
               <button className={styles.userName} onClick={handleDropDownClick}>
@@ -54,15 +85,15 @@ function Navbar() {
                 <p>{USER_DATA.name}</p>
               </button>
             </div>
-            <div>{isDropDownOpen && <ProfileDropDown />}</div>
+            <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
           </>
         ) : (
           <>
-            <Link href="/signin">
-              <p className={styles.loginContent}>로그인</p>
+            <Link className={styles.loginContent} href="/signin">
+              로그인
             </Link>
-            <Link href="/signup">
-              <p className={styles.loginContent}>회원가입</p>
+            <Link className={styles.loginContent} href="/signup">
+              회원가입
             </Link>
           </>
         )}
