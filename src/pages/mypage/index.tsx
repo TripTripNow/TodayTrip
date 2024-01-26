@@ -22,7 +22,7 @@ function MyPage() {
   const { isValid } = methods.formState;
 
   const handleOnSubmit = (data: FieldValues) => {
-    const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
+    const isValidPwCheck = passwordCheck(data.mypagePasswordCheck, data.mypagePassword, setError);
     if (!isValidPwCheck) return;
 
     // 생성된 프로필 이미지 url
