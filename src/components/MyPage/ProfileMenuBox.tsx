@@ -12,7 +12,6 @@ const MENU_LIST = [
     title: '내 정보',
     src: <MypageIcon fill="#A1A1A1" />,
     activeSrc: <MypageIcon fill="#112211" />,
-
     link: '/mypage',
   },
   {

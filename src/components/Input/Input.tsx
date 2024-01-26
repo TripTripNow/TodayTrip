@@ -51,7 +51,7 @@ function Input({ label, placeholder, control, name, type, state = 'default', isD
         onBlur={field.onBlur}
         disabled={isDisabled}
       />
-      {error && <div className={styles.errorMessage}>{error.message}</div>}
+      {error && <p className={styles.errorMessage}>{error.message}</p>}
     </div>
   );
 }

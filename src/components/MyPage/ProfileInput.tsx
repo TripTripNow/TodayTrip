@@ -16,7 +16,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
 
   const { setValue } = useFormContext();
 
-  const onUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
       const targetFiles = e.target.files[0];
       const selectedFiles = URL.createObjectURL(targetFiles);
@@ -50,7 +50,13 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
       />
       {isEdit && <EditIcon className={styles.editIcon} onClick={handleUploadImg} />}
 
-      <input type="file" accept=".jpg, .png" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
+      <input
+        type="file"
+        accept=".jpg, .png"
+        onChange={(e) => handleUpload(e)}
+        ref={inputRef}
+        className={styles.imgInput}
+      />
     </div>
   );
 }
