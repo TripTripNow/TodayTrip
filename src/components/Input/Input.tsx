@@ -1,31 +1,38 @@
 import { Control, FieldPath, FieldValues, useController } from 'react-hook-form';
 import styles from './Input.module.css';
+import {
+  EMAIL_STANDARD,
+  ERROR_EMAIL_CHECK,
+  ERROR_EMAIL_EMPTY,
+  ERROR_NICKNAME_EMPTY,
+  ERROR_NICKNAME_VALIDATION,
+  ERROR_PASSWORD_EMPTY,
+  ERROR_PASSWORD_SECOND_EMPTY,
+  ERROR_PASSWORD_VALIDATION,
+} from '@/constants/user';
 
 interface InputProps {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   control: Control<FieldValues>;
   name: FieldPath<FieldValues>;
   type: 'text' | 'email' | 'password';
-  isRequired: boolean;
   state?: 'user' | 'default';
+  isDisabled?: boolean;
 }
 
 // type의 경우 필요에 따라 interface에 추가 후 사용해주세요.
-// isRequired는 필수값인 경우 true로 넘겨주세요. 만약 값이 입력되지 않는다면 '필수 값입니다.' 에러메세지가 나옵니다.
 // state는 기본값은 default입니다. user관련 페이지에서 사용할 때 user로 내려주면됩니다.
-function Input({ label, placeholder, control, name, type, isRequired, state = 'default' }: InputProps) {
+function Input({ label, placeholder, control, name, type, state = 'default', isDisabled = false }: InputProps) {
+  const matchInput = inputObj.find((input) => input.type === name);
+
   const {
     field,
     fieldState: { error },
   } = useController({
     name,
     control,
-    rules: isRequired
-      ? {
-          required: { value: true, message: '필수 값입니다.' },
-        }
-      : {},
+    rules: matchInput?.rule,
   });
 
   return (
@@ -41,10 +48,49 @@ function Input({ label, placeholder, control, name, type, isRequired, state = 'd
         name={field.name}
         value={field.value}
         onChange={field.onChange}
+        onBlur={field.onBlur}
+        disabled={isDisabled}
       />
-      {error && <div className={styles.errorMessage}>{error.message}</div>}
+      {error && <p className={styles.errorMessage}>{error.message}</p>}
     </div>
   );
 }
 
 export default Input;
+
+// input에 rule이 필요한 경우 type을 prop으로 넘긴 name 동일, rule 추가 후 사용
+const inputObj = [
+  {
+    type: 'email',
+    rule: {
+      required: ERROR_EMAIL_EMPTY,
+      pattern: { value: EMAIL_STANDARD, message: ERROR_EMAIL_CHECK },
+    },
+  },
+  {
+    type: 'password',
+    rule: {
+      required: ERROR_PASSWORD_EMPTY,
+      minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
+    },
+  },
+  {
+    type: 'passwordCheck',
+    rule: {
+      required: ERROR_PASSWORD_SECOND_EMPTY,
+    },
+  },
+  {
+    type: 'nickName',
+    rule: {
+      required: ERROR_NICKNAME_EMPTY,
+      maxLength: { value: 10, message: ERROR_NICKNAME_VALIDATION },
+    },
+  },
+  {
+    type: 'mypagePassword',
+    rule: {
+      minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
+    },
+  },
+];
