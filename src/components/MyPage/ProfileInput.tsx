@@ -50,7 +50,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
       />
       {isEdit && <EditIcon className={styles.editIcon} onClick={handleUploadImg} />}
 
-      <input type="file" accept="image/*" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
+      <input type="file" accept=".jpg, .png" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
     </div>
   );
 }
