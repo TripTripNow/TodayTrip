@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/pages/mypage/reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 function Reservation() {
   const statusOptions = [
@@ -15,8 +15,6 @@ function Reservation() {
     { id: 6, value: 'completed', name: '체험 완료' },
   ];
 
-  // 쿼리 업데이트는 잘 되는데.. 뭔가 에러가 남.. 서버가 자동으로 그 쿼리 값으로 데이터 불러오게 되는데 뭐가 없어서 그런듯..
-  const router = useRouter();
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [visibleReservations, setVisibleReservations] = useState(5);
   const { isVisible, targetRef } = useInfiniteScroll();
@@ -32,7 +30,9 @@ function Reservation() {
       ? reservations.slice(0, visibleReservations)
       : reservations.filter((reservation) => reservation.status === selectedStatus).slice(0, visibleReservations);
 
-  // //selectedStatus가 변경될 때마다 URL 업데이트
+  ////selectedStatus가 변경될 때마다 URL 업데이트
+  //// 쿼리 업데이트는 잘 되는데.. 뭔가 에러가 남.. 서버가 자동으로 그 쿼리 값으로 데이터 불러오게 되는데 뭐가 없어서 그런듯..
+  // const router = useRouter();
   // useEffect(() => {
   //   router.push(`/mypage/reservations?status=${selectedStatus}`);
   // }, [selectedStatus]);
