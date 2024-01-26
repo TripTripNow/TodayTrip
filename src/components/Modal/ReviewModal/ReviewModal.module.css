@@ -1,4 +1,4 @@
-.wrapper {
+.modalWrapper {
   width: 48rem;
   display: flex;
   flex-direction: column;
@@ -18,4 +18,86 @@
   font-size: 2.8rem;
   font-weight: 700;
   line-height: 2.6rem; /* 92.857% */
+  display: flex;
+  align-items: center;
+}
+
+@values mobile from '@/styles/breakpoints.css';
+
+.cardWrapper {
+  display: flex;
+  gap: 2.4rem;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 12.6rem;
+  height: 12.6rem;
+
+  @media mobile {
+    width: 12.8rem;
+  }
+}
+
+.imageWrapper img {
+  border-radius: 1.2rem;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  @media mobile {
+    padding: 0.9rem 1.4rem;
+    gap: 0rem;
+  }
+}
+
+.detailContainer > * {
+  color: var(--nomad_black);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+
+  @media mobile {
+    font-size: 1.4rem;
+  }
+}
+
+.dateDetail {
+  display: flex;
+  gap: 0.8rem;
+  white-space: nowrap;
+
+  @media mobile {
+    margin-bottom: 0rem;
+  }
+}
+
+.dateDetail > * {
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+
+  @media mobile {
+    font-size: 1.2rem;
+  }
+}
+
+.separator {
+  width: 28.2rem;
+  height: 0.1rem;
+  opacity: 0.1;
+  background: var(--black1B);
+}
+.price {
+  font-size: 3.2rem;
+  font-weight: 700;
+
+  @media mobile {
+    font-size: 1.6rem;
+  }
 }

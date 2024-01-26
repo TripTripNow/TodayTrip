@@ -1,0 +1,8 @@
+.Rating_star {
+  color: #ffe5a2;
+  font-size: 25px;
+}
+
+.Rating_star.selected {
+  color: #ffb700;
+}
