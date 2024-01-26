@@ -12,8 +12,8 @@ function MyPage() {
     defaultValues: {
       nickName: '닉네임',
       email: 'test@test.com',
-      password: '',
-      passwordCheck: '',
+      mypagePassword: '',
+      mypagePasswordCheck: '',
     },
   });
 
@@ -37,7 +37,7 @@ function MyPage() {
       <div className={styles.topContainer}>
         <div className={styles.titleContainer}>
           <div className={styles.title}>내 정보</div>
-          <button type="submit" form="mypageForm" disabled={!isValid}>
+          <button className={styles.button} type="submit" form="mypageForm" disabled={!isValid}>
             저장하기
           </button>
         </div>
@@ -54,14 +54,14 @@ function MyPage() {
         />
         <Input name={'email'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
         <Input
-          name={'password'}
+          name={'mypagePassword'}
           control={control}
           label={'비밀번호'}
           placeholder={'8자 이상 입력해 주세요'}
           type={'password'}
         />
         <Input
-          name={'passwordCheck'}
+          name={'mypagePasswordCheck'}
           control={control}
           label={'비밀번호 확인'}
           placeholder={'비밀번호를 한번 더 입력해 주세요'}

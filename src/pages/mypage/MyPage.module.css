@@ -15,6 +15,14 @@
   }
 }
 
+.button {
+  background-color: var(--blue00);
+}
+
+.button:disabled {
+  background-color: var(--gray79);
+}
+
 .topContainer {
   display: flex;
   flex-direction: column;

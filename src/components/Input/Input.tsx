@@ -87,4 +87,10 @@ const inputObj = [
       maxLength: { value: 10, message: ERROR_NICKNAME_VALIDATION },
     },
   },
+  {
+    type: 'mypagePassword',
+    rule: {
+      minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
+    },
+  },
 ];
