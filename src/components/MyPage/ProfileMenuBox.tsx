@@ -28,19 +28,19 @@ const MENU_LIST = [
     title: '내 체험 관리',
     src: <ActivitiesIcon />,
     activeSrc: <ActivitiesActiveIcon />,
-    link: '/mypage/reservations',
+    link: '/mypage/activities',
   },
   {
     title: '예약 현황',
     src: <DashboardIcon />,
     activeSrc: <DashboardActiveIcon />,
-    link: '/mypage/reservations',
+    link: '/mypage/activities/dashboard',
   },
 ];
 
 function ProfileMenuBox() {
   const router = useRouter();
-  const [isSelected, setIsSelected] = useState('내 정보');
+  const [isSelected, setIsSelected] = useState(MENU_LIST.find((e) => e.link === router.pathname)?.title);
 
   const handleMenuItem = (item: { title: string; link: string }) => {
     setIsSelected(item.title);
