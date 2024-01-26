@@ -10,6 +10,7 @@ interface DropdownProps {
 
 function Dropdown({ lists }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('카테고리');
 
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -19,14 +20,14 @@ function Dropdown({ lists }: DropdownProps) {
     <div className={styles.container}>
       <label className={styles.label}>
         <button className={styles.button} onClick={handleClick}>
-          카테고리
+          {selectedValue}
         </button>
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </label>
-      <ul className={isOpen ? styles.lists : styles.none}>
+      <ul className={isOpen ? styles.lists : styles.none} onClick={handleClick}>
         {isOpen &&
           lists.map((item, index) => (
-            <li className={styles.list} key={index}>
+            <li className={styles.list} key={index} onClick={() => setSelectedValue(item)}>
               <CheckIcon style={{ marginRight: 8 }} />
               {item}
             </li>
