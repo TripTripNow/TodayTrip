@@ -5,14 +5,70 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: var(--nomad_black);
-  color: var(--whiteFF);
   text-align: center;
 }
 
-.common {
+.green {
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+}
+
+.white {
+  border: 0.1rem solid var(--nomad_black);
+  background: var(--whiteFF);
+  color: var(--nomad_black);
+}
+
+/* 내 정보, 내 체험 관리 페이지 */
+.default {
   composes: button;
   width: 12rem;
+  height: 4.8rem;
+  padding: 0.8rem 1.6rem;
+  gap: 0.4rem;
+  border-radius: 0.4rem;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+}
+
+/* 로그인, 회원가입 페이지 */
+.auth {
+  composes: button;
+  width: 100%;
+  padding: 1.4rem 0;
+  gap: 0.8rem;
+  border-radius: 0.6rem;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+/* 메인 페이지 */
+.search {
+  composes: button;
+  width: 13.6rem;
+  height: 5.6rem;
+  padding: 0.8rem 4rem;
+  gap: 0.4rem;
+  border-radius: 0.4rem;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+
+  @media mobile {
+    width: 9.6rem;
+    padding: 0.8rem 2rem;
+  }
+}
+
+/* 내 체험 등록, 수정 페이지 - 등록하기, 수정하기 */
+.activity {
+  composes: button;
+  width: 100%;
   height: 4.8rem;
   padding: 0.8rem 1.6rem;
   gap: 0.4rem;
@@ -21,119 +77,98 @@
 
   font-size: 1.6rem;
   font-weight: 700;
-  line-height: 26px;
-}
+  line-height: 2.6rem;
 
-.auth {
-  composes: button;
-  width: 35rem;
-  padding: 1.4rem 13.6rem;
-  gap: 0.8rem;
-  border-radius: 0.6rem;
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 20px; 
-
-  @media tablet {
-    width: 14.4rem;
-    padding: 0.8rem 1.2rem;
-  }
-
-  @media mobile {
-    width: 10.8rem;
-    padding: 1rem 2rem;
+  @media desktop {
+    width: 39.6rem;
   }
 }
 
-.activity {
+.reservation {
   composes: button;
   width: 14.4rem;
   height: 4rem;
   padding: 0.8rem 1.2rem;
   gap: 0.8rem;
   border-radius: 0.6rem;
+
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 2.6rem;
 
   @media tablet {
     width: 11.2rem;
-    height: 4rem;
   }
 
   @media mobile {
     width: 8rem;
     height: 3.2rem;
+    padding: 1.4rem 0;
     font-size: 1.4rem;
+    line-height: 2rem; 
+  }
+}
+
+.modalSingle {
+  width: 100%;
+  height: 5.6rem;
+  padding: 0.8rem 4rem;
+  gap: 0.4rem;
+  border-radius: 0.4rem;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  
+  @media mobile {
+    width: 10.6rem;
+    padding: 14px 0;
+    gap: 0.8rem;
     line-height: 2rem;
   }
 }
 
-.activityAdd {
-  composes: button;
-  width: 100%;
-  height: 4.8rem;
-  padding: 0.8rem 1.6rem;
-  gap: 4rem;
-  border-radius: 0.4rem;
-  color: var(--whiteFF);
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 2.6rem; 
-
-  @media desktop {
-    width: 39.6rem;
-  }
-}
-.modal {
-  padding: 10px 20px;
-  gap: 8px;
-}
-
-.confirm {
-  composes: button;
-  composes: modal;
+.modalDouble {
+  display: flex;
   width: 8.2rem;
-  border-radius: 0.6rem;
+  padding: 1rem 2rem;
+  gap: 0.8rem;
   font-size: 1.4rem;
   font-weight: 700;
+  border-radius: 0.6rem;
 }
 
 .time {
-  composes: button;
-  composes: modal;
-  width: 11.7rem;
+  width: 10.1rem;
+  height: 4.6rem;
+  padding: 1rem 1.2rem;
+  gap: 1rem;
   border-radius: 0.8rem;
-  color: var(--whiteFF);
-  font-size: 1.6rem;
+
+  font-size: 1.5rem;
   font-weight: 500;
-  line-height: 2.6rem; 
+  line-height: 2.6rem;
 }
 
 .category {
-  composes: button;
-  width: 10rem;
-  padding: 1.6rem 2rem;
+  width: 12.7rem;
+  padding: 1.6rem 3rem;
   gap: 1rem;
   border-radius: 1.5rem;
-  font-size: 1.8rem;
+  border: 0.1rem solid var(--green0B);
+  
+  font-size: 1.6rem;
   font-weight: 500;
 
-  @media desktop {
-    width: 12.7rem;
-    padding: 1.6rem 3rem;
-    font-size: 1.8rem;
-    font-weight: 500;
-    font-size: 1.6rem;
+  @media tablet {
+    width: 12rem;
+    font-size: 1.5rem;
+  }
+
+  @media mobile {
+    width: 8rem;
+    padding: 1.2rem 0;
+    font-size: 1.4rem;
+    font-weight: 400;
   }
 }
 
-.inactive {
-  background: var(--grayA4);
-}
-
-.outline {
-  border: 1px solid var(--nomad_black);
-  background: var(--whiteFF);
-  color: var(--nomad_black);
-}
