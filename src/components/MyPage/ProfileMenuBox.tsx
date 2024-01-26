@@ -4,36 +4,33 @@ import MypageIcon from '#/icons/icon-mypage.svg';
 import ReservationIcon from '#/icons/icon-reservation.svg';
 import ActivitiesIcon from '#/icons/icon-activities.svg';
 import DashboardIcon from '#/icons/icon-dashboard.svg';
-import MypageActiveIcon from '#/icons/icon-mypage-active.svg';
-import ReservationActiveIcon from '#/icons/icon-reservation-active.svg';
-import ActivitiesActiveIcon from '#/icons/icon-activities-active.svg';
-import DashboardActiveIcon from '#/icons/icon-dashboard-active.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 
 const MENU_LIST = [
   {
     title: '내 정보',
-    src: <MypageIcon />,
-    activeSrc: <MypageActiveIcon />,
+    src: <MypageIcon fill="#A1A1A1" />,
+    activeSrc: <MypageIcon fill="#112211" />,
+
     link: '/mypage',
   },
   {
     title: '예약 내역',
-    src: <ReservationIcon />,
-    activeSrc: <ReservationActiveIcon />,
+    src: <ReservationIcon fill="#A1A1A1" />,
+    activeSrc: <ReservationIcon fill="#112211" />,
     link: '/mypage/reservations',
   },
   {
     title: '내 체험 관리',
-    src: <ActivitiesIcon />,
-    activeSrc: <ActivitiesActiveIcon />,
+    src: <ActivitiesIcon fill="#A1A1A1" />,
+    activeSrc: <ActivitiesIcon fill="#112211" />,
     link: '/mypage/activities',
   },
   {
     title: '예약 현황',
-    src: <DashboardIcon />,
-    activeSrc: <DashboardActiveIcon />,
+    src: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" />,
+    activeSrc: <DashboardIcon fill="#112211" stroke="#112211" />,
     link: '/mypage/activities/dashboard',
   },
 ];
