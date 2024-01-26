@@ -42,7 +42,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          {router.pathname.includes('sign') ? '' : <Navbar />}
+          {router.pathname.includes('sign') && <Navbar />}
           {getLayout(<Component {...pageProps} />)}
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
