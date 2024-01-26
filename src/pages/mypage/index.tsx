@@ -42,7 +42,7 @@ function MyPage() {
           </button>
         </div>
 
-        <ProfileInput isProfileBox={false} />
+        <ProfileInput isProfileBox={false} isEdit={true} />
       </div>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} id="mypageForm">
         <Input

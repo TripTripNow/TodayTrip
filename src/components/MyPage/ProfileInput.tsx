@@ -7,9 +7,10 @@ import { useFormContext } from 'react-hook-form';
 
 interface ProfileInputProps {
   isProfileBox: boolean;
+  isEdit: boolean;
 }
 
-function ProfileInput({ isProfileBox }: ProfileInputProps) {
+function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
@@ -47,7 +48,8 @@ function ProfileInput({ isProfileBox }: ProfileInputProps) {
         width={160}
         height={160}
       />
-      <EditIcon className={styles.editIcon} onClick={handleUploadImg} />
+      {isEdit && <EditIcon className={styles.editIcon} onClick={handleUploadImg} />}
+
       <input type="file" accept="image/*" onChange={(e) => onUpload(e)} ref={inputRef} className={styles.imgInput} />
     </div>
   );

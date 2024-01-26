@@ -49,7 +49,7 @@ function ProfileMenuBox() {
 
   return (
     <div className={styles.profileBoxContainer}>
-      <ProfileInput isProfileBox={true} />
+      <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} />
       <div className={styles.memuContainer}>
         {MENU_LIST.map((e, index) => {
           return (
