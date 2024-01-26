@@ -15,6 +15,7 @@ function Reservation() {
     { id: 6, value: 'completed', name: '체험 완료' },
   ];
 
+  // 쿼리 업데이트는 잘 되는데.. 뭔가 에러가 남.. 서버가 자동으로 그 쿼리 값으로 데이터 불러오게 되는데 뭐가 없어서 그런듯..
   const router = useRouter();
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [visibleReservations, setVisibleReservations] = useState(5);
@@ -38,6 +39,7 @@ function Reservation() {
 
   return (
     <div
+      // 수빈님 레이아웃으로 변경할 예정
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -49,6 +51,8 @@ function Reservation() {
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.h2}>예약 내역</h2>
+
+          {/* 소은님 드롭다운으로 변경할 예정 */}
           <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
             <option disabled value="" hidden>
               예약 상태
@@ -65,6 +69,8 @@ function Reservation() {
         {filteredReservations.map((reservation) => (
           <Card key={reservation.id} data={reservation} />
         ))}
+
+        {/* 무한 스크롤을 위한 target */}
         <div ref={targetRef}></div>
       </div>
     </div>

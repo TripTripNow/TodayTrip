@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import formatDateString from '@/utils/formatDateString';
 import CancelModal from '@/components/Modal/CancelModal/CancelModal';
 import { useState } from 'react';
+import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 
 type Activity = {
   bannerImageUrl: string;
@@ -30,11 +31,16 @@ export interface CardProps {
 
 function Card({ data }: CardProps) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const handleCancelModalToggle = () => {
     setIsCancelModalOpen((prev) => !prev);
   };
 
+  const handleReviewModalToggle = () => {
+    setIsReviewModalOpen((prev) => !prev);
+  };
+
+  // 서버에서는 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed' 중 하나로 오기 때문에 이를 알맞는 한글 상태 값으로 바꿔주는 함수
   const convertStatusToDisplayText = (status: Status) => {
     switch (status) {
       case 'pending':
@@ -79,11 +85,13 @@ function Card({ data }: CardProps) {
           {isCancelModalOpen && (
             <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
           )}
+          {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
           {data.status === 'completed' && (
-            <button disabled={data.reviewSubmitted} className={styles.button}>
+            <button onClick={handleReviewModalToggle} disabled={data.reviewSubmitted} className={styles.button}>
               후기 작성
             </button>
           )}
+          {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
         </div>
       </div>
     </div>
