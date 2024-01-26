@@ -1,3 +1,5 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .activitiesContainer {
   display: flex;
   justify-content: center;
@@ -16,6 +18,15 @@
   gap: 2.4rem;
   border: 0.1rem solid var(--black17);
   border-radius: 0.8rem;
+
+  @media tablet {
+    width: 25.1rem;
+    height: 43.2rem;
+  }
+
+  @media mobile {
+    display: none;
+  }
 }
 
 .activitiesContent {
@@ -28,6 +39,16 @@
   font-size: 3.2rem;
   font-weight: 700;
   margin-bottom: 2.4rem;
+
+  @media tablet {
+    width: 42.9rem;
+    height: 15.6re;
+  }
+
+  @media mobile {
+    width: 33rem;
+    height: 12.8rem;
+  }
 }
 
 .activitiesButton {
@@ -53,11 +74,22 @@
 }
 
 .activitiesItemWrapper {
-  width: 100%;
+  width: 80rem;
+  height: 20.4rem;
   border: 0.1rem solid var(--grayAD);
   border-radius: 0.8rem;
   display: flex;
   gap: 2.4rem;
+
+  @media tablet {
+    width: 42.9rem;
+    height: 15.6re;
+  }
+
+  @media mobile {
+    width: 33rem;
+    height: 12.8rem;
+  }
 }
 
 .activitiesItemImg {
