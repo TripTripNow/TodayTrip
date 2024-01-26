@@ -36,6 +36,11 @@
   width: 100%;
 }
 
+.input:disabled {
+  background-color: var(--grayCB);
+  opacity: 0.4;
+}
+
 .errorInput {
   border: 0.1rem solid var(--redFF4);
 }
@@ -49,6 +54,10 @@
   color: var(--grayA4);
   font-size: 1.6rem;
   line-height: 2.6rem;
+}
+
+.inputContainer .errorMessage {
+  margin-top: -0.8rem;
 }
 
 .errorMessage {

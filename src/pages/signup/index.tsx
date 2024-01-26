@@ -5,6 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import styles from '@/pages/signin/SignIn.module.css';
 import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
+import { passwordCheck } from '@/utils/passwordCheck';
 
 function SignUp() {
   const router = useRouter();
@@ -23,13 +24,8 @@ function SignUp() {
   const { handleSubmit, control, setError } = methods;
 
   const handleOnSubmit = (data: FieldValues) => {
-    if (data.passwordCheck !== data.password) {
-      setError('passwordCheck', {
-        type: 'validate',
-        message: '비밀번호가 일치하지 않습니다.',
-      });
-      return;
-    }
+    const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
+    if (!isValidPwCheck) return;
 
     //TODO api 연결 시 중복된 이메일 에러 처리, 회원가입 성공 및 실패 토스트 처리 추가
     console.log(data);
