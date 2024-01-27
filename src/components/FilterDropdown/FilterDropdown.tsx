@@ -11,20 +11,20 @@ interface FilterProps {
 function FilterDropDown({ type, lists }: FilterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const DropdownHandler = () => {
+  const handleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
 
   return (
     <div>
       <label className={clsx(styles.label, type === '가격' ? styles.labelPrice : styles.labelFilter)}>
-        <button onClick={DropdownHandler}>{type}</button>
+        <button onClick={handleDropdown}>{type}</button>
         <ArrowDownIcon />
       </label>
       {isOpen && (
         <div
           className={clsx(styles.lists, type === '가격' ? styles.listsPrice : styles.listsFilter)}
-          onClick={DropdownHandler}
+          onClick={handleDropdown}
         >
           {lists.map((item, idx) => (
             <button key={idx} className={styles.list}>
