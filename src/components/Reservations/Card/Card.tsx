@@ -73,7 +73,7 @@ function Card({ data }: CardProps) {
               예약 취소
             </button>
           )}
-          {/* api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
+          {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
           {isCancelModalOpen && (
             <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
           )}

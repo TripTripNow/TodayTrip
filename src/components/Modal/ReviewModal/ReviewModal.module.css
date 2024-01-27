@@ -70,8 +70,13 @@
   font-size: 2rem;
   font-weight: 700;
   line-height: 2.6rem;
-
+  width: 28rem;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   @media mobile {
+    width: 21rem;
     font-size: 1.6rem;
   }
 }

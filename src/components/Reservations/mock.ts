@@ -5,7 +5,7 @@ export const reservations: CardProps['data'][] = [
     id: 1,
     activity: {
       bannerImageUrl: '/images/nextjs.png',
-      title: '함께 배우면 즐거운 스트릿 댄스',
+      title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
       id: 101,
     },
     scheduleId: 201,
@@ -149,7 +149,7 @@ export const reservations: CardProps['data'][] = [
     id: 10,
     activity: {
       bannerImageUrl: '/images/flower2.png',
-      title: 'City Sightseeing',
+      title: 'City Sightseeing City Sightseeing City Sightseeing City Sightseeing City Sightseeing',
       id: 505,
     },
     scheduleId: 606,
