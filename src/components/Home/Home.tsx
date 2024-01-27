@@ -42,13 +42,6 @@ function Main() {
     const newSortByPrice = e.target.value;
     if (sortByPrice === newSortByPrice) return;
     setSortByPrice(newSortByPrice);
-
-    const sortedCards =
-      newSortByPrice === 'lowPriceOrder'
-        ? [...allCards].sort((a, b) => a.price - b.price)
-        : [...allCards].sort((a, b) => b.price - a.price);
-
-    setAllCards(sortedCards);
     setPage(1);
   };
 
