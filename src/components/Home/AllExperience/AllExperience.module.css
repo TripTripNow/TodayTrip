@@ -1,5 +1,41 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
+.categoryBtn {
+  position: relative;
+  display: flex;
+  min-width: 12.7rem;
+  padding: 1.6rem 2.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1.5rem;
+  border: 0.1rem solid var(--green0B);
+
+  text-align: center;
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 400;
+
+  @media tablet {
+    width: 12rem;
+  }
+
+  @media mobile {
+    width: 8rem;
+    padding: 1.2rem 2rem;
+  }
+}
+
+.selectedCategory {
+  background: var(--green0B);
+  color: var(--whiteFF);
+}
+
+.notSelectedCategory {
+  background: var(--whiteFF);
+  color: var(--green0B);
+}
+
 .titleWrapper {
   margin-top: 4rem;
   margin-bottom: 3.2rem;

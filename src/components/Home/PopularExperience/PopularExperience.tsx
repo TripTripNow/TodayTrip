@@ -1,15 +1,13 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import clsx from 'clsx';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
+import Card, { CardProps } from '@/components/Home/Card/Card';
 import card1 from '#/images/carousel1.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
-import Card, { CardProps } from '@/components/Home/Card/Card';
 import styles from './PopularExperience.module.css';
-import dragScroll from '@/utils/dragScroll';
-import inRange from '@/utils/inRange';
-
-import useCarouselSize from '@/hooks/common/useCarouselSize';
-import clsx from 'clsx';
 
 const MOCK_DATA: CardProps['item'][] = [
   {
@@ -71,29 +69,18 @@ const MOCK_DATA: CardProps['item'][] = [
 
 function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
-  const moveWidth = deviceType === 'pc' ? 40.8 : deviceType === 'tablet' ? 41.6 : 20.2;
-
-  const slideRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [transX, setTransX] = useState(0);
-
-  const { ref, width } = useCarouselSize();
+  const splideRef = useRef(null);
 
   /** 버튼을 통한 slide 함수 */
-  const handleSlide = (num: number) => {
+  const handleSlideByBtn = (num: number) => {
     const newIndex = slideIndex + num;
     if (newIndex < 0 || newIndex + 2 >= MOCK_DATA.length) return;
+
     setSlideIndex((prev) => prev + num);
-  };
-
-  useEffect(() => {
-    if (slideRef && slideRef.current) {
-      slideRef.current.style.transform = `translateX(-${slideIndex * moveWidth}rem)`;
+    if (splideRef.current) {
+      (splideRef.current as any).go(newIndex);
     }
-  }, [slideIndex]);
-  const translateX = deviceType === 'pc' ? (-currentIndex * width) / 3 + transX : (-currentIndex * width) / 2 + transX;
-
-  console.log('WIDTH', width);
+  };
 
   return (
     <div className={styles.container}>
@@ -102,46 +89,54 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
         {deviceType === 'pc' && (
           <div className={styles.arrowWrapper}>
             {slideIndex === 0 ? (
-              <LeftArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlide(-1)} />
+              <LeftArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlideByBtn(-1)} />
             ) : (
-              <LeftArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlide(-1)} />
+              <LeftArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlideByBtn(-1)} />
             )}
             {slideIndex + 3 === MOCK_DATA.length ? (
-              <RightArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlide(1)} />
+              <RightArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlideByBtn(1)} />
             ) : (
-              <RightArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlide(1)} />
+              <RightArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlideByBtn(1)} />
             )}
           </div>
         )}
       </div>
-      <div ref={ref} className={styles.cardContainer}>
-        <div
-          style={{
-            transform: `translateX(${translateX}px)`,
-            transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
-          }}
-          className={styles.cardWrapper}
-          ref={slideRef}
-          {...dragScroll({
-            onDragChange: (deltaX) => {
-              setTransX(inRange(deltaX, -width, width));
+
+      <Splide
+        ref={splideRef}
+        onMoved={(object: any, newIndex: number) => {
+          setSlideIndex(newIndex);
+        }}
+        options={{
+          gap: '2.4rem',
+          fixedWidth: '38.4rem',
+          pagination: false,
+          perPage: 3,
+          perMove: 1,
+          snap: true,
+          breakpoints: {
+            1200: {
+              perPage: 2,
+              gap: '3.2rem',
+              fixedWidth: '38.4rem',
             },
-            onDragEnd: (deltaX) => {
-              const cardWidth = moveWidth;
-              const maxIndex = MOCK_DATA.length / 2 - 1;
-              if (deltaX <= -cardWidth) setCurrentIndex(inRange(currentIndex + 1, 0, maxIndex));
-              if (deltaX >= cardWidth) setCurrentIndex(inRange(currentIndex - 1, 0, maxIndex));
-              setTransX(0);
+            767: {
+              perPage: 2,
+              gap: '1.6rem',
+              fixedWidth: '18.6rem',
             },
-          })}
-        >
-          {MOCK_DATA.map((card) => (
-            <Fragment key={card.id}>
-              <Card item={card} />
-            </Fragment>
-          ))}
-        </div>
-      </div>
+          },
+          clones: undefined,
+          arrows: false,
+          lazyLoad: 'nearby',
+        }}
+      >
+        {MOCK_DATA.map((card) => (
+          <SplideSlide tag="div" key={card.id}>
+            <Card item={card} />
+          </SplideSlide>
+        ))}
+      </Splide>
     </div>
   );
 }

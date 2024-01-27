@@ -2,6 +2,7 @@
 
 .container {
   margin-top: 15.8rem;
+  margin-bottom: 6rem;
   /* width: 120rem; */
   width: 100%;
   overflow: hidden;
@@ -12,6 +13,7 @@
 
   @media mobile {
     margin-top: 9.3rem;
+    margin-bottom: 4rem;
   }
 }
 
@@ -23,7 +25,7 @@
 }
 
 .header > h1 {
-  color: var(--black-black_1B1B1B, #1b1b1b);
+  color: var(--black1B);
   font-size: 3.6rem;
   font-style: normal;
   font-weight: 700;

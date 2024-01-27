@@ -8,11 +8,11 @@ import Carousel from '@/components/Home/Carousel/Carousel';
 import card1 from '#/images/carousel1.png';
 import card2 from '#/images/carousel2.png';
 import card3 from '#/images/carousel3.png';
-import NoResult from '#/icons/icon-no-result.svg';
 import styles from './Home.module.css';
 import { CardProps } from '@/components/Home/Card/Card';
 import { localStorageGetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
+import NoResult from '@/components/Home/NoResult/NoResult';
 
 /** MOCK_DATA입니다! */
 const MOCK_DATA: CardProps['item'][] = [
@@ -246,7 +246,6 @@ function Main() {
     handleRecentText();
   }, [sortByPrice, page]);
 
-  console.log(allCards.length);
   return (
     <main className={styles.main}>
       <Carousel />
@@ -270,12 +269,7 @@ function Main() {
             page={page}
           />
         ) : (
-          <div>
-            <div className={styles.emptyImgWrapper}>
-              <NoResult />
-              <p>검색 결과가 없습니다.</p>
-            </div>
-          </div>
+          <NoResult />
         )}
       </div>
     </main>
