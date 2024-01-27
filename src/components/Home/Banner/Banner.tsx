@@ -10,7 +10,8 @@ import RightArrow from '#/icons/icon-right-arrow.svg';
 
 import styles from './Banner.module.css';
 
-const MOCK_DATA = [
+/** 배너에 관련된 정보입니다. */
+const BANNER = [
   {
     id: 1,
     src: carousel1,
@@ -44,8 +45,8 @@ function Carousel() {
     const newIndex = slideIndex + num;
 
     if (newIndex < 0) {
-      setSlideIndex(MOCK_DATA.length - 1);
-    } else if (newIndex >= MOCK_DATA.length) {
+      setSlideIndex(BANNER.length - 1);
+    } else if (newIndex >= BANNER.length) {
       setSlideIndex(0);
     } else {
       setSlideIndex((prev) => prev + num);
@@ -76,7 +77,7 @@ function Carousel() {
       onMouseLeave={() => setMouseOnSlider(false)}
     >
       <div className={styles.slider} ref={slideRef}>
-        {MOCK_DATA.map((data) => (
+        {BANNER.map((data) => (
           <div key={data.id} className={styles.bannerContainer}>
             <div className={styles.background}></div>
             <Image src={data.src} alt={String(data.id)} fill />
