@@ -1,0 +1,184 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
+.activitiesContainer {
+  display: flex;
+  justify-content: center;
+  gap: 2.4rem;
+}
+
+.activitiesContentHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 2.4rem;
+  @media mobile {
+    margin-bottom: 1.6rem;
+  }
+}
+
+.activitiesButton {
+  display: flex;
+  height: 4.8rem;
+  padding: 0.8rem 1.6rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: stretch;
+  border-radius: 0.4rem;
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+}
+
+.activitiesItemContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.activitiesItemWrapper {
+  height: auto;
+  border-radius: 2.5rem;
+  background: var(--whiteFF);
+  box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
+  display: flex;
+  gap: 2.4rem;
+  width: 80rem;
+  height: 20.4rem;
+  @media tablet {
+    width: 42.9rem;
+    height: 15.6rem;
+    gap: 1.2rem;
+  }
+  @media mobile {
+    width: 34.4rem;
+    height: 12.8rem;
+    gap: 0.8rem;
+  }
+}
+
+.activitiesImg {
+  object-fit: cover;
+  border-radius: 2.4rem 0rem 0rem 2.4rem;
+  width: 20.4rem;
+  height: 20.4rem;
+  @media tablet {
+    width: 15.6rem;
+    height: 15.6rem;
+  }
+  @media mobile {
+    width: 12.8rem;
+    height: 12.8rem;
+  }
+}
+
+.activitiesItemContent {
+  padding: 2.4rem 0 2.4rem 0;
+  width: 54.8rem;
+  @media tablet {
+    width: 24.5rem;
+    padding: 1.2rem 0 1.3rem 0;
+  }
+  @media mobile {
+    width: 19.4rem;
+    padding: 1.2rem 0 1.2rem 0;
+  }
+}
+
+.activitiesItemContentHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  @media mobile {
+    margin-bottom: 0;
+  }
+}
+
+.activitiesItemContentTitle {
+  color: var(--black17);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+  margin-bottom: 7.2rem;
+  @media tablet {
+    margin-bottom: 4rem;
+    font-size: 1.8rem;
+  }
+  @media mobile {
+    font-size: 1.4rem;
+    margin-bottom: 2.9rem;
+  }
+}
+
+.activitiesItemContentFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--gray4B);
+  font-size: 2.4rem;
+  font-weight: 500;
+  position: relative;
+  @media tablet {
+    font-size: 2rem;
+  }
+  @media mobile {
+    font-size: 1.6rem;
+  }
+}
+
+.activitiesItemContentFooterCount {
+  font-size: 1.6rem;
+  @media mobile {
+    display: none;
+  }
+}
+
+.activitiesKebabWrapper {
+  width: 16rem;
+  height: 12rem;
+  border: 0.1rem solid var(--grayDD);
+  border-radius: 0.6rem;
+  background-color: var(--whiteFF);
+  position: absolute;
+  top: 4.5rem;
+  right: 0;
+  z-index: 1;
+  @media mobile {
+    top: 3.5rem;
+    width: 12rem;
+    height: 9.5rem;
+  }
+}
+
+.styleHr {
+  background: var(--grayDD);
+  height: 0.1rem;
+  border: 0;
+}
+
+.kebabImgWrapper {
+  width: 4rem;
+  height: 4rem;
+  @media mobile {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+}
+
+.activitiesKebabContent {
+  width: 100%;
+  padding: 1.8rem;
+  color: var(--gray4B);
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 2.2rem; /* 122.222% */
+  @media mobile {
+    font-size: 1.4rem;
+    padding: 1.2rem;
+  }
+}
