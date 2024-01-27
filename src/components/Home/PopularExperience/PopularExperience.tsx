@@ -3,69 +3,11 @@ import clsx from 'clsx';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
-import Card, { CardProps } from '@/components/Home/Card/Card';
-import card1 from '#/images/carousel1.png';
+import Card from '@/components/Home/Card/Card';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
 import styles from './PopularExperience.module.css';
-
-const MOCK_DATA: CardProps['item'][] = [
-  {
-    id: 1,
-    userId: 0,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: 'ㅁㄴㅇ',
-    category: '투어',
-    price: 1,
-    bannerImageUrl: card1.src,
-    rating: 5,
-    reviewCount: 793,
-  },
-  {
-    id: 2,
-    userId: 0,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: 'ㅁㄴㅇ',
-    category: '투어',
-    price: 2,
-    bannerImageUrl: card1.src,
-    rating: 5,
-    reviewCount: 793,
-  },
-  {
-    id: 3,
-    userId: 0,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: 'ㅁㄴㅇ',
-    category: '투어',
-    price: 3,
-    bannerImageUrl: card1.src,
-    rating: 5,
-    reviewCount: 793,
-  },
-  {
-    id: 4,
-    userId: 0,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: 'ㅁㄴㅇ',
-    category: '투어',
-    price: 4,
-    bannerImageUrl: card1.src,
-    rating: 5,
-    reviewCount: 793,
-  },
-  {
-    id: 5,
-    userId: 0,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: 'ㅁㄴㅇ',
-    category: '투어',
-    price: 5,
-    bannerImageUrl: card1.src,
-    rating: 5,
-    reviewCount: 793,
-  },
-];
+import { MOCK_DATA } from '@/constants/mock';
 
 function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
