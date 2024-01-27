@@ -16,7 +16,7 @@
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
-  color: var(--grayA4);
+  color: var(--black1B);
   font-size: 1.6rem;
   line-height: 2.6rem;
   text-align: start;
@@ -38,5 +38,8 @@
   border-radius: 0.6rem;
   background: var(--whiteFF);
   box-shadow: 0 1rem 3rem 0.3rem rgba(5, 16, 55, 0.15);
-  transition: all 0.5s;
+}
+
+.placeholder {
+  color: var(--grayA4);
 }

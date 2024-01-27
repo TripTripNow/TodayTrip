@@ -1,9 +1,9 @@
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
-import CheckIcon from '#/icons/icon-checkmark.svg';
+import DropdownMenu from '@/components/DropDown/DropdownMenu';
+import clsx from 'clsx';
 import { useState } from 'react';
 import styles from './Dropdown.module.css';
-import DropdownMenu from '@/components/DropDown/DropdownMenu';
 
 const lists = ['문화 예술', '식음료', '스포츠', '투어', '관광'];
 
@@ -17,7 +17,11 @@ function Dropdown() {
 
   return (
     <div className={styles.container}>
-      <button value={value} className={styles.wrapper} onClick={handleClick}>
+      <button
+        value={value}
+        className={clsx(styles.wrapper, value === '카테고리' && styles.placeholder)}
+        onClick={handleClick}
+      >
         {value}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </button>
