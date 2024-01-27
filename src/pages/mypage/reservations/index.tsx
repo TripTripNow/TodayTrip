@@ -6,16 +6,14 @@ import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 // import { useRouter } from 'next/router';
-
+const statusOptions = [
+  { id: 1, value: 'pending', name: '예약 완료' },
+  { id: 2, value: 'canceled', name: '예약 취소' },
+  { id: 3, value: 'confirmed', name: '예약 승인' },
+  { id: 4, value: 'declined', name: '예약 거절' },
+  { id: 6, value: 'completed', name: '체험 완료' },
+];
 function Reservation() {
-  const statusOptions = [
-    { id: 1, value: 'pending', name: '예약 완료' },
-    { id: 2, value: 'canceled', name: '예약 취소' },
-    { id: 3, value: 'confirmed', name: '예약 승인' },
-    { id: 4, value: 'declined', name: '예약 거절' },
-    { id: 6, value: 'completed', name: '체험 완료' },
-  ];
-
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();

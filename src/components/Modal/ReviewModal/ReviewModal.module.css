@@ -139,9 +139,8 @@
   }
 }
 
-/* textarea 클릭 했을 때 무슨 색 되게 할까요? or 하지말기? */
 .textarea:focus-within {
-  border: 1px solid var(--nomad_black);
+  border: 0.1rem solid var(--nomad_black);
 }
 
 .textarea::placeholder {

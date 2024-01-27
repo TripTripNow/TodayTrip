@@ -40,20 +40,12 @@ function Card({ data }: CardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
-  // 서버에서는 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed' 중 하나로 오기 때문에 이를 알맞는 한글 상태 값으로 바꿔주는 함수
-  const convertStatusToDisplayText = (status: Status) => {
-    switch (status) {
-      case 'pending':
-        return '예약 완료';
-      case 'confirmed':
-        return '예약 승인';
-      case 'declined':
-        return '예약 거절';
-      case 'canceled':
-        return '예약 취소';
-      case 'completed':
-        return '체험 완료';
-    }
+  const STATUS = {
+    pending: '예약 완료',
+    confirmed: '예약 승인',
+    declined: '예약 거절',
+    canceled: '예약 취소',
+    completed: '체험 완료',
   };
 
   return (
@@ -63,7 +55,7 @@ function Card({ data }: CardProps) {
       </div>
 
       <div className={styles.detailContainer}>
-        <span className={clsx(styles.status, styles[data.status])}>{convertStatusToDisplayText(data.status)}</span>
+        <p className={clsx(styles.status, styles[data.status])}>{STATUS[data.status]}</p>
         <h2 className={styles.h2}>{data.activity.title}</h2>
         <div className={styles.dateDetail}>
           <span>{formatDateString(data.date)}</span>
@@ -75,7 +67,7 @@ function Card({ data }: CardProps) {
           <span>{data.headCount}명</span>
         </div>
         <div className={styles.bottom}>
-          <span className={styles.price}>₩{data.totalPrice.toLocaleString('ko-KR')}</span>
+          <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
           {data.status === 'pending' && (
             <button onClick={handleCancelModalToggle} className={styles.button}>
               예약 취소

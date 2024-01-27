@@ -52,7 +52,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
               <span>{data.headCount}명</span>
             </div>
             <div className={styles.separator}></div>
-            <span className={styles.price}>₩{data.totalPrice.toLocaleString('ko-KR')}</span>
+            <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
           </div>
         </div>
         {/* 별점, 리뷰 작성 폼 */}
