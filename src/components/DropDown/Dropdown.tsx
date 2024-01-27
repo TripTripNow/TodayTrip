@@ -3,14 +3,13 @@ import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
 import { useState } from 'react';
 import styles from './Dropdown.module.css';
+import DropdownMenu from '@/components/DropDown/DropdownMenu';
 
-interface DropdownProps {
-  lists: string[];
-}
+const lists = ['문화 예술', '식음료', '스포츠', '투어', '관광'];
 
-function Dropdown({ lists }: DropdownProps) {
+function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('카테고리');
+  const [value, setValue] = useState('카테고리');
 
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -18,21 +17,17 @@ function Dropdown({ lists }: DropdownProps) {
 
   return (
     <div className={styles.container}>
-      <label className={styles.label}>
-        <button className={styles.button} onClick={handleClick}>
-          {selectedValue}
-        </button>
+      <button value={value} className={styles.wrapper} onClick={handleClick}>
+        {value}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
-      </label>
-      <ul className={isOpen ? styles.lists : styles.none} onClick={handleClick}>
-        {isOpen &&
-          lists.map((item, index) => (
-            <li className={styles.list} key={index} onClick={() => setSelectedValue(item)}>
-              <CheckIcon style={{ marginRight: 8 }} />
-              {item}
-            </li>
+      </button>
+      {isOpen && (
+        <div className={styles.menu}>
+          {lists.map((value, index) => (
+            <DropdownMenu key={index} value={value} isOpen={isOpen} setIsOpen={setIsOpen} setValue={setValue} />
           ))}
-      </ul>
+        </div>
+      )}
     </div>
   );
 }
