@@ -53,12 +53,11 @@
 }
 
 .textContainer {
-  position: absolute;
-  left: 0;
-  top: 0;
+  width: 120rem;
+  margin: 15.9rem auto 0;
+  position: relative;
   z-index: 2;
   margin-top: 15.9rem;
-  margin-left: max(calc(100% - 130rem), 3.2rem);
 
   @media tablet {
     margin-left: 3.2rem;

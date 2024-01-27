@@ -8,7 +8,7 @@ import carousel3 from '#/images/carousel3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
 
-import styles from './Carousel.module.css';
+import styles from './Banner.module.css';
 
 const MOCK_DATA = [
   {

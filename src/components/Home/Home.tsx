@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import PopularExperience from '@/components/Home/PopularExperience/PopularExperience';
 import Searchbar from './Searchbar/Searchbar';
 import AllExperience from '@/components/Home/AllExperience/AllExperience';
-import Carousel from '@/components/Home/Carousel/Carousel';
+import Banner from '@/components/Home/Banner/Banner';
 import { CardProps } from '@/components/Home/Card/Card';
 import { localStorageGetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
@@ -87,7 +87,7 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      <Carousel />
+      <Banner />
       <div className={styles.container}>
         <Searchbar
           handleSearchSubmit={handleSearchSubmit}
