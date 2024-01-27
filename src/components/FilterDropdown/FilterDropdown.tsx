@@ -1,15 +1,26 @@
-import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
 import clsx from 'clsx';
 import { useState } from 'react';
+import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
+import { FilterOption, PriceSortOption } from '@/constants/dropdown';
 import styles from './FilterDropdown.module.css';
 
-interface FilterProps {
-  type: '가격' | '필터';
-  lists: string[];
+interface PriceFilter {
+  type: '가격';
+  lists: PriceSortOption[];
 }
 
-function FilterDropDown({ type, lists }: FilterProps) {
+interface ReserveFilter {
+  type: '필터';
+  lists: FilterOption[];
+}
+
+type FilterDropDownProps = PriceFilter | ReserveFilter;
+type AllPriceOption = PriceSortOption | PriceFilter['type'];
+type AllReserveOption = FilterOption | ReserveFilter['type'];
+
+function FilterDropDown({ type, lists }: FilterDropDownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState<AllPriceOption | AllReserveOption>(type);
 
   const handleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -18,8 +29,10 @@ function FilterDropDown({ type, lists }: FilterProps) {
   return (
     <div>
       <label className={clsx(styles.label, type === '가격' ? styles.labelPrice : styles.labelFilter)}>
-        <button onClick={handleDropdown}>{type}</button>
-        <ArrowDownIcon />
+        <button value={value} onClick={handleDropdown}>
+          {value}
+        </button>
+        {value === type && <ArrowDownIcon />}
       </label>
       {isOpen && (
         <div
@@ -27,7 +40,7 @@ function FilterDropDown({ type, lists }: FilterProps) {
           onClick={handleDropdown}
         >
           {lists.map((item, idx) => (
-            <button key={idx} className={styles.list}>
+            <button key={idx} className={styles.list} onClick={() => setValue(item)}>
               {item}
             </button>
           ))}
