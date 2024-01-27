@@ -11,6 +11,8 @@ function Activities() {
 
   const filteredReservations = myActivitiesMock.activities.slice(0, visibleMock);
 
+  const handleEnrollButton = () => {};
+
   useEffect(() => {
     if (isVisible) {
       setVisibleMock((prev) => prev + 3);
@@ -22,7 +24,9 @@ function Activities() {
         <div className={styles.activitiesContent}>
           <div className={styles.activitiesContentHeader}>
             <p>내 체험 관리</p>
-            <button className={styles.activitiesButton}>체험 등록하기</button>
+            <button className={styles.activitiesButton} onClick={handleEnrollButton}>
+              체험 등록하기
+            </button>
           </div>
           <div className={styles.activitiesItemContainer}>
             {filteredReservations.map((item) => (
