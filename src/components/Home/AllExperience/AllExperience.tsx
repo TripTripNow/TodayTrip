@@ -41,45 +41,47 @@ function AllExperience({
   const hasData = !selectedCategory || (selectedCategory && sortedCards.length !== 0);
   return (
     <>
-      <Splide
-        options={{
-          padding: { left: 35, right: 35 },
-          gap: '1rem',
-          mediaQuery: 'min',
-          fixedWidth: '12.7rem',
-          pagination: false,
-          perPage: 3,
-          perMove: 1,
-          snap: true,
-          breakpoints: {
-            1000: {
-              arrows: false,
-              padding: { left: 0, right: 0 },
+      {!searchResult && (
+        <Splide
+          options={{
+            padding: { left: 35, right: 35 },
+            gap: '1rem',
+            mediaQuery: 'min',
+            fixedWidth: '12.7rem',
+            pagination: false,
+            perPage: 3,
+            perMove: 1,
+            snap: true,
+            breakpoints: {
+              1000: {
+                arrows: false,
+                padding: { left: 0, right: 0 },
+              },
+              766: {
+                perPage: 2,
+              },
             },
-            766: {
-              perPage: 2,
-            },
-          },
-          clones: undefined,
-          arrows: true,
-        }}
-      >
-        {CATEGORY.map((name) => (
-          <SplideSlide key={name}>
-            <button
-              key={name}
-              className={
-                name === selectedCategory
-                  ? clsx(styles.categoryBtn, styles.selectedCategory)
-                  : clsx(styles.categoryBtn, styles.notSelectedCategory)
-              }
-              onClick={() => handleClickCategory(name)}
-            >
-              {name}
-            </button>
-          </SplideSlide>
-        ))}
-      </Splide>
+            clones: undefined,
+            arrows: true,
+          }}
+        >
+          {CATEGORY.map((name) => (
+            <SplideSlide key={name}>
+              <button
+                key={name}
+                className={
+                  name === selectedCategory
+                    ? clsx(styles.categoryBtn, styles.selectedCategory)
+                    : clsx(styles.categoryBtn, styles.notSelectedCategory)
+                }
+                onClick={() => handleClickCategory(name)}
+              >
+                {name}
+              </button>
+            </SplideSlide>
+          ))}
+        </Splide>
+      )}
 
       <div className={styles.titleWrapper}>
         {!searchResult ? (
