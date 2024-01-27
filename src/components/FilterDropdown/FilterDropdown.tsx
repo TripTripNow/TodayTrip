@@ -1,5 +1,5 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import { FilterOption, PriceSortOption } from '@/constants/dropdown';
+import { ReserveSortOption, PriceSortOption } from '@/constants/dropdown';
 import { useState } from 'react';
 import styles from './FilterDropdown.module.css';
 
@@ -10,12 +10,12 @@ interface PriceFilter {
 
 interface ReserveFilter {
   type: '예약 상태';
-  lists: FilterOption[];
+  lists: ReserveSortOption[];
 }
 
 type FilterDropDownProps = PriceFilter | ReserveFilter;
 type AllPriceOption = PriceSortOption | PriceFilter['type'];
-type AllReserveOption = FilterOption | ReserveFilter['type'];
+type AllReserveOption = ReserveSortOption | ReserveFilter['type'];
 
 function FilterDropDown({ type, lists }: FilterDropDownProps) {
   const [isOpen, setIsOpen] = useState(false);
