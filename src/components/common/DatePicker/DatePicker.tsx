@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './DatePicker.module.css';
@@ -12,22 +12,22 @@ interface Props {
 const CustomInput = ({ value, onClick }: Props) => (
   <label className={styles.container}>
     <button className={styles.input} onClick={onClick}>
-      {String(value)}
+      {value === '' ? <span>{value || 'YY/MM/DD'}</span> : <>{value || 'YY/MM/DD'}</>}
     </button>
     <CalendarIcon className={styles.icon} />
   </label>
 );
 
 function DatePickerInput() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
     <div className={styles['react-datepicker-custom']}>
       <DatePicker
         selected={selectedDate}
-        onChange={(date: Date) => setSelectedDate(date)}
+        onChange={(date: Date | null) => setSelectedDate(date)}
         dateFormat={'yy/MM/dd'}
-        customInput={<CustomInput value={String(selectedDate)} />}
+        customInput={<CustomInput value={selectedDate ? String(selectedDate) : ''} />}
       />
     </div>
   );
