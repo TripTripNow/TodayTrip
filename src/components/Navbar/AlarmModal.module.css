@@ -120,3 +120,11 @@
   font-size: 1.2rem;
   line-height: 1.6rem;
 }
+
+.noAlarmWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.6rem 0;
+  font-size: 1.6rem;
+}

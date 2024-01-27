@@ -37,22 +37,28 @@ function AlarmModal({ setIsModalOpen, alarmData }: AlarmModalProps) {
             <CloseIcon />
           </button>
         </div>
-        <div className={styles.alarmModalContentContainer}>
-          {alarmData.notifications.map((item, index) => (
-            <div key={index}>
-              <div className={styles.alarmModalContentWrapper}>
-                <div className={styles.alarmModalContentHeader}>
-                  <div>{item.status === 'approve' ? <BlueEllipse /> : <RedEllipse />}</div>
-                  <button onClick={handleAlarmDelete}>
-                    <LightCloseIcon />
-                  </button>
+        {alarmData.totalCount ? (
+          <div className={styles.alarmModalContentContainer}>
+            {alarmData.notifications.map((item, index) => (
+              <div key={index}>
+                <div className={styles.alarmModalContentWrapper}>
+                  <div className={styles.alarmModalContentHeader}>
+                    <div>{item.status === 'approve' ? <BlueEllipse /> : <RedEllipse />}</div>
+                    <button onClick={handleAlarmDelete}>
+                      <LightCloseIcon />
+                    </button>
+                  </div>
+                  <p className={styles.alarmModalContent}>{item.content}</p>
+                  <p className={styles.alarmModalContentTime}>{TIME} 전</p>
                 </div>
-                <p className={styles.alarmModalContent}>{item.content}</p>
-                <p className={styles.alarmModalContentTime}>{TIME} 전</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.noAlarmWrapper}>
+            <div>알람이 없습니다.</div>
+          </div>
+        )}
       </div>
     </ModalLayout>
   );

@@ -73,6 +73,7 @@
     width: 100%;
     height: auto;
     border-radius: 0 0 0.8rem 0.8rem;
+    border-top: none;
     box-shadow: 0 0.5rem 0.5rem 0 var(--grayDD);
     animation: slidein 0.3s ease-out;
   }

@@ -8,7 +8,6 @@ import { useState } from 'react';
 import AlarmModal from '@/components/Navbar/AlarmModal';
 import ProfileDropDown from '@/components/Navbar/ProfileDropDown';
 
-const ALARM_COUNT = 6;
 const USER_DATA = { name: '종민박' };
 const alarmData = {
   notifications: [
@@ -41,16 +40,19 @@ function Navbar() {
 
   const handleDropDownClick = () => {
     setIsOpen((prev) => !prev);
-    setTimeout(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        setIsDropDownOpen((prev) => !prev);
+      }, 250);
+    } else {
       setIsDropDownOpen((prev) => !prev);
-    }, 250);
+    }
   };
 
   const handleBlurDropDown = () => {
     if (isOpen) {
       setIsOpen(false);
     }
-
     setTimeout(() => {
       setIsDropDownOpen(false);
     }, 250);
@@ -75,7 +77,8 @@ function Navbar() {
         {USER_DATA ? (
           <>
             <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              <AlarmIcon className={styles.alarmIcon} /> {ALARM_COUNT && <RedEllipse className={styles.isEllipse} />}
+              <AlarmIcon className={styles.alarmIcon} />
+              {alarmData.totalCount ? <RedEllipse className={styles.isEllipse} /> : ''}
             </button>
             {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
             <div className={styles.border}></div>
