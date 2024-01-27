@@ -12,7 +12,15 @@ type Activity = {
   id: number;
 };
 
-type Status = 'pending' | 'confirmed' | 'declined' | 'canceled' | 'completed';
+const STATUS = {
+  pending: '예약 완료',
+  confirmed: '예약 승인',
+  declined: '예약 거절',
+  canceled: '예약 취소',
+  completed: '체험 완료',
+};
+
+type Status = keyof typeof STATUS;
 
 export interface CardProps {
   data: {
@@ -40,14 +48,6 @@ function Card({ data }: CardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
-  const STATUS = {
-    pending: '예약 완료',
-    confirmed: '예약 승인',
-    declined: '예약 거절',
-    canceled: '예약 취소',
-    completed: '체험 완료',
-  };
-
   return (
     <div className={styles.cardWrapper}>
       <div className={styles.imageWrapper}>
@@ -57,15 +57,15 @@ function Card({ data }: CardProps) {
       <div className={styles.detailContainer}>
         <p className={clsx(styles.status, styles[data.status])}>{STATUS[data.status]}</p>
         <h2 className={styles.h2}>{data.activity.title}</h2>
-        <div className={styles.dateDetail}>
+        <p className={styles.dateDetail}>
           <span>{formatDateString(data.date)}</span>
-          <div>·</div>
+          <span>·</span>
           <span>
             {data.startTime} - {data.endTime}
           </span>
-          <div>·</div>
+          <span>·</span>
           <span>{data.headCount}명</span>
-        </div>
+        </p>
         <div className={styles.bottom}>
           <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
           {data.status === 'pending' && (

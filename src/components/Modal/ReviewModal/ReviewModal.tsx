@@ -20,7 +20,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
     setTextInputValue(e.target.value);
   };
 
-  //To-DO : api 연결
+  //TODO : api 연결
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
@@ -42,15 +42,15 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
           </div>
           <div className={styles.detailContainer}>
             <h2 className={styles.title}>{data.activity.title}</h2>
-            <div className={styles.dateDetail}>
+            <p className={styles.dateDetail}>
               <span>{formatDateString(data.date)}</span>
-              <div>·</div>
+              <span>·</span>
               <span>
                 {data.startTime} - {data.endTime}
               </span>
-              <div>·</div>
+              <span>·</span>
               <span>{data.headCount}명</span>
-            </div>
+            </p>
             <div className={styles.separator}></div>
             <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
           </div>
