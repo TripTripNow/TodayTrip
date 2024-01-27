@@ -1,7 +1,6 @@
-import clsx from 'clsx';
-import { useState } from 'react';
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
 import { FilterOption, PriceSortOption } from '@/constants/dropdown';
+import { useState } from 'react';
 import styles from './FilterDropdown.module.css';
 
 interface PriceFilter {
@@ -10,7 +9,7 @@ interface PriceFilter {
 }
 
 interface ReserveFilter {
-  type: '필터';
+  type: '예약 상태';
   lists: FilterOption[];
 }
 
@@ -27,18 +26,15 @@ function FilterDropDown({ type, lists }: FilterDropDownProps) {
   };
 
   return (
-    <div>
-      <label className={clsx(styles.label, type === '가격' ? styles.labelPrice : styles.labelFilter)}>
+    <div className={styles.container}>
+      <label className={styles.wrapper}>
         <button value={value} onClick={handleDropdown}>
           {value}
         </button>
-        {value === type && <ArrowDownIcon />}
+        <ArrowDownIcon />
       </label>
       {isOpen && (
-        <div
-          className={clsx(styles.lists, type === '가격' ? styles.listsPrice : styles.listsFilter)}
-          onClick={handleDropdown}
-        >
+        <div className={styles.menu} onClick={handleDropdown}>
           {lists.map((item, idx) => (
             <button key={idx} className={styles.list} onClick={() => setValue(item)}>
               {item}

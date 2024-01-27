@@ -1,31 +1,50 @@
-.label {
-  display: flex;
+@values tablet, mobile from '@/styles/breakpoints.css';
+
+.container {
+  width: 16rem;
   height: 5.3rem;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-  padding: 1.6rem 2rem;
   border-radius: 1.5rem;
   border: 0.1rem solid var(--green0B);
   background: var(--whiteFF);
-  font-size: 1.8rem;
+  position: relative;
+
+  /* @media tablet {
+    width: 12rem;
+    height: 5.3rem;
+  }
+
+  @media mobile {
+    width: 9rem;
+    height: 4.1rem;
+  } */
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem 1.4rem;
+  flex-shrink: 0;
   color: var(--green0B);
+  font-size: 1.8rem;
   font-weight: 500;
   cursor: pointer;
   margin-bottom: 0.8rem;
+
+  /* @media tablet {
+    font-size: 1.6rem;
+  } */
+
+
 }
 
-.labelPrice {
-  width: 12.7rem;
-}
-
-.labelFilter {
-  width: 16rem;
-} 
-
-.lists {
-  display: flex;
+.menu {
+  position: absolute;
+  width: 100%;
   height: auto;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -33,14 +52,6 @@
   border: 0.1rem solid var(--grayDD);
   background: var(--whiteFF);
   overflow: hidden;
-}
-
-.listsPrice {
-  width: 12.7rem;
-}
-
-.listsFilter {
-  width: 16rem;
 }
 
 .list {
@@ -55,6 +66,8 @@
   text-align: center;
   cursor: pointer;
 }
+
+
 
 .list:last-child {
   border-bottom: none;
