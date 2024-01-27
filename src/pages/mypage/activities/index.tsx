@@ -4,18 +4,20 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
+import NoDataImg from '#/images/img-noData.png';
+import Image from 'next/image';
 
 function Activities() {
   const [visibleMock, setVisibleMock] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 
-  const filteredReservations = myActivitiesMock.activities.slice(0, visibleMock);
+  const filteredMyActivities = [myActivitiesMock.activities.slice(0, visibleMock)][0];
 
   const handleEnrollButton = () => {};
 
   useEffect(() => {
     if (isVisible) {
-      setVisibleMock((prev) => prev + 3);
+      setVisibleMock((prev) => prev + 6);
     }
   }, [isVisible]);
   return (
@@ -29,11 +31,20 @@ function Activities() {
             </button>
           </div>
           <div className={styles.activitiesItemContainer}>
-            {filteredReservations.map((item) => (
-              <div key={item.id}>
-                <ActivitiesCard item={item} />
+            {myActivitiesMock.totalCount ? (
+              filteredMyActivities.map((item) => (
+                <div key={item.id}>
+                  <ActivitiesCard item={item} />
+                </div>
+              ))
+            ) : (
+              <div className={styles.noDataImgContainer}>
+                <div className={styles.noDataImgWrapper}>
+                  <Image src={NoDataImg} alt="없는데이터" className={styles.noDataImg} />
+                </div>
+                <p className={styles.noDataImgContent}>아직 등록한 체험이 없어요</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

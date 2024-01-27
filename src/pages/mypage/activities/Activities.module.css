@@ -7,6 +7,13 @@
 }
 
 .activitiesContentHeader {
+  width: 80rem;
+  @media tablet {
+    width: 42.9rem;
+  }
+  @media mobile {
+    width: 34.4rem;
+  }
   display: flex;
   justify-content: space-between;
   font-size: 3.2rem;
@@ -181,4 +188,38 @@
     font-size: 1.4rem;
     padding: 1.2rem;
   }
+}
+
+.noDataImgContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  margin-top: 8rem;
+  @media tablet {
+    margin-top: 6.4rem;
+    gap: 1.2rem;
+  }
+}
+
+.noDataImgWrapper {
+  padding: 3.1rem 5.4rem;
+}
+
+.noDataImg {
+  width: 13rem;
+  height: 17.8rem;
+  @media tablet {
+    width: 10.9rem;
+    height: 14.9rem;
+  }
+}
+
+.noDataImgContent {
+  color: var(--gray79);
+  font-size: 2.4rem;
+  font-weight: 500;
 }
