@@ -48,19 +48,19 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   return (
     <div className={styles.activitiesItemWrapper}>
       <div className={styles.activitiesItemImgDiv}>
-        <Image className={styles.activitiesImg} src={DanceImg} alt="춤사진" priority />
+        <Image className={styles.activitiesImg} src={DanceImg} alt="체험이미지" priority />
       </div>
       <div className={styles.activitiesItemContent}>
         <div className={styles.activitiesItemContentHeader}>
           <StarIcon />
-          <p>
+          <p className={styles.activitiesReviewCount}>
             {item.rating} ({item.reviewCount})
           </p>
         </div>
         <p className={styles.activitiesItemContentTitle}>{item.title}</p>
         <div className={styles.activitiesItemContentFooter} onBlur={() => handleKebabButton(item.id, true)}>
           <p>
-            ￦{item.price} <span className={styles.activitiesItemContentFooterCount}>/인</span>
+            ￦{item.price.toLocaleString()} <span className={styles.activitiesItemContentFooterCount}>/인</span>
           </p>
           <button onClick={() => handleKebabButton(item.id, false)}>
             <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} />

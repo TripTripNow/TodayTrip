@@ -8,18 +8,16 @@
 
 .activitiesContentHeader {
   width: 80rem;
-  @media tablet {
-    width: 42.9rem;
-  }
-  @media mobile {
-    width: 34.4rem;
-  }
   display: flex;
   justify-content: space-between;
   font-size: 3.2rem;
   font-weight: 700;
   margin-bottom: 2.4rem;
+  @media tablet {
+    width: 42.9rem;
+  }
   @media mobile {
+    width: 34.4rem;
     margin-bottom: 1.6rem;
   }
 }
@@ -99,10 +97,17 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  color: var(--black1B);
+  font-size: 1.6rem;
   margin-bottom: 0.6rem;
   @media mobile {
     margin-bottom: 0;
+    font-size: 1.4rem;
   }
+}
+
+.activitiesReviewCount {
+  margin-top: 0.3rem;
 }
 
 .activitiesItemContentTitle {
@@ -146,7 +151,7 @@
 
 .activitiesKebabWrapper {
   width: 16rem;
-  height: 12rem;
+  height: 11.9rem;
   border: 0.1rem solid var(--grayDD);
   border-radius: 0.6rem;
   background-color: var(--whiteFF);
@@ -183,11 +188,15 @@
   text-align: center;
   font-size: 1.8rem;
   font-weight: 500;
-  line-height: 2.2rem; /* 122.222% */
+  line-height: 2.2rem;
   @media mobile {
     font-size: 1.4rem;
     padding: 1.2rem;
   }
+}
+
+.activitiesKebabContent:hover {
+  background-color: var(--greenCE);
 }
 
 .noDataImgContainer {
