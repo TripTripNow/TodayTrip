@@ -20,11 +20,12 @@ export interface ButtonProps {
   color: Color;
   type: ButtonType;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  isDisabled?: boolean;
 }
 
-function Button({ children, onClick, color, type }: ButtonProps) {
+function Button({ children, onClick, color, type, isDisabled = false }: ButtonProps) {
   return (
-    <button onClick={onClick} className={clsx(styles.button, styles[type], styles[color])}>
+    <button onClick={onClick} className={clsx(styles.button, styles[type], styles[color])} disabled={isDisabled}>
       {children}
     </button>
   );

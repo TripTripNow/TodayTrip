@@ -1,13 +1,13 @@
-import Dropdown from '@/components/DropDown/Dropdown';
-// import Button from '@/components/common/Button/Button';
+// import Dropdown from '@/components/DropDown/Dropdown';
+import Button from '@/components/common/Button/Button';
 // import DatePickerInput from '@/components/common/DatePicker/DatePicker';
 
 function Test() {
   return (
     <div style={{ margin: 10, display: 'flex', flexDirection: 'column', gap: 5 }}>
       {/* <DatePickerInput /> */}
-      <Dropdown />
-      {/* <Button color="green" type="default">
+      {/* <Dropdown /> */}
+      <Button color="green" type="default">
         저장하기
       </Button>
       <Button color="green" type="default">
@@ -17,6 +17,12 @@ function Test() {
         로그인 하기
       </Button>
       <Button color="green" type="auth">
+        회원가입 하기
+      </Button>
+      <Button color="green" type="auth" isDisabled={true}>
+        로그인 하기
+      </Button>
+      <Button color="green" type="auth" isDisabled={true}>
         회원가입 하기
       </Button>
       <Button color="green" type="search">
@@ -60,7 +66,7 @@ function Test() {
       </Button>
       <Button color="white" type="time">
         14:00~15:00
-      </Button> */}
+      </Button>
     </div>
   );
 }
