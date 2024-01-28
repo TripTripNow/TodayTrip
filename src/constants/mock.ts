@@ -1,7 +1,7 @@
 import { CardProps } from '@/components/Home/Card/Card';
-import card1 from '#/images/carousel1.png';
-import card2 from '#/images/carousel2.png';
-import card3 from '#/images/carousel3.png';
+import card1 from '#/images/Carousel1.png';
+import card2 from '#/images/Carousel2.png';
+import card3 from '#/images/Carousel3.png';
 
 export const MOCK_DATA: CardProps['item'][] = [
   {

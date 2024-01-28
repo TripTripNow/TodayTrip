@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 
-import carousel1 from '#/images/carousel1.png';
-import carousel2 from '#/images/carousel2.png';
-import carousel3 from '#/images/carousel3.png';
+import Carousel1 from '#/images/img-carousel1.png';
+import Carousel2 from '#/images/img-carousel2.png';
+import Carousel3 from '#/images/img-carousel3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
 
@@ -14,19 +14,19 @@ import styles from './Banner.module.css';
 const BANNER = [
   {
     id: 1,
-    src: carousel1,
+    src: Carousel1,
     title: '함께 배우면 즐거운 스트릿 댄스',
     description: '1월의 인기 체험 BEST 🔥',
   },
   {
     id: 2,
-    src: carousel2,
+    src: Carousel2,
     title: '함께 배우면 즐거운 스트릿 댄스',
     description: '1월의 인기 체험 BEST 🔥',
   },
   {
     id: 3,
-    src: carousel3,
+    src: Carousel3,
     title: '함께 배우면 즐거운 스트릿 댄스',
     description: '1월의 인기 체험 BEST 🔥',
   },
