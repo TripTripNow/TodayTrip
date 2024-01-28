@@ -4,6 +4,7 @@ import KebabIcon from '#/icons/icon-kebab.svg';
 import DanceImg from '#/images/img-dance.jpg';
 import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
+import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 
 interface ActivitiesCardProps {
   item: {
@@ -24,14 +25,14 @@ interface ActivitiesCardProps {
 function ActivitiesCard({ item }: ActivitiesCardProps) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
 
-  const handleKebabButton = () => {
-    if (isKebabOpen) {
-      setTimeout(() => {
-        setIsKebabOpen((prev) => !prev);
-      });
-    } else {
-      setIsKebabOpen((prev) => !prev);
-    }
+  const handleKebabToggle = () => {
+    setIsKebabOpen((prev) => !prev);
+  };
+
+  const handleKebabBlur = () => {
+    setTimeout(() => {
+      setIsKebabOpen(false);
+    });
   };
 
   const handleEditButton = (id: number) => {
@@ -54,11 +55,11 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
           </p>
         </div>
         <p className={styles.activitiesItemContentTitle}>{item.title}</p>
-        <div className={styles.activitiesItemContentFooter} onBlur={handleKebabButton}>
+        <div className={styles.activitiesItemContentFooter} onBlur={handleKebabBlur}>
           <p>
             ￦{item.price.toLocaleString()} <span className={styles.activitiesItemContentFooterCount}>/인</span>
           </p>
-          <button onClick={handleKebabButton}>
+          <button onClick={handleKebabToggle}>
             <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} />
           </button>
           {isKebabOpen && (
