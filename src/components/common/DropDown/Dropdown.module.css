@@ -5,7 +5,6 @@
   border: 0.1rem solid var(--gray79);
   border-radius: 0.4rem;
   cursor: pointer;
-  position: relative;
 }
 
 .wrapper {
@@ -23,7 +22,6 @@
 }
 
 .menu {
-  position: absolute;
   border: 0.1rem solid var(--gray79);
   width: 100%;
   height: 5rem;
@@ -42,4 +40,25 @@
 
 .placeholder {
   color: var(--grayA4);
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding: 0.8rem;
+  color: var(--black1B);
+  font-size: 1.6rem;
+  line-height: 2.6rem; 
+}
+
+.list:hover {
+  border-radius: 0.6rem;
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+  cursor: pointer;
+}
+
+.icon {
+  margin-right: 0.8rem;
 }

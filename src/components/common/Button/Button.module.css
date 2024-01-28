@@ -150,7 +150,3 @@
     font-size: 1.4rem;
   }
 }
-
-.button:disabled {
-  background-color: var(--grayA4);
-}

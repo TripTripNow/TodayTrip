@@ -1,4 +1,4 @@
-// import Dropdown from '@/components/DropDown/Dropdown';
+import Dropdown from '@/components/common/DropDown/Dropdown';
 // import Button from '@/components/common/Button/Button';
 import DatePickerInput from '@/components/common/DatePicker/DatePicker';
 
@@ -6,7 +6,7 @@ function Test() {
   return (
     <div style={{ margin: 10, display: 'flex', flexDirection: 'column', gap: 5 }}>
       <DatePickerInput />
-      {/* <Dropdown /> */}
+      <Dropdown />
       {/* <Button color="green" type="default">
         저장하기
       </Button>
