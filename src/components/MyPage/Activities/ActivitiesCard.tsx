@@ -4,7 +4,6 @@ import KebabIcon from '#/icons/icon-kebab.svg';
 import DanceImg from '#/images/img-dance.jpg';
 import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
-import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 
 interface ActivitiesCardProps {
   item: {
@@ -23,19 +22,16 @@ interface ActivitiesCardProps {
 }
 
 function ActivitiesCard({ item }: ActivitiesCardProps) {
-  const [kebabOpenStates, setKebabOpenStates] = useState(Array(myActivitiesMock.activities.length).fill(false));
-  const handleKebabButton = (id: number, isBlur: boolean) => {
-    setTimeout(() => {
-      setKebabOpenStates((prev) => {
-        const now = [...prev];
-        if (isBlur && now[id]) {
-          now[id] = !now[id];
-        } else if (!isBlur) {
-          now[id] = !now[id];
-        }
-        return now;
+  const [isKebabOpen, setIsKebabOpen] = useState(false);
+
+  const handleKebabButton = () => {
+    if (isKebabOpen) {
+      setTimeout(() => {
+        setIsKebabOpen((prev) => !prev);
       });
-    });
+    } else {
+      setIsKebabOpen((prev) => !prev);
+    }
   };
 
   const handleEditButton = (id: number) => {
@@ -58,14 +54,14 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
           </p>
         </div>
         <p className={styles.activitiesItemContentTitle}>{item.title}</p>
-        <div className={styles.activitiesItemContentFooter} onBlur={() => handleKebabButton(item.id, true)}>
+        <div className={styles.activitiesItemContentFooter} onBlur={handleKebabButton}>
           <p>
             ￦{item.price.toLocaleString()} <span className={styles.activitiesItemContentFooterCount}>/인</span>
           </p>
-          <button onClick={() => handleKebabButton(item.id, false)}>
+          <button onClick={handleKebabButton}>
             <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} />
           </button>
-          {kebabOpenStates[item.id] && (
+          {isKebabOpen && (
             <div className={styles.activitiesKebabWrapper}>
               <button className={styles.activitiesKebabContent} onClick={() => handleEditButton(item.id)}>
                 수정하기
