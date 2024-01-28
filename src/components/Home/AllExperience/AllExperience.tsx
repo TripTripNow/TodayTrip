@@ -39,6 +39,7 @@ function AllExperience({
   const sortedCards = showCards.filter((card) => card.category === selectedCategory);
 
   const hasData = !selectedCategory || (selectedCategory && sortedCards.length !== 0);
+
   return (
     <div className={styles.container}>
       {!searchResult && (

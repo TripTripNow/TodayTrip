@@ -18,6 +18,9 @@ function Main() {
     e.preventDefault();
     setSearchResult(searchText);
   };
+  const deviceType = useDeviceType();
+  const [limit, setLimit] = useState(deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4);
+
   const [sortByPrice, setSortByPrice] = useState('lowPriceOrder');
 
   const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +31,6 @@ function Main() {
 
   const [page, setPage] = useState(1);
   let allPages = 1;
-  const deviceType = useDeviceType();
 
   const handlePageNumber = (num: number) => {
     if (num < 1 || num > allPages) return;
@@ -45,25 +47,23 @@ function Main() {
     setPage(1);
   };
 
+  const handleChangePageNum = () => {
+    if (deviceType === 'pc') {
+      setLimit(8);
+      setPage(Math.ceil((page * limit) / 8));
+    } else if (deviceType === 'tablet') {
+      setLimit(9);
+      setPage(Math.ceil((page * limit) / 9));
+    } else {
+      setLimit(4);
+      setPage(Math.ceil((page * limit) / 4));
+    }
+  };
+
   let showCards: CardProps['item'][] = [];
   const searchedCards = allCards.filter((card) => card.title.includes(searchResult));
-  switch (deviceType) {
-    case 'pc':
-      showCards = searchedCards.slice((page - 1) * 8, page * 8);
-      allPages = Math.ceil(searchedCards.length / 8);
-      break;
-    case 'tablet':
-      showCards = searchedCards.slice((page - 1) * 9, page * 9);
-      allPages = Math.ceil(searchedCards.length / 9);
-      break;
-    case 'mobile':
-      showCards = searchedCards.slice((page - 1) * 4, page * 4);
-      allPages = Math.ceil(searchedCards.length / 4);
-      break;
-    default:
-      showCards = [];
-      break;
-  }
+  showCards = searchedCards.slice((page - 1) * limit, page * limit);
+  allPages = Math.ceil(searchedCards.length / limit);
 
   const handleRecentText = () => {
     const storedText = localStorageGetItem('recentText');
@@ -75,8 +75,9 @@ function Main() {
 
   useEffect(() => {
     if (page === 1) handlePageNumber(1);
-    handleRecentText();
-  }, [sortByPrice, page]);
+    if (!recentText) handleRecentText();
+    if (allCards) handleChangePageNum();
+  }, [sortByPrice, page, deviceType]);
 
   return (
     <main className={styles.main}>
