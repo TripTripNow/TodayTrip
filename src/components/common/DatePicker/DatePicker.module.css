@@ -39,6 +39,10 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+
+  @media mobile {
+    margin-left: -0.8rem;
+  }
 }
 
 .react-datepicker-custom :global(.react-datepicker__triangle) {
