@@ -5,7 +5,7 @@ import Searchbar from './Searchbar/Searchbar';
 import AllExperience from '@/components/Home/AllExperience/AllExperience';
 import Banner from '@/components/Home/Banner/Banner';
 import { CardProps } from '@/components/Home/Card/Card';
-import { localStorageGetItem } from '@/utils/localStorage';
+import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
 import NoResult from '@/components/Home/NoResult/NoResult';
 import styles from './Home.module.css';
@@ -17,6 +17,21 @@ function Main() {
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchResult(searchText);
+    if (searchText === '') return;
+
+    const storedText = localStorageGetItem('recentText');
+
+    if (!storedText) {
+      localStorageSetItem('recentText', searchText);
+    } else {
+      const splitedText = storedText!.split(',');
+      if (splitedText.length >= 10) {
+        localStorageSetItem('recentText', [searchText, ...splitedText.slice(0, 9)].join(',')!);
+      } else {
+        localStorageSetItem('recentText', [searchText, ...splitedText].join(',')!);
+      }
+    }
+    handleRecentText();
   };
   const deviceType = useDeviceType();
   const [limit, setLimit] = useState(deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4);
@@ -77,7 +92,7 @@ function Main() {
     if (page === 1) handlePageNumber(1);
     if (!recentText) handleRecentText();
     if (allCards) handleChangePageNum();
-  }, [sortByPrice, page, deviceType]);
+  }, [sortByPrice, page, deviceType, recentText]);
 
   return (
     <main className={styles.main}>
