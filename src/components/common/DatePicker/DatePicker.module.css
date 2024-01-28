@@ -24,12 +24,17 @@
   @media mobile {
     width: 13rem;
     height: 4.4rem;
+    padding: 0.8rem 1rem;
   }
 }
 
 .input {
   font-size: 1.6rem;
   line-height: 2.6rem; 
+
+  @media mobile {
+    font-size: 1.4rem;
+  }
 }
 
 .icon {
