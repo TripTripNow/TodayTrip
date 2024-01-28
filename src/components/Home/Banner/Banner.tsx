@@ -35,24 +35,17 @@ const BANNER = [
 function Carousel() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseOnSlider, setMouseOnSlider] = useState(false);
+  const [arrowHover, setArrowHover] = useState({ left: false, right: false });
+
   const slideRef = useRef<HTMLDivElement>(null);
   let slideTimer: NodeJS.Timeout | undefined;
 
-  const [leftArrowHover, setLeftArrowHover] = useState(false);
-  const [rightArrowHover, setRightArrowHover] = useState(false);
-
+  // 화살표 버튼을 통한 slide 함수
   const handleSlide = (num: number) => {
-    const newIndex = slideIndex + num;
-
-    if (newIndex < 0) {
-      setSlideIndex(BANNER.length - 1);
-    } else if (newIndex >= BANNER.length) {
-      setSlideIndex(0);
-    } else {
-      setSlideIndex((prev) => prev + num);
-    }
+    setSlideIndex((prev) => (prev + num + BANNER.length) % BANNER.length);
   };
 
+  // 캐러셀 자동 넘기기 함수
   const handleSlideAuto = () => {
     if (!mouseOnSlider) {
       slideTimer = setTimeout(() => {
@@ -62,19 +55,29 @@ function Carousel() {
       clearTimeout(slideTimer);
     }
   };
+
+  const handleMouseOnSlider = (bool: boolean) => {
+    setMouseOnSlider(bool);
+  };
+
+  const handleArrowHover = (direction: string, bool: boolean) => {
+    setArrowHover((prev) => ({ ...prev, [direction]: bool }));
+  };
+
   useEffect(() => {
     if (slideRef.current) {
       slideRef.current.style.transform = `translateX(-${slideIndex * 100}%)`;
     }
     handleSlideAuto();
+
     return () => clearTimeout(slideTimer);
   }, [slideIndex, mouseOnSlider]);
 
   return (
     <div
       className={styles.container}
-      onMouseEnter={() => setMouseOnSlider(true)}
-      onMouseLeave={() => setMouseOnSlider(false)}
+      onMouseEnter={() => handleMouseOnSlider(true)}
+      onMouseLeave={() => handleMouseOnSlider(false)}
     >
       <div className={styles.slider} ref={slideRef}>
         {BANNER.map((data) => (
@@ -91,18 +94,18 @@ function Carousel() {
       <button
         className={styles.leftArrow}
         onClick={() => handleSlide(-1)}
-        onMouseEnter={() => setLeftArrowHover(true)}
-        onMouseLeave={() => setLeftArrowHover(false)}
+        onMouseEnter={() => handleArrowHover('left', true)}
+        onMouseLeave={() => handleArrowHover('left', false)}
       >
-        <LeftArrow stroke="var(--gray4B)" className={clsx(leftArrowHover ? styles.opacity100 : styles.opacity30)} />
+        <LeftArrow stroke="var(--gray4B)" className={clsx(arrowHover.left ? styles.opacity100 : styles.opacity30)} />
       </button>
       <button
         className={styles.rightArrow}
         onClick={() => handleSlide(1)}
-        onMouseEnter={() => setRightArrowHover(true)}
-        onMouseLeave={() => setRightArrowHover(false)}
+        onMouseEnter={() => handleArrowHover('right', true)}
+        onMouseLeave={() => handleArrowHover('right', false)}
       >
-        <RightArrow stroke="var(--gray4B)" className={clsx(rightArrowHover ? styles.opacity100 : styles.opacity30)} />
+        <RightArrow stroke="var(--gray4B)" className={clsx(arrowHover.right ? styles.opacity100 : styles.opacity30)} />
       </button>
     </div>
   );
