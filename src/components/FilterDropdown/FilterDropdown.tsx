@@ -1,6 +1,6 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
 import { PRICE_LIST, PriceSortOption, RESERVE_LIST, ReserveSortOption } from '@/constants/dropdown';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import styles from './FilterDropdown.module.css';
 
 interface FilterDropdownProps {
