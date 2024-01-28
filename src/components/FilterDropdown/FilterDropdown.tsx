@@ -1,37 +1,36 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import { ReserveSortOption, PriceSortOption } from '@/constants/dropdown';
-import { useState } from 'react';
+import { PRICE_LIST, PriceSortOption, RESERVE_LIST, ReserveSortOption } from '@/constants/dropdown';
+import { useEffect, useRef, useState } from 'react';
 import styles from './FilterDropdown.module.css';
 
-interface PriceFilter {
-  type: '가격';
-  lists: PriceSortOption[];
+interface FilterDropdownProps {
+  type: '가격' | '예약 상태';
 }
 
-interface ReserveFilter {
-  type: '예약 상태';
-  lists: ReserveSortOption[];
-}
+type AllPriceOption = PriceSortOption | '가격';
+type AllReserveOption = ReserveSortOption | '예약 상태';
 
-type FilterDropDownProps = PriceFilter | ReserveFilter;
-type AllPriceOption = PriceSortOption | PriceFilter['type'];
-type AllReserveOption = ReserveSortOption | ReserveFilter['type'];
-
-function FilterDropDown({ type, lists }: FilterDropDownProps) {
+function FilterDropDown({ type }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState<AllPriceOption | AllReserveOption>(type);
+
+  const lists = type === '가격' ? PRICE_LIST : RESERVE_LIST;
 
   const handleDropdown = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const handleClickOutside = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onBlur={handleClickOutside}>
       <label className={styles.wrapper}>
         <button value={value} onClick={handleDropdown}>
           {value}
         </button>
-        <ArrowDownIcon />
+        {value === type ? <ArrowDownIcon /> : <ArrowDownIcon style={{ rotate: '180deg' }} />}
       </label>
       {isOpen && (
         <div className={styles.menu} onClick={handleDropdown}>
