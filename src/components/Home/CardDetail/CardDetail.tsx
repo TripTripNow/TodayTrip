@@ -9,7 +9,7 @@ import { priceFormat } from '@/utils/priceFormat';
 
 function CardDetail({ item }: { item: CardProps['item'] }) {
   return (
-    <Link href={`/activities/:${item.id}`}>
+    <Link href={`/activities/${item.id}`}>
       <div className={styles.container}>
         <div className={styles.imageWrapper}>
           <Image src={item.bannerImageUrl} className={styles.image} fill sizes="100%" priority alt="체험 배너" />
