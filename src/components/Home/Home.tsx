@@ -82,12 +82,14 @@ function Main() {
     <main className={styles.main}>
       <Banner />
       <div className={styles.container}>
-        <Searchbar
-          handleSearchSubmit={handleSearchSubmit}
-          handleSearchText={handleSearchText}
-          searchText={searchText}
-          recentText={recentText}
-        />
+        <div className={styles.searchbarWrapper}>
+          <Searchbar
+            handleSearchSubmit={handleSearchSubmit}
+            handleSearchText={handleSearchText}
+            searchText={searchText}
+            recentText={recentText}
+          />
+        </div>
         {!searchResult && <PopularExperience deviceType={deviceType} />}
 
         {showCards.length > 0 ? (

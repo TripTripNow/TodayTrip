@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import clsx from 'clsx';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import styles from './AllExperience.module.css';
@@ -40,7 +40,7 @@ function AllExperience({
 
   const hasData = !selectedCategory || (selectedCategory && sortedCards.length !== 0);
   return (
-    <>
+    <div className={styles.container}>
       {!searchResult && (
         <Splide
           options={{
@@ -53,7 +53,7 @@ function AllExperience({
             perMove: 1,
             snap: true,
             breakpoints: {
-              1000: {
+              860: {
                 arrows: false,
                 padding: { left: 0, right: 0 },
               },
@@ -117,7 +117,7 @@ function AllExperience({
       ) : (
         <NoResult />
       )}
-    </>
+    </div>
   );
 }
 

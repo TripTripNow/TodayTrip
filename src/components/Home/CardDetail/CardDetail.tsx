@@ -26,7 +26,7 @@ function CardDetail({ item }: { item: CardProps['item'] }) {
             <h3>{item.title}</h3>
           </div>
           <div className={styles.descriptionBottomWrapper}>
-            <em>₩ {priceFormat(item.price)}</em>
+            <em>￦ {priceFormat(item.price)}</em>
             <p>/인</p>
           </div>
         </div>

@@ -32,7 +32,7 @@ function Card({ item }: CardProps) {
         </div>
         <h3 className={styles.title}>{item.title}</h3>
         <div className={styles.priceWrapper}>
-          <em>₩ {priceFormat(item.price)}</em>
+          <em>￦ {priceFormat(item.price)}</em>
           <p>/인</p>
         </div>
       </div>

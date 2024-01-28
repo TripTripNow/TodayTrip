@@ -1,5 +1,20 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
+.container {
+  position: relative;
+  width: 100%;
+
+  @media tablet {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
+
+  @media mobile {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
+}
+
 .categoryBtn {
   position: relative;
   display: flex;
@@ -38,7 +53,7 @@
 
 .titleWrapper {
   margin-top: 4rem;
-  margin-bottom: 3.2rem;
+  margin-bottom: 2.4rem;
 }
 
 .cardWrapper {
@@ -68,6 +83,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  align-items: center;
 }
 
 .header > h1 {
