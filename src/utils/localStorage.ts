@@ -1,3 +1,7 @@
+/**
+ * @description Server Side Render 상황에서도 동작가능한 localStorage 함수
+ */
+
 export const localStorageSetItem = (key: string, value: string) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(key, value);
