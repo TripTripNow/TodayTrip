@@ -4,7 +4,6 @@ import PopularExperience from '@/components/Home/PopularExperience/PopularExperi
 import Searchbar from '@/components/Home/Searchbar/Searchbar';
 import AllExperience from '@/components/Home/AllExperience/AllExperience';
 import Banner from '@/components/Home/Banner/Banner';
-import { CardProps } from '@/components/Home/Card/Card';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
 import NoResult from '@/components/Home/NoResult/NoResult';
@@ -13,44 +12,50 @@ import { MOCK_DATA } from '@/constants/mock';
 import styles from './Home.module.css';
 
 function Home() {
-  const [searchResult, setSearchResult] = useState('');
-  const [searchText, setSearchText] = useState('');
+  const deviceType = useDeviceType();
+  const [searchResult, setSearchResult] = useState(''); // 검색한 결과
+  const [limit, setLimit] = useState(deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4); // 한 페이지에 보여줄 카드의 개수
+  const [sortByPrice, setSortByPrice] = useState('lowPriceOrder'); // 정렬 순서
+  const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
+  const [allCards, setAllCards] = useState([...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA]); // 모든 카드 데이터
+  const [pageNumber, setPageNumber] = useState(1); // 현재 페이지 넘버
+  const searchedCards = allCards.filter((card) => card.title.includes(searchResult)); // 검색된 카드 데이터
+  const showCards = searchedCards.slice((pageNumber - 1) * limit, pageNumber * limit); // 화면에서 보여주는 카드 데이터
+  let allPages = 1; // 전체 페이지 숫자
+  const [recentText, setRecentText] = useState<string[]>([]); // 최근 검색어 배열
+
+  allPages = Math.ceil(searchedCards.length / limit);
+
+  // 검색 후 submit 함수
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSearchResult(searchText);
-    if (searchText === '') return;
+    setSearchResult(inputSearchText);
+    if (inputSearchText === '') return;
 
     const storedText = localStorageGetItem('recentText');
 
     if (!storedText) {
-      localStorageSetItem('recentText', searchText);
+      localStorageSetItem('recentText', inputSearchText);
     } else {
       const splitedText = storedText!.split(',');
       if (splitedText.length >= 10) {
-        localStorageSetItem('recentText', [searchText, ...splitedText.slice(0, 9)].join(',')!);
+        localStorageSetItem('recentText', [inputSearchText, ...splitedText.slice(0, 9)].join(',')!);
       } else {
-        localStorageSetItem('recentText', [searchText, ...splitedText].join(',')!);
+        localStorageSetItem('recentText', [inputSearchText, ...splitedText].join(',')!);
       }
     }
     handleRecentText();
   };
-  const deviceType = useDeviceType();
-  const [limit, setLimit] = useState(deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4);
 
-  const [sortByPrice, setSortByPrice] = useState('lowPriceOrder');
-
+  // 검색창 input state 실시간 변경 함수
   const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+    setInputSearchText(e.target.value);
   };
 
-  const [allCards, setAllCards] = useState([...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA, ...MOCK_DATA]);
-
-  const [page, setPage] = useState(1);
-  let allPages = 1;
-
-  const handlePageNumber = (num: number) => {
+  // 버튼 클릭을 통한 페이지 증감 함수(pagination)
+  const handlePaginationByClick = (num: number) => {
     if (num < 1 || num > allPages) return;
-    setPage(num);
+    setPageNumber(num);
   };
 
   /** TODO
@@ -60,26 +65,8 @@ function Home() {
     const newSortByPrice = e.target.value;
     if (sortByPrice === newSortByPrice) return;
     setSortByPrice(newSortByPrice);
-    setPage(1);
+    setPageNumber(1);
   };
-
-  const handleChangePageNum = () => {
-    if (deviceType === 'pc') {
-      setLimit(8);
-      setPage(Math.ceil((page * limit) / 8));
-    } else if (deviceType === 'tablet') {
-      setLimit(9);
-      setPage(Math.ceil((page * limit) / 9));
-    } else {
-      setLimit(4);
-      setPage(Math.ceil((page * limit) / 4));
-    }
-  };
-
-  let showCards: CardProps['item'][] = [];
-  const searchedCards = allCards.filter((card) => card.title.includes(searchResult));
-  showCards = searchedCards.slice((page - 1) * limit, page * limit);
-  allPages = Math.ceil(searchedCards.length / limit);
 
   const handleRecentText = () => {
     const storedText = localStorageGetItem('recentText');
@@ -87,13 +74,26 @@ function Home() {
     else setRecentText([]);
   };
 
-  const [recentText, setRecentText] = useState<string[]>([]);
+  // 초기 렌더링
+  useEffect(() => {
+    handleRecentText();
+    console.log(2);
+  }, []);
 
   useEffect(() => {
-    if (page === 1) handlePageNumber(1);
-    if (!recentText) handleRecentText();
-    if (allCards) handleChangePageNum();
-  }, [sortByPrice, page, deviceType, recentText]);
+    // window width에 따른 카드 개수 및 페이지 넘버 변경 함수
+    const handleChangePageNum = () => {
+      const newPage = Math.ceil((pageNumber * limit) / (deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4));
+
+      if (deviceType === 'pc') setLimit(8);
+      else if (deviceType === 'tablet') setLimit(9);
+      else setLimit(4);
+
+      setPageNumber(newPage);
+    };
+
+    handleChangePageNum();
+  }, [pageNumber, deviceType, limit]);
 
   return (
     <main className={styles.main}>
@@ -103,7 +103,7 @@ function Home() {
           <Searchbar
             handleSearchSubmit={handleSearchSubmit}
             handleSearchText={handleSearchText}
-            searchText={searchText}
+            inputSearchText={inputSearchText}
             recentText={recentText}
           />
         </div>
@@ -115,9 +115,9 @@ function Home() {
             handleSortByPrice={handleSortByPrice}
             showCards={showCards}
             totalCardsNum={allCards.length}
-            handlePageNumber={handlePageNumber}
+            handlePaginationByClick={handlePaginationByClick}
             allPages={allPages}
-            page={page}
+            pageNumber={pageNumber}
           />
         ) : (
           <NoResult />

@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import styles from './CardDetail.module.css';
-import StarIcon from '#/icons/icon-star.svg';
 import { CardProps } from '@/components/Home/Card/Card';
 import { intToFloat } from '@/utils/intToFloat';
 import { priceFormat } from '@/utils/priceFormat';
+
+import StarIcon from '#/icons/icon-star.svg';
+
+import styles from './CardDetail.module.css';
 
 function CardDetail({ item }: { item: CardProps['item'] }) {
   return (

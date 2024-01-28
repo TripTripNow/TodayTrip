@@ -4,10 +4,12 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Card from '@/components/Home/Card/Card';
+import { MOCK_DATA } from '@/constants/mock';
+
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
+
 import styles from './PopularExperience.module.css';
-import { MOCK_DATA } from '@/constants/mock';
 
 function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -25,7 +27,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   };
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <div className={styles.header}>
         <h1>🔥 인기 체험</h1>
         {deviceType === 'pc' && (
@@ -79,7 +81,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           </SplideSlide>
         ))}
       </Splide>
-    </div>
+    </section>
   );
 }
 

@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-/** Window 가로 사이즈 구하기 */
+/**
+ * Window 가로 사이즈 구하는 함수
+ * @returns window width
+ */
+
 const useCheckWindowWidthSize = () => {
   const [width, setWidth] = useState(0);
 
@@ -17,7 +21,11 @@ const useCheckWindowWidthSize = () => {
   return width;
 };
 
-/** Window 가로 사이즈를 통해 deviceType('pc', 'tablet', 'mobile') 반환 */
+/**
+ * @description Window 가로 사이즈를 통해 deviceType('pc', 'tablet', 'mobile') 반환 하는 함수
+ * @returns 'pc' or 'tablet' or 'mobile'
+ */
+
 const useDeviceType = () => {
   const width = useCheckWindowWidthSize();
   if (width === 0) return;

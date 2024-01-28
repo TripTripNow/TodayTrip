@@ -2,7 +2,9 @@ import Image from 'next/image';
 
 import { priceFormat } from '@/utils/priceFormat';
 import { intToFloat } from '@/utils/intToFloat';
+
 import StarIcon from '#/icons/icon-star.svg';
+
 import styles from './Card.module.css';
 
 export interface CardProps {
