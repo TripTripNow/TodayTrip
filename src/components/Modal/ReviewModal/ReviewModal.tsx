@@ -15,7 +15,7 @@ interface ReviewModalProps extends CardProps {
 function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
   const [ratingInputValue, setRatingInputValue] = useState(0);
   const [textInputValue, setTextInputValue] = useState('');
-
+  const [hoverValue, setHoverValue] = useState(0);
   const handleTextInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextInputValue(e.target.value);
   };
@@ -63,7 +63,10 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
                 key={number}
                 isSelected={ratingInputValue >= number}
                 rating={number}
+                ratingInputValue={ratingInputValue}
                 setRatingInputValue={setRatingInputValue}
+                hoverValue={hoverValue}
+                setHoverValue={setHoverValue}
               />
             ))}
           </div>
