@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from 'react';
-import clsx from 'clsx';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
@@ -9,6 +8,7 @@ import { CardProps } from '@/components/Home/Card/Card';
 import NoResult from '@/components/Home/NoResult/NoResult';
 
 import styles from './AllExperience.module.css';
+import Button from '@/components/common/Button/Button';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
@@ -34,56 +34,102 @@ function AllExperience({
   const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
   const sortedCards = showCards.filter((card) => card.category === selectedCategory); // 해당하는 카테고리로 정렬된 카드 데이터
   const hasCardData = !selectedCategory || (selectedCategory && sortedCards.length !== 0); // 카드 데이터가 있는지 확인하는 boolean 값
+  const [disableShadow, setDisableShadow] = useState(false);
+  const [disableRightShadow, setDisableRightShadow] = useState(false);
+  const [move, setMove] = useState(0);
 
   // 카테고리 버튼 클릭 함수
-  const handleClickCategory = (name: string) => {
-    if (selectedCategory === name) setSelectedCategory('');
-    else setSelectedCategory(name);
+  const handleClickCategory = useCallback(
+    (name: string) => {
+      if (selectedCategory === name) setSelectedCategory('');
+      else setSelectedCategory(name);
+    },
+    [selectedCategory],
+  );
+
+  const handleDisableShadow = () => {
+    if (move >= 3) {
+      setDisableRightShadow(false);
+    } else {
+      setDisableRightShadow(true);
+    }
+
+    if (move === 0) {
+      setDisableShadow(false);
+    } else {
+      setDisableShadow(true);
+    }
   };
+
+  useEffect(() => {
+    handleDisableShadow();
+  }, [move]);
+  console.log(move);
 
   return (
     <section className={styles.container}>
-      {!searchResult && (
-        <Splide
-          options={{
-            padding: { left: 35, right: 35 },
-            gap: '1rem',
-            mediaQuery: 'min',
-            fixedWidth: '12.7rem',
-            pagination: false,
-            perPage: 3,
-            perMove: 1,
-            snap: true,
-            breakpoints: {
-              860: {
-                arrows: false,
-                padding: { left: 0, right: 0 },
+      <div className={styles.categoryWrapper}>
+        {!searchResult && (
+          <Splide
+            onMoved={(obj: any, move: number) => setMove(move)}
+            options={{
+              mediaQuery: 'min',
+              fixedWidth: '8.8rem',
+              pagination: false,
+              perPage: 3,
+              perMove: 1,
+              snap: true,
+              padding: { left: 0, right: 0 },
+              arrows: false,
+              breakpoints: {
+                975: {
+                  fixedWidth: '15.1rem',
+                  padding: { left: 0, right: 0 },
+                  arrows: false,
+                },
+                860: {
+                  fixedWidth: '15.1rem',
+                  padding: { left: 35, right: 35 },
+                  arrows: true,
+                },
+                768: {
+                  fixedWidth: '13.4rem',
+                  padding: { left: 35, right: 35 },
+                  arrows: true,
+                },
+                605: {
+                  fixedWidth: '8.8rem',
+                  padding: { left: 0, right: 0 },
+                  arrows: false,
+                },
+                0: {
+                  fixedWidth: '8.8rem',
+                  padding: { left: 35, right: 35 },
+                  arrows: true,
+                },
               },
-              766: {
-                perPage: 2,
-              },
-            },
-            clones: undefined,
-            arrows: true,
-          }}
-        >
-          {CATEGORY.map((name) => (
-            <SplideSlide key={name}>
-              <button
-                key={name}
-                className={
-                  name === selectedCategory
-                    ? clsx(styles.categoryBtn, styles.selectedCategory)
-                    : clsx(styles.categoryBtn, styles.notSelectedCategory)
-                }
-                onClick={() => handleClickCategory(name)}
-              >
-                {name}
-              </button>
-            </SplideSlide>
-          ))}
-        </Splide>
-      )}
+              arros: true,
+              clones: undefined,
+            }}
+          >
+            {CATEGORY.map((name) => (
+              <SplideSlide key={name}>
+                <Button
+                  key={name}
+                  type="category"
+                  color={selectedCategory === name ? 'lightgreen' : 'lightwhite'}
+                  onClick={() => handleClickCategory(name)}
+                >
+                  {name}
+                </Button>
+              </SplideSlide>
+            ))}
+          </Splide>
+        )}
+
+        {disableShadow && <div className={styles.categoryLeftShadow}></div>}
+        {disableRightShadow && <div className={styles.categoryRightShadow}></div>}
+      </div>
 
       <div className={styles.titleWrapper}>
         {!searchResult ? (
