@@ -20,11 +20,7 @@ button {
   cursor: pointer;
 }
 
-#__next {
+.root {
   display: flex;
   flex-direction: column;
-}
-
-.root {
-  height: 100vh;
 }
