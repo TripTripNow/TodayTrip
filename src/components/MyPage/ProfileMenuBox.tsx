@@ -46,8 +46,6 @@ function ProfileMenuBox() {
     router.push(item.link);
   };
 
-  console.log(router);
-
   const renderTitle = (title: string) => {
     const result = [];
     if (router.pathname === '/mypage/reservations/[id]') {
