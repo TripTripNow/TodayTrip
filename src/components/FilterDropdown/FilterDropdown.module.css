@@ -6,7 +6,6 @@
   border-radius: 1.5rem;
   border: 0.1rem solid var(--green0B);
   background: var(--whiteFF);
-  position: relative;
 
   /* @media tablet {
     width: 12rem;
@@ -39,7 +38,6 @@
 }
 
 .menu {
-  position: absolute;
   width: 100%;
   height: auto;
   display: flex;

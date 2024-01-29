@@ -21,7 +21,9 @@ function FilterDropDown({ type }: FilterDropdownProps) {
   };
 
   const handleClickOutside = () => {
-    setIsOpen(false);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 200);
   };
 
   return (
