@@ -12,7 +12,7 @@ interface Props {
 const CustomInput = ({ value, onClick }: Props) => (
   <label className={styles.container}>
     <button className={styles.input} onClick={onClick}>
-      {value === '' ? <span>{value || 'YY/MM/DD'}</span> : <>{value || 'YY/MM/DD'}</>}
+      {value ? <>{value}</> : <span>{'YY/MM/DD'}</span>}
     </button>
     <CalendarIcon className={styles.icon} />
   </label>
