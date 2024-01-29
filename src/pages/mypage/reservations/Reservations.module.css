@@ -16,8 +16,10 @@
 }
 
 .header {
+  height: 5rem;
   display: flex;
   width: 100%;
+  align-items: center;
   justify-content: space-between;
   @media tablet {
     margin-bottom: 0.8rem;

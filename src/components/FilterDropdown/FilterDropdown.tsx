@@ -27,7 +27,7 @@ function FilterDropDown({ type }: FilterDropdownProps) {
   };
 
   return (
-    <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
+    <div className={type === '가격' ? styles.price : styles.reserve}>
       <button value={value} onClick={handleDropdown} className={type === '가격' ? styles.priceWrapper : styles.wrapper}>
         {value}
         {isOpen ? (
