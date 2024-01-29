@@ -1,13 +1,6 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import {
-  PRICE_LIST,
-  PriceSortOption,
-  RESERVE_LIST,
-  ReserveSortOption,
-  MOBILE_LIST,
-  MobileSortOption,
-} from '@/constants/dropdown';
-import { useEffect, useState } from 'react';
+import { PRICE_LIST, PriceSortOption, RESERVE_LIST, ReserveSortOption } from '@/constants/dropdown';
+import { useState } from 'react';
 import styles from './FilterDropdown.module.css';
 
 interface FilterDropdownProps {
@@ -19,11 +12,9 @@ type AllReserveOption = ReserveSortOption | '예약 상태';
 
 function FilterDropDown({ type }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState<AllPriceOption | AllReserveOption | MobileSortOption>(type);
-  const [isMobile, setIsMobile] = useState(false);
-  const [windowSize, setWindowSize] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const [value, setValue] = useState<AllPriceOption | AllReserveOption>(type);
 
-  const lists = type === '가격' ? (isMobile ? MOBILE_LIST : PRICE_LIST) : RESERVE_LIST;
+  const lists = type === '가격' ? PRICE_LIST : RESERVE_LIST;
 
   const handleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -32,43 +23,19 @@ function FilterDropDown({ type }: FilterDropdownProps) {
   const handleClickOutside = () => {
     setTimeout(() => {
       setIsOpen(false);
-    }, 200);
+    }, 150);
   };
-
-  const handleResize = () => {
-    setWindowSize(window.innerWidth);
-  };
-
-  const handleMobileSizeUpdate = () => {
-    if (windowSize < 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    handleMobileSizeUpdate();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      handleMobileSizeUpdate();
-    };
-  }, [windowSize, isMobile]);
 
   return (
-    <div onBlur={handleClickOutside}>
-      <label className={type === '가격' ? styles.price : styles.reserve}>
-        <button value={value} onClick={handleDropdown}>
-          {value}
-        </button>
-        {value === type ? <ArrowDownIcon /> : <ArrowDownIcon style={{ rotate: '180deg' }} />}
-      </label>
+    <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
+      <button value={value} onClick={handleDropdown} className={styles.wrapper}>
+        {value}
+        {isOpen ? <ArrowDownIcon style={{ rotate: '180deg' }} /> : <ArrowDownIcon />}
+      </button>
       {isOpen && (
-        <div className={styles.option} onClick={handleDropdown}>
+        <div className={styles.option}>
           {lists.map((item, idx) => (
-            <button key={idx} className={styles.list} onClick={() => setValue(item)}>
+            <button className={styles.list} key={idx} onClick={() => setValue(item)}>
               {item}
             </button>
           ))}
