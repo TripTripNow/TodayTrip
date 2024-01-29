@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ProfileMenuBox.module.css';
 import MypageIcon from '#/icons/icon-mypage.svg';
 import ReservationIcon from '#/icons/icon-reservation.svg';
@@ -38,8 +38,14 @@ function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
   const [isSelected, setIsSelected] = useState(
-    pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === router.pathname)?.title,
+    pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
   );
+
+  useEffect(() => {
+    setIsSelected(
+      pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
+    );
+  }, [pathname]);
 
   const handleMenuItem = (item: { title: string; link: string }) => {
     setIsSelected(item.title);
