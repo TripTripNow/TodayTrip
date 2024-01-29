@@ -6,7 +6,7 @@
   height: 20.4rem;
   border-radius: 2.4rem;
   background: var(--whiteFF);
-  box-shadow: 0px 4px 16px 0px rgba(17, 34, 17, 0.05);
+  box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
   display: flex;
 
   @media tablet {
@@ -147,7 +147,7 @@
   }
 }
 .button {
-  border: 1px solid var(--gray4B);
+  border: 0.1rem solid var(--gray4B);
   padding: 1rem;
 }
 

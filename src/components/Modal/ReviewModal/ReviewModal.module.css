@@ -104,6 +104,7 @@
   height: 0.1rem;
   opacity: 0.1;
   background: var(--black1B);
+
   @media mobile {
     width: 21rem;
     height: 0.1rem;
@@ -134,11 +135,12 @@
 .textarea {
   height: 24rem;
   padding: 1.6rem;
-  border: 1px solid var(--gray79);
+  border: 0.1rem solid var(--gray79);
   outline: none;
   font-size: 1.6rem;
   resize: none;
   border-radius: 0.4rem;
+
   @media mobile {
     height: 34.6rem;
   }

@@ -12,7 +12,7 @@ function CancelModal({ handleModalClose, handleCancel }: CancelModalProps) {
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.wrapper}>
         <CheckIcon />
-        <p className={styles.p}>예약을 취소하시겠습니까?</p>
+        <p className={styles.text}>예약을 취소하시겠습니까?</p>
         <div className={styles.buttonContainer}>
           <button className={clsx(styles.button, styles.white)} onClick={handleModalClose}>
             닫기
