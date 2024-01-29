@@ -7,7 +7,6 @@
   justify-content: center;
   align-items: center;
   background: var(--grayFA);
-
   padding-bottom: 24.7rem;
 
   @media mobile {
@@ -32,6 +31,7 @@
 
 .searchbarWrapper {
   width: 100%;
+
   @media tablet {
     width: 100%;
     padding-left: 2.4rem;

@@ -6,14 +6,18 @@
   height: 38.4rem;
   border-radius: 2.4rem;
   flex: 0 0 38.4rem;
+  overflow: hidden;
 
   @media mobile {
     width: 18.6rem;
     height: 18.6rem;
     flex: 0 0 18.6rem;
   }
+}
 
-  overflow: hidden;
+.container:hover .bannerImage {
+  transition: 100ms ease-in-out;
+  transform: scale(1.1);
 }
 
 .background {
@@ -27,6 +31,10 @@
   @media mobile {
     border-radius: 2rem;
   }
+}
+
+.bannerImage {
+  transition: 100ms ease-in-out;
 }
 
 .textContainer {

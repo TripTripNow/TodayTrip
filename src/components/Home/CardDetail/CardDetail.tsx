@@ -1,15 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { CardProps } from '@/components/Home/Card/Card';
 import { intToFloat } from '@/utils/intToFloat';
 import { priceFormat } from '@/utils/priceFormat';
+import { CardItem } from '@/types/api';
 
 import StarIcon from '#/icons/icon-star.svg';
 
 import styles from './CardDetail.module.css';
 
-function CardDetail({ item }: { item: CardProps['item'] }) {
+function CardDetail({ item }: { item: CardItem['item'] }) {
   return (
     <Link href={`/activities/${item.id}`}>
       <div className={styles.container}>

@@ -17,8 +17,7 @@ interface PaginationProps {
  * @param handlePaginationByClick 숫자를 인자로 받는 void 함수
  */
 function Pagination({ pageNumber, totalPages, handlePaginationByClick }: PaginationProps) {
-  const pageArr = [];
-  for (let i = 1; i <= totalPages; i++) pageArr.push(i);
+  const pageArr = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const currentPageIndex = Math.ceil(pageNumber / 5);
   const showPages = pageArr.slice((currentPageIndex - 1) * 5, currentPageIndex * 5);
@@ -26,11 +25,10 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
   return (
     <div className={styles.container}>
       <button
-        className={
-          pageNumber === 1
-            ? clsx(styles.paginationNumberWrapper, styles.paginationDisabled)
-            : clsx(styles.paginationNumberWrapper, styles.paginationEnabled)
-        }
+        className={clsx(
+          styles.paginationNumberWrapper,
+          pageNumber === 1 ? styles.paginationDisabled : styles.paginationEnabled,
+        )}
         onClick={() => handlePaginationByClick(pageNumber - 1)}
       >
         <PaginationLeftArrow
@@ -44,22 +42,20 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
       {showPages.map((num) => (
         <div
           key={num}
-          className={
-            pageNumber === num
-              ? clsx(styles.paginationNumberWrapper, styles.selectedNumber)
-              : clsx(styles.paginationNumberWrapper, styles.notSelectedNumber)
-          }
+          className={clsx(
+            styles.paginationNumberWrapper,
+            pageNumber === num ? styles.selectedNumber : styles.notSelectedNumber,
+          )}
           onClick={() => handlePaginationByClick(num)}
         >
           {num}
         </div>
       ))}
       <button
-        className={
-          pageNumber === totalPages
-            ? clsx(styles.paginationNumberWrapper, styles.paginationDisabled)
-            : clsx(styles.paginationNumberWrapper, styles.paginationEnabled)
-        }
+        className={clsx(
+          styles.paginationNumberWrapper,
+          pageNumber === totalPages ? styles.paginationDisabled : styles.paginationEnabled,
+        )}
         onClick={() => handlePaginationByClick(pageNumber + 1)}
       >
         <PaginationRightArrow

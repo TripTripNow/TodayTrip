@@ -1,9 +1,9 @@
-import { CardProps } from '@/components/Home/Card/Card';
+import { CardItem } from '@/types/api';
 import card1 from '#/images/img-carousel1.png';
 import card2 from '#/images/img-carousel2.png';
 import card3 from '#/images/img-carousel3.png';
 
-export const MOCK_DATA: CardProps['item'][] = [
+export const MOCK_DATA: CardItem['item'][] = [
   {
     id: 1,
     userId: 0,

@@ -27,10 +27,8 @@ function Home() {
   const [pageNumber, setPageNumber] = useState(1); // 현재 페이지 넘버
   const searchedCards = allCards.filter((card) => card.title.includes(searchResult)); // 검색된 카드 데이터
   const showCards = searchedCards.slice((pageNumber - 1) * limit, pageNumber * limit); // 화면에서 보여주는 카드 데이터
-  let totalPages = 1; // 전체 페이지 숫자
+  const totalPages = Math.ceil(searchedCards.length / limit); // 전체 페이지 숫자
   const [recentText, setRecentText] = useState<string[]>([]); // 최근 검색어 배열
-
-  totalPages = Math.ceil(searchedCards.length / limit);
 
   // 검색 후 submit 함수
   const handleSearchSubmit = useCallback(
@@ -70,7 +68,7 @@ function Home() {
       if (num < 1 || num > totalPages) return;
       setPageNumber(num);
     },
-    [pageNumber, totalPages],
+    [totalPages],
   );
 
   /** TODO

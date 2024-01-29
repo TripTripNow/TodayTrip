@@ -4,18 +4,18 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
-import { CardProps } from '@/components/Home/Card/Card';
 import NoResult from '@/components/Home/NoResult/NoResult';
 
 import styles from './AllExperience.module.css';
 import Button from '@/components/common/Button/Button';
+import { CardItem } from '@/types/api';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
   handleSortByPrice: (e: ChangeEvent<HTMLSelectElement>) => void;
-  showCards: CardProps['item'][];
+  showCards: CardItem['item'][];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
   totalPages: number;
@@ -32,8 +32,8 @@ function AllExperience({
   pageNumber,
 }: AllExperienceProps) {
   const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
-  const sortedCards = showCards.filter((card) => card.category === selectedCategory); // 해당하는 카테고리로 정렬된 카드 데이터
-  const hasCardData = !selectedCategory || (selectedCategory && sortedCards.length !== 0); // 카드 데이터가 있는지 확인하는 boolean 값
+  const sortedCards = selectedCategory ? showCards.filter((card) => card.category === selectedCategory) : showCards; // 해당하는 카테고리로 정렬된 카드 데이터
+  const hasCardData = !selectedCategory || sortedCards.length !== 0; // 카드 데이터가 있는지 확인하는 boolean 값
   const [disableShadow, setDisableShadow] = useState(false);
   const [disableRightShadow, setDisableRightShadow] = useState(false);
   const [move, setMove] = useState(0);
@@ -64,7 +64,6 @@ function AllExperience({
   useEffect(() => {
     handleDisableShadow();
   }, [move]);
-  console.log(move);
 
   return (
     <section className={styles.container}>
@@ -134,7 +133,7 @@ function AllExperience({
       <div className={styles.titleWrapper}>
         {!searchResult ? (
           <div className={styles.header}>
-            <h1>{selectedCategory ? selectedCategory : '🛼 모든 체험'}</h1>
+            <h1>{selectedCategory || '🛼 모든 체험'}</h1>
             <select onChange={handleSortByPrice}>
               <option value="lowPriceOrder">가격이 낮은 순</option>
               <option value="highPriceOrder">가격이 높은 순</option>
@@ -152,10 +151,9 @@ function AllExperience({
       </div>
 
       <div className={styles.cardWrapper}>
-        {selectedCategory &&
-          sortedCards.length > 0 &&
-          sortedCards.map((card) => <CardDetail item={card} key={card.id} />)}
-        {!selectedCategory && showCards.map((card) => <CardDetail item={card} key={card.id} />)}
+        {sortedCards.map((card) => (
+          <CardDetail item={card} key={card.id} />
+        ))}
       </div>
 
       {hasCardData ? (
