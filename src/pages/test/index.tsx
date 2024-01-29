@@ -1,4 +1,4 @@
 function Test() {
-  return <div></div>;
+  return <></>;
 }
 export default Test;
