@@ -1,5 +1,5 @@
 import styles from './Reservations.module.css';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
@@ -37,34 +37,33 @@ function Reservation() {
   // }, [selectedStatus]);
 
   return (
-    <MyPageLayout>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h2 className={styles.h2}>예약 내역</h2>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h2 className={styles.h2}>예약 내역</h2>
 
-          {/* TODO : 소은님 드롭다운으로 변경할 예정 */}
-          <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
-            <option disabled value="" hidden>
-              예약 상태
+        {/* TODO : 소은님 드롭다운으로 변경할 예정 */}
+        <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
+          <option disabled value="" hidden>
+            예약 상태
+          </option>
+          <option value="all">전체</option>
+          {STATUS_OPTIONS.map((option) => (
+            <option key={option.id} value={option.value}>
+              {option.name}
             </option>
-            <option value="all">전체</option>
-            {STATUS_OPTIONS.map((option) => (
-              <option key={option.id} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {filteredReservations.map((reservation) => (
-          <Card key={reservation.id} data={reservation} />
-        ))}
-
-        {/* 무한 스크롤을 위한 target */}
-        <div ref={targetRef}></div>
+          ))}
+        </select>
       </div>
-    </MyPageLayout>
+
+      {filteredReservations.map((reservation) => (
+        <Card key={reservation.id} data={reservation} />
+      ))}
+
+      {/* 무한 스크롤을 위한 target */}
+      <div ref={targetRef}></div>
+    </div>
   );
 }
 
 export default Reservation;
+Reservation.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
