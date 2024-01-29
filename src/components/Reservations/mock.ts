@@ -1,4 +1,4 @@
-import { Reservations } from '@/components/Reservations/Card/Card';
+import { Reservations } from '@/types/reservations';
 
 export const reservations: Reservations['data'][] = [
   {
