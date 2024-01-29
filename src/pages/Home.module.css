@@ -6,6 +6,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: var(--grayFA);
+
+  padding-bottom: 24.7rem;
+
+  @media mobile {
+    padding-bottom: 15.3rem;
+  }
 }
 
 .container {
