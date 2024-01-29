@@ -12,6 +12,7 @@
   }
 
   @media mobile {
+    padding-left: 1.6rem;
     margin-top: 2.4rem;
     margin-bottom: 4rem;
   }

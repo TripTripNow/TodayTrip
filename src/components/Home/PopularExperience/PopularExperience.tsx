@@ -61,13 +61,13 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           breakpoints: {
             1200: {
               perPage: 2,
-              gap: '3.2rem',
-              fixedWidth: '38.4rem',
+              gap: 0,
+              fixedWidth: '41.6rem',
             },
             767: {
               perPage: 2,
-              gap: '1.6rem',
-              fixedWidth: '18.6rem',
+              gap: 0,
+              fixedWidth: '20.2rem',
             },
           },
           clones: undefined,
