@@ -19,3 +19,8 @@ a,
 button {
   cursor: pointer;
 }
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
