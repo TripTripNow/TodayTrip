@@ -7,6 +7,7 @@ import { useState } from 'react';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import { Reservations } from '@/types/reservations';
 import { STATUS } from '@/constants/reservation';
+import Button from '@/components/common/Button/Button';
 
 function Card({ data }: Reservations) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -40,23 +41,28 @@ function Card({ data }: Reservations) {
         <div className={styles.bottom}>
           <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
           {data.status === 'pending' && (
-            <button onClick={handleCancelModalToggle} className={styles.button}>
+            <Button color="white" onClick={handleCancelModalToggle} type="reservation">
               예약 취소
-            </button>
+            </Button>
+          )}
+          {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
+          {isCancelModalOpen && (
+            <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
           )}
           {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
           {data.status === 'completed' && (
-            <button onClick={handleReviewModalToggle} disabled={data.reviewSubmitted} className={styles.button}>
+            <Button
+              color="green"
+              isDisabled={data.reviewSubmitted}
+              onClick={handleReviewModalToggle}
+              type="reservation"
+            >
               후기 작성
-            </button>
+            </Button>
           )}
+          {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
         </div>
       </div>
-      {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
-      {isCancelModalOpen && (
-        <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
-      )}
-      {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
     </div>
   );
 }

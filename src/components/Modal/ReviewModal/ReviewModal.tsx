@@ -1,9 +1,8 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReviewModal.module.css';
-import CloseIcon from '#/icons/icon-close.svg';
+import ModalCloseIcon from '#/icons/icon-modalClose.svg';
 import formatDateString from '@/utils/formatDateString';
 import Image from 'next/image';
-
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
 import { Reservations } from '@/types/reservations';
@@ -34,7 +33,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
         <div className={styles.header}>
           <h2 className={styles.h2}>후기 작성</h2>
           <button onClick={handleModalClose}>
-            <CloseIcon />
+            <ModalCloseIcon alt="닫기 아이콘" width="4rem" height="4rem" />
           </button>
         </div>
         {/* 체험 관련 정보 카드 */}

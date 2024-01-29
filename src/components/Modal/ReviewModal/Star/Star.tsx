@@ -31,7 +31,13 @@ function Star({
       onMouseEnter={() => setHoveredStarCount(rating)}
       onMouseLeave={() => setHoveredStarCount(ratingInputValue)}
     >
-      {isSelected ? <YellowStarIcon /> : hoveredStarCount >= rating ? <LightYellowStarIcon /> : <EmptyStarIcon />}
+      {isSelected ? (
+        <YellowStarIcon alt="선택된 별 아이콘" />
+      ) : hoveredStarCount >= rating ? (
+        <LightYellowStarIcon alt="호버 된 별 아이콘" />
+      ) : (
+        <EmptyStarIcon alt="선택도 호버도 되지 않은 별 아이콘" />
+      )}
     </button>
   );
 }

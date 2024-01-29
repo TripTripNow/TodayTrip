@@ -159,8 +159,11 @@
   color: var(--whiteFF);
   font-size: 1.6rem;
   background-color: var(--nomad_black);
+  border-radius: 0.4rem;
+  line-height: 2.6rem;
+  font-weight: 700;
 }
 
 .button:disabled {
-  background-color: var(--grayAD);
+  background-color: var(--grayA4);
 }

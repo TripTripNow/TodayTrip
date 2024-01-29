@@ -146,11 +146,3 @@
     font-size: 1.6rem;
   }
 }
-.button {
-  border: 0.1rem solid var(--gray4B);
-  padding: 1rem;
-}
-
-.button:disabled {
-  background-color: var(--grayA4);
-}
