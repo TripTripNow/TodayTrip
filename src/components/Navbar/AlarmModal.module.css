@@ -30,6 +30,7 @@
     opacity: 1;
   }
 }
+
 @keyframes slideoutpc {
   from {
     opacity: 1;
@@ -64,6 +65,7 @@
 .alarmModalCloseContainer {
   composes: alarmModalContainer;
   animation: slideoutpc 0.3s ease-out;
+
   @media mobile {
     animation: slideout 0.3s ease-out;
   }
