@@ -1,8 +1,14 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import { PRICE_LIST, PriceSortOption, RESERVE_LIST, ReserveSortOption } from '@/constants/dropdown';
+import {
+  PRICE_LIST,
+  PriceSortOption,
+  RESERVE_LIST,
+  ReserveSortOption,
+  MOBILE_LIST,
+  MobileSortOption,
+} from '@/constants/dropdown';
 import { useEffect, useState } from 'react';
 import styles from './FilterDropdown.module.css';
-import clsx from 'clsx';
 
 interface FilterDropdownProps {
   type: '가격' | '예약 상태';
@@ -13,11 +19,11 @@ type AllReserveOption = ReserveSortOption | '예약 상태';
 
 function FilterDropDown({ type }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState<AllPriceOption | AllReserveOption>(type);
+  const [value, setValue] = useState<AllPriceOption | AllReserveOption | MobileSortOption>(type);
   const [isMobile, setIsMobile] = useState(false);
   const [windowSize, setWindowSize] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
 
-  const lists = type === '가격' ? (isMobile ? ['낮은 순', '높은 순'] : PRICE_LIST) : RESERVE_LIST;
+  const lists = type === '가격' ? (isMobile ? MOBILE_LIST : PRICE_LIST) : RESERVE_LIST;
 
   const handleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -26,7 +32,7 @@ function FilterDropDown({ type }: FilterDropdownProps) {
   const handleClickOutside = () => {
     setTimeout(() => {
       setIsOpen(false);
-    }, 150);
+    }, 200);
   };
 
   const handleResize = () => {
@@ -53,7 +59,7 @@ function FilterDropDown({ type }: FilterDropdownProps) {
 
   return (
     <div onBlur={handleClickOutside}>
-      <label className={styles.wrapper}>
+      <label className={type === '가격' ? styles.price : styles.reserve}>
         <button value={value} onClick={handleDropdown}>
           {value}
         </button>
