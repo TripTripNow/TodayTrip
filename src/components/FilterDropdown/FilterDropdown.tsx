@@ -28,14 +28,18 @@ function FilterDropDown({ type }: FilterDropdownProps) {
 
   return (
     <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
-      <button value={value} onClick={handleDropdown} className={styles.wrapper}>
+      <button value={value} onClick={handleDropdown} className={type === '가격' ? styles.priceWrapper : styles.wrapper}>
         {value}
         {isOpen ? <ArrowDownIcon style={{ rotate: '180deg' }} /> : <ArrowDownIcon />}
       </button>
       {isOpen && (
         <div className={styles.option}>
           {lists.map((item, idx) => (
-            <button className={styles.list} key={idx} onClick={() => setValue(item)}>
+            <button
+              className={type === '가격' ? styles.priceList : styles.list}
+              key={idx}
+              onClick={() => setValue(item)}
+            >
               {item}
             </button>
           ))}

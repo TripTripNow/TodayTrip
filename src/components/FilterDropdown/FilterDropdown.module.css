@@ -2,6 +2,7 @@
 
 .price {
   width: 12.7rem;
+  height: 5.3rem;
 
   @media tablet {
     width: 12rem;
@@ -33,12 +34,17 @@
   color: var(--green0B);
   font-size: 1.8rem;
   font-weight: 500;
+}
+
+.priceWrapper {
+  composes: wrapper;
 
   @media mobile {
     padding: 1.2rem;
     font-size: 1.4rem;
   }
 }
+
 
 .option {
   width: 100%;
@@ -62,6 +68,10 @@
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2.2rem;
+}
+
+.priceList {
+  composes: list;
 
   @media mobile {
     font-size: 1.4rem;
