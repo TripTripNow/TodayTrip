@@ -5,6 +5,7 @@ import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import Input from '@/components/Input/Input';
 import { passwordCheck } from '@/utils/passwordCheck';
 import ProfileInput from '@/components/MyPage/ProfileInput';
+import Button from '@/components/common/Button/Button';
 function MyPage() {
   const methods = useForm<FieldValues>({
     mode: 'onTouched',
@@ -33,40 +34,42 @@ function MyPage() {
   const { getValues } = useFormContext();
 
   return (
-    <div className={styles.myPageContainer}>
-      <div className={styles.topContainer}>
-        <div className={styles.titleContainer}>
-          <div className={styles.title}>내 정보</div>
-          <button className={styles.button} type="submit" form="mypageForm" disabled={!isValid}>
-            저장하기
-          </button>
-        </div>
+    <div>
+      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.myPageContainer}>
+        <div className={styles.topContainer}>
+          <div className={styles.titleContainer}>
+            <div className={styles.title}>내 정보</div>
+            <Button type="default" isDisabled={!isValid} color="green">
+              저장하기
+            </Button>
+          </div>
 
-        <ProfileInput isProfileBox={false} isEdit={true} />
-      </div>
-      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} id="mypageForm">
-        <Input
-          name={'nickName'}
-          control={control}
-          label={'닉네임'}
-          placeholder={'닉네임을 입력해주세요'}
-          type={'text'}
-        />
-        <Input name={'email'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
-        <Input
-          name={'mypagePassword'}
-          control={control}
-          label={'비밀번호'}
-          placeholder={'8자 이상 입력해 주세요'}
-          type={'password'}
-        />
-        <Input
-          name={'mypagePasswordCheck'}
-          control={control}
-          label={'비밀번호 확인'}
-          placeholder={'비밀번호를 한번 더 입력해 주세요'}
-          type={'password'}
-        />
+          <ProfileInput isProfileBox={false} isEdit={true} />
+        </div>
+        <div className={styles.formContainer}>
+          <Input
+            name={'nickName'}
+            control={control}
+            label={'닉네임'}
+            placeholder={'닉네임을 입력해주세요'}
+            type={'text'}
+          />
+          <Input name={'email'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
+          <Input
+            name={'mypagePassword'}
+            control={control}
+            label={'비밀번호'}
+            placeholder={'8자 이상 입력해 주세요'}
+            type={'password'}
+          />
+          <Input
+            name={'mypagePasswordCheck'}
+            control={control}
+            label={'비밀번호 확인'}
+            placeholder={'비밀번호를 한번 더 입력해 주세요'}
+            type={'password'}
+          />
+        </div>
       </form>
     </div>
   );
