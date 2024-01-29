@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent } from 'react';
 import SearchIcon from '#/icons/icon-search.svg';
 
 import styles from './Searchbar.module.css';
+import Button from '@/components/common/Button/Button';
 
 interface SearchbarProps {
   inputSearchText: string;
@@ -29,8 +30,9 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
           />
           {inputSearchText && <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>}
         </div>
-
-        <button className={styles.searchBtn}>검색하기</button>
+        <Button type="search" color="green">
+          검색하기
+        </Button>
       </form>
       <p className={styles.searchText}>최근 검색어: {recentText.join(', ')}</p>
     </div>
