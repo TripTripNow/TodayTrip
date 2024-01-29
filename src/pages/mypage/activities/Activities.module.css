@@ -50,10 +50,13 @@
   box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
   display: flex;
   gap: 2.4rem;
+  height: 20.4rem;
   @media tablet {
+    height: 15.6rem;
     gap: 1.2rem;
   }
   @media mobile {
+    height: 12.8rem;
     gap: 0.8rem;
   }
 }
@@ -78,11 +81,11 @@
   width: 54.8rem;
   @media tablet {
     width: 24.5rem;
-    padding: 1.2rem 0 1.3rem 0;
+    padding: 1rem 0 1.3rem 0;
   }
   @media mobile {
     width: 19.4rem;
-    padding: 1.2rem 0 1.2rem 0;
+    padding: 1rem 0 1.2rem 0;
   }
 }
 
