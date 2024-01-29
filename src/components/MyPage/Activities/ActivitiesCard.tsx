@@ -4,7 +4,6 @@ import KebabIcon from '#/icons/icon-kebab.svg';
 import DanceImg from '#/images/img-dance.jpg';
 import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
-import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 
 interface ActivitiesCardProps {
   item: {
@@ -25,14 +24,14 @@ interface ActivitiesCardProps {
 function ActivitiesCard({ item }: ActivitiesCardProps) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
 
-  const handleKebabToggle = () => {
-    setIsKebabOpen((prev) => !prev);
-  };
-
   const handleKebabBlur = () => {
     setTimeout(() => {
       setIsKebabOpen(false);
-    });
+    }, 100);
+  };
+
+  const handleKebabToggle = () => {
+    setIsKebabOpen((prev) => !prev);
   };
 
   const handleEditButton = (id: number) => {
