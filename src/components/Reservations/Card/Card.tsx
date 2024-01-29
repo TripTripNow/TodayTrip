@@ -2,18 +2,18 @@ import Image from 'next/image';
 import styles from './Card.module.css';
 import clsx from 'clsx';
 import formatDateString from '@/utils/formatDateString';
-import CancelModal from '@/components/Modal/CancelModal/CancelModal';
 import { useState } from 'react';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import { Reservations } from '@/types/reservations';
 import { STATUS } from '@/constants/reservation';
 import Button from '@/components/common/Button/Button';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 
 function Card({ data }: Reservations) {
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const handleCancelModalToggle = () => {
-    setIsCancelModalOpen((prev) => !prev);
+    setIsAlertModalOpen((prev) => !prev);
   };
 
   const handleReviewModalToggle = () => {
@@ -46,8 +46,13 @@ function Card({ data }: Reservations) {
             </Button>
           )}
           {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
-          {isCancelModalOpen && (
-            <CancelModal handleModalClose={handleCancelModalToggle} handleCancel={handleCancelModalToggle} />
+          {isAlertModalOpen && (
+            <AlertModal
+              text="예약을 취소하시겠습니까?"
+              buttonText="취소하기"
+              handleModalClose={handleCancelModalToggle}
+              handleCancel={handleCancelModalToggle}
+            />
           )}
           {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
           {data.status === 'completed' && (

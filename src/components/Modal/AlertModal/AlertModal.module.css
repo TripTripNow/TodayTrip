@@ -7,30 +7,30 @@
   align-items: center;
   gap: 1.6rem;
   background-color: var(--whiteFF);
-  border-radius: 0.8rem;
+  border-radius: 1.2rem;
   justify-content: center;
 }
 
 .text {
   color: var(--black1B);
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   marign-bottom: 1.6rem;
 }
 
 .buttonContainer {
   display: flex;
-  gap: 1.7rem;
+  gap: 1.2rem;
 }
 
 .button {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  border-radius: 0.6rem;
-  width: 9.4rem;
+  border-radius: 0.8rem;
+  width: 9rem;
   padding: 1rem 2rem;
   border: 0.1rem solid var(--nomad_black);
 }
