@@ -77,7 +77,7 @@
 }
 
 .activitiesItemContent {
-  padding: 2.4rem 0 2.4rem 0;
+  padding: 2rem 0 2rem 0;
   width: 54.8rem;
   @media tablet {
     width: 24.5rem;
@@ -103,7 +103,7 @@
 }
 
 .activitiesReviewCount {
-  margin-top: 0.3rem;
+  line-height: 1.9rem;
 }
 
 .activitiesItemContentTitle {

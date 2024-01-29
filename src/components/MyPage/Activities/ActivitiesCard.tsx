@@ -50,7 +50,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
         <div className={styles.activitiesItemContentHeader}>
           <StarIcon />
           <p className={styles.activitiesReviewCount}>
-            {item.rating} ({item.reviewCount})
+            {item.rating.toFixed(1)} ({item.reviewCount})
           </p>
         </div>
         <p className={styles.activitiesItemContentTitle}>{item.title}</p>
