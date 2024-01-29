@@ -30,7 +30,7 @@ const MENU_LIST = [
     title: '예약 현황',
     src: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" />,
     activeSrc: <DashboardIcon fill="#112211" stroke="#112211" />,
-    link: '/mypage/activities/dashboard',
+    link: '/mypage/activities/reservation-dashboard',
   },
 ];
 
