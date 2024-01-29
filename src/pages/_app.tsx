@@ -3,12 +3,14 @@ import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
 import '@/styles/globals.css';
 import '@/styles/reset.css';
 import '@/styles/variables.css';
 import '#/fonts/Pretandard/Pretandard.css';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import Footer from '@/components/Footer/Footer';
+import Navbar from '@/components/common/Navbar';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,7 +31,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         },
       }),
   );
-
+  const router = useRouter();
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -40,7 +42,9 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
+          {!router.pathname.includes('sign') && <Navbar />}
           {getLayout(<Component {...pageProps} />)}
+          {!router.pathname.includes('sign') && <Footer />}
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
