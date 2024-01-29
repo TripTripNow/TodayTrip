@@ -1,4 +1,4 @@
 function Test() {
-  return;
+  return <></>;
 }
 export default Test;
