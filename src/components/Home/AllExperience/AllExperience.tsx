@@ -18,7 +18,7 @@ interface AllExperienceProps {
   showCards: CardProps['item'][];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
-  allPages: number;
+  totalPages: number;
   pageNumber: number;
 }
 
@@ -28,7 +28,7 @@ function AllExperience({
   showCards,
   totalCardsNum,
   handlePaginationByClick,
-  allPages,
+  totalPages,
   pageNumber,
 }: AllExperienceProps) {
   const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
@@ -160,7 +160,11 @@ function AllExperience({
 
       {hasCardData ? (
         <div className={styles.paginationWrapper}>
-          <Pagination pageNumber={pageNumber} allPages={allPages} handlePaginationByClick={handlePaginationByClick} />
+          <Pagination
+            pageNumber={pageNumber}
+            totalPages={totalPages}
+            handlePaginationByClick={handlePaginationByClick}
+          />
         </div>
       ) : (
         <NoResult />
