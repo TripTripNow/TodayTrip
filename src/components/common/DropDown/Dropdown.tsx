@@ -35,17 +35,21 @@ function Dropdown({ activities, setDropdownItem }: DropdownProps) {
     setIsOpen((prev) => !prev);
   };
 
+  const handleDropdownClose = () => {
+    setIsOpen(false);
+  };
+
   const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: string) => {
     e.preventDefault();
     setValue(val);
     setDropdownItem(val);
-    handleDropdownToggle();
+    handleDropdownClose();
   };
 
   const showLists = activities ? activities.map((activity) => activity.title) : CATEGORY_LIST;
 
   return (
-    <div className={styles.container} style={{ border: '1px solid #000' }} onBlur={handleDropdownToggle}>
+    <div className={styles.container} style={{ border: '1px solid #000' }} onBlur={handleDropdownClose}>
       {activities && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}
