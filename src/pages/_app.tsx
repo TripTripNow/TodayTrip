@@ -42,8 +42,8 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          <div className="root">{getLayout(<Component {...pageProps} />)}</div>
           {!router.pathname.includes('sign') && <Navbar />}
+          <div className="root">{getLayout(<Component {...pageProps} />)}</div>
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
