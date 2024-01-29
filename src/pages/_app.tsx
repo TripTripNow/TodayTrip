@@ -40,7 +40,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          {getLayout(<Component {...pageProps} />)}
+          <div className="root">{getLayout(<Component {...pageProps} />)}</div>
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />

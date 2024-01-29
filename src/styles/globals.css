@@ -19,3 +19,12 @@ a,
 button {
   cursor: pointer;
 }
+
+#__next {
+  display: flex;
+  flex-direction: column;
+}
+
+.root {
+  height: 100vh;
+}
