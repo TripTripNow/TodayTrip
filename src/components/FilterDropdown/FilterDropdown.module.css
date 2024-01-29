@@ -45,12 +45,11 @@
   }
 }
 
-
 .option {
   width: 100%;
   height: auto;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 0.6rem;

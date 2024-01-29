@@ -4,6 +4,7 @@ import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
+import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 
 const STATUS_OPTIONS = [
   { id: 1, value: 'pending', name: '예약 완료' },
@@ -40,9 +41,9 @@ function Reservation() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.h2}>예약 내역</h2>
-
+        <FilterDropDown type="예약 상태" />
         {/* TODO : 소은님 드롭다운으로 변경할 예정 */}
-        <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
+        {/* <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
           <option disabled value="" hidden>
             예약 상태
           </option>
@@ -52,13 +53,12 @@ function Reservation() {
               {option.name}
             </option>
           ))}
-        </select>
+        </select> */}
       </div>
 
       {filteredReservations.map((reservation) => (
         <Card key={reservation.id} data={reservation} />
       ))}
-
       {/* 무한 스크롤을 위한 target */}
       <div ref={targetRef}></div>
     </div>
