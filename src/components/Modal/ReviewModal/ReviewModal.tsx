@@ -3,13 +3,14 @@ import styles from './ReviewModal.module.css';
 import CloseIcon from '#/icons/icon-close.svg';
 import formatDateString from '@/utils/formatDateString';
 import Image from 'next/image';
-import { CardProps } from '@/components/Reservations/Card/Card';
+
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
+import { Reservations } from '@/types/reservations';
 
 export const RATINGS = [1, 2, 3, 4, 5] as const;
 
-interface ReviewModalProps extends CardProps {
+interface ReviewModalProps extends Reservations {
   handleModalClose: () => void;
 }
 function ReviewModal({ data, handleModalClose }: ReviewModalProps) {

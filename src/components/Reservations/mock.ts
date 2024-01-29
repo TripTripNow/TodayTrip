@@ -1,6 +1,6 @@
-import { CardProps } from '@/components/Reservations/Card/Card';
+import { Reservations } from '@/components/Reservations/Card/Card';
 
-export const reservations: CardProps['data'][] = [
+export const reservations: Reservations['data'][] = [
   {
     id: 1,
     activity: {
