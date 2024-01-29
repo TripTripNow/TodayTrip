@@ -45,10 +45,19 @@
   line-height: 2.6rem;
 }
 
+.subTitle {
+  color: #969696;
+  font-weight: 400;
+}
+
 .active {
   background-color: var(--greenCE);
 }
 
 .active > .menuItemTitle {
   color: var(--nomad_black);
+}
+
+.menuItem:hover .subTitle {
+  display: none;
 }

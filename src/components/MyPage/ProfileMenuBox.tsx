@@ -36,11 +36,31 @@ const MENU_LIST = [
 
 function ProfileMenuBox() {
   const router = useRouter();
-  const [isSelected, setIsSelected] = useState(MENU_LIST.find((e) => e.link === router.pathname)?.title);
+  const { pathname } = router;
+  const [isSelected, setIsSelected] = useState(
+    pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === router.pathname)?.title,
+  );
 
   const handleMenuItem = (item: { title: string; link: string }) => {
     setIsSelected(item.title);
     router.push(item.link);
+  };
+
+  console.log(router);
+
+  const renderTitle = (title: string) => {
+    const result = [];
+    if (router.pathname === '/mypage/reservations/[id]') {
+      result.push(
+        <>
+          {title} <span className={styles.subTitle}>- 예약 상세</span>
+        </>,
+      );
+    } else {
+      result.push(<>{title}</>);
+    }
+
+    return result;
   };
 
   return (
@@ -55,7 +75,7 @@ function ProfileMenuBox() {
               onClick={() => handleMenuItem(e)}
             >
               {e.title === isSelected ? e.activeSrc : e.src}
-              <div className={styles.menuItemTitle}>{e.title}</div>
+              <div className={styles.menuItemTitle}>{e.title === '예약 내역' ? renderTitle(e.title) : e.title}</div>
             </div>
           );
         })}
