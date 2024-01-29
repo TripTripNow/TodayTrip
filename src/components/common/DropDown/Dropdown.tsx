@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import clsx from 'clsx';
 
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
@@ -24,7 +24,7 @@ interface DropdownProps {
     createdAt: string;
     updatedAt: string;
   }[];
-  setDropdownItem: (val: string | number) => void;
+  setDropdownItem: Dispatch<SetStateAction<string | number>>;
 }
 
 function Dropdown({ activities, setDropdownItem }: DropdownProps) {
