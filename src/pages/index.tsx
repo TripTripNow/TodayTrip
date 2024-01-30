@@ -43,12 +43,12 @@ function Home() {
       if (!storedText) {
         localStorageSetItem('recentText', inputSearchText);
       } else {
-        const splitedText = storedText!.split(',');
-        if (!splitedText.includes(inputSearchText)) {
-          if (splitedText.length >= 10) {
-            localStorageSetItem('recentText', [inputSearchText, ...splitedText.slice(0, 9)].join(',')!);
+        const splittedText = storedText!.split(',');
+        if (!splittedText.includes(inputSearchText)) {
+          if (splittedText.length >= 10) {
+            localStorageSetItem('recentText', [inputSearchText, ...splittedText.slice(0, 9)].join(',')!);
           } else {
-            localStorageSetItem('recentText', [inputSearchText, ...splitedText].join(',')!);
+            localStorageSetItem('recentText', [inputSearchText, ...splittedText].join(',')!);
           }
         }
       }
@@ -75,10 +75,9 @@ function Home() {
    * @description 이 함수는 원래 fetch하는 logic이 들어가는 함수입니다. api 연결시 변경되어야 할 내용입니다.
    */
   const handleSortByPrice = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      const newSortByPrice = e.target.value;
-      if (sortByPrice === newSortByPrice) return;
-      setSortByPrice(newSortByPrice);
+    (val: string) => {
+      if (sortByPrice === val) return;
+      setSortByPrice(val);
       setPageNumber(1);
     },
     [sortByPrice],

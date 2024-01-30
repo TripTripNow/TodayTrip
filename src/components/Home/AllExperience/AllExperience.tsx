@@ -9,12 +9,14 @@ import NoResult from '@/components/Home/NoResult/NoResult';
 import styles from './AllExperience.module.css';
 import Button from '@/components/common/Button/Button';
 import { CardItem } from '@/types/api';
+import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
+import { PriceFilterOption } from '@/types/dropdown';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
-  handleSortByPrice: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleSortByPrice: (val: string) => void;
   showCards: CardItem['item'][];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
@@ -37,6 +39,7 @@ function AllExperience({
   const [disableShadow, setDisableShadow] = useState(false);
   const [disableRightShadow, setDisableRightShadow] = useState(false);
   const [move, setMove] = useState(0);
+  const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
 
   // 카테고리 버튼 클릭 함수
   const handleClickCategory = useCallback(
@@ -64,6 +67,10 @@ function AllExperience({
   useEffect(() => {
     handleDisableShadow();
   }, [move]);
+
+  useEffect(() => {
+    handleSortByPrice(filterValue);
+  }, [filterValue]);
 
   return (
     <section className={styles.container}>
@@ -134,10 +141,7 @@ function AllExperience({
         {!searchResult ? (
           <div className={styles.header}>
             <h1>{selectedCategory || '🛼 모든 체험'}</h1>
-            <select onChange={handleSortByPrice}>
-              <option value="lowPriceOrder">가격이 낮은 순</option>
-              <option value="highPriceOrder">가격이 높은 순</option>
-            </select>
+            <FilterDropDown type="가격" value={filterValue} setValue={setFilterValue} />
           </div>
         ) : (
           <div className={styles.searchedHeader}>
