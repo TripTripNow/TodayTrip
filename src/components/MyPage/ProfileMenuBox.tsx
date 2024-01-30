@@ -10,27 +10,27 @@ import ProfileInput from '@/components/MyPage/ProfileInput';
 const MENU_LIST = [
   {
     title: '내 정보',
-    icon: <MypageIcon fill="#A1A1A1" />,
-    activeIcon: <MypageIcon fill="#112211" />,
+    icon: <MypageIcon fill="#A1A1A1" alt="내 정보 페이지를 나타내는 아이콘" />,
+    activeIcon: <MypageIcon fill="#112211" alt="내 정보 페이지 호버 시 보이는 아이콘" />,
     link: '/mypage',
   },
   {
     title: '예약 내역',
-    icon: <ReservationIcon fill="#A1A1A1" />,
-    activeIcon: <ReservationIcon fill="#112211" />,
+    icon: <ReservationIcon fill="#A1A1A1" alt="예약 내역 페이지를 나타내는 아이콘" />,
+    activeIcon: <ReservationIcon fill="#112211" alt="예약 내역 페이지 호버 시 보이는 아이콘" />,
     link: '/mypage/reservations',
   },
   {
     title: '내 체험 관리',
-    icon: <ActivitiesIcon fill="#A1A1A1" />,
-    activeIcon: <ActivitiesIcon fill="#112211" />,
+    icon: <ActivitiesIcon fill="#A1A1A1" alt="내 체험 관리 페이지를 나타내는 아이콘" />,
+    activeIcon: <ActivitiesIcon fill="#112211" alt="내 체험 관리 페이지 호버 시 보이는 아이콘" />,
     link: '/mypage/activities',
   },
   {
     title: '예약 현황',
-    icon: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" />,
-    activeIcon: <DashboardIcon fill="#112211" stroke="#112211" />,
-    link: '/mypage/activities/reservation-dashboard',
+    icon: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" alt="예액 현황 페이지를 나타내는 아이콘" />,
+    activeIcon: <DashboardIcon fill="#112211" stroke="#112211" alt="예약 현황 페이지 호버 시 보이는 아이콘" />,
+    link: '/mypage/activities/dashboard',
   },
 ];
 

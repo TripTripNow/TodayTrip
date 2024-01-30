@@ -14,7 +14,7 @@ const CustomInput = ({ value, onClick }: Props) => (
     <button className={styles.input} onClick={onClick}>
       {value ? <>{value}</> : <span>{'YY/MM/DD'}</span>}
     </button>
-    <CalendarIcon className={styles.icon} />
+    <CalendarIcon className={styles.icon} alt="달력 모양 아이콘" />
   </label>
 );
 

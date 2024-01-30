@@ -1,4 +1,2 @@
-function Test() {
-  return <></>;
-}
+function Test() {}
 export default Test;

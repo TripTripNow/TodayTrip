@@ -15,7 +15,7 @@ function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildr
   return (
     <div className={styles.layoutContainer}>
       <Link href="/" className={styles.topContainer}>
-        <LogoIcon className={styles.logoImg} />
+        <LogoIcon alt="로고 아이콘" className={styles.logoImg} />
         <div className={styles.title}>TodayTrip</div>{' '}
       </Link>
 
