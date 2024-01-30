@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const useInfiniteScroll = () => {
   // 보여지고 있는지를 나타내는 state
   const [isVisible, setIsVisible] = useState(false);
-  const targetRef = useRef<HTMLParagraphElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   // new IntersectionObserver()로 생성한 인스턴스가 observer
   useEffect(() => {

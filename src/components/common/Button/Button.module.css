@@ -1,0 +1,142 @@
+@values desktop, tablet, mobile from '@/styles/breakpoints.css';
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+}
+
+.button:disabled {
+  background-color: var(--grayA4);
+}
+
+.green {
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+}
+
+.white {
+  border: 0.1rem solid var(--nomad_black);
+  background: var(--whiteFF);
+  color: var(--nomad_black);
+}
+
+/* 내 정보, 내 체험 관리 페이지 */
+.default {
+  width: 12rem;
+  height: 4.8rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+}
+
+/* 로그인, 회원가입 페이지 */
+.auth {
+  width: 100%;
+  padding: 1.4rem 0;
+  border-radius: 0.6rem;
+  line-height: 2rem;
+}
+
+/* 메인 페이지 */
+.search {
+  width: 13.6rem;
+  height: 5.6rem;
+  padding: 0.8rem 4rem;
+  border-radius: 0.4rem;
+
+  @media mobile {
+    width: 9.6rem;
+    padding: 0.8rem 2rem;
+  }
+}
+
+/* 내 체험 등록, 수정 페이지 - 등록하기, 수정하기 */
+.activity {
+  width: 100%;
+  height: 4.8rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  align-self: stretch;
+
+  @media desktop {
+    width: 39.6rem;
+  }
+}
+
+/* 예약 내역 페이지 */
+.reservation {
+  width: 14.4rem;
+  height: 4rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.6rem;
+
+  @media tablet {
+    width: 11.2rem;
+  }
+
+  @media mobile {
+    width: 8rem;
+    height: 3.2rem;
+    padding: 1.4rem 0;
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+}
+
+/* 모달 - 예약 정보 - 예약 내역 */
+.modalSingle {
+  width: 100%;
+  height: 5.6rem;
+  padding: 0.8rem 4rem;
+  border-radius: 0.4rem;
+
+  @media mobile {
+    /* width: 10.6rem; */
+    padding: 1.4rem 0;
+    line-height: 2rem;
+  }
+}
+
+.modalDouble {
+  display: flex;
+  width: 8.2rem;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 0.6rem;
+}
+
+/* 모달 - 체험 상세 - 체험 가능한 시간 */
+.time {
+  width: 10.1rem;
+  height: 4.6rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.8rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+/* 메인 페이지 - 카테고리 */
+.category {
+  width: 12.7rem;
+  padding: 1.6rem 3rem;
+  border-radius: 1.5rem;
+  border: 0.1rem solid var(--green0B);
+  font-size: 1.6rem;
+  font-weight: 500;
+
+  @media tablet {
+    width: 12rem;
+    font-size: 1.5rem;
+  }
+
+  @media mobile {
+    width: 8rem;
+    padding: 1.2rem 0;
+    font-size: 1.4rem;
+  }
+}

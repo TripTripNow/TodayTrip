@@ -5,9 +5,10 @@ import styles from './ModalLayout.module.css';
 interface ModalLayoutProps {
   children: ReactNode;
   handleModalClose: () => void;
+  isAlarmModal?: boolean;
 }
 
-function ModalLayout({ children, handleModalClose }: ModalLayoutProps) {
+function ModalLayout({ children, handleModalClose, isAlarmModal }: ModalLayoutProps) {
   const portalRoot = document.getElementById('modal') as HTMLElement;
 
   const modalOutsideRef = useRef<HTMLDivElement>(null);
@@ -36,7 +37,11 @@ function ModalLayout({ children, handleModalClose }: ModalLayoutProps) {
   }, [handleModalClose]);
 
   return createPortal(
-    <div onClick={modalOutsideClick} ref={modalOutsideRef} className={styles.root}>
+    <div
+      onClick={modalOutsideClick}
+      ref={modalOutsideRef}
+      className={`${styles.root} ${isAlarmModal && styles.alarmModal}`}
+    >
       <div>{children}</div>
     </div>,
     portalRoot,
