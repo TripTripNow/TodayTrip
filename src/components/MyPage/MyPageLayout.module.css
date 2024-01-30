@@ -5,6 +5,7 @@
   gap: 2.4rem;
   justify-content: center;
   margin-top: 7.2rem;
+  padding-bottom: 25rem;
 
   @media tablet {
     gap: 1.6rem;
