@@ -34,7 +34,7 @@ function AlarmModal({ setIsModalOpen, alarmData }: AlarmModalProps) {
         <div className={styles.alarmModalHeader}>
           <p>알림 {alarmData.totalCount}개</p>
           <button onClick={handleModalClose}>
-            <CloseIcon />
+            <CloseIcon alt="닫기 아이콘" />
           </button>
         </div>
         {alarmData.totalCount ? (
@@ -43,9 +43,15 @@ function AlarmModal({ setIsModalOpen, alarmData }: AlarmModalProps) {
               <div key={index}>
                 <div className={styles.alarmModalContentWrapper}>
                   <div className={styles.alarmModalContentHeader}>
-                    <div>{item.status === 'approve' ? <BlueEllipse /> : <RedEllipse />}</div>
+                    <div>
+                      {item.status === 'approve' ? (
+                        <BlueEllipse alt="예약 승인을 나타내는 아이콘" />
+                      ) : (
+                        <RedEllipse alt="예약 거절을 나타내는 아이콘" />
+                      )}
+                    </div>
                     <button onClick={handleAlarmDelete}>
-                      <LightCloseIcon />
+                      <LightCloseIcon alt="닫기 아이콘" />
                     </button>
                   </div>
                   <p className={styles.alarmModalContent}>{item.content}</p>
