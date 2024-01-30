@@ -48,7 +48,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
         width={160}
         height={160}
       />
-      {isEdit && <EditIcon className={styles.editIcon} onClick={handleUploadImg} />}
+      {isEdit && <EditIcon alt="프로필 이미지 수정 아이콘" className={styles.editIcon} onClick={handleUploadImg} />}
 
       <input
         type="file"

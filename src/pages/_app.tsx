@@ -10,7 +10,7 @@ import '#/fonts/Pretandard/Pretandard.css';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Footer from '@/components/Footer/Footer';
-import Navbar from '@/components/common/Navbar';
+import Navbar from '@/components/common/Navbar/Navbar';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -44,7 +44,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <HydrationBoundary state={pageProps.dehydratedState}>
           {!router.pathname.includes('sign') && <Navbar />}
           {getLayout(<Component {...pageProps} />)}
-          {!router.pathname.includes('sign') && <Footer />}
+          {/* {!router.pathname.includes('sign') && <Footer />} */}
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
