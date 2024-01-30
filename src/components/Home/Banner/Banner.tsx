@@ -97,7 +97,11 @@ function Carousel() {
         onMouseEnter={() => handleArrowHover('left', true)}
         onMouseLeave={() => handleArrowHover('left', false)}
       >
-        <LeftArrow stroke="var(--gray4B)" className={clsx(arrowHover.left ? styles.opacity100 : styles.opacity30)} />
+        <LeftArrow
+          alt="왼쪽 화살표"
+          stroke="var(--gray4B)"
+          className={clsx(arrowHover.left ? styles.opacity100 : styles.opacity30)}
+        />
       </button>
       <button
         className={styles.rightArrow}
@@ -105,7 +109,11 @@ function Carousel() {
         onMouseEnter={() => handleArrowHover('right', true)}
         onMouseLeave={() => handleArrowHover('right', false)}
       >
-        <RightArrow stroke="var(--gray4B)" className={clsx(arrowHover.right ? styles.opacity100 : styles.opacity30)} />
+        <RightArrow
+          alt="오른쪽 화살표"
+          stroke="var(--gray4B)"
+          className={clsx(arrowHover.right ? styles.opacity100 : styles.opacity30)}
+        />
       </button>
     </div>
   );
