@@ -1,7 +1,7 @@
 import styles from './Reservations.module.css';
 import { ReactElement, useEffect, useState } from 'react';
-import Card from '@/components/Reservations/Card/Card';
-import { reservations } from '@/components/Reservations/mock';
+import Card from '@/components/MyPage/Reservations/Card/Card';
+import { reservations } from '@/components/MyPage/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import FilterDropDown, { EntireOptions } from '@/components/FilterDropdown/FilterDropdown';

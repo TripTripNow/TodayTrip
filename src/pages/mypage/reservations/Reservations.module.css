@@ -2,9 +2,9 @@
 
 .container {
   display: flex;
+  width: 79.2rem;
   gap: 2.4rem;
   flex-direction: column;
-  width: 79.2rem;
   @media tablet {
     width: 42.9rem;
     gap: 1.6rem;
@@ -16,9 +16,9 @@
 }
 
 .header {
-  height: 5.3rem;
   display: flex;
   width: 100%;
+  height: 5.3rem;
 
   justify-content: space-between;
   @media tablet {
@@ -30,8 +30,8 @@
 }
 
 .h2 {
-  line-height: 5.3rem;
   color: var(--nomad_black);
-  font-size: 3.2rem;
   font-weight: 700;
+  font-size: 3.2rem;
+  line-height: 5.3rem;
 }
