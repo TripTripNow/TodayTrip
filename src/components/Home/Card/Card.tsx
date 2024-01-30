@@ -17,7 +17,7 @@ function Card({ item }: CardItem) {
         <Image className={styles.bannerImage} src={item.bannerImageUrl} alt={item.title} fill sizes="100%" priority />
         <div className={styles.textContainer}>
           <div className={styles.rateWrapper}>
-            <StarIcon />
+            <StarIcon alt="별 아이콘" />
             <p className={styles.reviewCountText}>{intToFloat(item.rating, 1)}</p>
             <p className={styles.reviewCountText}>{`(${item.reviewCount})`}</p>
           </div>

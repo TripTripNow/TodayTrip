@@ -33,14 +33,30 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
         {deviceType === 'pc' && (
           <div className={styles.arrowWrapper}>
             {slideIndex === 0 ? (
-              <LeftArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlideByBtn(-1)} />
+              <LeftArrow
+                alt="왼쪽 화살표"
+                className={clsx(styles.arrow, styles.arrowEnable)}
+                onClick={() => handleSlideByBtn(-1)}
+              />
             ) : (
-              <LeftArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlideByBtn(-1)} />
+              <LeftArrow
+                alt="왼쪽 화살표"
+                className={clsx(styles.arrow, styles.arrowDisable)}
+                onClick={() => handleSlideByBtn(-1)}
+              />
             )}
             {slideIndex + 3 === MOCK_DATA.length ? (
-              <RightArrow className={clsx(styles.arrow, styles.arrowEnable)} onClick={() => handleSlideByBtn(1)} />
+              <RightArrow
+                alt="오른쪽 화살표"
+                className={clsx(styles.arrow, styles.arrowEnable)}
+                onClick={() => handleSlideByBtn(1)}
+              />
             ) : (
-              <RightArrow className={clsx(styles.arrow, styles.arrowDisable)} onClick={() => handleSlideByBtn(1)} />
+              <RightArrow
+                alt="오른쪽 화살표"
+                className={clsx(styles.arrow, styles.arrowDisable)}
+                onClick={() => handleSlideByBtn(1)}
+              />
             )}
           </div>
         )}

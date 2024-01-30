@@ -19,7 +19,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
 
       <form onSubmit={handleSearchSubmit} className={styles.inputForm}>
         <div className={styles.inputWrapper}>
-          <SearchIcon style={{ marginLeft: '10px' }} />
+          <SearchIcon alt="검색창 아이콘" style={{ marginLeft: '10px' }} />
           <input
             className={styles.input}
             type="text"

@@ -19,7 +19,7 @@ function CardDetail({ item }: { item: CardItem['item'] }) {
         <div className={styles.descriptionContainer}>
           <div className={styles.descriptionTopWrapper}>
             <div className={styles.reviewWrapper}>
-              <StarIcon />
+              <StarIcon alt="별 아이콘" />
               <p>
                 {intToFloat(item.rating, 1)}
                 <span> ({item.reviewCount})</span>

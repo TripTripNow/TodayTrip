@@ -32,6 +32,7 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
         onClick={() => handlePaginationByClick(pageNumber - 1)}
       >
         <PaginationLeftArrow
+          alt="왼쪽 화살표"
           width="21"
           height="21"
           className={
@@ -59,6 +60,7 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
         onClick={() => handlePaginationByClick(pageNumber + 1)}
       >
         <PaginationRightArrow
+          alt="오른쪽 화살표"
           width="21"
           height="21"
           className={
