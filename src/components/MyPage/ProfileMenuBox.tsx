@@ -57,7 +57,8 @@ function ProfileMenuBox() {
     if (router.pathname === '/mypage/reservations/[id]') {
       result.push(
         <>
-          {title} <span className={styles.subTitle}>- 예약 상세</span>
+          <div className={styles.title}>{title}</div>
+          <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
         </>,
       );
     } else {
