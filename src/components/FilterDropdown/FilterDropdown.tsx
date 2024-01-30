@@ -6,11 +6,19 @@ import { PriceFilterOption, ReserveFilterOption } from '@/types/dropdown';
 
 export type EntireOptions = PriceFilterOption | ReserveFilterOption;
 
-interface FilterDropdownProps {
-  type: '가격' | '예약 상태';
-  value: EntireOptions;
-  setValue: Dispatch<SetStateAction<EntireOptions>>;
+interface PriceDropdownProps {
+  type: '가격';
+  value: PriceFilterOption;
+  setValue: Dispatch<SetStateAction<PriceFilterOption>>;
 }
+
+interface ReserveDropdownProps {
+  type: '예약 상태';
+  value: ReserveFilterOption;
+  setValue: Dispatch<SetStateAction<ReserveFilterOption>>;
+}
+
+type FilterDropdownProps = PriceDropdownProps | ReserveDropdownProps;
 
 function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,9 +35,17 @@ function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
     }, 150);
   };
 
+  const handleDropdownClick = (val: EntireOptions) => {
+    if (type === '가격') {
+      setValue(val as PriceFilterOption);
+    } else {
+      setValue(val as ReserveFilterOption);
+    }
+  };
+
   return (
     <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
-      <button value={value} onClick={handleDropdown} className={type === '가격' ? styles.priceWrapper : styles.wrapper}>
+      <button onClick={handleDropdown} className={styles.wrapper}>
         {value}
         {isOpen ? (
           <ArrowDownIcon alt="드롭다운이 열려있음을 나타내는 아이콘" style={{ rotate: '180deg' }} />
@@ -40,11 +56,7 @@ function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
       {isOpen && (
         <div className={styles.option}>
           {lists.map((item, idx) => (
-            <button
-              className={type === '가격' ? styles.priceList : styles.list}
-              key={idx}
-              onClick={() => setValue(item)}
-            >
+            <button className={styles.list} key={idx} onMouseDown={() => handleDropdownClick(item)}>
               {item}
             </button>
           ))}

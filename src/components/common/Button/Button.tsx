@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { MouseEventHandler, ReactNode } from 'react';
 import styles from './Button.module.css';
 
-type Color = 'green' | 'white';
+type Color = 'green' | 'white' | 'lightgreen' | 'lightwhite';
 
 type ButtonType =
   | 'default'
