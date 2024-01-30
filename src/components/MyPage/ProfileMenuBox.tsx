@@ -53,19 +53,14 @@ function ProfileMenuBox() {
   };
 
   const renderTitle = (title: string) => {
-    const result = [];
-    if (router.pathname === '/mypage/reservations/[id]') {
-      result.push(
-        <>
-          <div className={styles.title}>{title}</div>
-          <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
-        </>,
-      );
-    } else {
-      result.push(<>{title}</>);
-    }
+    if (router.pathname !== '/mypage/reservations/[id]') return title;
 
-    return result;
+    return (
+      <>
+        <div className={styles.title}>{title}</div>
+        <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
+      </>
+    );
   };
 
   return (
