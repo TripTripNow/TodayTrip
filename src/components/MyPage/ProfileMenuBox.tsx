@@ -37,9 +37,7 @@ const MENU_LIST = [
 function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
-  const [selectedMenu, setSelectedMenu] = useState(
-    pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
-  );
+  const [selectedMenu, setSelectedMenu] = useState<string>();
 
   useEffect(() => {
     setSelectedMenu(
