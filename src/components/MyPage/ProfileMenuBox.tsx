@@ -37,18 +37,18 @@ const MENU_LIST = [
 function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
-  const [isSelected, setIsSelected] = useState(
+  const [selectedMenu, setSelectedMenu] = useState(
     pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
   );
 
   useEffect(() => {
-    setIsSelected(
+    setSelectedMenu(
       pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
     );
   }, [pathname]);
 
   const handleMenuItem = (item: { title: string; link: string }) => {
-    setIsSelected(item.title);
+    setSelectedMenu(item.title);
     router.push(item.link);
   };
 
@@ -70,11 +70,11 @@ function ProfileMenuBox() {
         {MENU_LIST.map((e, index) => {
           return (
             <div
-              className={`${styles.menuItem} ${e.title === isSelected && styles.active}`}
+              className={`${styles.menuItem} ${e.title === selectedMenu && styles.active}`}
               key={index}
               onClick={() => handleMenuItem(e)}
             >
-              {e.title === isSelected ? e.activeSrc : e.src}
+              {e.title === selectedMenu ? e.activeSrc : e.src}
               <div className={styles.menuItemTitle}>{e.title === '예약 내역' ? renderTitle(e.title) : e.title}</div>
             </div>
           );
