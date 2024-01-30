@@ -7,9 +7,11 @@ import DatePickerInput from '@/components/common/DatePicker/DatePicker';
 import PlusButtonIcon from '#/icons/icon-plusButton.svg';
 import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import PlusIcon from '#/icons/icon-plus.svg';
+import dayjs from 'dayjs';
 
 function ActivitiesAdd() {
-  const [isDate, setIsDate] = useState([0, 1]);
+  const [isDate, setIsDate] = useState<string[]>([]);
+  const [isSelectedDate, setIsSelectedDate] = useState<string>('');
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
@@ -23,10 +25,15 @@ function ActivitiesAdd() {
 
   const handleOnSubmit = () => {};
 
-  const handleAddButton = () => {
-    setIsDate((prev) => [...prev, 1]);
+  const handleAddButton = (isSelectedDate: string) => {
+    setIsDate((prev) => [...prev, isSelectedDate]);
   };
 
+  const handleDeleteButton = (item: string) => {
+    setIsDate((prev) => prev.filter((e) => e !== item));
+  };
+
+  // console.log(dayjs(isDate[0]).format('YY/MM/DD'));
   return (
     <div className={styles.addContainer}>
       <div className={styles.addHeaderWrapper}>
@@ -46,34 +53,40 @@ function ActivitiesAdd() {
             <p>종료 시간</p>
           </div>
           <div className={styles.dateContent}>
-            <DatePickerInput />
+            <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
             <div className={styles.dateDropDownWrapper}>
               <div className={styles.dateDropDown}>드롭다운1</div>
               <p className={styles.dateWave}>~</p>
               <div className={styles.dateDropDown}>드롭다운2</div>
             </div>
             <button>
-              <PlusButtonIcon className={styles.datePlusButton} onClick={handleAddButton} alt="플러스 버튼" />
+              <PlusButtonIcon
+                className={styles.datePlusButton}
+                onClick={() => handleAddButton(isSelectedDate)}
+                alt="플러스 버튼"
+              />
             </button>
           </div>
           <hr className={styles.dateHr} />
           <div className={styles.plusDateWrapper}>
             {isDate &&
-              isDate.map((item) => (
-                <>
-                  <div className={styles.dateContent}>
-                    <DatePickerInput />
-                    <div className={styles.dateDropDownWrapper}>
-                      <div className={styles.dateDropDown}>드롭다운1</div>
-                      <p className={styles.dateWave}>~</p>
-                      <div className={styles.dateDropDown}>드롭다운2</div>
+              isDate.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <div className={styles.dateContent}>
+                      <p className={styles.dateTime}>{dayjs(item).format('YY/MM/DD')}</p>
+                      <div className={styles.dateDropDownWrapper}>
+                        <div className={styles.dateDropDown}>드롭다운1</div>
+                        <p className={styles.dateWave}>~</p>
+                        <div className={styles.dateDropDown}>드롭다운2</div>
+                      </div>
+                      <button onClick={() => handleDeleteButton(item)}>
+                        <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" />
+                      </button>
                     </div>
-                    <button>
-                      <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" />
-                    </button>
                   </div>
-                </>
-              ))}
+                );
+              })}
           </div>
         </div>
         <div className={styles.cotentTitleWrapper}>

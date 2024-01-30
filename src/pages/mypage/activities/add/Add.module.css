@@ -103,6 +103,29 @@
   }
 }
 
+.dateTime {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  width: 37.9rem;
+  height: 5.6rem;
+  height: 100%;
+  border: 0.1rem solid var(--black17);
+  border-radius: 0.4rem;
+  color: var(--black1B);
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+  @media tablet {
+    width: 14.9rem;
+  }
+
+  @media mobile {
+    width: 13.2rem;
+    height: 4.4rem;
+    padding: 0.8rem 1rem;
+  }
+}
+
 .startTime {
   width: 15rem;
   @media tablet {
