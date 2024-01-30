@@ -12,7 +12,7 @@ function ReservationID() {
     <div className={styles.container}>
       <div className={styles.header}>
         <ArrowIcon className={styles.backIcon} />
-        <p className={styles.exit}>뒤로 가기</p>
+        <div className={styles.exit}>뒤로 가기</div>
       </div>
       <div className={styles.main}>
         <h1 className={styles.h1}>예약 상세</h1>
@@ -26,7 +26,9 @@ function ReservationID() {
             <div className={styles.confirmed}>예약 승인</div>
             <div className={styles.completed}>체험 완료</div>
           </div>
-          <h2 className={styles.title}>함께 배우면 즐거운 스트릿 댄스</h2>
+          <h2 className={styles.title}>
+            함께 배우면 즐거릿 면함께 배우면 즐거운 스트릿 댄스 배우면 즐거운 스트릿 댄스
+          </h2>
           <p className={styles.date}>
             <span>2023. 2. 14</span>
             <span> · </span>

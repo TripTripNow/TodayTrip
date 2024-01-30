@@ -3,8 +3,18 @@
 .container {
   display: flex;
   flex-direction: column;
+  width: 79.2rem;
   gap: 2.4rem;
-  width: 100%;
+
+  @media tablet {
+    width: 42.9rem;
+    gap: 1.6rem;
+  }
+
+  @media mobile {
+    width: 34.4rem;
+    gap: 0.8rem;
+  }
 }
 
 .header {
@@ -12,7 +22,7 @@
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-  color: var(--gray4B);
+  color: var(--grayA1);
 }
 
 .exit {
@@ -20,6 +30,10 @@
 
   @media tablet {
     font-size: 1.8rem;
+  }
+
+  @media mobile {
+    font-size: 1.4rem;
   }
 }
 
@@ -30,7 +44,7 @@
   padding: 3.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.4rem;
   border-radius: 1.5rem;
 }
 
@@ -38,6 +52,14 @@
   color: var(--black1B);
   font-size: 3.2rem;
   font-weight: 700;
+
+  @media tablet {
+    font-size: 1.8rem;
+  }
+
+  @media mobile {
+    font-size: 1.4rem;
+  }
 }
 
 .imageWrapper {
@@ -51,16 +73,21 @@
 .contents {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .status {
   display: flex;
+  justify-self: flex-start;
   align-items: center;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 2.6rem;
-  gap: 1rem;
+  gap: 2rem;
+
+  @media mobile {
+    justify-content: space-between;
+  }
 }
 
 .pending {
