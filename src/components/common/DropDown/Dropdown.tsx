@@ -24,7 +24,7 @@ function Dropdown() {
         onClick={handleDropdownToggle}
       >
         {value}
-        {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+        {isOpen ? <ArrowUpIcon alt="위쪽 방향 아이콘" /> : <ArrowDownIcon alt="아래쪽 방향 아이콘" />}
       </button>
       {isOpen && (
         <div className={styles.menu}>
@@ -37,7 +37,7 @@ function Dropdown() {
                 setIsOpen(!isOpen);
               }}
             >
-              <CheckIcon className={styles.icon} />
+              <CheckIcon alt="체크 아이콘" className={styles.icon} />
               {value}
             </div>
           ))}
