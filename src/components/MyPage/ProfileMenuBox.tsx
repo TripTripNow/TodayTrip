@@ -10,26 +10,26 @@ import ProfileInput from '@/components/MyPage/ProfileInput';
 const MENU_LIST = [
   {
     title: '내 정보',
-    src: <MypageIcon fill="#A1A1A1" />,
-    activeSrc: <MypageIcon fill="#112211" />,
+    icon: <MypageIcon fill="#A1A1A1" />,
+    activeIcon: <MypageIcon fill="#112211" />,
     link: '/mypage',
   },
   {
     title: '예약 내역',
-    src: <ReservationIcon fill="#A1A1A1" />,
-    activeSrc: <ReservationIcon fill="#112211" />,
+    icon: <ReservationIcon fill="#A1A1A1" />,
+    activeIcon: <ReservationIcon fill="#112211" />,
     link: '/mypage/reservations',
   },
   {
     title: '내 체험 관리',
-    src: <ActivitiesIcon fill="#A1A1A1" />,
-    activeSrc: <ActivitiesIcon fill="#112211" />,
+    icon: <ActivitiesIcon fill="#A1A1A1" />,
+    activeIcon: <ActivitiesIcon fill="#112211" />,
     link: '/mypage/activities',
   },
   {
     title: '예약 현황',
-    src: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" />,
-    activeSrc: <DashboardIcon fill="#112211" stroke="#112211" />,
+    icon: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" />,
+    activeIcon: <DashboardIcon fill="#112211" stroke="#112211" />,
     link: '/mypage/activities/reservation-dashboard',
   },
 ];
@@ -74,7 +74,7 @@ function ProfileMenuBox() {
               key={index}
               onClick={() => handleMenuItem(e)}
             >
-              {e.title === selectedMenu ? e.activeSrc : e.src}
+              {e.title === selectedMenu ? e.activeIcon : e.icon}
               <div className={styles.menuItemTitle}>{e.title === '예약 내역' ? renderTitle(e.title) : e.title}</div>
             </div>
           );
