@@ -1,18 +1,19 @@
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import { PRICE_LIST, PriceSortOption, RESERVE_LIST, ReserveSortOption } from '@/constants/dropdown';
-import { useState } from 'react';
+import { PRICE_LIST, RESERVE_LIST } from '@/constants/dropdown';
+import { Dispatch, SetStateAction, useState } from 'react';
 import styles from './FilterDropdown.module.css';
+import { PriceFilterOption, ReserveFilterOption } from '@/types/dropdown';
+
+export type EntireOptions = PriceFilterOption | ReserveFilterOption;
 
 interface FilterDropdownProps {
   type: '가격' | '예약 상태';
+  value: EntireOptions;
+  setValue: Dispatch<SetStateAction<EntireOptions>>;
 }
 
-type AllPriceOption = PriceSortOption | '가격';
-type AllReserveOption = ReserveSortOption | '예약 상태';
-
-function FilterDropDown({ type }: FilterDropdownProps) {
+function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState<AllPriceOption | AllReserveOption>(type);
 
   const lists = type === '가격' ? PRICE_LIST : RESERVE_LIST;
 
@@ -27,7 +28,7 @@ function FilterDropDown({ type }: FilterDropdownProps) {
   };
 
   return (
-    <div className={type === '가격' ? styles.price : styles.reserve}>
+    <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
       <button value={value} onClick={handleDropdown} className={type === '가격' ? styles.priceWrapper : styles.wrapper}>
         {value}
         {isOpen ? (

@@ -16,6 +16,10 @@
 
 .reserve {
   width: 16rem;
+
+  @media mobile {
+    width: 10rem;
+  }
 }
 
 .wrapper {
@@ -34,10 +38,6 @@
   color: var(--green0B);
   font-size: 1.8rem;
   font-weight: 500;
-}
-
-.priceWrapper {
-  composes: wrapper;
 
   @media mobile {
     padding: 1.2rem;
@@ -69,10 +69,6 @@
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 2.2rem;
-}
-
-.priceList {
-  composes: list;
 
   @media mobile {
     font-size: 1.4rem;

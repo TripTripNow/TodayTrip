@@ -4,18 +4,11 @@ import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
-
-const STATUS_OPTIONS = [
-  { id: 1, value: 'pending', name: '예약 완료' },
-  { id: 2, value: 'canceled', name: '예약 취소' },
-  { id: 3, value: 'confirmed', name: '예약 승인' },
-  { id: 4, value: 'declined', name: '예약 거절' },
-  { id: 6, value: 'completed', name: '체험 완료' },
-];
+import FilterDropDown, { EntireOptions } from '@/components/FilterDropdown/FilterDropdown';
+import { STATUS } from '@/constants/reservation';
 
 function Reservation() {
-  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState<EntireOptions>('예약 상태');
   const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 
@@ -27,9 +20,11 @@ function Reservation() {
 
   // TODO : api 연동 후 지울 예정
   const filteredReservations =
-    selectedStatus === 'all'
+    selectedStatus === '전체' || selectedStatus === '예약 상태'
       ? reservations.slice(0, visibleReservations)
-      : reservations.filter((reservation) => reservation.status === selectedStatus).slice(0, visibleReservations);
+      : reservations
+          .filter((reservation) => STATUS[reservation.status] === selectedStatus)
+          .slice(0, visibleReservations);
 
   //TODO : api 연동 이후 쿼리 업데이트를 위해 해당 코드 사용 예정
   // const router = useRouter();
@@ -41,19 +36,8 @@ function Reservation() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.h2}>예약 내역</h2>
-        <FilterDropDown type="예약 상태" />
-        {/* TODO : 소은님 드롭다운으로 변경할 예정 */}
-        {/* <select defaultValue="" onChange={(e) => setSelectedStatus(e.target.value)}>
-          <option disabled value="" hidden>
-            예약 상태
-          </option>
-          <option value="all">전체</option>
-          {STATUS_OPTIONS.map((option) => (
-            <option key={option.id} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </select> */}
+
+        <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>
 
       {filteredReservations.map((reservation) => (

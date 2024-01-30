@@ -4,7 +4,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 1,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
       id: 101,
     },
@@ -52,7 +52,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 4,
     activity: {
-      bannerImageUrl: '/images/react.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Beach Picnic',
       id: 404,
     },
@@ -68,7 +68,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 5,
     activity: {
-      bannerImageUrl: '/images/react.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'City Sightseeing',
       id: 505,
     },
@@ -84,7 +84,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 6,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       id: 101,
     },
@@ -132,7 +132,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 9,
     activity: {
-      bannerImageUrl: '/images/react.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Beach Picnic',
       id: 404,
     },
@@ -148,7 +148,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 10,
     activity: {
-      bannerImageUrl: '/images/flower2.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'City Sightseeing City Sightseeing City Sightseeing City Sightseeing City Sightseeing',
       id: 505,
     },
@@ -164,7 +164,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 11,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Fun Dance Class',
       id: 111,
     },
@@ -212,7 +212,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 14,
     activity: {
-      bannerImageUrl: '/images/block.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Cooking Class',
       id: 414,
     },
@@ -244,7 +244,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 16,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
       id: 616,
     },
@@ -260,7 +260,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 33,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
       id: 616,
     },
@@ -276,7 +276,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 34,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
       id: 616,
     },
@@ -292,7 +292,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 35,
     activity: {
-      bannerImageUrl: '/images/nextjs.png',
+      bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
       id: 616,
     },

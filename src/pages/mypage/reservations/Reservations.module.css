@@ -16,10 +16,10 @@
 }
 
 .header {
-  height: 5rem;
+  height: 5.3rem;
   display: flex;
   width: 100%;
-  align-items: center;
+
   justify-content: space-between;
   @media tablet {
     margin-bottom: 0.8rem;
@@ -30,6 +30,7 @@
 }
 
 .h2 {
+  line-height: 5.3rem;
   color: var(--nomad_black);
   font-size: 3.2rem;
   font-weight: 700;
