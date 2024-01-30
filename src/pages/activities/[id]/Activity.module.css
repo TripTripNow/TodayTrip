@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 7.8rem 36.1rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.category {
+  color: var(--nomad_black);
+  font-size: 1.4rem;
+  opacity: 0.75;
+}
+
+.h1 {
+  color: var(--nomad_black);
+  font-size: 3.2rem;
+  font-weight: 700;
+  marign-bottom: 0.6rem;
+}

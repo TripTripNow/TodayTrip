@@ -4,7 +4,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 1,
     activity: {
-      bannerImageUrl: '/images/flower.png',
+      bannerImageUrl: '/images/block.png',
       title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
       id: 101,
     },
@@ -68,7 +68,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 5,
     activity: {
-      bannerImageUrl: '/images/flower.png',
+      bannerImageUrl: '/images/block.png',
       title: 'City Sightseeing',
       id: 505,
     },
@@ -100,7 +100,7 @@ export const reservations: Reservations['data'][] = [
   {
     id: 7,
     activity: {
-      bannerImageUrl: '/images/flower.png',
+      bannerImageUrl: '/images/block.png',
       title: 'Culinary Tour',
       id: 202,
     },
