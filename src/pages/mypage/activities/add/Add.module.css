@@ -1,0 +1,44 @@
+.addContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  width: 79.2rem;
+  height: auto;
+}
+
+.addHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addHeader {
+  font-size: 3.2rem;
+}
+
+.addHeaderButton {
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+}
+
+.addInputWrapper {
+  width: 100%;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.dateWrapper {
+  display: flex;
+  gap: 2rem;
+}
+
+.dateDropDownWrapper {
+  display: flex;
+}

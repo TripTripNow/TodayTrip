@@ -12,7 +12,7 @@ import {
 } from '@/constants/user';
 
 interface InputProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   control: Control<FieldValues>;
   name: FieldPath<FieldValues>;

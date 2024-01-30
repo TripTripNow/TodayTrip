@@ -28,6 +28,7 @@ function DatePickerInput() {
         onChange={(date: Date | null) => setSelectedDate(date)}
         dateFormat={'yy/MM/dd'}
         customInput={<CustomInput value={selectedDate ? String(selectedDate) : ''} />}
+        dayClassName={(d) => (d.getDate() === selectedDate?.getDate() ? styles.selectedDay : styles.unselectedDay)}
       />
     </div>
   );
