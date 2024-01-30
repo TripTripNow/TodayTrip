@@ -1,10 +1,10 @@
-@values tablet, mobile from '@/styles/breakpoints.css';
+@values desktop, tablet, mobile from '@/styles/breakpoints.css';
 
 .container {
   display: flex;
   flex-direction: column;
   width: 79.2rem;
-  gap: 2.4rem;
+  gap: 2rem;
 
   @media tablet {
     width: 42.9rem;
@@ -25,15 +25,11 @@
   color: var(--grayA1);
 }
 
-.exit {
-  font-size: 2.2rem;
+.back {
+  font-size: 1.8rem;
 
-  @media tablet {
-    font-size: 1.8rem;
-  }
-
-  @media mobile {
-    font-size: 1.4rem;
+  @media desktop {
+    font-size: 2.2rem;
   }
 }
 
@@ -54,23 +50,23 @@
   font-weight: 700;
 
   @media tablet {
-    font-size: 1.8rem;
+    font-size: 2.8rem;
   }
 
   @media mobile {
-    font-size: 1.4rem;
+    font-size: 2.4rem;
   }
 }
 
 .imageWrapper {
   width: 100%;
-  height: 26.1rem;
+  height: 26rem;
   position: relative;
   border-radius: 1rem;
   overflow: hidden;
 }
 
-.contents {
+.content {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -84,18 +80,16 @@
   font-weight: 700;
   line-height: 2.6rem;
   gap: 2rem;
-
-  @media mobile {
-    justify-content: space-between;
-  }
 }
 
 .pending {
   color: var(--blue2E);
 }
+
 .confirmed {
   color: var(--orangeFF7);
 }
+
 .completed {
   color: var(--gray79);
 }
@@ -109,14 +103,22 @@
 .date {
   font-size: 1.8rem;
   line-height: 2.4rem;
+
+  @media mobile {
+    font-size: 1.6rem;
+  }
 }
 
 .price {
   font-size: 2.4rem;
   font-weight: 500;
+
+  @media mobile {
+    font-size: 2rem;
+  }
 }
 
-.footer {
+.bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
