@@ -10,7 +10,7 @@ import '#/fonts/Pretandard/Pretandard.css';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Footer from '@/components/Footer/Footer';
-import Navbar from '@/components/common/Navbar';
+import Navbar from '@/components/common/Navbar/Navbar';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
