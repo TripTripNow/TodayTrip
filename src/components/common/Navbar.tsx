@@ -67,7 +67,7 @@ function Navbar() {
       <Link href="/">
         <div className={styles.logoWrapper}>
           <div className={styles.logoImg}>
-            <LogoIcon />
+            <LogoIcon alt="로고 아이콘" />
           </div>
           <p className={styles.logoTitle}>TodayTrip</p>
         </div>
@@ -77,14 +77,18 @@ function Navbar() {
         {USER_DATA ? (
           <>
             <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              <AlarmIcon className={styles.alarmIcon} />
-              {alarmData.totalCount ? <RedEllipse className={styles.isEllipse} /> : ''}
+              <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
+              {alarmData.totalCount ? (
+                <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />
+              ) : (
+                ''
+              )}
             </button>
             {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
             <div className={styles.border}></div>
             <div onBlur={handleBlurDropDown}>
               <button className={styles.userName} onClick={handleDropDownClick}>
-                <ProfileIcon />
+                <ProfileIcon alt="프로필 이미지" />
                 <p>{USER_DATA.name}</p>
               </button>
             </div>
