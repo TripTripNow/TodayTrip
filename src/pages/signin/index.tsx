@@ -3,11 +3,10 @@ import UserLayout from '@/components/User/UserLayout';
 import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
-import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
+import { signIn } from 'next-auth/react';
 
 function SignIn() {
-  const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -18,16 +17,34 @@ function SignIn() {
     },
   });
 
-  const { handleSubmit, control } = methods;
-
-  const handleOnSubmit = (data: FieldValues) => {
-    console.log(data);
-    router.push('/');
-  };
+  const { handleSubmit, control, setError } = methods;
 
   const { isValid } = methods.formState;
 
   const isPasswordVisible = methods.watch('checkbox');
+
+  const handleOnSubmit = async (data: FieldValues) => {
+    const { email, password } = data;
+
+    const result = await signIn('credentials', {
+      email: email,
+      password: password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      if (result.status === 401) {
+        setError('password', {
+          type: 'validate',
+          message: '비밀번호가 일치하지 않습니다.',
+        });
+        return;
+      }
+      return;
+    }
+
+    alert('성공');
+  };
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>

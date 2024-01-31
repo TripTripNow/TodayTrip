@@ -11,6 +11,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Footer from '@/components/Footer/Footer';
 import Navbar from '@/components/common/Navbar/Navbar';
+import { SessionProvider } from 'next-auth/react';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -20,7 +21,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function App({ Component, pageProps }: AppPropsWithLayout) {
+function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -40,13 +41,16 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <title>TodayTrip</title>
         <link rel="icon" href="/icons/icon-logo.svg" />
       </Head>
+
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          <div className="root">
-            {!router.pathname.includes('sign') && <Navbar />}
-            <div className="content">{getLayout(<Component {...pageProps} />)}</div>
-            {!router.pathname.includes('sign') && <Footer />}
-          </div>
+          <SessionProvider session={session}>
+            <div className="root">
+              {!router.pathname.includes('sign') && <Navbar />}
+              <div className="content">{getLayout(<Component {...pageProps} />)}</div>
+              {!router.pathname.includes('sign') && <Footer />}
+            </div>
+          </SessionProvider>
         </HydrationBoundary>
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
