@@ -1,35 +1,25 @@
 import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import clsx from 'clsx';
-
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
-
 import styles from './Dropdown.module.css';
-
-const CATEGORY_LIST = ['문화 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
+import { CATEGORY_LIST } from '@/constants/dropdown';
 
 interface DropdownProps {
-  activities?: {
-    id: number;
-    userId: number;
-    title: string;
-    description: string;
-    category: string;
-    price: number;
-    address: string;
-    bannerImageUrl: string;
-    rating: number;
-    reviewCount: number;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  setDropdownItem: Dispatch<SetStateAction<string | number>>;
+  type: '시간' | '카테고리' | '예약한 시간' | '체험';
+  items?: string[];
+  setDropdownItem: Dispatch<SetStateAction<string>>;
 }
 
-function Dropdown({ activities, setDropdownItem }: DropdownProps) {
+const dropdownInitialValue = (type: string, items: string[]) => {
+  if (type === '카테고리') return '카테고리';
+  else return items[0];
+};
+
+function Dropdown({ items, setDropdownItem, type }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(activities ? activities[0].title : '카테고리');
+  const [value, setValue] = useState(dropdownInitialValue(type, items ?? []));
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -46,11 +36,10 @@ function Dropdown({ activities, setDropdownItem }: DropdownProps) {
     handleDropdownClose();
   };
 
-  const showLists = activities ? activities.map((activity) => activity.title) : CATEGORY_LIST;
-
+  const showLists = items ? items.map((item) => item) : CATEGORY_LIST;
   return (
-    <div className={styles.container} style={{ border: '1px solid #000' }} onBlur={handleDropdownClose}>
-      {activities && <p className={styles.subTitle}>체험명</p>}
+    <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
+      {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}
         className={clsx(styles.wrapper, value === '카테고리' && styles.placeholder)}
@@ -59,8 +48,9 @@ function Dropdown({ activities, setDropdownItem }: DropdownProps) {
         {value}
         {isOpen ? <ArrowUpIcon alt="위쪽 방향 아이콘" /> : <ArrowDownIcon alt="아래쪽 방향 아이콘" />}
       </button>
+
       {isOpen && (
-        <div className={styles.menu}>
+        <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
           {showLists.map((value, index) => (
             <div key={index} className={styles.list} onMouseDown={(e) => handleDropdownClick(e, value)}>
               <CheckIcon alt="체크 아이콘" className={styles.icon} />

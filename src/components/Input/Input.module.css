@@ -45,6 +45,10 @@
   border: 0.1rem solid var(--redFF4);
 }
 
+.activitiesInput {
+  height: 5.6rem;
+}
+
 .userInputContainer > .input {
   padding: 1.6rem 2rem;
   border-radius: 0.6rem;
