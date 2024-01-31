@@ -27,18 +27,18 @@ function Header({ data }: { data: ActivityProps }) {
           <h1 className={styles.h1}>{data.title}</h1>
           <div style={{ display: 'flex', gap: '1.2rem' }}>
             <p className={styles.rating}>
-              <StarIcon />
+              <StarIcon alt="별점 아이콘" />
               {data.rating} ({data.reviewCount})
             </p>
             <p className={styles.location}>
-              <LocationIcon />
+              <LocationIcon alt="지도 마커 아이콘" />
               {data.address}
             </p>
           </div>
         </div>
         <div>
           <button onClick={handleKebabToggle}>
-            <KebabIcon className={styles.kebabWrapper} width={40} height={40} alt="케밥버튼" />
+            <KebabIcon className={styles.kebabWrapper} width={40} height={40} alt="케밥 버튼" />
           </button>
           {isKebabOpen && (
             <div className={styles.options}>
