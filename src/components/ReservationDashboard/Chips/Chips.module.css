@@ -1,0 +1,41 @@
+@values mobile from '@/styles/breakpoints.css';
+
+.container {
+  display: flex;
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  align-items: flex-start;
+  gap: 0.2rem;
+  height: 2.3rem;
+  border-radius: 0.4rem;
+
+  @media mobile {
+    height: 2rem;
+  }
+}
+
+.text {
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  @media mobile {
+    font-weight: 1.2rem;
+  }
+}
+
+.reserveState {
+  background: var(--blue00);
+  color: var(--whiteFF);
+}
+
+.completeState {
+  background: var(--grayDD);
+  color: var(--gray4B);
+}
+
+.approveState {
+  background: var(--orangeFFF);
+  color: var(--orangeFF7);
+}
