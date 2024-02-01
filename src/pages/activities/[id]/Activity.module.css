@@ -81,15 +81,15 @@
 }
 
 .customCalendar :global(.react-calendar__month-view__weekdays) abbr {
+  color: var(--gray4B);
   font-size: 1.4rem;
   text-decoration: none;
-  color: var(--gray4B);
 }
 
 .customCalendar :global .react-calendar__navigation button {
+  color: var(--black1B);
   font-weight: 700;
   font-size: 1.4rem;
-  color: var(--black1B);
 }
 
 .customCalendar :global .react-calendar__tile {
@@ -119,15 +119,15 @@
   background-color: var(--greenCE);
 }
 
+.customCalendar :global .react-calendar__tile--now {
+  background: white;
+  color: var(--gray4B);
+}
+
 .customCalendar :global .react-calendar__tile:enabled:focus,
 .customCalendar :global .react-calendar__tile--active {
   background: var(--green0B);
   color: white;
-}
-
-.customCalendar :global .react-calendar__tile--now {
-  background: white;
-  color: var(--gray4B);
 }
 
 .customCalendar :global(.react-calendar__navigation button.react-calendar__navigation__prev-button) {
@@ -162,6 +162,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+  align-items: center;
 }
 
 .possibleTime {

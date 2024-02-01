@@ -130,7 +130,6 @@ function Activity() {
   ];
 
   // 지도
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
@@ -165,12 +164,10 @@ function Activity() {
   const [filteredTimes, setFilteredTimes] = useState<TimeSlot>();
 
   // 예약 가능한 시간
-
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
   useEffect(() => {
     const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-    console.log(formattedValue);
     setFilteredTimes(timeSlot.find((slot) => slot.date === formattedValue));
   }, [dateValue]);
 
@@ -227,19 +224,19 @@ function Activity() {
               </p>
               <hr className={styles.hr} />
               <div className={styles.calendar}>
-                <h2 className={styles.h2}>날짜</h2>
-                <div style={{ margin: '0 auto' }}>
-                  <Calendar
-                    prev2Label={null}
-                    next2Label={null}
-                    calendarType="gregory"
-                    locale="en"
-                    onChange={setDateValue}
-                    className={styles.customCalendar}
-                    value={dateValue}
-                    minDate={new Date()}
-                  />
-                </div>
+                <h2 className={styles.h2} style={{ alignSelf: 'self-start' }}>
+                  날짜
+                </h2>
+                <Calendar
+                  prev2Label={null}
+                  next2Label={null}
+                  calendarType="gregory"
+                  locale="en"
+                  onChange={setDateValue}
+                  className={styles.customCalendar}
+                  value={dateValue}
+                  minDate={new Date()}
+                />
               </div>
               <div className={styles.possibleTime}>
                 <h2 className={styles.h2}>예약 가능한 시간</h2>
