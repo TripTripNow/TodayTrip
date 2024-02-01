@@ -1,16 +1,9 @@
-import { useState, useMemo, useRef, SetStateAction, Dispatch } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from '@reach/combobox';
-import '@reach/combobox/styles.css';
-
-import { InfoWindowF, MarkerF } from '@react-google-maps/api';
-import { useEffect } from 'react';
+import { GoogleMap, InfoWindowF, MarkerF, useJsApiLoader } from '@react-google-maps/api';
+import { useEffect, useRef, useState } from 'react';
 import * as Yup from 'yup';
 import styles from './Test.module.css';
 
 import { Field, Form, Formik } from 'formik';
-
 export const DEFAULT_DISTANCE_IN_KM = '100';
 
 const configureSchema = Yup.object().shape({
@@ -37,15 +30,12 @@ export type Place = {
   longitude: number;
 };
 
-export default function Test() {
-  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
-  const [selected, setSelected] = useState(null);
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    libraries: ['places'],
-  });
-
+function Test() {
   const cityRef = useRef(undefined);
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!,
+  });
 
   const [places, setPlaces] = useState<Place[]>([
     { name: '위워크', address: '서울특별시 중구 삼일대로 343', latitude: 37.56, longitude: 126.98 },
@@ -59,11 +49,35 @@ export default function Test() {
     }, 1000);
   }, []);
   return (
-    <>
-      <div className="places-container">
-        <PlacesAutocomplete setSelected={setSelected} />
-      </div>
+    <div>
+      <Formik
+        initialValues={{ city: 'Seoul' }}
+        validationSchema={configureSchema}
+        onSubmit={async (formData) => {
+          const { lat, lon } = await getLatLonForCity(formData.city);
+          setPosition({ lat, lon });
+        }}
+      >
+        {({ errors }) => (
+          <Form>
+            <div className={styles.searchWrapper}>
+              <div>
+                <Field
+                  innerRef={cityRef}
+                  className={styles.searchInput}
+                  placeholder="을지로 위워크"
+                  name="city"
+                  type="text"
+                />
+              </div>
 
+              <button type="submit" className={styles.searhButton}>
+                Search
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
       {isLoaded && (
         <GoogleMap mapContainerStyle={containerStyle} center={{ lat: position.lat, lng: position.lon }} zoom={17}>
           {places.map((place) => (
@@ -89,45 +103,7 @@ export default function Test() {
           )}
         </GoogleMap>
       )}
-    </>
+    </div>
   );
 }
-
-function Map() {}
-
-const PlacesAutocomplete = ({ setSelected }: Dispatch<SetStateAction<null>>) => {
-  const {
-    ready,
-    value,
-    setValue,
-    suggestions: { status, data },
-    clearSuggestions,
-  } = usePlacesAutocomplete();
-
-  const handleSelect = async (address) => {
-    setValue(address, false);
-    clearSuggestions();
-
-    const results = await getGeocode({ address });
-    const { lat, lng } = await getLatLng(results[0]);
-    setSelected({ lat, lng });
-  };
-
-  return (
-    <Combobox onSelect={handleSelect}>
-      <ComboboxInput
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        disabled={!ready}
-        className="combobox-input"
-        placeholder="Search an address"
-      />
-      <ComboboxPopover>
-        <ComboboxList>
-          {status === 'OK' &&
-            data.map(({ place_id, description }) => <ComboboxOption key={place_id} value={description} />)}
-        </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
-  );
-};
+export default Test;

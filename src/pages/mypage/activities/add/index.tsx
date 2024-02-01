@@ -123,6 +123,7 @@ function ActivitiesAdd() {
           <Dropdown type="카테고리" setDropdownItem={setCategoryItem} />
         </div>
         <Input name="description" control={control} placeholder="설명" type="text" activities={true} />
+        <Input name="price" control={control} label="가격" placeholder="가격" type="number" activities={true} />
         <Input
           name="address"
           control={control}
@@ -199,19 +200,17 @@ function ActivitiesAdd() {
               </div>
             </div>
           )}
-          <div className={styles.addedImgWrapper}>
-            {bannerImgSrc &&
-              bannerImgSrc.map((item, index) => (
-                <div key={index} className={styles.addedImg}>
-                  <ImgCloseIcon
-                    className={styles.imgCloseButton}
-                    alt="이미지 닫기 버튼"
-                    onClick={() => handleImgDelete(item, true)}
-                  />
-                  <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
-                </div>
-              ))}
-          </div>
+          {bannerImgSrc &&
+            bannerImgSrc.map((item, index) => (
+              <div key={index} className={styles.addedImg}>
+                <ImgCloseIcon
+                  className={styles.imgCloseButton}
+                  alt="이미지 닫기 버튼"
+                  onClick={() => handleImgDelete(item, true)}
+                />
+                <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
+              </div>
+            ))}
         </div>
 
         <div className={styles.cotentTitleWrapper}>
@@ -234,19 +233,17 @@ function ActivitiesAdd() {
               </div>
             </div>
           )}
-          <div className={styles.addedImgWrapper}>
-            {imgSrc &&
-              imgSrc.map((item, index) => (
-                <div key={index} className={styles.addedImg}>
-                  <ImgCloseIcon
-                    className={styles.imgCloseButton}
-                    alt="이미지 닫기 버튼"
-                    onClick={() => handleImgDelete(item, false)}
-                  />
-                  <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
-                </div>
-              ))}
-          </div>
+          {imgSrc &&
+            imgSrc.map((item, index) => (
+              <div key={index} className={styles.addedImg}>
+                <ImgCloseIcon
+                  className={styles.imgCloseButton}
+                  alt="이미지 닫기 버튼"
+                  onClick={() => handleImgDelete(item, false)}
+                />
+                <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
+              </div>
+            ))}
         </div>
       </form>
     </div>

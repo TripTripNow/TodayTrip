@@ -52,8 +52,12 @@ function Dropdown({ items, setDropdownItem, type }: DropdownProps) {
       {isOpen && (
         <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
           {showLists.map((value, index) => (
-            <div key={index} className={styles.list} onMouseDown={(e) => handleDropdownClick(e, value)}>
-              <CheckIcon alt="체크 아이콘" className={styles.icon} />
+            <div
+              key={index}
+              className={clsx(styles.list, type === '시간' && styles.timeList)}
+              onMouseDown={(e) => handleDropdownClick(e, value)}
+            >
+              {type !== '시간' && <CheckIcon alt="체크 아이콘" className={styles.icon} />}
               {value}
             </div>
           ))}

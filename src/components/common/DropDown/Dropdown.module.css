@@ -79,6 +79,10 @@
   line-height: 2.6rem;
 }
 
+.timeList {
+  justify-content: center;
+}
+
 .list:hover {
   border-radius: 0.6rem;
   background: var(--nomad_black);

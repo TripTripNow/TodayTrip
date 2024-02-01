@@ -16,7 +16,7 @@ interface InputProps {
   placeholder?: string;
   control: Control<FieldValues>;
   name: FieldPath<FieldValues>;
-  type: 'text' | 'email' | 'password';
+  type: 'text' | 'email' | 'password' | 'number';
   state?: 'user' | 'default';
   isDisabled?: boolean;
   activities?: boolean;

@@ -1,0 +1,16 @@
+.searchWrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.searchInput {
+  width: 10rem;
+  height: 3rem;
+  border: 0.1rem solid var(--gray4B);
+  border-radius: 0.8rem;
+}
+
+.searhButton {
+  border: 0.1rem solid var(--gray4B);
+  border-radius: 0.8rem;
+}
