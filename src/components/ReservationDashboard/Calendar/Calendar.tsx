@@ -8,6 +8,7 @@ import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { ReservationDashboardItem } from '@/types/api';
 import styles from './Calendar.module.css';
 import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH, WEEK } from '@/constants/calendar';
+import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 
 type DateObj = Record<string, { pending: number; confirmed: number; completed: number }>;
 
