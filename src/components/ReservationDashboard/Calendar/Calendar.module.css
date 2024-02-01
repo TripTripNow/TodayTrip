@@ -1,7 +1,6 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
 .container {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,11 +69,11 @@
 .calendarDayContainer {
   width: 100%;
   display: grid;
+  z-index: 1;
   grid-template-columns: repeat(7, 1fr);
 }
 
 .calendarDayWrapper {
-  position: relative;
   display: flex;
   height: 15.4rem;
   padding-top: 1.2rem;
