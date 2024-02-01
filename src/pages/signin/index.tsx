@@ -26,7 +26,7 @@ function SignIn() {
   const handleOnSubmit = async (data: FieldValues) => {
     const { email, password } = data;
 
-    const result = await signIn('credentials', {
+    const result = await signIn('signin-credentials', {
       email: email,
       password: password,
       redirect: false,

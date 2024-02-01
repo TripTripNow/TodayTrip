@@ -6,6 +6,11 @@ import styles from '@/pages/signin/SignIn.module.css';
 import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
 import { passwordCheck } from '@/utils/passwordCheck';
+import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { postSignup } from '@/api/user/user';
+import { SignupData } from '@/types/user';
+import { signIn } from 'next-auth/react';
 
 function SignUp() {
   const router = useRouter();
@@ -21,15 +26,51 @@ function SignUp() {
     },
   });
 
+  // 회원가입
+  const signupMutation = useMutation({
+    mutationFn: (data: SignupData) => postSignup(data),
+    onSuccess: async (res) => {
+      //회원가입한 이메일, 비밀번호로 로그인 진행
+      const result = await signIn('signin-credentials', {
+        email: res.email,
+        password: res.password,
+        redirect: false,
+      });
+      if (result?.ok) {
+        //TODO 성공 토스트 띄우기
+        //router.push('/');
+        return;
+      }
+      alert('문제가 발생했습니다.');
+    },
+    onError: (e) => {
+      if (e instanceof AxiosError) {
+        // 중복된 이메일인 경우
+        if (e.response?.status === 409) {
+          setError('email', {
+            type: 'validate',
+            message: e.response.data.message,
+          });
+          return;
+        }
+      }
+      alert('문제가 발생했습니다.');
+    },
+  });
+
   const { handleSubmit, control, setError } = methods;
 
-  const handleOnSubmit = (data: FieldValues) => {
+  const handleOnSubmit = async (data: FieldValues) => {
     const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
     if (!isValidPwCheck) return;
 
-    //TODO api 연결 시 중복된 이메일 에러 처리, 회원가입 성공 및 실패 토스트 처리 추가
-    console.log(data);
-    router.push('/');
+    const userData: SignupData = {
+      email: data.email,
+      nickname: data.nickName,
+      password: data.password,
+    };
+
+    signupMutation.mutate(userData);
   };
 
   const { isValid } = methods.formState;

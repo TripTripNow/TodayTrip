@@ -6,7 +6,9 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 export default NextAuth({
   providers: [
     CredentialsProvider({
+      id: 'signin-credentials',
       name: 'Credentials',
+      type: 'credentials',
       credentials: {
         email: {
           label: 'email',
