@@ -1,3 +1,5 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .container {
   position: relative;
   width: 100%;
@@ -6,6 +8,12 @@
   border: 0.1rem solid var(--gray79);
   border-radius: 0.4rem;
   cursor: pointer;
+}
+
+.timeContainer {
+  @media mobile {
+    height: 4.4rem;
+  }
 }
 
 .subTitle {
