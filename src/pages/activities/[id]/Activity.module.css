@@ -109,23 +109,19 @@
   color: #757575;
 }
 
-/* .customCalendar :global .react-calendar__tile--now:enabled:hover,
-.customCalendar :global .react-calendar__tile--now:enabled:focus {
-  background: var(--whiteFF);
-} */
-
-/* .customCalendar :global .react-calendar--selectRange, */
 .customCalendar :global .react-calendar__tile--hover,
-.customCalendar :global .react-calendar__tile:enabled:focus,
+.customCalendar :global .react-calendar__tile:enabled:hover,
 .customCalendar :global .react-calendar__tile:focus {
   background-color: var(--greenCE);
   color: var(--green0B);
 }
-.customCalendar :global .react-calendar__tile:enabled:hover,
+
+.customCalendar :global .react-calendar__tile:enabled:focus,
 .customCalendar :global .react-calendar__tile--active {
   background: var(--green0B);
   color: white;
 }
+
 .react-calendar--doubleView {
   width: 700px;
 }
