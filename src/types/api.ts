@@ -11,3 +11,12 @@ export interface CardItem {
     reviewCount: number;
   };
 }
+
+export interface ReservationDashboardItem {
+  date: string;
+  reservations: {
+    completed: number;
+    confirmed: number;
+    pending: number;
+  };
+}
