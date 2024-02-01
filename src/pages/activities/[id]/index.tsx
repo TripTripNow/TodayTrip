@@ -98,6 +98,12 @@ function Activity() {
     fetchLocation();
   }, []);
 
+  const tileDisabled = ({ activeStartDate, date, view }) => {
+    return date < new Date();
+  };
+
+  const today = new Date();
+
   return (
     <div className={styles.wrapper}>
       <main className={styles.mainContainer}>
@@ -140,6 +146,9 @@ function Activity() {
             <div className={styles.rightContentContainer}>
               <div>
                 <Calendar
+                  tileDisabled={tileDisabled}
+                  prev2Label={null}
+                  next2Label={null}
                   calendarType="gregory"
                   locale="en"
                   onChange={onChange}

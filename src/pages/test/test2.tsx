@@ -8,10 +8,6 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 function Test2() {
   const [value, onChange] = useState<Value>(new Date());
 
-  return (
-    <div>
-      <Calendar onChange={onChange} className={styles} value={value} />
-    </div>
-  );
+  return <div></div>;
 }
 export default Test2;
