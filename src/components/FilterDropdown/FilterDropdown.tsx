@@ -1,8 +1,9 @@
-import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
-import { PRICE_LIST, RESERVE_LIST } from '@/constants/dropdown';
 import { Dispatch, SetStateAction, useState } from 'react';
-import styles from './FilterDropdown.module.css';
+
+import { PRICE_LIST, RESERVE_LIST } from '@/constants/dropdown';
 import { PriceFilterOption, ReserveFilterOption } from '@/types/dropdown';
+import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
+import styles from './FilterDropdown.module.css';
 
 export type EntireOptions = PriceFilterOption | ReserveFilterOption;
 
