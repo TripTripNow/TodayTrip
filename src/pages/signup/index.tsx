@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { postSignup } from '@/api/user/user';
 import { SignupData } from '@/types/user';
 import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 function SignUp() {
   const router = useRouter();
@@ -37,8 +38,8 @@ function SignUp() {
         redirect: false,
       });
       if (result?.ok) {
-        //TODO 성공 토스트 띄우기
-        //router.push('/');
+        toast.success('회원가입이 완료되었습니다.');
+        router.push('/');
         return;
       }
       alert('문제가 발생했습니다.');

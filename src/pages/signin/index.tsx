@@ -5,6 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
 import CheckboxInput from '@/components/Input/CheckboxInput';
 import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 function SignIn() {
   const methods = useForm<FieldValues>({
@@ -33,17 +34,11 @@ function SignIn() {
     });
 
     if (result?.error) {
-      if (result.status === 401) {
-        setError('password', {
-          type: 'validate',
-          message: '비밀번호가 일치하지 않습니다.',
-        });
-        return;
-      }
+      toast.error('로그인이 실패하였습니다.');
       return;
     }
 
-    alert('성공');
+    toast.success('로그인이 완료되었습니다.');
   };
 
   return (

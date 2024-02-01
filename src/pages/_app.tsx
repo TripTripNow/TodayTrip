@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -52,6 +53,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLa
             </div>
           </SessionProvider>
         </HydrationBoundary>
+        <Toaster containerStyle={{ fontSize: '2.5rem', fontWeight: '600' }} />
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
         </div>

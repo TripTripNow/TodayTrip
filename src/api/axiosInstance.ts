@@ -15,7 +15,6 @@ instance.interceptors.request.use(
 
     if (!session || !session.user.accessToken) {
       //refresh token
-      console.log('token!');
       return config;
     }
 
