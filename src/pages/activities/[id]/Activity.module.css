@@ -34,7 +34,7 @@
 }
 
 .hr {
-  width: 79rem;
+  width: 100%;
   height: 0.1rem;
   background: var(--nomad_black);
   opacity: 0.25;
@@ -66,10 +66,11 @@
 .rightContentContainer {
   display: flex;
   width: 38.4rem;
-  height: 74.6rem;
+  padding: 2.4rem;
+  flex-direction: column;
+  gap: 1.6rem;
   background-color: var(--whiteFF);
   border-radius: 2rem;
-  justify-content: center;
 }
 
 .customCalendar:global.react-calendar {
@@ -80,12 +81,15 @@
 }
 
 .customCalendar :global(.react-calendar__month-view__weekdays) abbr {
+  font-size: 1.4rem;
   text-decoration: none;
+  color: var(--gray4B);
 }
 
 .customCalendar :global .react-calendar__navigation button {
   font-weight: 700;
   font-size: 1.4rem;
+  color: var(--black1B);
 }
 
 .customCalendar :global .react-calendar__tile {
@@ -93,12 +97,13 @@
   width: 3.5rem;
   height: 4rem;
   padding: 1rem;
+  color: var(--gray4B);
   font-weight: 600;
-  font-size: 1.3rem;
+  /* 피그마는 글씨 크기 1.3인데 너무 작은 거 같아서 1.5 어떠신가요 */
+  font-size: 1.5rem;
   justify-content: center;
   align-items: center;
   border-radius: 0.8rem;
-  color: var(--gray4B);
 }
 
 .customCalendar :global .react-calendar__month-view__days__day--neighboringMonth,
@@ -110,8 +115,8 @@
 .customCalendar :global .react-calendar__tile--hover,
 .customCalendar :global .react-calendar__tile:enabled:hover,
 .customCalendar :global .react-calendar__tile:focus {
-  background-color: var(--greenCE);
   color: var(--green0B);
+  background-color: var(--greenCE);
 }
 
 .customCalendar :global .react-calendar__tile:enabled:focus,
@@ -121,8 +126,8 @@
 }
 
 .customCalendar :global .react-calendar__tile--now {
-  color: var(--gray4B);
   background: white;
+  color: var(--gray4B);
 }
 
 .customCalendar :global(.react-calendar__navigation button.react-calendar__navigation__prev-button) {
@@ -131,4 +136,72 @@
 
 .customCalendar :global(.react-calendar__navigation button.react-calendar__navigation__next-button) {
   font-size: 3rem;
+}
+
+.customCalendar :global .react-calendar__navigation button:disabled,
+.customCalendar :global .react-calendar__tile:disabled {
+  color: #cdcdcd;
+  background-color: var(--whiteFF);
+}
+
+.priceInPerson {
+  display: flex;
+  color: var(--black1B);
+  font-weight: 700;
+  font-size: 2.8rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.span {
+  color: var(--gray4B);
+  font-weight: 400;
+  font-size: 2rem;
+}
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.possibleTime {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.timeButtonContainer {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.2rem;
+}
+
+.participants {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.stepper {
+  display: flex;
+  width: 12rem;
+  height: 4rem;
+  padding: 1rem;
+  border: 0.1rem solid var(--grayCB);
+  background: var(--whiteFF);
+
+  /* 색이 너무 연해서 없애는 건 어떠신지..  */
+  /* color: var(--gray4B); */
+  font-size: 1.4rem;
+  text-align: center;
+  border-radius: 0.6rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.totalPrice {
+  display: flex;
+  justify-content: space-between;
 }

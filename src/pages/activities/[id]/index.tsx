@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import axios from 'axios';
 import LocationIcon from '#/icons/icon-location.svg';
-
+import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import Button from '@/components/common/Button/Button';
+import MinusIcon from '#/icons/icon-minus.svg';
+import PlusIcon from '#/icons/icon-plus.svg';
 
 interface SubImageUrl {
   id: number;
@@ -72,13 +71,72 @@ function Activity() {
     createdAt: '2023-12-31T21:28:50.589Z',
     updatedAt: '2023-12-31T21:28:50.589Z',
   };
+
+  type TimeSlot = {
+    date: string;
+    times: {
+      id: number;
+      startTime: string;
+      endTime: string;
+    }[];
+  };
+
+  const timeSlot: TimeSlot[] = [
+    {
+      date: '2024-02-02',
+      times: [
+        {
+          id: 25,
+          startTime: '12:00',
+          endTime: '13:00',
+        },
+      ],
+    },
+    {
+      date: '2024-02-01',
+      times: [
+        {
+          id: 26,
+          startTime: '12:00',
+          endTime: '13:00',
+        },
+        {
+          id: 27,
+          startTime: '13:00',
+          endTime: '14:00',
+        },
+        {
+          id: 28,
+          startTime: '19:00',
+          endTime: '20:00',
+        },
+        {
+          id: 23,
+          startTime: '11:00',
+          endTime: '12:00',
+        },
+        {
+          id: 21,
+          startTime: '20:00',
+          endTime: '21:00',
+        },
+        {
+          id: 22,
+          startTime: '9:00',
+          endTime: '10:00',
+        },
+      ],
+    },
+  ];
+
+  // 지도
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string,
   });
 
   const [location, setLocation] = useState<{ lat: number; lng: number }>();
-  const [value, onChange] = useState<Value>(new Date());
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -98,11 +156,30 @@ function Activity() {
     fetchLocation();
   }, []);
 
-  const tileDisabled = ({ activeStartDate, date, view }) => {
-    return date < new Date();
+  type ValuePiece = Date | null;
+
+  type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+  // 캘린더
+  const [dateValue, setDateValue] = useState<Value>(null);
+  const [filteredTimes, setFilteredTimes] = useState<TimeSlot>();
+
+  // 예약 가능한 시간
+
+  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
+    console.log(formattedValue);
+    setFilteredTimes(timeSlot.find((slot) => slot.date === formattedValue));
+  }, [dateValue]);
+
+  const handleTimeButtonClick = (index: number) => {
+    setClickedTimeButtonId(index);
   };
 
-  const today = new Date();
+  // 참여 인원수
+  const [participantsCount, setParticipantsCount] = useState<number>(1);
 
   return (
     <div className={styles.wrapper}>
@@ -144,17 +221,68 @@ function Activity() {
               </p>
             </div>
             <div className={styles.rightContentContainer}>
+              <p className={styles.priceInPerson}>
+                ￦{data.price.toLocaleString('ko-KR')}
+                <span className={styles.span}>/ 인</span>
+              </p>
+              <hr className={styles.hr} />
+              <div className={styles.calendar}>
+                <h2 className={styles.h2}>날짜</h2>
+                <div style={{ margin: '0 auto' }}>
+                  <Calendar
+                    prev2Label={null}
+                    next2Label={null}
+                    calendarType="gregory"
+                    locale="en"
+                    onChange={setDateValue}
+                    className={styles.customCalendar}
+                    value={dateValue}
+                    minDate={new Date()}
+                  />
+                </div>
+              </div>
+              <div className={styles.possibleTime}>
+                <h2 className={styles.h2}>예약 가능한 시간</h2>
+
+                <div className={styles.timeButtonContainer}>
+                  {filteredTimes?.times.map((time) => (
+                    <Button
+                      key={time.id}
+                      type="time"
+                      color={time.id === clickedTimeButtonId ? 'green' : 'white'}
+                      onClick={() => handleTimeButtonClick(time.id)}
+                    >
+                      {time.startTime}~{time.endTime}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <hr className={styles.hr} />
+              <div className={styles.participants}>
+                <h2 className={styles.h2}>참여 인원 수</h2>
+                <div className={styles.stepper}>
+                  <button disabled={participantsCount <= 1} onClick={() => setParticipantsCount((prev) => prev - 1)}>
+                    {participantsCount > 1 ? (
+                      <MinusIcon fill="#4B4B4B" alt="참여 인원 수 줄이기 아이콘" />
+                    ) : (
+                      <MinusIcon fill="#cdcdcd" alt="비활성화된 상태의 참여 인원 수 줄이기 아이콘" />
+                    )}
+                  </button>
+                  {participantsCount}
+                  <button onClick={() => setParticipantsCount((prev) => prev + 1)}>
+                    <PlusIcon alt="참여 인원 수 늘리기 아이콘" />
+                  </button>
+                </div>
+              </div>
+              <Button isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
+                예약하기
+              </Button>
+              <hr className={styles.hr} style={{ marginTop: '0.8rem' }} />
               <div>
-                <Calendar
-                  tileDisabled={tileDisabled}
-                  prev2Label={null}
-                  next2Label={null}
-                  calendarType="gregory"
-                  locale="en"
-                  onChange={onChange}
-                  className={styles.customCalendar}
-                  value={value}
-                />
+                <div className={styles.totalPrice}>
+                  <h2 className={styles.h2}>총 합계</h2>
+                  <p className={styles.h2}>￦{(data.price * participantsCount).toLocaleString('ko-KR')}</p>
+                </div>
               </div>
             </div>
           </section>
