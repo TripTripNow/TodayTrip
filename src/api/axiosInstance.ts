@@ -13,9 +13,13 @@ instance.interceptors.request.use(
     // 요청 바로 직전
     const session = await getSession();
 
-    if (session && session.user) {
-      config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}`;
+    if (!session || !session.user.accessToken) {
+      //refresh token
+      console.log('token!');
+      return config;
     }
+
+    config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}`;
 
     return config;
   },
