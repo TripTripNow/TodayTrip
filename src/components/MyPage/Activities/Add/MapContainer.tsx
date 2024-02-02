@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
+import styles from './MapContainer.module.css';
 
-const MapContainer = () => {
+// ...
+
+function MapContainer() {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [address, setAddress] = useState<string | undefined>('');
-  const [mapCenter, setMapCenter] = useState({ lat: 37.7749, lng: -122.4194 });
+  const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setAutocomplete(autocomplete);
@@ -38,7 +43,12 @@ const MapContainer = () => {
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ location: clickedPosition }, (results, status) => {
       if (status === 'OK' && results && results[0]) {
-        setAddress(results[0].formatted_address || '');
+        const clickedAddress = results[0].formatted_address || '';
+        setAddress(clickedAddress);
+        // 클릭한 곳의 주소를 input 칸에 보여주기
+        if (inputRef.current) {
+          inputRef.current.value = clickedAddress;
+        }
       } else {
         setAddress('');
       }
@@ -50,9 +60,9 @@ const MapContainer = () => {
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyDQxCp9hTvKjInPrxjtDP8Kvyz4yGGX17o" libraries={['places']}>
-      <div style={{ position: 'relative' }}>
+      <div className={styles.mapContainer}>
         <GoogleMap
-          mapContainerStyle={{ height: '400px', width: '100%', position: 'relative', zIndex: 0 }}
+          mapContainerStyle={{ height: '400px', width: '100%', position: 'relative', zIndex: 1, borderRadius: '4px' }}
           zoom={17.5}
           center={mapCenter}
           onClick={onMapClick}
@@ -67,32 +77,12 @@ const MapContainer = () => {
             />
           )}
         </GoogleMap>
-        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-          <input
-            type="text"
-            placeholder="Enter Address"
-            style={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
-              width: 'calc(100% - 20px)',
-              height: '40px',
-              padding: '0 12px',
-              boxSizing: 'border-box',
-              border: '1px solid transparent',
-              borderRadius: '3px',
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
-              fontSize: '14px',
-              outline: 'none',
-              textOverflow: 'ellipses',
-              zIndex: 1,
-            }}
-          />
+        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} className={styles.mapInputWrapper}>
+          <input type="text" placeholder="주소를 입력해주세요" className={styles.mapInput} ref={inputRef} />
         </Autocomplete>
       </div>
-      <p style={{ zIndex: 0 }}>Selected Address: {address}</p>
     </LoadScript>
   );
-};
+}
 
 export default MapContainer;

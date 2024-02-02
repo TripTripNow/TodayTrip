@@ -8,10 +8,11 @@ import PlusButtonIcon from '#/icons/icon-plusButton.svg';
 import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import PlusIcon from '#/icons/icon-plus.svg';
 import dayjs from 'dayjs';
-import Dropdown from '@/components/common/DropDown/Dropdown';
+import Dropdown, { ActivityItems } from '@/components/common/DropDown/Dropdown';
 import { TIME_LIST } from '@/constants/dropdown';
 import Image from 'next/image';
 import ImgCloseIcon from '#/icons/icon-imgClose.svg';
+import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
 
 interface IsDateTime {
   selectedDate: string;
@@ -22,11 +23,13 @@ interface IsDateTime {
 function ActivitiesAdd() {
   const [isDate, setIsDate] = useState<IsDateTime[]>([]);
   const [isSelectedDate, setIsSelectedDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [categoryItem, setCategoryItem] = useState('');
+  const [startTime, setStartTime] = useState<string | ActivityItems>('');
+  const [endTime, setEndTime] = useState<string | ActivityItems>('');
+  const [categoryItem, setCategoryItem] = useState<string | ActivityItems>('');
   const [bannerImgSrc, setBannerImgSrc] = useState<string[]>([]);
   const [imgSrc, setImgSrc] = useState<string[]>([]);
+  const [address, setAddress] = useState<string | undefined>('주소를 입력해주세요');
+  const [isAddressOpen, setIsAddressOpen] = useState(false);
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const methods = useForm<FieldValues>({
@@ -117,21 +120,27 @@ function ActivitiesAdd() {
         <p className={styles.addHeader}>내 체험 등록</p>
         <button className={styles.addHeaderButton}>등록하기</button>
       </div>
-      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer}>
+
+      <form
+        onSubmit={handleSubmit(handleOnSubmit)}
+        onKeyDown={(e) => {
+          console.log(e.code);
+          if (e.code === 'Enter' || e.code === 'NumpadEnter') e.preventDefault();
+        }}
+        className={styles.formContainer}
+      >
         <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
         <div className={styles.categoryWrapper}>
           <Dropdown type="카테고리" setDropdownItem={setCategoryItem} />
         </div>
+
         <Input name="description" control={control} placeholder="설명" type="text" activities={true} />
         <Input name="price" control={control} label="가격" placeholder="가격" type="number" activities={true} />
-        <Input
-          name="address"
-          control={control}
-          label="주소"
-          placeholder="주소를 입력해주세요"
-          type="text"
-          activities={true}
-        />
+
+        <div className={styles.addressContainer}>
+          <p className={styles.addressTitle}>주소</p>
+          <MapContainer />
+        </div>
         <p className={styles.dateTitle}>예약 가능한 시간대</p>
         <div className={styles.dateWrapper}>
           <div className={styles.dateHeader}>
@@ -246,6 +255,7 @@ function ActivitiesAdd() {
             ))}
         </div>
       </form>
+      <Input name="description" control={control} placeholder="설명" type="text" activities={true} />
     </div>
   );
 }

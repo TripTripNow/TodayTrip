@@ -47,6 +47,31 @@
   margin-bottom: -1.6rem;
 }
 
+.addressContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.addressTitle {
+  color: var(--black1B);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+}
+
+.addressWrapper {
+  width: 100%;
+  height: 5.6rem;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  border: 0.1rem solid var(--gray79);
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+  color: var(--black1B);
+}
+
 .dateTitle {
   color: var(--black1B);
   font-size: 2.4rem;
