@@ -6,7 +6,7 @@ type Activity = {
   id: number;
 };
 
-type Status = keyof typeof STATUS;
+export type Status = keyof typeof STATUS;
 
 export interface Reservations {
   data: {
