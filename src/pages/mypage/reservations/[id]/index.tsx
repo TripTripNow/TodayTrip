@@ -2,7 +2,7 @@ import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import styles from './Reservationid.module.css';
+import styles from './ReservationId.module.css';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
