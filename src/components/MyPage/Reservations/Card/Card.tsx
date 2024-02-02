@@ -4,12 +4,15 @@ import clsx from 'clsx';
 import formatDateString from '@/utils/formatDateString';
 import { useState } from 'react';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
-import { Reservations } from '@/types/reservations';
+import { Reservation } from '@/types/reservations';
 import { STATUS } from '@/constants/reservation';
 import Button from '@/components/common/Button/Button';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 
-function Card({ data }: Reservations) {
+interface CardProps {
+  data: Reservation;
+}
+function Card({ data }: CardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const handleCancelModalToggle = () => {

@@ -3,10 +3,10 @@ import styles from './Header.module.css';
 import StarIcon from '#/icons/icon-star.svg';
 import LocationIcon from '#/icons/icon-location.svg';
 import KebabIcon from '#/icons/icon-kebab.svg';
-import { ActivityProps } from '@/pages/activities/[id]';
 import Image from 'next/image';
+import { Activity } from '@/types/Actvity';
 
-function Header({ data }: { data: ActivityProps }) {
+function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
 
   const handleKebabBlur = () => {

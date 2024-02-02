@@ -8,17 +8,15 @@ type Activity = {
 
 type Status = keyof typeof STATUS;
 
-export interface Reservations {
-  data: {
-    id: number;
-    activity: Activity;
-    scheduleId: number;
-    status: Status;
-    reviewSubmitted: boolean;
-    totalPrice: number;
-    headCount: number;
-    date: string;
-    startTime: string;
-    endTime: string;
-  };
+export interface Reservation {
+  id: number;
+  activity: Activity;
+  scheduleId: number;
+  status: Status;
+  reviewSubmitted: boolean;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
 }

@@ -1,6 +1,6 @@
-import { Reservations } from '@/types/reservations';
+import { Reservation } from '@/types/reservations';
 
-export const reservations: Reservations['data'][] = [
+export const reservations: Reservation[] = [
   {
     id: 1,
     activity: {

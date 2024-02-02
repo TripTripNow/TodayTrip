@@ -5,13 +5,15 @@ import formatDateString from '@/utils/formatDateString';
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
-import { Reservations } from '@/types/reservations';
+import { Reservation } from '@/types/reservations';
 
 export const RATINGS = [1, 2, 3, 4, 5] as const;
 
-interface ReviewModalProps extends Reservations {
+interface ReviewModalProps {
+  data: Reservation;
   handleModalClose: () => void;
 }
+
 function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
   const [ratingInputValue, setRatingInputValue] = useState(0);
   const [textInputValue, setTextInputValue] = useState('');

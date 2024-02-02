@@ -1,0 +1,11 @@
+.reviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
