@@ -9,8 +9,8 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
 import { Reservations } from '@/types/reservations';
 import formatDateString from '@/utils/formatDateString';
-import ArrowIcon from '#/icons/icon-arrowBack.svg';
 import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
+import ArrowIcon from '#/icons/icon-arrowBack.svg';
 
 // @todo 카드 데이터 불러오기
 const item: Reservations['data'] = {
