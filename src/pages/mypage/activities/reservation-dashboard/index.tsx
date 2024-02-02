@@ -3,10 +3,10 @@ import { ReactElement, useState } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 
 import styles from './ReservationDashboard.module.css';
-import Dropdown from '@/components/common/DropDown/Dropdown';
+import Dropdown, { ActivityItems } from '@/components/common/DropDown/Dropdown';
 
 function ReservationDashboard() {
-  const [dropdownItem, setDropdownItem] = useState<string>(''); // 드랍다운 value 값
+  const [dropdownItem, setDropdownItem] = useState<string | ActivityItems>(''); // 드랍다운 value 값
 
   return (
     <div>
