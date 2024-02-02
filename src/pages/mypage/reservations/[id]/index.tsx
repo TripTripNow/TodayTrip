@@ -32,11 +32,11 @@ const item: Reservations['data'] = {
 // @todo 주소 데이터 불러오기
 const address = '서울특별시 강남구 테헤란로 427';
 
-interface Props {
+interface CheckStatusProps {
   status: string;
 }
 
-const CheckStatus = ({ status }: Props) => {
+const CheckStatus = ({ status }: CheckStatusProps) => {
   const STATUS = {
     pending: '예약 신청',
     confirmed: '예약 승인',
