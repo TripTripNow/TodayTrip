@@ -1,15 +1,16 @@
-import ArrowIcon from '#/icons/icon-arrowBack.svg';
-import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
+import { ReactElement, useState } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+
+import styles from './ReservationId.module.css';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
-import formatDateString from '@/utils/formatDateString';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { ReactElement, useState } from 'react';
-import styles from './ReservationId.module.css';
-import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import { Reservations } from '@/types/reservations';
+import formatDateString from '@/utils/formatDateString';
+import ArrowIcon from '#/icons/icon-arrowBack.svg';
+import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
 
 // @todo 카드 데이터 불러오기
 const item: Reservations['data'] = {
