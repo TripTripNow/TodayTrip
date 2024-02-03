@@ -4,7 +4,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Card from '@/components/Home/Card/Card';
-import { MOCK_DATA } from '@/constants/mock';
+import { RESERVATION_CARDS_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
 
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
@@ -18,7 +18,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   /** 버튼을 통한 slide 함수 */
   const handleSlideByBtn = (num: number) => {
     const newIndex = slideIndex + num;
-    if (newIndex < 0 || newIndex + 2 >= MOCK_DATA.length) return;
+    if (newIndex < 0 || newIndex + 2 >= RESERVATION_CARDS_MOCK_DATA.length) return;
 
     setSlideIndex((prev) => prev + num);
     if (splideRef.current) {
@@ -32,32 +32,22 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
         <h1>🔥 인기 체험</h1>
         {deviceType === 'pc' && (
           <div className={styles.arrowWrapper}>
-            {slideIndex === 0 ? (
-              <LeftArrow
-                alt="왼쪽 화살표"
-                className={clsx(styles.arrow, styles.arrowEnable)}
-                onClick={() => handleSlideByBtn(-1)}
-              />
-            ) : (
-              <LeftArrow
-                alt="왼쪽 화살표"
-                className={clsx(styles.arrow, styles.arrowDisable)}
-                onClick={() => handleSlideByBtn(-1)}
-              />
-            )}
-            {slideIndex + 3 === MOCK_DATA.length ? (
-              <RightArrow
-                alt="오른쪽 화살표"
-                className={clsx(styles.arrow, styles.arrowEnable)}
-                onClick={() => handleSlideByBtn(1)}
-              />
-            ) : (
-              <RightArrow
-                alt="오른쪽 화살표"
-                className={clsx(styles.arrow, styles.arrowDisable)}
-                onClick={() => handleSlideByBtn(1)}
-              />
-            )}
+            <LeftArrow
+              alt="왼쪽 화살표"
+              className={clsx(styles.arrow, {
+                [styles.arrowEnable]: slideIndex === 0,
+                [styles.arrowDisable]: slideIndex !== 0,
+              })}
+              onClick={() => handleSlideByBtn(-1)}
+            />
+            <RightArrow
+              alt="오른쪽 화살표"
+              className={clsx(styles.arrow, {
+                [styles.arrowEnable]: slideIndex + 3 === RESERVATION_CARDS_MOCK_DATA.length,
+                [styles.arrowDisable]: slideIndex + 3 !== RESERVATION_CARDS_MOCK_DATA.length,
+              })}
+              onClick={() => handleSlideByBtn(1)}
+            />
           </div>
         )}
       </div>
@@ -91,7 +81,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           lazyLoad: 'nearby',
         }}
       >
-        {MOCK_DATA.map((card) => (
+        {RESERVATION_CARDS_MOCK_DATA.map((card) => (
           <SplideSlide tag="div" key={card.id}>
             <Card item={card} />
           </SplideSlide>
