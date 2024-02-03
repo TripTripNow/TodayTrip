@@ -43,6 +43,16 @@
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 2.6rem;
+  display: flex;
+  flex-direction: row;
+
+  @media tablet {
+    flex-direction: column;
+  }
+}
+
+.subTitle {
+  color: #969696;
 }
 
 .active {
@@ -51,4 +61,8 @@
 
 .active > .menuItemTitle {
   color: var(--nomad_black);
+}
+
+.menuItem:hover .subTitle {
+  display: none;
 }
