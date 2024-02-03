@@ -16,7 +16,7 @@ interface InputProps {
   placeholder?: string;
   control: Control<FieldValues>;
   name: FieldPath<FieldValues>;
-  type: 'text' | 'email' | 'password' | 'number';
+  type: 'text' | 'email' | 'password' | 'number' | 'textarea';
   state?: 'user' | 'default';
   isDisabled?: boolean;
   activities?: boolean;
@@ -51,15 +51,22 @@ function Input({
         {label}
       </label>
       <input
-        className={`${styles.input} ${error && styles.errorInput} ${activities && styles.activitiesInput}`}
+        className={`${styles.input} ${error && styles.errorInput} ${activities && styles.activitiesInput} ${type === 'textarea' && styles.textareaInput}`}
         placeholder={placeholder}
         type={type}
         id={field.name}
         name={field.name}
         value={field.value}
         onChange={field.onChange}
-        onBlur={field.onBlur}
+        onBlur={
+          type !== 'number'
+            ? field.onChange
+            : (e) => {
+                if (e.type) console.log(e.type);
+              }
+        }
         disabled={isDisabled}
+        min={type === 'number' ? '0' : undefined}
       />
       {error && <p className={styles.errorMessage}>{error.message}</p>}
     </div>
