@@ -15,6 +15,6 @@
   line-height: 2.6rem;
 }
 
-.calendarArrow {
-  cursor: pointer;
+.rotate {
+  rotate: 180deg;
 }
