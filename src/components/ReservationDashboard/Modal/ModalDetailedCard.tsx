@@ -1,4 +1,4 @@
-import { RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS } from '@/components/ReservationDashboard/mock';
 import styles from './ModalDetailedCard.module.css';
 import Button from '@/components/common/Button/Button';
 import clsx from 'clsx';

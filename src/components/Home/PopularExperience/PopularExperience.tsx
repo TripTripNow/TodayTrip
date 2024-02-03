@@ -4,7 +4,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Card from '@/components/Home/Card/Card';
-import { RESERVATION_CARDS_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';

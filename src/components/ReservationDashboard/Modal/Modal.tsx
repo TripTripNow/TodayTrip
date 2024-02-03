@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
-import { RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
 import { ReservedScheduleItem } from '@/types/api';

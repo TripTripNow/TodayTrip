@@ -7,7 +7,7 @@ import Banner from '@/components/Home/Banner/Banner';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
 import NoResult from '@/components/Home/NoResult/NoResult';
-import { RESERVATION_CARDS_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 import styles from './Home.module.css';
 

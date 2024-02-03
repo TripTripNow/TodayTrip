@@ -4,7 +4,7 @@ import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH } from '@/constants/calendar';
 import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDaysInMonth';
 import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 import { ReservationDashboardItem } from '@/types/api';
-import { RESERVATION_DETAILS_MONTH_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_DETAILS_MONTH_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 export type DateObj = Record<string, { pending: number; confirmed: number; completed: number }>;
 

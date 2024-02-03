@@ -5,7 +5,7 @@ import CalendarHeader from '@/components/ReservationDashboard/Calendar/CalendarH
 import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
-import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/pages/mypage/activities/reservation-dashboard/mock';
+import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import styles from './Calendar.module.css';
 
 interface CalendarProps {

@@ -4,7 +4,7 @@ import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import {
   RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA,
   RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS,
-} from '@/pages/mypage/activities/reservation-dashboard/mock';
+} from '@/components/ReservationDashboard/mock';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import NoResult from '@/components/Home/NoResult/NoResult';
