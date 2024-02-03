@@ -18,8 +18,8 @@ interface PaginationProps {
  */
 function Pagination({ pageNumber, totalPages, handlePaginationByClick }: PaginationProps) {
   const pageNumbersArr = Array.from({ length: totalPages }, (_, i) => i + 1);
-  const currentGroupIndex = Math.ceil(pageNumber / 5);
-  const visiblePageNumbers = pageNumbersArr.slice((currentGroupIndex - 1) * 5, currentGroupIndex * 5);
+  const currentPageGroupIndex = Math.ceil(pageNumber / 5);
+  const visiblePageNumbers = pageNumbersArr.slice((currentPageGroupIndex - 1) * 5, currentPageGroupIndex * 5);
 
   return (
     <div className={styles.container}>

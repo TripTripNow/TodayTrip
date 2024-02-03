@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import EmptyStarIcon from '#/icons/icon-emptyStar.svg';
 import YellowStarIcon from '#/icons/icon-yellowStar.svg';
-import { RATINGS } from '@/components/Modal/ReviewModal/ReviewModal';
 import LightYellowStarIcon from '#/icons/icon-lightYellowStar.svg';
+import { RATINGS } from '@/constants/Rating';
 
 type Rating = (typeof RATINGS)[number];
 
