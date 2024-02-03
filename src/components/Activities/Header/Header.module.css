@@ -1,9 +1,12 @@
+@values tablet, mobile from "@/styles/breakpoints.css";
+
 .header {
   display: flex;
   position: relative;
   width: 100%;
   gap: 1rem;
   justify-content: space-between;
+  align-items: center;
 }
 
 .info {
@@ -27,16 +30,17 @@
 .location {
   display: flex;
   align-items: center;
+  font-size: 1.4rem;
 }
 
 .header .rating {
-  gap: 0.6rem;
   color: var(--black1B);
+  gap: 0.6rem;
 }
 
 .options {
   position: absolute;
-  top: 4.5rem;
+  top: 7rem;
   right: 1.5rem;
   width: 16rem;
   height: 11.9rem;
@@ -44,6 +48,7 @@
   border-radius: 0.6rem;
   background-color: var(--whiteFF);
   z-index: 1;
+
   @media mobile {
     top: 3.5rem;
     width: 12rem;
@@ -57,15 +62,6 @@
   background: var(--grayDD);
 }
 
-.kebabWrapper {
-  width: 4rem;
-  height: 4rem;
-  @media mobile {
-    width: 3.2rem;
-    height: 3.2rem;
-  }
-}
-
 .option {
   width: 100%;
   padding: 1.8rem;
@@ -74,6 +70,7 @@
   font-size: 1.8rem;
   line-height: 2.2rem;
   text-align: center;
+
   @media mobile {
     padding: 1.2rem;
     font-size: 1.4rem;
@@ -88,6 +85,11 @@
   position: relative;
   width: 59.5rem;
   height: 53.4rem;
+
+  @media tablet {
+    width: 34.56rem;
+    height: 31rem;
+  }
 }
 
 .bannerImageWrapper img {
@@ -98,12 +100,21 @@
   position: relative;
   width: 29.35rem;
   height: 26.3rem;
+
+  @media tablet {
+    width: 17.05rem;
+    height: 15.26rem;
+  }
 }
 
 .imageContainer {
   display: flex;
   gap: 0.8rem;
   margin-bottom: 4.2rem;
+
+  @media tablet {
+    gap: 0.46rem;
+  }
 }
 
 .subImages {
@@ -111,6 +122,10 @@
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
+
+  @media tablet {
+    gap: 0.46rem;
+  }
 }
 
 .subImageWrapper:nth-child(2) img {

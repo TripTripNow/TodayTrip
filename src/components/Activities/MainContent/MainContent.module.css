@@ -1,8 +1,14 @@
+@values tablet, mobile from "@/styles/breakpoints.css";
+
 .leftContentContainer {
   display: flex;
   width: 79rem;
   gap: 4rem;
   flex-direction: column;
+
+  @media tablet {
+    width: 42.8rem;
+  }
 }
 
 .descriptionWrapper {
@@ -17,8 +23,14 @@
   word-break: normal;
 }
 
+.mapWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
 .location {
   display: flex;
-  margin-top: -3.2rem;
   align-items: center;
+  font-size: 1.4rem;
 }

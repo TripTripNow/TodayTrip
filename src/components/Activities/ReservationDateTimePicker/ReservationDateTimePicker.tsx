@@ -39,7 +39,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setParticipantsValue(Number(e.target.value));
   };
   return (
-    <div className={styles.rightContentContainer}>
+    <div className={styles.container}>
       <p className={styles.priceInPerson}>
         ￦{data.price.toLocaleString('ko-KR')}
         <span className={styles.span}>/ 인</span>
@@ -49,6 +49,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <h2 className={style.h2} style={{ alignSelf: 'self-start' }}>
           날짜
         </h2>
+        <button className={styles.selectButton}>날짜 선택하기</button>
         <Calendar
           prev2Label={null}
           next2Label={null}

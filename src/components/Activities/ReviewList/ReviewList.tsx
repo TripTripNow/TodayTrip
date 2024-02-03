@@ -6,10 +6,10 @@ import EmptyStarIcon from '#/icons/icon-littleEmptyStar.svg';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { RATINGS } from '@/constants/Rating';
 
-function ReviewList() {
+function ReviewList({ totalRating }: { totalRating: number }) {
   const { reviews, totalCount } = reviewData;
 
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
@@ -21,10 +21,10 @@ function ReviewList() {
   };
 
   return (
-    <div className={styles.reviewListContainer}>
+    <section className={styles.reviewListContainer}>
       <h2 className={style.h2}>후기</h2>
       <div className={styles.ratingWrapper}>
-        <h3 className={styles.totalRating}>4.2</h3>
+        <h3 className={styles.totalRating}>{totalRating}</h3>
         <div className={styles.detailRating}>
           <p className={styles.satisfaction}>매우 만족</p>
           <p className={styles.reviewCount}>
@@ -35,8 +35,8 @@ function ReviewList() {
       </div>
       <div className={styles.reviewListWrapper}>
         {slicedReviews.map((review, index) => (
-          <>
-            <div key={review.id} className={styles.reviewWrapper}>
+          <Fragment key={review.id}>
+            <div className={styles.reviewWrapper}>
               <Image
                 style={{ borderRadius: '100%' }}
                 src={review.user.profileImageUrl}
@@ -64,7 +64,7 @@ function ReviewList() {
               </div>
             </div>
             {index !== reviews.length - 1 && <hr className={style.hr} />}
-          </>
+          </Fragment>
         ))}
       </div>
       <Pagination
@@ -72,7 +72,7 @@ function ReviewList() {
         totalPages={totalPages}
         handlePaginationByClick={handlePaginationByClick}
       />
-    </div>
+    </section>
   );
 }
 

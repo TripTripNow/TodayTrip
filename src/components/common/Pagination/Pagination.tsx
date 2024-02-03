@@ -4,6 +4,7 @@ import PaginationLeftArrow from '#/icons/icon-pagination-left-arrow.svg';
 import PaginationRightArrow from '#/icons/icon-pagination-right-arrow.svg';
 
 import styles from './Pagination.module.css';
+import { useRouter } from 'next/router';
 
 interface PaginationProps {
   pageNumber: number;
@@ -16,6 +17,7 @@ interface PaginationProps {
  * @param totalPages 모든 페이지 수
  * @param handlePaginationByClick 숫자를 인자로 받는 void 함수
  */
+
 function Pagination({ pageNumber, totalPages, handlePaginationByClick }: PaginationProps) {
   const pageNumbersArr = Array.from({ length: totalPages }, (_, i) => i + 1);
   const currentPageGroupIndex = Math.ceil(pageNumber / 5);

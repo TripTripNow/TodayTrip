@@ -38,7 +38,7 @@ function Header({ data }: { data: Activity }) {
         </div>
         <div>
           <button onClick={handleKebabToggle}>
-            <KebabIcon className={styles.kebabWrapper} width={40} height={40} alt="케밥 버튼" />
+            <KebabIcon width={40} height={40} alt="케밥 버튼" />
           </button>
           {isKebabOpen && (
             <div className={styles.options}>

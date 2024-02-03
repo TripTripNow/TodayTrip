@@ -1,5 +1,9 @@
-.rightContentContainer {
+@values desktop, tablet, mobile from "@/styles/breakpoints.css";
+
+.container {
   display: flex;
+  position: sticky;
+  top: 8rem;
   width: 38.4rem;
   height: fit-content;
   padding: 2.4rem;
@@ -7,6 +11,11 @@
   gap: 1.6rem;
   background-color: var(--whiteFF);
   border-radius: 2rem;
+
+  @media tablet {
+    width: 25.1rem;
+    top: 5rem;
+  }
 }
 
 .customCalendar:global.react-calendar {
@@ -14,6 +23,10 @@
   border: 1px solid var(--grayEE);
   font-family: Pretandard;
   border-radius: 0.8rem;
+
+  @media tablet {
+    display: none;
+  }
 }
 
 .customCalendar :global(.react-calendar__month-view__weekdays) abbr {
@@ -80,18 +93,26 @@
 
 .priceInPerson {
   display: flex;
-  color: var(--black1B);
   font-weight: 700;
   font-size: 2.8rem;
   align-items: center;
   gap: 0.5rem;
+
+  @media tablet {
+    font-size: 2.4rem;
+  }
 }
 
 .span {
   color: var(--gray4B);
   font-weight: 400;
   font-size: 2rem;
+
+  @media tablet {
+    font-size: 1.6rem;
+  }
 }
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -99,10 +120,27 @@
   align-items: center;
 }
 
+.selectButton {
+  display: flex;
+  color: var(--nomad_black);
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration-line: underline;
+  align-self: flex-start;
+
+  @media desktop {
+    display: none;
+  }
+}
+
 .possibleTime {
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+
+  @media tablet {
+    display: none;
+  }
 }
 
 .timeButtonContainer {
@@ -124,8 +162,8 @@
 
 .participantsInput[type='number']::-webkit-outer-spin-button,
 .participantsInput[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
   margin: 0;
+  -webkit-appearance: none;
 }
 
 .stepper {

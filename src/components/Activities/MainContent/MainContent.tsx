@@ -46,34 +46,37 @@ function MainContent({ data }: MainContentProps) {
   return (
     <div className={styles.leftContentContainer}>
       <hr className={style.hr} />
-      <div className={styles.content}>
-        <div className={styles.descriptionWrapper}>
-          <h2 className={style.h2}>체험 설명</h2>
-          <p className={styles.description}>{data.description}</p>
-        </div>
-      </div>
+
+      <section className={styles.descriptionWrapper}>
+        <h2 className={style.h2}>체험 설명</h2>
+        <p className={styles.description}>{data.description}</p>
+      </section>
       <hr className={style.hr} />
-      {isLoaded && location && (
-        <GoogleMap mapContainerStyle={containerStyle} zoom={18} center={{ lat: location.lat, lng: location.lng }}>
-          <MarkerF
-            position={location}
-            icon={{ url: '/images/img-mapMaker.png', scaledSize: new window.google.maps.Size(60, 70) }}
-          />
-          <InfoWindowF
-            options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
-            position={{ lat: location.lat, lng: location.lng }}
-            zIndex={1}
-          >
-            <div>{data.address}</div>
-          </InfoWindowF>
-        </GoogleMap>
-      )}
-      <p className={styles.location}>
-        <LocationIcon alt="지도 마커 아이콘" />
-        {data.address}
-      </p>
+
+      <section className={styles.mapWrapper}>
+        {isLoaded && location && (
+          <GoogleMap mapContainerStyle={containerStyle} zoom={18} center={{ lat: location.lat, lng: location.lng }}>
+            <MarkerF
+              position={location}
+              icon={{ url: '/images/img-mapMarker.png', scaledSize: new window.google.maps.Size(60, 70) }}
+            />
+            <InfoWindowF
+              options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
+              position={{ lat: location.lat, lng: location.lng }}
+              zIndex={1}
+            >
+              <div>{data.address}</div>
+            </InfoWindowF>
+          </GoogleMap>
+        )}
+        <p className={styles.location}>
+          <LocationIcon alt="지도 마커 아이콘" />
+          {data.address}
+        </p>
+      </section>
+
       <hr className={style.hr} />
-      <ReviewList />
+      <ReviewList totalRating={data.rating} />
     </div>
   );
 }

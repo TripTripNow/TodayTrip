@@ -10,10 +10,10 @@ function ActivityID() {
     <div className={styles.wrapper}>
       <main className={styles.mainContainer}>
         <Header data={activityData} />
-        <section className={styles.contentContainer}>
+        <div className={styles.contentContainer}>
           <MainContent data={activityData} />
           <ReservationDateTimePicker data={activityData} />
-        </section>
+        </div>
       </main>
     </div>
   );
