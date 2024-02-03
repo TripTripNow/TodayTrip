@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
 import { Reservation } from '@/types/reservations';
-
-export const RATINGS = [1, 2, 3, 4, 5] as const;
+import { RATINGS } from '@/constants/Rating';
 
 interface ReviewModalProps {
   data: Reservation;

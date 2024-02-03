@@ -63,13 +63,9 @@ function Home() {
   }, []);
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)
-  const handlePaginationByClick = useCallback(
-    (num: number) => {
-      if (num < 1 || num > totalPages) return;
-      setPageNumber(num);
-    },
-    [totalPages],
-  );
+  const handlePaginationByClick = (num: number) => {
+    setPageNumber(num);
+  };
 
   /** TODO
    * @description 이 함수는 원래 fetch하는 logic이 들어가는 함수입니다. api 연결시 변경되어야 할 내용입니다.
