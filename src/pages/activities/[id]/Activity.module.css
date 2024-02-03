@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   background-color: var(--grayFA);
+  padding: 7.8rem;
 }
 
 .wrapper p,
@@ -18,7 +19,6 @@
   align-items: center;
   flex-direction: column;
   gap: 4.3rem;
-  padding-top: 7.8rem;
 }
 
 .contentContainer {

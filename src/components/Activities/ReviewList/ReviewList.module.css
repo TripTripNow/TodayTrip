@@ -35,6 +35,13 @@
   align-items: center;
 }
 
+.reviewListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  margin-bottom: 4.8rem;
+}
+
 .reviewWrapper {
   display: flex;
   gap: 1.6rem;

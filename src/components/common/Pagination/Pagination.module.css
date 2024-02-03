@@ -4,6 +4,7 @@
   display: inline-flex;
   align-items: flex-start;
   gap: 1rem;
+  align-self: center;
 }
 
 .arrow {

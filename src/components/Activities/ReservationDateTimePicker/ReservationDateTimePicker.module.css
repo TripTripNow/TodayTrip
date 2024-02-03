@@ -1,6 +1,7 @@
 .rightContentContainer {
   display: flex;
   width: 38.4rem;
+  height: fit-content;
   padding: 2.4rem;
   flex-direction: column;
   gap: 1.6rem;
