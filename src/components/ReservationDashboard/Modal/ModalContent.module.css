@@ -1,4 +1,11 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
 .mainContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -7,4 +14,58 @@
 }
 
 .detailsContainer {
+  /* height: 35.4rem; */
+}
+
+.cardsWrapper {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin-top: 1.6rem;
+  height: 26.4rem;
+}
+
+.cardsWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.subTitle {
+  color: var(--black1B);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  margin-top: 2.5rem;
+}
+
+.date {
+  composes: subTitle;
+  font-weight: 400;
+  margin-top: 1.4rem;
+  margin-bottom: 1.2rem;
+
+  @media mobile {
+    margin-top: 1.6rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.statusContainer {
+  position: absolute;
+  bottom: -4rem;
+  height: 2.9rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 3.2rem;
+}
+
+.statusContainer > h3 {
+  color: var(--black1B);
+  font-size: 2.4rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
