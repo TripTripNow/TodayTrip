@@ -28,16 +28,16 @@ function ActivitiesAdd() {
   const [categoryItem, setCategoryItem] = useState<string | ActivityItems>('');
   const [bannerImgSrc, setBannerImgSrc] = useState<string[]>([]);
   const [imgSrc, setImgSrc] = useState<string[]>([]);
-  const [address, setAddress] = useState<string | undefined>('주소를 입력해주세요');
-  const [isAddressOpen, setIsAddressOpen] = useState(false);
+  const [addressData, setAddressData] = useState<string | undefined>('주소를 입력해주세요');
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
-      nickName: '',
-      email: '',
+      title: '',
+      description: '',
+      price: 0,
     },
   });
 
@@ -45,7 +45,13 @@ function ActivitiesAdd() {
 
   // const { setValue } = useFormContext();
 
-  const handleOnSubmit = () => {};
+  const handleOnSubmit = (data: FieldValues) => {
+    data.addressData = addressData;
+    data.isDate = isDate;
+    data.bannerImgSrc = bannerImgSrc;
+    data.imgSrc = imgSrc;
+    console.log(data);
+  };
   const handleAddButton = (isSelectedDate: string, startTime: string, endTime: string) => {
     if (!startTime || !endTime || !isSelectedDate) {
       alert('날짜, 시간을 선택해 주세요.');
@@ -116,19 +122,17 @@ function ActivitiesAdd() {
 
   return (
     <div className={styles.addContainer}>
-      <div className={styles.addHeaderWrapper}>
-        <p className={styles.addHeader}>내 체험 등록</p>
-        <button className={styles.addHeaderButton}>등록하기</button>
-      </div>
-
       <form
         onSubmit={handleSubmit(handleOnSubmit)}
         onKeyDown={(e) => {
-          console.log(e.code);
           if (e.code === 'Enter' || e.code === 'NumpadEnter') e.preventDefault();
         }}
         className={styles.formContainer}
       >
+        <div className={styles.addHeaderWrapper}>
+          <p className={styles.addHeader}>내 체험 등록</p>
+          <button className={styles.addHeaderButton}>등록하기</button>
+        </div>
         <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
         <div className={styles.categoryWrapper}>
           <Dropdown type="카테고리" setDropdownItem={setCategoryItem} />
@@ -139,7 +143,7 @@ function ActivitiesAdd() {
 
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer />
+          <MapContainer setAddressData={setAddressData} />
         </div>
         <p className={styles.dateTitle}>예약 가능한 시간대</p>
         <div className={styles.dateWrapper}>
@@ -255,7 +259,6 @@ function ActivitiesAdd() {
             ))}
         </div>
       </form>
-      <Input name="description" control={control} placeholder="설명" type="text" activities={true} />
     </div>
   );
 }

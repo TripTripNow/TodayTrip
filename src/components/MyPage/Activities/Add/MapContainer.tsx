@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import styles from './MapContainer.module.css';
 
-// ...
+interface MapContainerProps {
+  setAddressData: Dispatch<SetStateAction<string | undefined>>;
+}
 
-function MapContainer() {
+function MapContainer({ setAddressData }: MapContainerProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [address, setAddress] = useState<string | undefined>('');
   const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
@@ -20,6 +22,7 @@ function MapContainer() {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
       setAddress(place.formatted_address || '');
+      setAddressData(place.formatted_address || '');
 
       if (place.geometry && place.geometry.location) {
         const newPosition = {
@@ -45,12 +48,14 @@ function MapContainer() {
       if (status === 'OK' && results && results[0]) {
         const clickedAddress = results[0].formatted_address || '';
         setAddress(clickedAddress);
+        setAddressData(clickedAddress);
         // 클릭한 곳의 주소를 input 칸에 보여주기
         if (inputRef.current) {
           inputRef.current.value = clickedAddress;
         }
       } else {
         setAddress('');
+        setAddressData('');
       }
     });
 
