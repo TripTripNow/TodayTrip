@@ -6,7 +6,7 @@ import {
   RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS,
 } from '@/pages/mypage/activities/reservation-dashboard/mock';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import NoResult from '@/components/Home/NoResult/NoResult';
 import { ReservedScheduleItem } from '@/types/api';
 import styles from './ModalContent.module.css';
