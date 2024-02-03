@@ -24,7 +24,7 @@ type Review = {
   user: {
     id: number;
     nickname: string;
-    profileImageUrl: null | string;
+    profileImageUrl: string;
   };
   activityId: number;
   content: string;

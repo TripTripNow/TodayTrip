@@ -6,7 +6,8 @@
 
 .wrapper p,
 .wrapper h2,
-.wrapper h1 {
+.wrapper h1,
+.wrapper h3 {
   color: var(--nomad_black);
 }
 

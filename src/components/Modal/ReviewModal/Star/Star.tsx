@@ -23,6 +23,16 @@ function Star({
   hoveredStarCount,
   setHoveredStarCount,
 }: StarProps) {
+  const starIcon = (() => {
+    if (isSelected) {
+      return <YellowStarIcon alt="선택된 별 아이콘" />;
+    }
+    if (hoveredStarCount >= rating) {
+      return <LightYellowStarIcon alt="호버 된 별 아이콘" />;
+    }
+    return <EmptyStarIcon alt="선택도 호버도 되지 않은 별 아이콘" />;
+  })();
+
   return (
     <button
       onClick={() => {
@@ -31,13 +41,7 @@ function Star({
       onMouseEnter={() => setHoveredStarCount(rating)}
       onMouseLeave={() => setHoveredStarCount(ratingInputValue)}
     >
-      {isSelected ? (
-        <YellowStarIcon alt="선택된 별 아이콘" />
-      ) : hoveredStarCount >= rating ? (
-        <LightYellowStarIcon alt="호버 된 별 아이콘" />
-      ) : (
-        <EmptyStarIcon alt="선택도 호버도 되지 않은 별 아이콘" />
-      )}
+      {starIcon}
     </button>
   );
 }

@@ -83,14 +83,14 @@ export const timeSlot: TimeSlot[] = [
   },
 ];
 
-export const reviews: ReturnReview = {
+export const reviewData: ReturnReview = {
   reviews: [
     {
       id: 1,
       user: {
         id: 7,
         nickname: '박경서',
-        profileImageUrl: null,
+        profileImageUrl: '/images/flower.png',
       },
       activityId: 9,
       content:
@@ -104,7 +104,7 @@ export const reviews: ReturnReview = {
       user: {
         id: 8,
         nickname: '유담이',
-        profileImageUrl: null,
+        profileImageUrl: '/images/react.png',
       },
       activityId: 9,
       content:
@@ -118,7 +118,7 @@ export const reviews: ReturnReview = {
       user: {
         id: 9,
         nickname: '다크종',
-        profileImageUrl: null,
+        profileImageUrl: '/images/block.png',
       },
       activityId: 9,
       content:
@@ -128,5 +128,5 @@ export const reviews: ReturnReview = {
       updatedAt: '2024-01-27T18:23:57.082Z',
     },
   ],
-  totalCount: 3,
+  totalCount: 1300,
 };
