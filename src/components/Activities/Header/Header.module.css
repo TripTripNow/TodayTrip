@@ -114,6 +114,7 @@
 
   @media tablet {
     gap: 0.46rem;
+    margin-bottom: 0rem;
   }
 }
 

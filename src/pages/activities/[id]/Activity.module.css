@@ -29,6 +29,7 @@
 
   @media tablet {
     width: 69.6rem;
+    gap: 4rem;
   }
 }
 
