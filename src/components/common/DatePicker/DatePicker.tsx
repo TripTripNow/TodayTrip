@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, forwardRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './DatePicker.module.css';
@@ -14,14 +14,16 @@ interface DatePickerInputProps {
   setIsSelectedDate: Dispatch<SetStateAction<string>>;
 }
 
-const CustomInput = ({ value, onClick }: Props) => (
+const CustomInput = forwardRef<HTMLButtonElement, Props>(({ value, onClick }, ref) => (
   <label className={styles.container}>
-    <button className={styles.input} onClick={onClick}>
+    <button ref={ref} className={styles.input} onClick={onClick}>
       {value ? <>{value}</> : <span>{'YY/MM/DD'}</span>}
     </button>
     <CalendarIcon className={styles.icon} alt="달력 모양 아이콘" />
   </label>
-);
+));
+
+CustomInput.displayName = 'CustomInput';
 
 function DatePickerInput({ setIsSelectedDate }: DatePickerInputProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
