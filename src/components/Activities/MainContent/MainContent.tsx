@@ -9,7 +9,7 @@ import ReviewList from '@/components/Activities/ReviewList/ReviewList';
 
 const containerStyle = {
   width: '100%',
-  height: '43em',
+  height: '45em',
 };
 
 interface MainContentProps {
