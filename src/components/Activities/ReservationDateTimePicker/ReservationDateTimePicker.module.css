@@ -13,8 +13,8 @@
   border-radius: 2rem;
 
   @media tablet {
-    width: 25.1rem;
     top: 5rem;
+    width: 25.1rem;
   }
 
   @media mobile {
@@ -149,10 +149,10 @@
 
 .timeButtonContainer {
   display: flex;
+  width: 32.8rem;
   gap: 1.2rem;
   flex-wrap: wrap;
   margin-bottom: 0.2rem;
-  width: 32.8rem;
 }
 
 .participants {
@@ -187,7 +187,45 @@
   margin-bottom: 0.8rem;
 }
 
+.minusButton svg {
+  color: var(--gray4B);
+}
+
+.minusButton:disabled svg {
+  color: #cdcdcd;
+}
+
 .totalPrice {
   display: flex;
   justify-content: space-between;
+}
+
+.mobileSelectBar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 8.3rem;
+  padding: 1.6rem;
+  background-color: var(--whiteFF);
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+.mobileReserveButton {
+  width: 10.6rem;
+  height: 100%;
+  color: var(--whiteFF);
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  border-radius: 0.6rem;
+  background-color: var(--nomad_black);
+}
+
+.mobileReserveButton:disabled {
+  background: var(--grayA4);
+  color: var(--whiteFF);
 }
