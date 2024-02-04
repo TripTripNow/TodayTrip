@@ -4,12 +4,13 @@ import CloseIcon from '#/icons/icon-modalClose.svg';
 import Calendar from 'react-calendar';
 import Button from '@/components/common/Button/Button';
 import style from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker.module.css';
-
+import MinusIcon from '#/icons/icon-minus.svg';
+import PlusIcon from '#/icons/icon-plus.svg';
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 import { Time, Value } from '@/types/Calendar';
-import { Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface ReservationModalProps {
   dateValue: Value;
@@ -19,6 +20,8 @@ interface ReservationModalProps {
   handleTimeButtonClick: (id: number) => void;
   setDateButtonText: Dispatch<SetStateAction<string>>;
   handleModalToggle: () => void;
+  participantsValue: number;
+  setParticipantsValue: Dispatch<SetStateAction<number>>;
 }
 function ReservationModal({
   dateValue,
@@ -28,6 +31,8 @@ function ReservationModal({
   handleTimeButtonClick,
   setDateButtonText,
   handleModalToggle,
+  participantsValue,
+  setParticipantsValue,
 }: ReservationModalProps) {
   const handleButtonClick = () => {
     handleModalToggle();
@@ -62,7 +67,6 @@ function ReservationModal({
             <h2 className={styles.h2} style={{ fontSize: '1.8rem' }}>
               예약 가능한 시간
             </h2>
-
             <div className={style.timeButtonContainer}>
               {filteredTimes?.map((time) => (
                 <Button
@@ -74,6 +78,36 @@ function ReservationModal({
                   {time.startTime}~{time.endTime}
                 </Button>
               ))}
+            </div>
+            <div className={clsx(style.participants, styles.onlyMobile)}>
+              <h2 className={styles.h2} style={{ fontSize: '1.8rem' }}>
+                참여 인원 수
+              </h2>
+              <div className={style.stepper}>
+                <button
+                  className={style.minusButton}
+                  disabled={participantsValue <= 1}
+                  onClick={() => setParticipantsValue((prev) => prev - 1)}
+                >
+                  <MinusIcon fill="#4B4B4B" alt="참여 인원 수 줄이기 아이콘" />
+                </button>
+                <input
+                  className={style.participantsInput}
+                  value={participantsValue}
+                  onChange={(e) => setParticipantsValue(+e.target.value)}
+                  min={1}
+                  style={{ width: '3rem' }}
+                  // 숫자가 아닌 값을 입력할 경우 1로 세팅되게 만듦
+                  onInput={(e: ChangeEvent<HTMLInputElement>) => {
+                    if (isNaN(+e.target.value)) {
+                      e.target.value = String(1);
+                    }
+                  }}
+                />
+                <button onClick={() => setParticipantsValue((prev) => prev + 1)}>
+                  <PlusIcon alt="참여 인원 수 늘리기 아이콘" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

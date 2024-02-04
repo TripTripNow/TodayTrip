@@ -40,7 +40,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setParticipantsValue(Number(e.target.value));
   };
 
-  // 버튼 상태 값
+  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
   const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
 
   // 날짜 및 시간 선택하는 모달
@@ -135,14 +135,11 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       <div className={styles.mobileSelectBar}>
         <div>
           <p className={styles.pricePerPersonWrapper}>
-            ￦{(data.price * participantsValue).toLocaleString('ko-KR')} /{' '}
-            <button style={{ fontSize: '1.6rem' }} className={styles.mobileSelectButton}>
-              1명
-            </button>
+            ￦{(data.price * participantsValue).toLocaleString('ko-KR')} / {participantsValue}인
           </p>
 
           <button className={styles.mobileSelectButton} onClick={handleModalToggle}>
-            날짜 선택하기
+            {dateButtonText}
           </button>
         </div>
         <button className={styles.mobileReserveButton} disabled={!clickedTimeButtonId || participantsValue === 0}>
@@ -159,6 +156,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           dateValue={dateValue}
           setDateValue={setDateValue}
           handleTimeButtonClick={handleTimeButtonClick}
+          participantsValue={participantsValue}
+          setParticipantsValue={setParticipantsValue}
         />
       )}
     </>

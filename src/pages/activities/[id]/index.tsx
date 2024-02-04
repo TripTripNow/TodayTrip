@@ -18,5 +18,6 @@ function ActivityID() {
     </div>
   );
 }
+[];
 
 export default ActivityID;

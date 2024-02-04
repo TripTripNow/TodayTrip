@@ -33,6 +33,7 @@
   width: 9rem;
   padding: 1rem 2rem;
   border: 0.1rem solid var(--nomad_black);
+  word-break: keep-all;
 }
 
 .white {

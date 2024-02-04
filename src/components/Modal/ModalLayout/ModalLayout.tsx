@@ -42,7 +42,7 @@ function ModalLayout({ children, handleModalClose, isAlarmModal }: ModalLayoutPr
       ref={modalOutsideRef}
       className={`${styles.root} ${isAlarmModal && styles.alarmModal}`}
     >
-      <div>{children}</div>
+      {children}
     </div>,
     portalRoot,
   );
