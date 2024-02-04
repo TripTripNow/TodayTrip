@@ -64,17 +64,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <button className={styles.selectButton} onClick={handleModalToggle}>
             {dateButtonText}
           </button>
-          {isModalOpen && (
-            <ReservationModal
-              setDateButtonText={setDateButtonText}
-              filteredTimes={filteredTimes}
-              clickedTimeButtonId={clickedTimeButtonId}
-              handleModalToggle={handleModalToggle}
-              dateValue={dateValue}
-              setDateValue={setDateValue}
-              handleTimeButtonClick={handleTimeButtonClick}
-            />
-          )}
+
           <Calendar
             prev2Label={null}
             next2Label={null}
@@ -143,11 +133,34 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         </div>
       </div>
       <div className={styles.mobileSelectBar}>
-        <div></div>
+        <div>
+          <p className={styles.pricePerPersonWrapper}>
+            ￦{(data.price * participantsValue).toLocaleString('ko-KR')} /{' '}
+            <button style={{ fontSize: '1.6rem' }} className={styles.mobileSelectButton}>
+              1명
+            </button>
+          </p>
+
+          <button className={styles.mobileSelectButton} onClick={handleModalToggle}>
+            날짜 선택하기
+          </button>
+        </div>
         <button className={styles.mobileReserveButton} disabled={!clickedTimeButtonId || participantsValue === 0}>
           예약하기
         </button>
       </div>
+
+      {isModalOpen && (
+        <ReservationModal
+          setDateButtonText={setDateButtonText}
+          filteredTimes={filteredTimes}
+          clickedTimeButtonId={clickedTimeButtonId}
+          handleModalToggle={handleModalToggle}
+          dateValue={dateValue}
+          setDateValue={setDateValue}
+          handleTimeButtonClick={handleTimeButtonClick}
+        />
+      )}
     </>
   );
 }

@@ -201,6 +201,8 @@
 }
 
 .mobileSelectBar {
+  display: flex;
+  justify-content: space-between;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -228,4 +230,17 @@
 .mobileReserveButton:disabled {
   background: var(--grayA4);
   color: var(--whiteFF);
+}
+
+.mobileSelectButton {
+  color: var(--green0B);
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.pricePerPersonWrapper {
+  font-size: 2rem;
+  font-weight: 700;
 }
