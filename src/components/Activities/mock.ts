@@ -37,7 +37,7 @@ export const activityData: Activity = {
 
 export const timeSlot: TimeSlot[] = [
   {
-    date: '2024-02-02',
+    date: '2024-02-04',
     times: [
       {
         id: 25,
@@ -47,7 +47,7 @@ export const timeSlot: TimeSlot[] = [
     ],
   },
   {
-    date: '2024-02-03',
+    date: '2024-02-05',
     times: [
       {
         id: 26,

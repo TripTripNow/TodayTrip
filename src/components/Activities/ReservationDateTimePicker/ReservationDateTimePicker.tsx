@@ -10,6 +10,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { Activity } from '@/types/Actvity';
 import { timeSlot } from '@/components/Activities/mock';
 import { Time, Value } from '@/types/Calendar';
+import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -28,8 +29,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
-  const handleTimeButtonClick = (index: number) => {
-    setClickedTimeButtonId(index);
+  const handleTimeButtonClick = (id: number) => {
+    setClickedTimeButtonId(id);
   };
 
   // 참여 인원수 인풋과 연결될 value State
@@ -37,6 +38,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   const handleParticipantsValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setParticipantsValue(Number(e.target.value));
+  };
+
+  // 버튼 상태 값
+  const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
+
+  // 날짜 및 시간 선택하는 모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalToggle = () => {
+    setIsModalOpen((prev) => !prev);
   };
   return (
     <div className={styles.container}>
@@ -49,7 +60,20 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <h2 className={style.h2} style={{ alignSelf: 'self-start' }}>
           날짜
         </h2>
-        <button className={styles.selectButton}>날짜 선택하기</button>
+        <button className={styles.selectButton} onClick={handleModalToggle}>
+          {dateButtonText}
+        </button>
+        {isModalOpen && (
+          <ReservationModal
+            setDateButtonText={setDateButtonText}
+            filteredTimes={filteredTimes}
+            clickedTimeButtonId={clickedTimeButtonId}
+            handleModalToggle={handleModalToggle}
+            dateValue={dateValue}
+            setDateValue={setDateValue}
+            handleTimeButtonClick={handleTimeButtonClick}
+          />
+        )}
         <Calendar
           prev2Label={null}
           next2Label={null}
