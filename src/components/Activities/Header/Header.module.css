@@ -24,6 +24,10 @@
   font-weight: 700;
   font-size: 3.2rem;
   marign-bottom: 0.6rem;
+
+  @media mobile {
+    font-size: 2.3rem;
+  }
 }
 
 .rating,
@@ -31,11 +35,21 @@
   display: flex;
   align-items: center;
   font-size: 1.4rem;
+
+  @media mobile {
+    font-size: 1em;
+  }
 }
 
 .header .rating {
   color: var(--black1B);
   gap: 0.6rem;
+}
+
+.kebabButton {
+  @media mobile {
+    margin-top: 1rem;
+  }
 }
 
 .options {
@@ -50,8 +64,8 @@
   z-index: 1;
 
   @media mobile {
-    top: 3.5rem;
-    width: 12rem;
+    top: 7rem;
+    width: 11.5rem;
     height: 9.5rem;
   }
 }
@@ -81,6 +95,21 @@
   background-color: var(--greenCE);
 }
 
+.imageContainer {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 4.2rem;
+
+  @media tablet {
+    gap: 0.46rem;
+    margin-bottom: 0rem;
+  }
+
+  @media mobile {
+    margin-bottom: 0rem;
+    display: block;
+  }
+}
 .bannerImageWrapper {
   position: relative;
   width: 59.5rem;
@@ -90,10 +119,19 @@
     width: 34.56rem;
     height: 31rem;
   }
+
+  @media mobile {
+    width: 37.5rem;
+    height: 31rem;
+  }
 }
 
 .bannerImageWrapper img {
   border-radius: 1.2rem 0rem 0rem 1.2rem;
+
+  @media mobile {
+    border-radius: 1.2rem;
+  }
 }
 
 .subImageWrapper {
@@ -105,16 +143,9 @@
     width: 17.05rem;
     height: 15.26rem;
   }
-}
 
-.imageContainer {
-  display: flex;
-  gap: 0.8rem;
-  margin-bottom: 4.2rem;
-
-  @media tablet {
-    gap: 0.46rem;
-    margin-bottom: 0rem;
+  @media mobile {
+    display: none;
   }
 }
 

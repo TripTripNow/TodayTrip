@@ -16,6 +16,10 @@
     width: 25.1rem;
     top: 5rem;
   }
+
+  @media mobile {
+    display: none;
+  }
 }
 
 .customCalendar:global.react-calendar {

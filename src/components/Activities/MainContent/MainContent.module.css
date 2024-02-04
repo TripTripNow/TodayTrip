@@ -9,6 +9,10 @@
   @media tablet {
     width: 42.8rem;
   }
+
+  @media mobile {
+    gap: 1.6rem;
+  }
 }
 
 .descriptionWrapper {
@@ -20,7 +24,6 @@
 .description {
   font-size: 1.6rem;
   line-height: 2.6rem;
-  word-break: normal;
 }
 
 .mapWrapper {

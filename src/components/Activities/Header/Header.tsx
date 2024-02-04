@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import styles from './Header.module.css';
-import StarIcon from '#/icons/icon-star.svg';
-import LocationIcon from '#/icons/icon-location.svg';
-import KebabIcon from '#/icons/icon-kebab.svg';
-import Image from 'next/image';
-import { Activity } from '@/types/Actvity';
+import { useState } from "react";
+import styles from "./Header.module.css";
+import StarIcon from "#/icons/icon-star.svg";
+import LocationIcon from "#/icons/icon-location.svg";
+import KebabIcon from "#/icons/icon-kebab.svg";
+import Image from "next/image";
+import { Activity } from "@/types/Actvity";
 
 function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
@@ -21,11 +21,12 @@ function Header({ data }: { data: Activity }) {
 
   return (
     <>
-      <header onBlur={handleKebabBlur} className={styles.header}>
+      {/* onBlur={handleKebabBlur} */}
+      <header className={styles.header}>
         <div className={styles.info}>
           <p className={styles.category}>{data.category}</p>
           <h1 className={styles.h1}>{data.title}</h1>
-          <div style={{ display: 'flex', gap: '1.2rem' }}>
+          <div style={{ display: "flex", gap: "1.2rem" }}>
             <p className={styles.rating}>
               <StarIcon alt="별점 아이콘" />
               {data.rating} ({data.reviewCount})
@@ -38,7 +39,12 @@ function Header({ data }: { data: Activity }) {
         </div>
         <div>
           <button onClick={handleKebabToggle}>
-            <KebabIcon width={40} height={40} alt="케밥 버튼" />
+            <KebabIcon
+              className={styles.kebabButton}
+              width={40}
+              height={40}
+              alt="케밥 버튼"
+            />
           </button>
           {isKebabOpen && (
             <div className={styles.options}>
