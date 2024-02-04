@@ -1,6 +1,6 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ChangeEvent, ReactElement, useState } from 'react';
-import styles from './Add.module.css';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import styles from '@/pages/mypage/activities/add/Add.module.css';
 import Input from '@/components/Input/Input';
 import { FieldValues, useForm } from 'react-hook-form';
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
@@ -16,19 +16,59 @@ export interface IsDateTime {
   endTime: string;
 }
 
-function ActivityAdd() {
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState<number>();
-  const [isDate, setIsDate] = useState<IsDateTime[]>([]);
+const ACTIVITY_ITEM = {
+  title: '함께 배우면 즐거운 스트릿댄스',
+  category: '투어',
+  description: '둠칫 둠칫 두둠칫',
+  address: '대한민국 서울특별시 양천구 목1동 오목교역',
+  price: 10000,
+  schedules: [
+    {
+      date: '2023-12-01',
+      startTime: '12:00',
+      endTime: '13:00',
+    },
+  ],
+  bannerImageUrl: 'https://i.ibb.co/dWT3JmW/image.png',
+  subImageUrls: ['https://i.ibb.co/dWT3JmW/image.png'],
+};
+
+interface ActivityEditProps {
+  item: {
+    title: string;
+    category: string;
+    description: string;
+    address: string;
+    price: 10000;
+    schedules: [
+      {
+        date: string;
+        startTime: string;
+        endTime: string;
+      },
+    ];
+    bannerImageUrl: string;
+    subImageUrls: string[];
+  };
+}
+
+function ActivityEdit({ item }: ActivityEditProps) {
+  const [description, setDescription] = useState(ACTIVITY_ITEM ? ACTIVITY_ITEM.description : '');
+  const [price, setPrice] = useState<number>(ACTIVITY_ITEM ? ACTIVITY_ITEM.price : 0);
+  const [isDate, setIsDate] = useState<IsDateTime[]>(ACTIVITY_ITEM ? ACTIVITY_ITEM.schedules : []);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
-  const [bannerImageUrl, setBannerImageUrl] = useState<string>();
-  const [subImageUrls, setSubImageUrls] = useState<string[]>([]);
-  const [addressData, setAddressData] = useState<string | undefined>('주소를 입력해주세요');
+  const [bannerImageUrl, setBannerImageUrl] = useState<string | undefined>(
+    ACTIVITY_ITEM ? ACTIVITY_ITEM.bannerImageUrl : undefined,
+  );
+  const [subImageUrls, setSubImageUrls] = useState<string[]>(ACTIVITY_ITEM ? ACTIVITY_ITEM.subImageUrls : []);
+  const [addressData, setAddressData] = useState<string | undefined>(
+    ACTIVITY_ITEM ? ACTIVITY_ITEM.address : '주소를 입력해주세요',
+  );
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: '',
+      title: ACTIVITY_ITEM ? ACTIVITY_ITEM.title : '',
     },
   });
 
@@ -45,7 +85,7 @@ function ActivityAdd() {
   };
 
   const handleOnSubmit = (data: FieldValues) => {
-    data.category = categoryItem.title;
+    data.category = categoryItem;
     data.description = description;
     data.address = addressData;
     data.price = price;
@@ -83,7 +123,7 @@ function ActivityAdd() {
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} />
+          <MapContainer setAddressData={setAddressData} address={ACTIVITY_ITEM.address} />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
@@ -101,5 +141,5 @@ function ActivityAdd() {
   );
 }
 
-export default ActivityAdd;
-ActivityAdd.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
+export default ActivityEdit;
+ActivityEdit.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;

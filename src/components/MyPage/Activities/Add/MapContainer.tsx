@@ -1,13 +1,14 @@
-import { useState, useRef, Dispatch, SetStateAction } from 'react';
+import React, { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import styles from './MapContainer.module.css';
 
 interface MapContainerProps {
   setAddressData: Dispatch<SetStateAction<string | undefined>>;
+  address?: string;
 }
 const libraries = ['places'];
 
-function MapContainer({ setAddressData }: MapContainerProps) {
+function MapContainer({ setAddressData, address }: MapContainerProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);

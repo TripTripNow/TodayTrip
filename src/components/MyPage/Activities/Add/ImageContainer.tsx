@@ -5,8 +5,8 @@ import { ChangeEvent, Dispatch, SetStateAction, useRef } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
 
 interface ImageContainerProps {
-  bannerImgSrc: string[];
-  setBannerImgSrc: Dispatch<SetStateAction<string[]>>;
+  bannerImgSrc: string | undefined;
+  setBannerImgSrc: Dispatch<SetStateAction<string | undefined>>;
   imgSrc: string[];
   setImgSrc: Dispatch<SetStateAction<string[]>>;
 }
@@ -28,7 +28,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
       const targetFiles = e.target.files[0];
       const selectedFiles = URL.createObjectURL(targetFiles);
       if (banner) {
-        setBannerImgSrc((prev) => [...prev, selectedFiles]);
+        setBannerImgSrc(selectedFiles);
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
       }
@@ -37,7 +37,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
 
   const handleImgDelete = (item: string, banner: boolean) => {
     if (banner) {
-      setBannerImgSrc(bannerImgSrc.filter((e) => e !== item));
+      setBannerImgSrc(undefined);
     } else {
       setImgSrc(imgSrc.filter((e) => e !== item));
     }
@@ -49,7 +49,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
         <p className={styles.warningMessage}>*이미지는 최대 1개까지 등록 가능합니다.</p>
       </div>
       <div className={styles.addImgButtonWrapper}>
-        {bannerImgSrc.length < 1 && (
+        {!bannerImgSrc && (
           <div className={styles.addImgButton} onClick={() => handleImgClick(true)}>
             <div className={styles.addImgWrapper}>
               <input
@@ -64,19 +64,18 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
             </div>
           </div>
         )}
-        {bannerImgSrc &&
-          bannerImgSrc.map((item, index) => (
-            <div key={index} className={styles.addedImg}>
-              <ImgCloseIcon
-                className={styles.imgCloseButton}
-                alt="이미지 닫기 버튼"
-                onClick={() => handleImgDelete(item, true)}
-                width={40}
-                height={40}
-              />
-              <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
-            </div>
-          ))}
+        {bannerImgSrc && (
+          <div className={styles.addedImg}>
+            <ImgCloseIcon
+              className={styles.imgCloseButton}
+              alt="이미지 닫기 버튼"
+              onClick={() => handleImgDelete(bannerImgSrc, true)}
+              width={40}
+              height={40}
+            />
+            <Image src={bannerImgSrc} className={styles.profileImg} alt="profileImg" width={180} height={180} />
+          </div>
+        )}
       </div>
 
       <div className={styles.cotentTitleWrapper}>
