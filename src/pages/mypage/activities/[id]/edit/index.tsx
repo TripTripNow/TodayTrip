@@ -9,6 +9,7 @@ import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
 import { priceFormat } from '@/utils/priceFormat';
 import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
 import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
+import { useRouter } from 'next/router';
 
 export interface IsDateTime {
   date: string;
@@ -20,7 +21,7 @@ const ACTIVITY_ITEM = {
   title: '함께 배우면 즐거운 스트릿댄스',
   category: '투어',
   description: '둠칫 둠칫 두둠칫',
-  address: '대한민국 서울특별시 양천구 목1동 오목교역',
+  address: '대한민국 서울특별시 중구 을지로 위워크',
   price: 10000,
   schedules: [
     {
@@ -34,7 +35,7 @@ const ACTIVITY_ITEM = {
 };
 
 interface ActivityEditProps {
-  item: {
+  items: {
     title: string;
     category: string;
     description: string;
@@ -52,23 +53,23 @@ interface ActivityEditProps {
   };
 }
 
-function ActivityEdit({ item }: ActivityEditProps) {
-  const [description, setDescription] = useState(ACTIVITY_ITEM ? ACTIVITY_ITEM.description : '');
-  const [price, setPrice] = useState<number>(ACTIVITY_ITEM ? ACTIVITY_ITEM.price : 0);
-  const [isDate, setIsDate] = useState<IsDateTime[]>(ACTIVITY_ITEM ? ACTIVITY_ITEM.schedules : []);
+function ActivityEdit() {
+  const [items, setItems] = useState(ACTIVITY_ITEM);
+  const [description, setDescription] = useState(items ? items.description : '');
+  const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
+  const [price, setPrice] = useState<number>(items ? items.price : 0);
+  const [isDate, setIsDate] = useState<IsDateTime[]>(items ? items.schedules : []);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
-  const [bannerImageUrl, setBannerImageUrl] = useState<string | undefined>(
-    ACTIVITY_ITEM ? ACTIVITY_ITEM.bannerImageUrl : undefined,
-  );
-  const [subImageUrls, setSubImageUrls] = useState<string[]>(ACTIVITY_ITEM ? ACTIVITY_ITEM.subImageUrls : []);
-  const [addressData, setAddressData] = useState<string | undefined>(
-    ACTIVITY_ITEM ? ACTIVITY_ITEM.address : '주소를 입력해주세요',
-  );
+  const [bannerImageUrl, setBannerImageUrl] = useState<string | undefined>(items ? items.bannerImageUrl : undefined);
+  const [subImageUrls, setSubImageUrls] = useState<string[]>(items ? items.subImageUrls : []);
+  const [addressData, setAddressData] = useState<string | undefined>(items ? items.address : '주소를 입력해주세요');
+  const router = useRouter();
+  const id = router.query.id;
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: ACTIVITY_ITEM ? ACTIVITY_ITEM.title : '',
+      title: items ? items.title : '',
     },
   });
 
@@ -94,6 +95,30 @@ function ActivityEdit({ item }: ActivityEditProps) {
     data.subImageUrls = subImageUrls;
     if (data) console.log(data);
   };
+
+  const calculateLatlng = async (addressData: string) => {
+    if (addressData) {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressData)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!}`,
+      );
+
+      const data = await response.json();
+
+      if (data.results && data.results.length > 0) {
+        const location = data.results[0].geometry.location;
+        const newLatlng = { lat: location.lat, lng: location.lng };
+        setLatlng(newLatlng);
+      }
+    }
+  };
+
+  useEffect(() => {
+    //id 바뀔때마다 api 호출해서 items에 받아오기
+  }, [id]);
+
+  useEffect(() => {
+    calculateLatlng(addressData!);
+  }, []);
 
   return (
     <div className={styles.addContainer}>
@@ -123,7 +148,7 @@ function ActivityEdit({ item }: ActivityEditProps) {
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} address={ACTIVITY_ITEM.address} />
+          <MapContainer setAddressData={setAddressData} address={items.address} latlng={latlng} />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}

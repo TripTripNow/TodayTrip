@@ -1,20 +1,21 @@
-import React, { useState, useRef, Dispatch, SetStateAction } from 'react';
+import React, { useState, useRef, Dispatch, SetStateAction, useEffect } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import styles from './MapContainer.module.css';
 
 interface MapContainerProps {
   setAddressData: Dispatch<SetStateAction<string | undefined>>;
   address?: string;
+  latlng?: { lat: number; lng: number } | null;
 }
 const libraries = ['places'];
 
-function MapContainer({ setAddressData, address }: MapContainerProps) {
+function MapContainer({ setAddressData, address, latlng }: MapContainerProps) {
+  const [inputValue, setInputValue] = useState<string>(address || '');
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
     setAutocomplete(autocomplete);
   };
@@ -60,6 +61,16 @@ function MapContainer({ setAddressData, address }: MapContainerProps) {
     // 클릭한 곳 마커
     setMarkerPosition(clickedPosition);
   };
+
+  useEffect(() => {
+    if (latlng) {
+      setMapCenter((prev) => ({
+        lat: latlng.lat,
+        lng: latlng.lng,
+      }));
+    }
+  }, [latlng]);
+
   return (
     <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} libraries={libraries as any}>
       <div className={styles.mapContainer}>
@@ -80,7 +91,14 @@ function MapContainer({ setAddressData, address }: MapContainerProps) {
           )}
         </GoogleMap>
         <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} className={styles.mapInputWrapper}>
-          <input type="text" placeholder="주소를 입력해주세요" className={styles.mapInput} ref={inputRef} />
+          <input
+            type="text"
+            placeholder="주소를 입력해주세요"
+            className={styles.mapInput}
+            ref={inputRef}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
         </Autocomplete>
       </div>
     </LoadScript>

@@ -39,11 +39,6 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   };
 
   const handleEditButton = (id: number) => {
-    const mapScript = document.querySelector('script[src^="https://maps.googleapis.com/maps/api/js"]');
-    if (mapScript) {
-      mapScript.remove();
-    }
-
     // 페이지 이동
     router.push(`/mypage/activities/${id}/edit`);
   };
