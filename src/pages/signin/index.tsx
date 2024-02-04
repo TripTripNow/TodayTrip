@@ -18,7 +18,7 @@ function SignIn() {
     },
   });
 
-  const { handleSubmit, control, setError } = methods;
+  const { handleSubmit, control } = methods;
 
   const { isValid } = methods.formState;
 

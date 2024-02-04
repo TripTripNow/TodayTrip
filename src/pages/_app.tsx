@@ -29,6 +29,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLa
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000,
+            retry: 1,
           },
         },
       }),
