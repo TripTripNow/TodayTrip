@@ -63,7 +63,7 @@ function ReviewList({ totalRating }: { totalRating: number }) {
                 <p className={styles.reviewContent}>{review.content}</p>
               </div>
             </div>
-            {index !== reviews.length - 1 && <hr className={style.hr} />}
+            {index !== slicedReviews.length - 1 && <hr className={style.hr} />}
           </Fragment>
         ))}
       </div>

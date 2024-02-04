@@ -32,7 +32,7 @@ function ReservationModal({
   const handleButtonClick = () => {
     handleModalToggle();
     setDateButtonText(`
-      ${dayjs(dateValue as Date).format('YYYY-MM-DD')}
+      ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
       ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
       ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
