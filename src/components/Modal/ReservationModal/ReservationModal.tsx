@@ -8,22 +8,33 @@ import style from '@/components/Activities/ReservationDateTimePicker/Reservation
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
+import { Time, Value } from '@/types/Calendar';
+import { Dispatch, SetStateAction } from 'react';
 
+interface ReservationModalProps {
+  dateValue: Value;
+  setDateValue: Dispatch<SetStateAction<Value>>;
+  filteredTimes: Time[] | undefined;
+  clickedTimeButtonId: number | null;
+  handleTimeButtonClick: (id: number) => void;
+  setDateButtonText: Dispatch<SetStateAction<string>>;
+  handleModalToggle: () => void;
+}
 function ReservationModal({
   dateValue,
   setDateValue,
-  handleModalToggle,
   filteredTimes,
   clickedTimeButtonId,
   handleTimeButtonClick,
   setDateButtonText,
-}: any) {
+  handleModalToggle,
+}: ReservationModalProps) {
   const handleButtonClick = () => {
     handleModalToggle();
     setDateButtonText(`
       ${dayjs(dateValue as Date).format('YYYY-MM-DD')}
-      ${filteredTimes.find((e: any) => e.id === clickedTimeButtonId).startTime} ~
-      ${filteredTimes.find((e: any) => e.id === clickedTimeButtonId).endTime}`);
+      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
+      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
   return (
@@ -53,7 +64,7 @@ function ReservationModal({
             </h2>
 
             <div className={style.timeButtonContainer}>
-              {filteredTimes?.map((time: any) => (
+              {filteredTimes?.map((time) => (
                 <Button
                   key={time.id}
                   type="time"
