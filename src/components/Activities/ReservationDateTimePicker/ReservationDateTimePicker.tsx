@@ -86,7 +86,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
                 key={time.id}
                 type="time"
                 color={time.id === clickedTimeButtonId ? 'green' : 'white'}
-                onClick={() => handleTimeButtonClick(time.id)}
+                onClick={() => {
+                  if (clickedTimeButtonId) {
+                    handleTimeButtonClick(null);
+                    return;
+                  }
+                  handleTimeButtonClick(time.id);
+                }}
               >
                 {time.startTime}~{time.endTime}
               </Button>
