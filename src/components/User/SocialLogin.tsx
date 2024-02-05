@@ -7,7 +7,7 @@ import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 function SocialLogin() {
-  const handleSocialLogin = async (type: 'kakao') => {
+  const handleSocialLogin = async (type: 'kakao' | 'naver') => {
     await signIn(type, {
       redirect: false,
       callbackUrl: '/',
@@ -17,7 +17,7 @@ function SocialLogin() {
   return (
     <div className={styles.socialLoginBtnContainer}>
       <Image src={KaKaoImg} alt="카카오아이콘" className={styles.img} onClick={() => handleSocialLogin('kakao')} />
-      <Image src={NaverImg} alt="네이버아이콘" className={styles.img} />
+      <Image src={NaverImg} alt="네이버아이콘" className={styles.img} onClick={() => handleSocialLogin('naver')} />
       <Image src={GoogleImg} alt="구글아이콘" className={styles.img} />
     </div>
   );

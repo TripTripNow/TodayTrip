@@ -8,8 +8,8 @@ declare module 'next-auth' {
   }
   interface User {
     errorCode: number;
-    properties: { nickname: string };
     accessToken: JWT;
     refreshToken: JWT;
+    nickname: string;
   }
 }

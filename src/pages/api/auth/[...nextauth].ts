@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
+import NaverProvider from 'next-auth/providers/naver';
 
 export default NextAuth({
   providers: [
@@ -11,10 +12,48 @@ export default NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile, tokens) {
+        profile.nickname = profile.properties.nickname;
         try {
           const res = await instance.post(`/auth/login`, {
             email: profile.id + '@todaytrip.com',
             password: profile.id + 'todaytrip',
+          });
+          const tokenset = {
+            accessToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+            expires_at: tokens.expires_at,
+            refresh_token_expires_in: tokens.refresh_token_expires_in,
+          };
+          return {
+            ...profile,
+            ...tokenset,
+          };
+        } catch (e) {
+          if (e instanceof AxiosError) {
+            profile.errorCode = e.response?.status;
+            return {
+              ...profile,
+            };
+          }
+          profile.errorCode = e;
+          return {
+            profile: {
+              ...profile,
+            },
+          };
+        }
+      },
+    }),
+    NaverProvider({
+      clientId: process.env.NAVER_CLIENT_ID!,
+      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      async profile(profile, tokens) {
+        profile.id = profile.response.id;
+        profile.nickname = profile.response.nickname;
+        try {
+          const res = await instance.post(`/auth/login`, {
+            email: profile.response.id + '@todaytrip.com',
+            password: profile.response.id + 'todaytrip',
           });
           const tokenset = {
             accessToken: res.data.accessToken,
@@ -79,7 +118,7 @@ export default NextAuth({
           const res = await postSignup({
             email: user.id + '@todaytrip.com',
             password: user.id + 'todaytrip',
-            nickname: user.properties.nickname || '',
+            nickname: user.nickname || '',
           });
           // 회원가입 성공한 경우 로그인
           if (res) {
