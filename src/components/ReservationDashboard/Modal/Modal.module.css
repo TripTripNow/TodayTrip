@@ -77,6 +77,10 @@
   height: 0.4rem;
   border-radius: 1.2rem;
   background: var(--green0B);
+
+  @media mobile {
+    bottom: -2.5rem;
+  }
 }
 
 .tabTextDisabled {
