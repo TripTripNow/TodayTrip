@@ -24,7 +24,7 @@ const withOutAuth = async (req: NextRequest, token: boolean) => {
 const withAuthList = '/mypage';
 const withOutAuthList = ['/signin', '/signup'];
 
-export default async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
 
   const pathname = req.nextUrl.pathname;
@@ -35,8 +35,3 @@ export default async function middleware(req: NextRequest) {
   if (isWithAuth) return withAuth(req, !!token);
   if (isWithOutAuth) return withOutAuth(req, !!token);
 }
-
-// 미들웨어가 실행될 특정 pathname을 지정하면, 해당 pathname에서만 실행 가능
-export const config = {
-  mathcher: '/mypage/*',
-};
