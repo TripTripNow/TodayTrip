@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Chips from '@/components/ReservationDashboard/Chips/Chips';
 import CalendarHeader from '@/components/ReservationDashboard/Calendar/CalendarHeader';
 import Modal from '@/components/ReservationDashboard/Modal/Modal';
-import { WEEK } from '@/constants/calendar';
+import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import styles from './Calendar.module.css';
@@ -76,9 +76,9 @@ function Calendar({ activityId }: CalendarProps) {
                 <p>{day}</p>
                 {monthData[day] && (
                   <div className={styles.chipWrapper}>
-                    {monthData[day]['pending'] ? <Chips status="예약" number={monthData[day]['pending']} /> : null}
-                    {monthData[day]['confirmed'] ? <Chips status="승인" number={monthData[day]['confirmed']} /> : null}
-                    {monthData[day]['completed'] ? <Chips status="완료" number={monthData[day]['completed']} /> : null}
+                    {monthData[day][PENDING] ? <Chips status={PENDING} number={monthData[day][PENDING]} /> : null}
+                    {monthData[day][CONFIRMED] ? <Chips status={CONFIRMED} number={monthData[day][CONFIRMED]} /> : null}
+                    {monthData[day][COMPLETED] ? <Chips status={COMPLETED} number={monthData[day][COMPLETED]} /> : null}
                   </div>
                 )}
               </div>

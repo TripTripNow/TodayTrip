@@ -25,17 +25,17 @@
   }
 }
 
-.reserveState {
+.pendingState {
   background: var(--blue00);
   color: var(--whiteFF);
 }
 
-.completeState {
+.completedState {
   background: var(--grayDD);
   color: var(--gray4B);
 }
 
-.approveState {
+.confirmedState {
   background: var(--orangeFFF);
   color: var(--orangeFF7);
 }
