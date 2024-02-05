@@ -42,7 +42,7 @@ function ReservationModal({
       ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
-  const handleCalendarChange = (value: Value, e: MouseEvent<HTMLButtonElement>) => {
+  const handleCalendarDateChange = (value: Value) => {
     setDateValue(value);
     handleTimeButtonClick(null);
   };
@@ -63,7 +63,7 @@ function ReservationModal({
             next2Label={null}
             calendarType="gregory"
             locale="en"
-            onChange={handleCalendarChange}
+            onChange={handleCalendarDateChange}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}
