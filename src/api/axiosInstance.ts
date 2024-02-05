@@ -48,9 +48,9 @@ instance.interceptors.response.use(
       if (error.response.data.message === 'Unauthorized') {
         const originalRequest = config;
         const session = await getSession();
-        if (!session) throw new Error();
 
         try {
+          if (!session) throw new Error();
           const { data } = await axios.post(
             `https://sp-globalnomad-api.vercel.app/1-9/auth/tokens`,
             {},
