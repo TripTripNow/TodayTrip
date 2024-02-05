@@ -15,9 +15,8 @@ interface ProfileDropDownProps {
 
 function ProfileDropDown({ isOpen }: ProfileDropDownProps) {
   const handleLogout = () => {
-    console.log('in');
     signOut({
-      callbackUrl: '/signin',
+      callbackUrl: '/',
     });
   };
 
