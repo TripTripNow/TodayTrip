@@ -11,6 +11,7 @@
   }
 
   @media mobile {
+    width: 32.7rem;
     gap: 1.6rem;
   }
 }

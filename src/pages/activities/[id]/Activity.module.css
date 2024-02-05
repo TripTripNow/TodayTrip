@@ -11,7 +11,8 @@
   }
 
   @media mobile {
-    padding: 1.6rem 0;
+    padding-top: 1.6rem;
+    padding-bottom: 0;
   }
 }
 
@@ -49,6 +50,10 @@
 
   @media tablet {
     gap: 1.7rem;
+  }
+
+  @media mobile {
+    flex-direction: column;
   }
 }
 
