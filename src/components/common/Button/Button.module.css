@@ -26,6 +26,17 @@
   color: var(--nomad_black);
 }
 
+.lightgreen {
+  background: var(--green0B);
+  color: var(--whiteFF);
+}
+
+.lightwhite {
+  border: 0.1rem solid var(--green0B);
+  background: var(--whiteFF);
+  color: var(--green0B);
+}
+
 /* 내 정보, 내 체험 관리 페이지 */
 .default {
   width: 12rem;
@@ -123,15 +134,16 @@
 /* 메인 페이지 - 카테고리 */
 .category {
   width: 12.7rem;
-  padding: 1.6rem 3rem;
+  padding: 1.6rem 0rem;
+  gap: 1rem;
   border-radius: 1.5rem;
   border: 0.1rem solid var(--green0B);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 500;
 
   @media tablet {
     width: 12rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   @media mobile {

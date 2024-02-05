@@ -4,11 +4,12 @@ import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import FilterDropDown, { EntireOptions } from '@/components/FilterDropdown/FilterDropdown';
+import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { STATUS } from '@/constants/reservation';
+import { ReserveFilterOption } from '@/types/dropdown';
 
 function Reservation() {
-  const [selectedStatus, setSelectedStatus] = useState<EntireOptions>('예약 상태');
+  const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
   const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 

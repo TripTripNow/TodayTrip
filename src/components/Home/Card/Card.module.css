@@ -1,0 +1,105 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
+.container {
+  position: relative;
+  width: 38.4rem;
+  height: 38.4rem;
+  border-radius: 2.4rem;
+  flex: 0 0 38.4rem;
+  overflow: hidden;
+
+  @media mobile {
+    width: 18.6rem;
+    height: 18.6rem;
+    flex: 0 0 18.6rem;
+  }
+}
+
+.container:hover .bannerImage {
+  transition: 100ms ease-in-out;
+  transform: scale(1.1);
+}
+
+.background {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 33.33%, rgba(0, 0, 0, 0.8) 91.67%);
+  width: 100%;
+  height: 100%;
+  border-radius: 2.4rem;
+
+  @media mobile {
+    border-radius: 2rem;
+  }
+}
+
+.bannerImage {
+  transition: 100ms ease-in-out;
+}
+
+.textContainer {
+  position: absolute;
+  z-index: 2;
+  bottom: 0px;
+  display: flex;
+  width: 100%;
+  padding: 3rem 2rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.rateWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.reviewCountText {
+  color: var(--whiteFF);
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.title {
+  display: inline-block;
+  color: var(--whiteFF);
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  width: 23rem;
+
+  @media mobile {
+    width: 14.6rem;
+    font-size: 1.8rem;
+  }
+}
+
+.priceWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priceWrapper > em {
+  color: var(--whiteFF);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+
+  @media mobile {
+    font-size: 16px;
+  }
+}
+
+.priceWrapper > p {
+  color: var(--grayA4);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
