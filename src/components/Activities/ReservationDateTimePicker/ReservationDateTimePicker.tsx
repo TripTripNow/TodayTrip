@@ -132,12 +132,12 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           </div>
         </div>
       </div>
+
       <div className={styles.mobileSelectBar}>
         <div>
           <p className={styles.pricePerPersonWrapper}>
             ￦{(data.price * participantsValue).toLocaleString('ko-KR')} / {participantsValue}인
           </p>
-
           <button className={styles.mobileSelectButton} onClick={handleModalToggle}>
             {dateButtonText}
           </button>

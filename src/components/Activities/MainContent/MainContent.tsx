@@ -7,6 +7,7 @@ import LocationIcon from '#/icons/icon-location.svg';
 import { Activity } from '@/types/Actvity';
 import ReviewList from '@/components/Activities/ReviewList/ReviewList';
 
+//지도 크기 설정
 const containerStyle = {
   width: '100%',
   height: '45em',

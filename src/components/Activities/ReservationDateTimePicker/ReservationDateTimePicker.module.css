@@ -165,12 +165,6 @@
   text-align: center;
 }
 
-.participantsInput[type='number']::-webkit-outer-spin-button,
-.participantsInput[type='number']::-webkit-inner-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-
 .stepper {
   display: flex;
   width: 12rem;
