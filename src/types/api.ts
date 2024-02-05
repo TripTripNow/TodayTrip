@@ -12,13 +12,15 @@ export interface CardItem {
   };
 }
 
+export interface Reservations {
+  completed: number;
+  confirmed: number;
+  pending: number;
+}
+
 export interface ReservationDashboardItem {
   date: string;
-  reservations: {
-    completed: number;
-    confirmed: number;
-    pending: number;
-  };
+  reservations: Reservations;
 }
 
 export interface ReservedScheduleItem {
