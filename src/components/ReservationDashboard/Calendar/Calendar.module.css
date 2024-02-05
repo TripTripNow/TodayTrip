@@ -112,3 +112,24 @@
 .chipWrapper {
   width: 100%;
 }
+
+.calendarDayWrapperTop {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.calendarCircle {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 100%;
+}
+
+.blueCircle {
+  composes: calendarCircle;
+  background-color: var(--blue00);
+}
+
+.grayCircle {
+  composes: calendarCircle;
+  background-color: var(--gray4B);
+}

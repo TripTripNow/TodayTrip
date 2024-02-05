@@ -7,10 +7,18 @@ import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import styles from './Calendar.module.css';
+import { Reservations } from '@/types/api';
 
 interface CalendarProps {
   activityId: number;
 }
+
+/** 예약 승인 완료 상태를 검사 후 날짜 옆의 동그라미 띄우는 함수 */
+const checkCircle = (obj: Reservations) => {
+  if (obj.completed + obj.confirmed + obj.pending === 0) return null;
+  else if (obj.pending + obj.confirmed === 0 && obj.completed !== 0) return <div className={styles.grayCircle}></div>;
+  else if (obj.pending + obj.confirmed > 0) return <div className={styles.blueCircle}></div>;
+};
 
 function Calendar({ activityId }: CalendarProps) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -73,7 +81,10 @@ function Calendar({ activityId }: CalendarProps) {
                 className={styles.calendarDayWrapper}
                 onClick={() => handleOpenModal(day, !!monthData[day])}
               >
-                <p>{day}</p>
+                <p className={styles.calendarDayWrapperTop}>
+                  {day}
+                  {!!monthData[day] && checkCircle(monthData[day])}
+                </p>
                 {monthData[day] && (
                   <div className={styles.chipWrapper}>
                     {!!monthData[day][PENDING] && <Chips status={PENDING} number={monthData[day][PENDING]} />}
