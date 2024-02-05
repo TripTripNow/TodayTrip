@@ -10,14 +10,14 @@ import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 import { Time, Value } from '@/types/Calendar';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from 'react';
 
 interface ReservationModalProps {
   dateValue: Value;
   setDateValue: Dispatch<SetStateAction<Value>>;
   filteredTimes: Time[] | undefined;
   clickedTimeButtonId: number | null;
-  handleTimeButtonClick: (id: number) => void;
+  handleTimeButtonClick: (id: number | null) => void;
   setDateButtonText: Dispatch<SetStateAction<string>>;
   handleModalToggle: () => void;
   participantsValue: number;
@@ -42,6 +42,11 @@ function ReservationModal({
       ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
+  const handleCalendarChange = (value: Value, e: MouseEvent<HTMLButtonElement>) => {
+    setDateValue(value);
+    handleTimeButtonClick(null);
+  };
+
   return (
     <ModalLayout handleModalClose={handleModalToggle}>
       <div className={styles.wrapper}>
@@ -58,7 +63,7 @@ function ReservationModal({
             next2Label={null}
             calendarType="gregory"
             locale="en"
-            onChange={setDateValue}
+            onChange={handleCalendarChange}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}

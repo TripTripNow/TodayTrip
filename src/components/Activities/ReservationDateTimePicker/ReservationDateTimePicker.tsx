@@ -29,7 +29,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
-  const handleTimeButtonClick = (id: number) => {
+  const handleTimeButtonClick = (id: number | null) => {
     setClickedTimeButtonId(id);
   };
 
@@ -49,6 +49,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const handleModalToggle = () => {
     setIsModalOpen((prev) => !prev);
   };
+
   return (
     <>
       <div className={styles.container}>
