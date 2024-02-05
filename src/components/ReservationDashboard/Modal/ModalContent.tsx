@@ -46,7 +46,11 @@ function ReservationDetails({
   tabStatus: string;
 }) {
   const [visibleItems, setVisibleItems] = useState(3);
-  const { isVisible, targetRef } = useInfiniteScroll();
+  const { isVisible, targetRef, setIsVisible } = useInfiniteScroll();
+  useEffect(() => {
+    setVisibleItems(3);
+    setIsVisible(false);
+  }, [tabStatus]);
 
   useEffect(() => {
     if (isVisible && items.length > visibleItems) {
@@ -59,7 +63,6 @@ function ReservationDetails({
   return (
     <div className={styles.detailsContainer}>
       <h2 className={styles.subTitle}>예약 내역</h2>
-
       <div className={styles.cardsWrapper}>
         {showItems.map((item) => (
           <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
