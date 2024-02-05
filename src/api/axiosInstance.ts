@@ -18,7 +18,10 @@ instance.interceptors.request.use(
       return config;
     }
 
-    config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}`;
+    //TODO 최종 체크 필요
+    if (typeof session.user.accessToken !== 'string')
+      config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}`;
+    else config.headers.Authorization = `Bearer ${session.user.accessToken}`;
 
     return config;
   },

@@ -1,11 +1,12 @@
 import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
 import CheckboxInput from '@/components/Input/CheckboxInput';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import instance from '@/api/axiosInstance';
 
 function SignIn() {
   const methods = useForm<FieldValues>({
@@ -41,8 +42,20 @@ function SignIn() {
     toast.success('로그인이 완료되었습니다.');
   };
 
+  const test = async () => {
+    const res = await instance.get('/users/me');
+    console.log(res);
+  };
+
+  const { data } = useSession();
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
+      <div onClick={() => test()}> 내정보조회 테스트</div>
       <Input
         state={'user'}
         name={'email'}
