@@ -24,13 +24,25 @@
   font-size: 3.2rem;
 }
 
-.addHeaderButton {
-  padding: 0.8rem 1.6rem;
+.addButtonWrapper {
+  display: flex;
+  margin-top: 3rem;
+  justify-content: center;
+}
+
+.addButton {
+  width: 35rem;
+  padding: 1.2rem 1.6rem;
   border-radius: 0.4rem;
   background: var(--nomad_black);
   color: var(--whiteFF);
   font-size: 1.6rem;
   line-height: 2.6rem;
+
+  @media tablet, mobile {
+    padding: 1rem 1.6rem;
+    width: 100%;
+  }
 }
 
 .addInputWrapper {

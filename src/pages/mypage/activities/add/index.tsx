@@ -58,7 +58,6 @@ function ActivityAdd() {
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer}>
         <div className={styles.addHeaderWrapper}>
           <p className={styles.addHeader}>내 체험 등록</p>
-          <button className={styles.addHeaderButton}>등록하기</button>
         </div>
         <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
         <Dropdown
@@ -94,6 +93,9 @@ function ActivityAdd() {
           imgSrc={subImageUrls}
           setImgSrc={setSubImageUrls}
         />
+        <div className={styles.addButtonWrapper}>
+          <button className={styles.addButton}>등록하기</button>
+        </div>
       </form>
     </div>
   );
