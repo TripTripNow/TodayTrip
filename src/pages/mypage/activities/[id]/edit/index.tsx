@@ -34,32 +34,15 @@ const ACTIVITY_ITEM = {
   subImageUrls: ['https://i.ibb.co/dWT3JmW/image.png'],
 };
 
-interface ActivityEditProps {
-  items: {
-    title: string;
-    category: string;
-    description: string;
-    address: string;
-    price: 10000;
-    schedules: [
-      {
-        date: string;
-        startTime: string;
-        endTime: string;
-      },
-    ];
-    bannerImageUrl: string;
-    subImageUrls: string[];
-  };
-}
-
 function ActivityEdit() {
   const [items, setItems] = useState(ACTIVITY_ITEM);
   const [description, setDescription] = useState(items ? items.description : '');
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
   const [price, setPrice] = useState<number>(items ? items.price : 0);
   const [isDate, setIsDate] = useState<IsDateTime[]>(items ? items.schedules : []);
-  const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
+  const [categoryItem, setCategoryItem] = useState<DropdownItems>(
+    items ? { id: 1, title: items.category } : INITIAL_DROPDOWN_ITEM,
+  );
   const [bannerImageUrl, setBannerImageUrl] = useState<string | undefined>(items ? items.bannerImageUrl : undefined);
   const [subImageUrls, setSubImageUrls] = useState<string[]>(items ? items.subImageUrls : []);
   const [addressData, setAddressData] = useState<string | undefined>(items ? items.address : '주소를 입력해주세요');
@@ -116,6 +99,7 @@ function ActivityEdit() {
     //id 바뀔때마다 api 호출해서 items에 받아오기
   }, [id]);
 
+  //처음 불러올때 받은 주소 -> 위도 경도로 바꿔줌
   useEffect(() => {
     calculateLatlng(addressData!);
   }, []);
@@ -128,21 +112,15 @@ function ActivityEdit() {
           <button className={styles.addHeaderButton}>등록하기</button>
         </div>
         <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
-        <Dropdown
-          type="카테고리"
-          setDropdownItem={setCategoryItem}
-          items={CATEGORY_LIST}
-          dropDownItem={categoryItem}
-          placeholder={'카테고리'}
-        />
+        <Dropdown type="카테고리" setDropdownItem={setCategoryItem} items={CATEGORY_LIST} dropDownItem={categoryItem} />
         <textarea value={description} onChange={handleTextAreaChange} className={styles.textarea} placeholder="설명" />
-        <label className={styles.priceWrapper}>가격</label>
+        <label className={styles.priceWrapper}>가격(원)</label>
         <input
           value={price !== undefined ? priceFormat(price) : ''}
           type="text"
           className={styles.priceInput}
           onChange={handlePriceChange}
-          placeholder="가격"
+          placeholder="가격(원)"
         />
 
         {/*지도 부분 컴포넌트*/}

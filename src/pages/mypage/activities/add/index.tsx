@@ -27,9 +27,6 @@ function ActivityAdd() {
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
-    defaultValues: {
-      title: '',
-    },
   });
 
   const { handleSubmit, control } = methods;
@@ -38,6 +35,7 @@ function ActivityAdd() {
     setDescription(e.target.value);
   };
 
+  //숫자(양수)만 입력되게 + number형으로
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const onlyNumber = value.replace(/[^0-9]/g, '');
@@ -71,13 +69,13 @@ function ActivityAdd() {
           placeholder={'카테고리'}
         />
         <textarea value={description} onChange={handleTextAreaChange} className={styles.textarea} placeholder="설명" />
-        <label className={styles.priceWrapper}>가격</label>
+        <label className={styles.priceWrapper}>가격(원)</label>
         <input
           value={price !== undefined ? priceFormat(price) : ''}
           type="text"
           className={styles.priceInput}
           onChange={handlePriceChange}
-          placeholder="가격"
+          placeholder="가격(원)"
         />
 
         {/*지도 부분 컴포넌트*/}
