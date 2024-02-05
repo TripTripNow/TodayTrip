@@ -22,8 +22,8 @@ instance.interceptors.request.use(
     }
 
     if (typeof session.user.accessToken !== 'string')
-      config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}`;
-    else config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+      config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}1`;
+    else config.headers.Authorization = `Bearer ${session.user.accessToken}1`;
 
     return config;
   },
@@ -52,7 +52,7 @@ instance.interceptors.response.use(
         try {
           if (!session) throw new Error();
           const { data } = await axios.post(
-            `https://sp-globalnomad-api.vercel.app/1-9/auth/tokens`,
+            `${process.env.NEXT_PUBLIC_API_URL}auth/tokens`,
             {},
             {
               headers: {
