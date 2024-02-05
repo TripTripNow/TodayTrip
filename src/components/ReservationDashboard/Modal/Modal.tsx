@@ -7,18 +7,7 @@ import { RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA } from '@/components/Reser
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
 import { ReservedScheduleItem } from '@/types/api';
-
-interface STATUS_MAP_INTERFACE {
-  [key: string]: string;
-}
-
-const STATUS_MAP: STATUS_MAP_INTERFACE = {
-  pending: '신청',
-  confirmed: '승인',
-  declined: '거절',
-};
-
-const STATUS_ARR = ['pending', 'confirmed', 'declined'];
+import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 
 interface ModalProps {
   handleModalClose: () => void;
@@ -53,7 +42,7 @@ function ModalTab({ handleStatus, tabStatus }: ModalTabProps) {
         <div className={styles.tabInnerWrapper} key={index}>
           <div className={styles.tab} onClick={() => handleStatus(status)}>
             <span className={clsx(status === tabStatus ? styles.tabTextEnabled : styles.tabTextDisabled)}>
-              {STATUS_MAP[status]}
+              {CALENDAR_MODAL_MAP[status]}
             </span>
             <span className={clsx(status === tabStatus ? styles.tabTextEnabled : styles.tabTextDisabled)}>
               {item[0].reservations[status]}
