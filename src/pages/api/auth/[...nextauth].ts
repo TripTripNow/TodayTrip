@@ -5,6 +5,41 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
+import GoogleProvider from 'next-auth/providers/google';
+import { TokenSetParameters } from 'openid-client';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleSocialLogin = async (profile: any, tokens: TokenSetParameters) => {
+  try {
+    const res = await instance.post(`/auth/login`, {
+      email: profile.id + '@todaytrip.com',
+      password: profile.id + 'todaytrip',
+    });
+    const tokenset = {
+      accessToken: res.data.accessToken,
+      refreshToken: res.data.refreshToken,
+      expires_at: tokens.expires_at,
+      refresh_token_expires_in: tokens.refresh_token_expires_in,
+    };
+    return {
+      ...profile,
+      ...tokenset,
+    };
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      profile.errorCode = e.response?.status;
+      return {
+        ...profile,
+      };
+    }
+    profile.errorCode = e;
+    return {
+      profile: {
+        ...profile,
+      },
+    };
+  }
+};
 
 export default NextAuth({
   providers: [
@@ -13,35 +48,7 @@ export default NextAuth({
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile, tokens) {
         profile.nickname = profile.properties.nickname;
-        try {
-          const res = await instance.post(`/auth/login`, {
-            email: profile.id + '@todaytrip.com',
-            password: profile.id + 'todaytrip',
-          });
-          const tokenset = {
-            accessToken: res.data.accessToken,
-            refreshToken: res.data.refreshToken,
-            expires_at: tokens.expires_at,
-            refresh_token_expires_in: tokens.refresh_token_expires_in,
-          };
-          return {
-            ...profile,
-            ...tokenset,
-          };
-        } catch (e) {
-          if (e instanceof AxiosError) {
-            profile.errorCode = e.response?.status;
-            return {
-              ...profile,
-            };
-          }
-          profile.errorCode = e;
-          return {
-            profile: {
-              ...profile,
-            },
-          };
-        }
+        return handleSocialLogin(profile, tokens);
       },
     }),
     NaverProvider({
@@ -50,35 +57,18 @@ export default NextAuth({
       async profile(profile, tokens) {
         profile.id = profile.response.id;
         profile.nickname = profile.response.nickname;
-        try {
-          const res = await instance.post(`/auth/login`, {
-            email: profile.response.id + '@todaytrip.com',
-            password: profile.response.id + 'todaytrip',
-          });
-          const tokenset = {
-            accessToken: res.data.accessToken,
-            refreshToken: res.data.refreshToken,
-            expires_at: tokens.expires_at,
-            refresh_token_expires_in: tokens.refresh_token_expires_in,
-          };
-          return {
-            ...profile,
-            ...tokenset,
-          };
-        } catch (e) {
-          if (e instanceof AxiosError) {
-            profile.errorCode = e.response?.status;
-            return {
-              ...profile,
-            };
-          }
-          profile.errorCode = e;
-          return {
-            profile: {
-              ...profile,
-            },
-          };
-        }
+
+        return handleSocialLogin(profile, tokens);
+      },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      async profile(profile, tokens) {
+        profile.nickname = profile.name;
+        profile.id = profile.sub;
+
+        return handleSocialLogin(profile, tokens);
       },
     }),
     CredentialsProvider({
