@@ -3,7 +3,7 @@
 .container {
   display: flex;
   position: sticky;
-  top: 8rem;
+  top: 0;
   width: 38.4rem;
   height: fit-content;
   padding: 2.4rem;

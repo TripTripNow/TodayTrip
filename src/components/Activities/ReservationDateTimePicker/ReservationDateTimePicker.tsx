@@ -87,7 +87,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
                 type="time"
                 color={time.id === clickedTimeButtonId ? 'green' : 'white'}
                 onClick={() => {
-                  if (clickedTimeButtonId) {
+                  if (clickedTimeButtonId === time.id) {
                     handleTimeButtonClick(null);
                     return;
                   }

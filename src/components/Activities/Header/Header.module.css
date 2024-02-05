@@ -167,3 +167,16 @@
 .subImageWrapper:nth-child(4) img {
   border-radius: 0rem 0rem 1.2rem 0rem;
 }
+
+.oneSubImage {
+  composes: subImages;
+  display: flex;
+}
+
+.oneSubImageWrapper {
+  composes: bannerImageWrapper;
+}
+
+.oneSubImageWrapper img {
+  border-radius: 0rem 1.2rem 1.2rem 0rem;
+}
