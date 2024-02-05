@@ -70,15 +70,6 @@ function ReservationDetails({
   );
 }
 
-function ReservationStatus({ itemCnt }: { itemCnt: number }) {
-  return (
-    <div className={styles.statusContainer}>
-      <h3>예약 현황</h3>
-      <h3>{itemCnt}</h3>
-    </div>
-  );
-}
-
 function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }: ModalContentProps) {
   const scheduleId = items.find((item) => {
     const [startTime, endTime] = dropdownItem.title.split(' ~ ');
@@ -93,7 +84,6 @@ function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }:
         <>
           <ReservationDate setDropdownItem={setDropdownItem} items={items} dropdownItem={dropdownItem} date={date} />
           <ReservationDetails items={cardItems} tabStatus={tabStatus} />
-          <ReservationStatus itemCnt={cardItems.length} />
         </>
       ) : (
         <NoResult text="예약 정보가 없습니다." />
