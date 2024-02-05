@@ -76,9 +76,9 @@ function Calendar({ activityId }: CalendarProps) {
                 <p>{day}</p>
                 {monthData[day] && (
                   <div className={styles.chipWrapper}>
-                    {monthData[day][PENDING] ? <Chips status={PENDING} number={monthData[day][PENDING]} /> : null}
-                    {monthData[day][CONFIRMED] ? <Chips status={CONFIRMED} number={monthData[day][CONFIRMED]} /> : null}
-                    {monthData[day][COMPLETED] ? <Chips status={COMPLETED} number={monthData[day][COMPLETED]} /> : null}
+                    {!!monthData[day][PENDING] && <Chips status={PENDING} number={monthData[day][PENDING]} />}
+                    {!!monthData[day][CONFIRMED] && <Chips status={CONFIRMED} number={monthData[day][CONFIRMED]} />}
+                    {!!monthData[day][COMPLETED] && <Chips status={COMPLETED} number={monthData[day][COMPLETED]} />}
                   </div>
                 )}
               </div>
