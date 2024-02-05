@@ -138,7 +138,12 @@ export default NextAuth({
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update') {
+        token.accessToken = session.accessToken;
+        token.refreshToken = session.refreshToken;
+        return token;
+      }
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;

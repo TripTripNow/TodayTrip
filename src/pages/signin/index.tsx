@@ -46,12 +46,12 @@ function SignIn() {
     router.push('/');
   };
 
+  const { data } = useSession();
+
   const test = async () => {
     const res = await instance.get('/users/me');
     console.log(res);
   };
-
-  const { data } = useSession();
 
   useEffect(() => {
     console.log(data);
