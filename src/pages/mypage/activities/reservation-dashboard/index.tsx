@@ -5,7 +5,7 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import Calendar from '@/components/ReservationDashboard/Calendar/Calendar';
 import { RESERVATION_DETAILS_MY_ACTIVITIES_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-import NoResult from '@/components/Home/NoResult/NoResult';
+import NoResult from '@/components/common/NoResult/NoResult';
 import styles from './ReservationDashboard.module.css';
 
 function ReservationDashboard() {

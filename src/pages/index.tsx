@@ -6,7 +6,7 @@ import AllExperience from '@/components/Home/AllExperience/AllExperience';
 import Banner from '@/components/Home/Banner/Banner';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
-import NoResult from '@/components/Home/NoResult/NoResult';
+import NoResult from '@/components/common/NoResult/NoResult';
 import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 import styles from './Home.module.css';

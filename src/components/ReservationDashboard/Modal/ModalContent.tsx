@@ -7,7 +7,7 @@ import {
 } from '@/components/ReservationDashboard/mock';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import NoResult from '@/components/Home/NoResult/NoResult';
+import NoResult from '@/components/common/NoResult/NoResult';
 import { ReservedScheduleItem } from '@/types/api';
 import styles from './ModalContent.module.css';
 

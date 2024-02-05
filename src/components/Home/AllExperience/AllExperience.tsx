@@ -4,7 +4,7 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
-import NoResult from '@/components/Home/NoResult/NoResult';
+import NoResult from '@/components/common/NoResult/NoResult';
 import Button from '@/components/common/Button/Button';
 import { CardItem } from '@/types/api';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
