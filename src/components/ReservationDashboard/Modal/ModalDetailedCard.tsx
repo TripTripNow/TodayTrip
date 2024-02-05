@@ -28,7 +28,7 @@ function ModalDetailedCard({
       {tabStatus === PENDING ? (
         <div className={styles.btnWrapper}>
           <Button type="modalDouble" color="green">
-            확정하기
+            승인하기
           </Button>
           <Button type="modalDouble" color="white">
             거절하기
