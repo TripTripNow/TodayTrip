@@ -6,8 +6,9 @@ import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-import styles from './Calendar.module.css';
 import { Reservations } from '@/types/api';
+import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
+import styles from './Calendar.module.css';
 
 interface CalendarProps {
   activityId: number;
@@ -52,7 +53,7 @@ function Calendar({ activityId }: CalendarProps) {
       {modalOpen && (
         <Modal
           handleModalClose={handleModalClose}
-          date={`${year}.${month}.${day}`}
+          date={formatDateStringByDot({ year, month, day })}
           items={RESERVATION_DETAILS_MODAL_MOCK_DATA}
           activityId={activityId}
         />
