@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 import { Time, Value } from '@/types/Calendar';
-import { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface ReservationModalProps {
   dateValue: Value;
@@ -23,6 +23,7 @@ interface ReservationModalProps {
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
 }
+
 function ReservationModal({
   dateValue,
   setDateValue,
