@@ -1,12 +1,11 @@
 import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
 import CheckboxInput from '@/components/Input/CheckboxInput';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import instance from '@/api/axiosInstance';
 import { useRouter } from 'next/router';
 
 function SignIn() {
@@ -46,20 +45,8 @@ function SignIn() {
     router.push('/');
   };
 
-  const { data } = useSession();
-
-  const test = async () => {
-    const res = await instance.get('/users/me');
-    console.log(res);
-  };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
-      <div onClick={() => test()}> 내정보조회 테스트</div>
       <Input
         state={'user'}
         name={'email'}
