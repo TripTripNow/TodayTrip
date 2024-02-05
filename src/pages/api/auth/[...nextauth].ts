@@ -62,7 +62,7 @@ export default NextAuth({
           };
 
           const res = await instance.post(`/auth/login`, data);
-          return res.data.accessToken || null;
+          return { accessToken: res.data.accessToken, refreshToken: res.data.refreshToken } || null;
         } catch (e: unknown) {
           if (e instanceof AxiosError) {
             throw new Error(e.response?.data.message || e);
@@ -83,10 +83,11 @@ export default NextAuth({
           });
           // 회원가입 성공한 경우 로그인
           if (res) {
-            await instance.post(`/auth/login`, {
+            const result = await instance.post(`/auth/login`, {
               email: res.email,
               password: res.password,
             });
+            if (result.status !== 201) return false;
             return true;
           }
 
@@ -100,13 +101,15 @@ export default NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
       }
 
       return token;
     },
     async session({ session, token }) {
       session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
       return session;
     },
   },

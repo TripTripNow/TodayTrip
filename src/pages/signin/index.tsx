@@ -7,6 +7,7 @@ import CheckboxInput from '@/components/Input/CheckboxInput';
 import { signIn, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import instance from '@/api/axiosInstance';
+import { useRouter } from 'next/router';
 
 function SignIn() {
   const methods = useForm<FieldValues>({
@@ -25,6 +26,8 @@ function SignIn() {
 
   const isPasswordVisible = methods.watch('checkbox');
 
+  const router = useRouter();
+
   const handleOnSubmit = async (data: FieldValues) => {
     const { email, password } = data;
 
@@ -40,6 +43,7 @@ function SignIn() {
     }
 
     toast.success('로그인이 완료되었습니다.');
+    router.push('/');
   };
 
   const test = async () => {
