@@ -1,7 +1,9 @@
-import { RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS } from '@/components/ReservationDashboard/mock';
-import styles from './ModalDetailedCard.module.css';
-import Button from '@/components/common/Button/Button';
 import clsx from 'clsx';
+
+import { RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS } from '@/components/ReservationDashboard/mock';
+import { CONFIRMED, PENDING } from '@/constants/calendar';
+import Button from '@/components/common/Button/Button';
+import styles from './ModalDetailedCard.module.css';
 
 function ModalDetailedCard({
   item,
@@ -23,7 +25,7 @@ function ModalDetailedCard({
         </p>
       </div>
 
-      {tabStatus === 'pending' ? (
+      {tabStatus === PENDING ? (
         <div className={styles.btnWrapper}>
           <Button type="modalDouble" color="green">
             확정하기
@@ -32,7 +34,7 @@ function ModalDetailedCard({
             거절하기
           </Button>
         </div>
-      ) : tabStatus === 'confirmed' ? (
+      ) : tabStatus === CONFIRMED ? (
         <div className={clsx(styles.statusBtn, styles.statusConfirmed)}>
           <p>예약 승인</p>
         </div>
