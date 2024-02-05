@@ -48,6 +48,7 @@
   gap: 1rem;
   padding: 0.8rem;
   font-size: 1.4rem;
+  cursor: pointer;
 
   @media mobile {
     padding: 2rem;
