@@ -42,10 +42,10 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
             />
             <RightArrow
               alt="오른쪽 화살표"
-              className={clsx(styles.arrow, {
-                [styles.arrowEnable]: slideIndex + 3 === RESERVATION_CARDS_MOCK_DATA.length,
-                [styles.arrowDisable]: slideIndex + 3 !== RESERVATION_CARDS_MOCK_DATA.length,
-              })}
+              className={clsx(
+                styles.arrow,
+                slideIndex + 3 === RESERVATION_CARDS_MOCK_DATA.length ? styles.arrowEnable : styles.arrowDisable,
+              )}
               onClick={() => handleSlideByBtn(1)}
             />
           </div>
