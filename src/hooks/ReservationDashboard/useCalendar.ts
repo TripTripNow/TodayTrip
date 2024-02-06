@@ -32,10 +32,7 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
   const emptyLastCards = Array.from({ length: lengthCondition }, (_, v) => v + 1);
 
   const handlePrevMonth = () => {
-    setYear((prev) => {
-      if (month === 1) return prev - 1;
-      return prev;
-    });
+    setYear((prev) => prev - (month === 1 ? 1 : 0));
     setMonth((prev) => (prev === 1 ? 12 : prev - 1));
   };
 
