@@ -22,8 +22,8 @@ function Header({ data }: { data: Activity }) {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleDeletModalClose = () => {
-    setIsDeleteModalOpen((prev) => !prev);
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -51,15 +51,15 @@ function Header({ data }: { data: Activity }) {
             <div className={styles.options}>
               <button className={styles.option}>수정하기</button>
               <hr className={styles.hr} />
-              <button className={styles.option} onClick={handleDeletModalClose}>
+              <button className={styles.option} onClick={handleDeleteModalClose}>
                 삭제하기
               </button>
             </div>
           )}
           {isDeleteModalOpen && (
             <AlertModal
-              handleModalClose={handleDeletModalClose}
-              handleCancel={handleDeletModalClose}
+              handleModalClose={handleDeleteModalClose}
+              handleCancel={handleDeleteModalClose}
               buttonText="삭제하기"
               text="체험을 삭제하시겠습니까?"
             />

@@ -22,8 +22,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   // 선택한 날짜의 예약 가능 시간 대를 필터링하기 위한 useEffect
   useEffect(() => {
-    const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-    setFilteredTimes(timeSlot.find((slot) => slot.date === formattedValue)?.times);
+    if (dateValue) {
+      const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
+      setFilteredTimes(timeSlot.find((slot) => slot.date === formattedValue)?.times);
+    }
   }, [dateValue]);
 
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
@@ -41,7 +43,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   };
 
   // 참여 인원수 인풋과 연결될 value State
-  const [participantsValue, setParticipantsValue] = useState<number>(1);
+  const [participantsValue, setParticipantsValue] = useState(1);
 
   const handleParticipantsValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setParticipantsValue(Number(e.target.value));

@@ -8,16 +8,15 @@ import ReservationDateTimePicker from '@/components/Activities/ReservationDateTi
 function ActivityID() {
   return (
     <div className={styles.wrapper}>
-      <main className={styles.mainContainer}>
+      <div className={styles.mainContainer}>
         <Header data={activityData} />
-        <div className={styles.contentContainer}>
+        <main className={styles.contentContainer}>
           <MainContent data={activityData} />
           <ReservationDateTimePicker data={activityData} />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
-[];
 
 export default ActivityID;
