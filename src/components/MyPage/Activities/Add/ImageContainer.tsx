@@ -1,19 +1,26 @@
 import styles from '@/pages/mypage/activities/add/Add.module.css';
 import Image from 'next/image';
 import ImgCloseIcon from '#/icons/icon-imgClose.svg';
-import { ChangeEvent, Dispatch, SetStateAction, useRef } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
+import { Control, FieldValues, useController } from 'react-hook-form';
 
 interface ImageContainerProps {
-  bannerImgSrc: string | undefined;
-  setBannerImgSrc: Dispatch<SetStateAction<string | undefined>>;
-  imgSrc: string[];
-  setImgSrc: Dispatch<SetStateAction<string[]>>;
+  // bannerImgSrc: string | undefined;
+  // setBannerImgSrc: Dispatch<SetStateAction<string | undefined>>;
+  // imgSrc: string[];
+  // setImgSrc: Dispatch<SetStateAction<string[]>>;
+  name: string;
+  control: Control<FieldValues, any>;
 }
 
-function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: ImageContainerProps) {
+function ImageContainer({ name, control }: ImageContainerProps) {
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>();
+  const [imgSrc, setImgSrc] = useState<string[]>([]);
+
+  const { field } = useController({ name, control });
 
   const handleImgClick = (banner: boolean) => {
     if (banner) {
@@ -24,27 +31,41 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
   };
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>, banner: boolean) => {
+    const value = field.value;
     if (e.target && e.target.files?.length !== 0) {
       const targetFiles = e.target.files?.[0];
       const selectedFiles = URL.createObjectURL(targetFiles!);
       if (banner) {
         setBannerImgSrc(selectedFiles);
+        field.onChange({ ...value, bannerImg: e.target.files?.[0] });
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
+        if (field.value && field.value.subImgs) {
+          field.onChange({ ...value, subImgs: [...field.value.subImgs, e.target.files?.[0]] });
+        } else {
+          field.onChange({ ...value, subImgs: [e.target.files?.[0]] });
+        }
       }
     }
   };
 
-  const handleImgDelete = (item: string, banner: boolean) => {
+  const handleImgDelete = (item: number, banner: boolean) => {
+    const value = field.value;
     if (banner) {
-      setBannerImgSrc(undefined);
+      setBannerImgSrc(null);
+      field.onChange({ ...value, bannerImgSrc: '' });
       if (bannerImgRef.current) {
         bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
       }
     } else {
-      setImgSrc(imgSrc.filter((e) => e !== item));
+      setImgSrc(imgSrc.filter((_, index) => index !== item));
       if (imgRef.current) {
         imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
+      }
+
+      if (value.subImgs.length === 1) field.onChange({ ...value, subImgs: [] });
+      else {
+        field.onChange({ ...value, subImgs: field.value.subImgs.filter((_: any, index: number) => index !== item) });
       }
     }
   };
@@ -75,7 +96,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
             <ImgCloseIcon
               className={styles.imgCloseButton}
               alt="이미지 닫기 버튼"
-              onClick={() => handleImgDelete(bannerImgSrc, true)}
+              onClick={() => handleImgDelete(0, true)}
               width={40}
               height={40}
             />
@@ -110,7 +131,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
               <ImgCloseIcon
                 className={styles.imgCloseButton}
                 alt="이미지 닫기 버튼"
-                onClick={() => handleImgDelete(item, false)}
+                onClick={() => handleImgDelete(index, false)}
                 width={40}
                 height={40}
               />

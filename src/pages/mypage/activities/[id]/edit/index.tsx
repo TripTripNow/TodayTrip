@@ -111,7 +111,7 @@ function ActivityEdit() {
           <p className={styles.addHeader}>내 체험 등록</p>
           <button className={styles.addHeaderButton}>등록하기</button>
         </div>
-        <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
+        <Input name="title" control={control} placeholder="제목" type="text" />
         <Dropdown type="카테고리" setDropdownItem={setCategoryItem} items={CATEGORY_LIST} dropDownItem={categoryItem} />
         <textarea value={description} onChange={handleTextAreaChange} className={styles.textarea} placeholder="설명" />
         <label className={styles.priceWrapper}>가격(원)</label>
@@ -126,7 +126,7 @@ function ActivityEdit() {
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} address={items.address} latlng={latlng} />
+          <MapContainer setAddressData={setAddressData} control={control} name="address" />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
@@ -134,10 +134,12 @@ function ActivityEdit() {
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
         <ImageContainer
-          bannerImgSrc={bannerImageUrl}
-          setBannerImgSrc={setBannerImageUrl}
-          imgSrc={subImageUrls}
-          setImgSrc={setSubImageUrls}
+          // bannerImgSrc={bannerImageUrl}
+          // setBannerImgSrc={setBannerImageUrl}
+          // imgSrc={subImageUrls}
+          // setImgSrc={setSubImageUrls}
+          control={control}
+          name="images"
         />
       </form>
     </div>

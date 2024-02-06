@@ -1,14 +1,14 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import styles from './Add.module.css';
 import Input from '@/components/Input/Input';
 import { FieldValues, useForm } from 'react-hook-form';
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import { CATEGORY_LIST, INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
 import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
-import { priceFormat } from '@/utils/priceFormat';
 import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
 import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
+import { priceFormat } from '@/utils/priceFormat';
 
 export interface IsDateTime {
   date: string;
@@ -17,45 +17,56 @@ export interface IsDateTime {
 }
 
 function ActivityAdd() {
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState<number>();
+  // const [description, setDescription] = useState('');
+  // const [price, setPrice] = useState<number>();
   const [isDate, setIsDate] = useState<IsDateTime[]>([]);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
-  const [bannerImageUrl, setBannerImageUrl] = useState<string>();
-  const [subImageUrls, setSubImageUrls] = useState<string[]>([]);
+
   const [addressData, setAddressData] = useState<string | undefined>('주소를 입력해주세요');
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
+    defaultValues: {
+      title: '제목',
+      price: '가격(원)',
+      address: '주소',
+      images: {
+        bannerImg: '',
+        subimgs: [],
+      },
+    },
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, setValue, register } = methods;
 
-  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
-  };
-
-  //숫자(양수)만 입력되게 + number형으로
-  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const onlyNumber = value.replace(/[^0-9]/g, '');
-    setPrice(+onlyNumber);
-  };
+  // const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  //   setDescription(e.target.value);
+  // };
 
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter') {
+    //이벤트가 발생한 요소가 <textarea>외에서는 enter 막음
+    if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
       e.preventDefault();
     }
   };
 
+  //훅폼 이용 숫자(양수)만 입력되게 + number형으로
+  control.register('price', {
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      const onlyNumber = value.replace(/[^0-9]/g, '');
+      setValue('price', priceFormat(+onlyNumber));
+    },
+  });
+
   const handleOnSubmit = (data: FieldValues) => {
     data.category = categoryItem.title;
-    data.description = description;
+    // data.description = description;
     data.address = addressData;
-    data.price = price;
+    // data.price = price;
     data.schedules = isDate;
-    data.bannerImageUrl = bannerImageUrl;
-    data.subImageUrls = subImageUrls;
+    // data.bannerImageUrl = bannerImageUrl;
+    // data.subImageUrls = subImageUrls;
     if (data) console.log(data);
   };
 
@@ -65,7 +76,7 @@ function ActivityAdd() {
         <div className={styles.addHeaderWrapper}>
           <p className={styles.addHeader}>내 체험 등록</p>
         </div>
-        <Input name="title" control={control} placeholder="제목" type="text" activities={true} />
+        <Input name="title" control={control} placeholder="제목" type="text" />
         <Dropdown
           type="카테고리"
           setDropdownItem={setCategoryItem}
@@ -73,20 +84,14 @@ function ActivityAdd() {
           dropDownItem={categoryItem}
           placeholder={'카테고리'}
         />
-        <textarea value={description} onChange={handleTextAreaChange} className={styles.textarea} placeholder="설명" />
-        <label className={styles.priceWrapper}>가격(원)</label>
-        <input
-          value={price !== undefined ? priceFormat(price) : ''}
-          type="text"
-          className={styles.priceInput}
-          onChange={handlePriceChange}
-          placeholder="가격(원)"
-        />
+        <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
+
+        <Input name="price" control={control} label="가격(원)" type="text" placeholder="가격(원)" />
 
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} />
+          <MapContainer setAddressData={setAddressData} control={control} name="address" />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
@@ -94,10 +99,12 @@ function ActivityAdd() {
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
         <ImageContainer
-          bannerImgSrc={bannerImageUrl}
-          setBannerImgSrc={setBannerImageUrl}
-          imgSrc={subImageUrls}
-          setImgSrc={setSubImageUrls}
+          // bannerImgSrc={bannerImageUrl}
+          // setBannerImgSrc={setBannerImageUrl}
+          // imgSrc={subImageUrls}
+          // setImgSrc={setSubImageUrls}
+          control={control}
+          name="images"
         />
         <div className={styles.addButtonWrapper}>
           <button className={styles.addButton}>등록하기</button>
@@ -109,3 +116,6 @@ function ActivityAdd() {
 
 export default ActivityAdd;
 ActivityAdd.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
+function priceForMat(arg0: number): any {
+  throw new Error('Function not implemented.');
+}

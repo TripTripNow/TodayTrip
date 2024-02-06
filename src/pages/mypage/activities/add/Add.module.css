@@ -22,6 +22,7 @@
 
 .addHeader {
   font-size: 3.2rem;
+  font-weight: 700;
 }
 
 .addButtonWrapper {
@@ -43,6 +44,10 @@
     padding: 1rem 1.6rem;
     width: 100%;
   }
+}
+
+.formContainer input {
+  height: 5.6rem;
 }
 
 .addInputWrapper {
@@ -373,6 +378,7 @@
 
 .profileImg {
   border-radius: 1.2rem;
+  z-index: 0;
   @media tablet {
     width: 20.6rem;
     height: 20.6rem;

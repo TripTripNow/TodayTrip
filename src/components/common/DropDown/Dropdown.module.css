@@ -63,6 +63,8 @@
   composes: menu;
   height: 40rem;
   overflow: scroll;
+  position: relative;
+  z-index: 3;
 }
 
 .placeholder {
@@ -80,6 +82,7 @@
 }
 
 .timeList {
+  z-index: 3;
   justify-content: center;
 }
 
