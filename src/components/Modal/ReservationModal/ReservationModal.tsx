@@ -10,13 +10,12 @@ import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
 import { Time, Value } from '@/types/Calendar';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 interface ReservationModalProps {
   dateValue: Value;
   setDateValue: Dispatch<SetStateAction<Value>>;
   filteredTimes: Time[] | undefined;
-  clickedTimeButtonId: number | null;
   handleTimeButtonClick: (id: number | null) => void;
   setDateButtonText: Dispatch<SetStateAction<string>>;
   handleModalToggle: () => void;
@@ -28,24 +27,29 @@ function ReservationModal({
   dateValue,
   setDateValue,
   filteredTimes,
-  clickedTimeButtonId,
   handleTimeButtonClick,
   setDateButtonText,
   handleModalToggle,
   participantsValue,
   setParticipantsValue,
 }: ReservationModalProps) {
-  const handleButtonClick = () => {
+  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(null);
+
+  const handleSelectButtonClick = () => {
     handleModalToggle();
     setDateButtonText(`
       ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
-      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
-      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
+      ${filteredTimes?.find((e) => e.id === clickedPossibleTimeIdInModal)?.startTime} ~
+      ${filteredTimes?.find((e) => e.id === clickedPossibleTimeIdInModal)?.endTime}`);
+
+    handleTimeButtonClick(clickedPossibleTimeIdInModal);
   };
 
   const handleCalendarDateChange = (value: Value) => {
     setDateValue(value);
-    handleTimeButtonClick(null);
+    if (clickedPossibleTimeIdInModal) {
+      setClickedPossibleTimeIdInModal(null);
+    }
   };
 
   return (
@@ -78,13 +82,13 @@ function ReservationModal({
                 <Button
                   key={time.id}
                   type="time"
-                  color={time.id === clickedTimeButtonId ? 'green' : 'white'}
+                  color={time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'}
                   onClick={() => {
-                    if (clickedTimeButtonId === time.id) {
-                      handleTimeButtonClick(null);
+                    if (clickedPossibleTimeIdInModal === time.id) {
+                      setClickedPossibleTimeIdInModal(null);
                       return;
                     }
-                    handleTimeButtonClick(time.id);
+                    setClickedPossibleTimeIdInModal(time.id);
                   }}
                 >
                   {time.startTime}~{time.endTime}
@@ -124,7 +128,12 @@ function ReservationModal({
           </div>
         </div>
 
-        <Button onClick={handleButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
+        <Button
+          onClick={handleSelectButtonClick}
+          isDisabled={!clickedPossibleTimeIdInModal}
+          color="green"
+          type="modalSingle"
+        >
           선택하기
         </Button>
       </div>

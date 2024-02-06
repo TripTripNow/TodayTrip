@@ -62,7 +62,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <h2 className={style.h2} style={{ alignSelf: 'self-start' }}>
             날짜
           </h2>
-          <button className={styles.selectButton} onClick={handleModalToggle}>
+          <button
+            className={styles.selectButton}
+            onClick={() => {
+              // if (clickedTimeButtonId) {
+              //   setDateButtonText('날짜 선택하기');
+              //   setClickedTimeButtonId(null);
+              // }
+              handleModalToggle();
+            }}
+          >
             {dateButtonText}
           </button>
 
@@ -158,7 +167,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <ReservationModal
           setDateButtonText={setDateButtonText}
           filteredTimes={filteredTimes}
-          clickedTimeButtonId={clickedTimeButtonId}
           handleModalToggle={handleModalToggle}
           dateValue={dateValue}
           setDateValue={setDateValue}
