@@ -65,6 +65,9 @@
   line-height: 2.6rem;
   margin-bottom: -0.8rem;
 }
+.priceInput::after {
+  content: ' 원';
+}
 
 .priceInput {
   width: 100%;
@@ -84,6 +87,7 @@
   line-height: 2.6rem;
   width: 100%;
   outline: none;
+  resize: none;
 }
 
 .addressContainer {

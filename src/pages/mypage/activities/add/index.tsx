@@ -42,6 +42,12 @@ function ActivityAdd() {
     setPrice(+onlyNumber);
   };
 
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   const handleOnSubmit = (data: FieldValues) => {
     data.category = categoryItem.title;
     data.description = description;
@@ -55,7 +61,7 @@ function ActivityAdd() {
 
   return (
     <div className={styles.addContainer}>
-      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer}>
+      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
         <div className={styles.addHeaderWrapper}>
           <p className={styles.addHeader}>내 체험 등록</p>
         </div>
