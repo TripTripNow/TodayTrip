@@ -24,9 +24,9 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
   };
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>, banner: boolean) => {
-    if (e.target && e.target.files) {
-      const targetFiles = e.target.files[0];
-      const selectedFiles = URL.createObjectURL(targetFiles);
+    if (e.target && e.target.files?.length !== 0) {
+      const targetFiles = e.target.files?.[0];
+      const selectedFiles = URL.createObjectURL(targetFiles!);
       if (banner) {
         setBannerImgSrc(selectedFiles);
       } else {
@@ -38,8 +38,14 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
   const handleImgDelete = (item: string, banner: boolean) => {
     if (banner) {
       setBannerImgSrc(undefined);
+      if (bannerImgRef.current) {
+        bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
+      }
     } else {
       setImgSrc(imgSrc.filter((e) => e !== item));
+      if (imgRef.current) {
+        imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
+      }
     }
   };
   return (
@@ -59,7 +65,7 @@ function ImageContainer({ bannerImgSrc, setBannerImgSrc, imgSrc, setImgSrc }: Im
                 ref={bannerImgRef}
                 onChange={(e) => handleUpload(e, true)}
               />
-              <PlusIcon alt="플러스 이미지" />
+              <PlusIcon alt="이미지 등록" />
               <div>이미지 등록</div>
             </div>
           </div>
