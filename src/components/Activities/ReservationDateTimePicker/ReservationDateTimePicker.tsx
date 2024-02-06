@@ -33,6 +33,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setClickedTimeButtonId(id);
   };
 
+  const handleCalendarDateChange = (value: Value) => {
+    setDateValue(value);
+    if (clickedTimeButtonId) {
+      setClickedTimeButtonId(null);
+    }
+  };
+
   // 참여 인원수 인풋과 연결될 value State
   const [participantsValue, setParticipantsValue] = useState<number>(1);
 
@@ -80,7 +87,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             next2Label={null}
             calendarType="gregory"
             locale="en"
-            onChange={setDateValue}
+            onChange={handleCalendarDateChange}
             className={styles.customCalendar}
             value={dateValue}
             minDate={new Date()}
