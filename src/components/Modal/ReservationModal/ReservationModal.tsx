@@ -1,7 +1,7 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReservationModal.module.css';
 import CloseIcon from '#/icons/icon-modalClose.svg';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import Button from '@/components/common/Button/Button';
 import style from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker.module.css';
 import MinusIcon from '#/icons/icon-minus.svg';
@@ -21,6 +21,7 @@ interface ReservationModalProps {
   handleModalToggle: () => void;
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
+  handleCalendarMonthChange: () => void;
 }
 
 function ReservationModal({
@@ -32,6 +33,7 @@ function ReservationModal({
   handleModalToggle,
   participantsValue,
   setParticipantsValue,
+  handleCalendarMonthChange,
 }: ReservationModalProps) {
   const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(null);
 
@@ -69,6 +71,7 @@ function ReservationModal({
             calendarType="gregory"
             locale="en"
             onChange={handleCalendarDateChange}
+            onActiveStartDateChange={handleCalendarMonthChange}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}

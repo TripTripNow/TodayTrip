@@ -4,7 +4,7 @@ import Button from '@/components/common/Button/Button';
 import MinusIcon from '#/icons/icon-minus.svg';
 import PlusIcon from '#/icons/icon-plus.svg';
 import dayjs from 'dayjs';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Activity } from '@/types/Actvity';
@@ -40,6 +40,11 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     if (clickedTimeButtonId) {
       setClickedTimeButtonId(null);
     }
+  };
+
+  const handleCalendarMonthChange = () => {
+    setFilteredTimes([]);
+    setDateValue(null);
   };
 
   // 참여 인원수 인풋과 연결될 value State
@@ -91,6 +96,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             locale="en"
             onChange={handleCalendarDateChange}
             className={styles.customCalendar}
+            onActiveStartDateChange={handleCalendarMonthChange}
             value={dateValue}
             minDate={new Date()}
           />
@@ -182,6 +188,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           handleTimeButtonClick={handleTimeButtonClick}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
+          handleCalendarMonthChange={handleCalendarMonthChange}
         />
       )}
     </>
