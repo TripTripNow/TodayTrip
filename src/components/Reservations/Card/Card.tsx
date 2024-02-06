@@ -5,7 +5,7 @@ import formatDateString from '@/utils/formatDateString';
 import { useState } from 'react';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import { Reservations } from '@/types/reservations';
-import { STATUS } from '@/constants/reservation';
+import { RESERVATION_STATUS } from '@/constants/reservation';
 import Button from '@/components/common/Button/Button';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 
@@ -27,7 +27,7 @@ function Card({ data }: Reservations) {
       </div>
 
       <div className={styles.detailContainer}>
-        <p className={clsx(styles.status, styles[data.status])}>{STATUS[data.status]}</p>
+        <p className={clsx(styles.status, styles[data.status])}>{RESERVATION_STATUS[data.status]}</p>
         <h2 className={styles.h2}>{data.activity.title}</h2>
         <p className={styles.dateDetail}>
           <span>{formatDateString(data.date)}</span>

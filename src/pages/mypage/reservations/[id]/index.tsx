@@ -1,18 +1,20 @@
-import { ReactElement, useState } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { ReactElement, useState } from 'react';
 
-import styles from './ReservationId.module.css';
+import ArrowIcon from '#/icons/icon-arrowBack.svg';
+import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
+import { RESERVATION_STATUS } from '@/constants/reservation';
 import { Reservations } from '@/types/reservations';
 import formatDateString from '@/utils/formatDateString';
-import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
-import ArrowIcon from '#/icons/icon-arrowBack.svg';
+import { priceFormat } from '@/utils/priceFormat';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import styles from './ReservationId.module.css';
 
-// @todo 카드 데이터 불러오기
 const item: Reservations['data'] = {
   id: 1,
   activity: {
@@ -38,25 +40,21 @@ interface CheckStatusProps {
 }
 
 const CheckStatus = ({ status }: CheckStatusProps) => {
-  const STATUS = {
-    pending: '예약 신청',
-    confirmed: '예약 승인',
-    completed: '체험 완료',
-    canceled: '예약 취소',
-    declined: '예약 거절',
-  };
-
   return (
     <div className={styles.status}>
       {status === 'canceled' || status === 'declined' ? (
-        <div className={styles[status]}>{STATUS[status]}</div>
+        <div className={styles[status]}>{RESERVATION_STATUS[status]}</div>
       ) : (
         <>
-          <div className={status === 'pending' ? styles.active : styles.inactive}>예약 신청</div>
-          <ArrowRightIcon alt="예약 상태 단계 중 첫 번째 화살표" />
-          <div className={status === 'confirmed' ? styles.active : styles.inactive}>예약 승인</div>
-          <ArrowRightIcon alt="예약 상태 단계 중 두 번째 화살표" />
-          <div className={status === 'completed' ? styles.active : styles.inactive}>체험 완료</div>
+          <div className={status === 'pending' ? styles.active : styles.inactive}>{RESERVATION_STATUS['pending']}</div>
+          <ArrowRightIcon alt="예약 신청에서 예약 승인으로 가는 화살표" />
+          <div className={status === 'confirmed' ? styles.active : styles.inactive}>
+            {RESERVATION_STATUS['confirmed']}
+          </div>
+          <ArrowRightIcon alt="예약 승인에서 체험 완료로 가는 화살표" />
+          <div className={status === 'completed' ? styles.active : styles.inactive}>
+            {RESERVATION_STATUS['completed']}
+          </div>
         </>
       )}
     </div>
@@ -67,7 +65,9 @@ function ReservationID() {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
+  // @todo id값을 사용해서 해당 카드 데이터 불러오기
   const router = useRouter();
+  const { id } = router.query;
 
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
@@ -79,10 +79,11 @@ function ReservationID() {
 
   return (
     <div className={styles.container}>
-      <button className={styles.header} onClick={() => router.push('/mypage/reservations')}>
+      <Link href="/mypage/reservations" className={styles.header}>
         <ArrowIcon className={styles.iconBack} alt="뒤로 가기 아이콘" />
         <div className={styles.back}>뒤로 가기</div>
-      </button>
+      </Link>
+
       <div className={styles.main}>
         <h1 className={styles.h1}>예약 상세</h1>
         <div className={styles.imageWrapper}>
@@ -103,7 +104,7 @@ function ReservationID() {
           <p className={styles.address}>{address}</p>
         </div>
         <div className={styles.bottom}>
-          <div className={styles.price}>￦{item.totalPrice.toLocaleString('ko-KR')}</div>
+          <div className={styles.price}>￦{priceFormat(item.totalPrice)}</div>
 
           {item.status === 'pending' && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
@@ -119,7 +120,12 @@ function ReservationID() {
             />
           )}
           {item.status === 'completed' && (
-            <Button type="reservation" color="green" isDisabled={item.reviewSubmitted}>
+            <Button
+              type="reservation"
+              color="green"
+              isDisabled={item.reviewSubmitted}
+              onClick={handleReviewModalToggle}
+            >
               후기 작성
             </Button>
           )}
