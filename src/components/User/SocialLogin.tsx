@@ -16,9 +16,24 @@ function SocialLogin() {
   };
   return (
     <div className={styles.socialLoginBtnContainer}>
-      <Image src={KaKaoImg} alt="카카오아이콘" className={styles.img} onClick={() => handleSocialLogin('kakao')} />
-      <Image src={NaverImg} alt="네이버아이콘" className={styles.img} onClick={() => handleSocialLogin('naver')} />
-      <Image src={GoogleImg} alt="구글아이콘" className={styles.img} onClick={() => handleSocialLogin('google')} />
+      <Image
+        src={KaKaoImg}
+        alt="카카오 로그인 아이콘"
+        className={styles.img}
+        onClick={() => handleSocialLogin('kakao')}
+      />
+      <Image
+        src={NaverImg}
+        alt="네이버 로그인 아이콘"
+        className={styles.img}
+        onClick={() => handleSocialLogin('naver')}
+      />
+      <Image
+        src={GoogleImg}
+        alt="구글 로그인 아이콘"
+        className={styles.img}
+        onClick={() => handleSocialLogin('google')}
+      />
     </div>
   );
 }

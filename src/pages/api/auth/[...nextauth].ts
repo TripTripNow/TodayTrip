@@ -6,10 +6,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 import GoogleProvider from 'next-auth/providers/google';
-import { TokenSetParameters } from 'openid-client';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleSocialLogin = async (profile: any, tokens: TokenSetParameters) => {
+const handleSocialLogin = async (profile: any) => {
   try {
     const res = await instance.post(`/auth/login`, {
       email: profile.id + '@todaytrip.com',
@@ -18,8 +16,6 @@ const handleSocialLogin = async (profile: any, tokens: TokenSetParameters) => {
     const tokenset = {
       accessToken: res.data.accessToken,
       refreshToken: res.data.refreshToken,
-      expires_at: tokens.expires_at,
-      refresh_token_expires_in: tokens.refresh_token_expires_in,
     };
     return {
       ...profile,
@@ -46,29 +42,30 @@ export default NextAuth({
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
-      async profile(profile, tokens) {
+      async profile(profile) {
         profile.nickname = profile.properties.nickname;
-        return handleSocialLogin(profile, tokens);
+
+        return handleSocialLogin(profile);
       },
     }),
     NaverProvider({
       clientId: process.env.NAVER_CLIENT_ID!,
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
-      async profile(profile, tokens) {
+      async profile(profile) {
         profile.id = profile.response.id;
         profile.nickname = profile.response.nickname;
 
-        return handleSocialLogin(profile, tokens);
+        return handleSocialLogin(profile);
       },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      async profile(profile, tokens) {
+      async profile(profile) {
         profile.nickname = profile.name;
         profile.id = profile.sub;
 
-        return handleSocialLogin(profile, tokens);
+        return handleSocialLogin(profile);
       },
     }),
     CredentialsProvider({
@@ -76,13 +73,9 @@ export default NextAuth({
       name: 'Credentials',
       type: 'credentials',
       credentials: {
-        email: {
-          label: 'email',
-          type: 'email',
-        },
-        password: { label: 'password', type: 'password' },
+        email: {},
+        password: { type: 'password' },
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async authorize(credentials): Promise<any> {
         try {
           const data = {
@@ -116,7 +109,7 @@ export default NextAuth({
               email: res.email,
               password: res.password,
             });
-            if (result.status !== 201) return false;
+            if (result.status !== 201) throw new Error();
             return true;
           }
 
@@ -128,12 +121,7 @@ export default NextAuth({
       }
       return true;
     },
-    async jwt({ token, user, trigger, session }) {
-      if (trigger === 'update') {
-        token.accessToken = session.accessToken;
-        token.refreshToken = session.refreshToken;
-        return token;
-      }
+    async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;

@@ -21,9 +21,7 @@ instance.interceptors.request.use(
       return config;
     }
 
-    if (typeof session.user.accessToken !== 'string')
-      config.headers.Authorization = `Bearer ${session.user.accessToken.accessToken}1`;
-    else config.headers.Authorization = `Bearer ${session.user.accessToken}1`;
+    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
 
     return config;
   },
@@ -44,29 +42,27 @@ instance.interceptors.response.use(
       response: { status },
     } = error;
 
-    if (status === 401) {
-      if (error.response.data.message === 'Unauthorized') {
-        const originalRequest = config;
-        const session = await getSession();
+    if (status === 401 && error.response.data.message === 'Unauthorized') {
+      const originalRequest = config;
+      const session = await getSession();
 
-        try {
-          if (!session) throw new Error();
-          const { data } = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}auth/tokens`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${session?.user.refreshToken}`,
-              },
+      try {
+        if (!session) throw new Error();
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}auth/tokens`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${session?.user.refreshToken}`,
             },
-          );
-          session.user.accessToken = data.accessToken;
+          },
+        );
+        session.user.accessToken = data.accessToken;
 
-          originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
-          return axios(originalRequest);
-        } catch (e) {
-          redirectToLoginPage();
-        }
+        originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
+        return axios(originalRequest);
+      } catch (e) {
+        redirectToLoginPage();
       }
     }
 

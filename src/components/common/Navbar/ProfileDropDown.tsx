@@ -31,9 +31,9 @@ function ProfileDropDown({ isOpen }: ProfileDropDownProps) {
       ))}
       <hr className={styles.styledHr} />
       <div className={styles.profileDropDownContent}>
-        <div className={styles.profileDropDown} onClick={() => handleLogout()}>
+        <button className={styles.profileDropDown} onClick={() => handleLogout()}>
           로그아웃
-        </div>
+        </button>
       </div>
     </div>
   );
