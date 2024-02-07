@@ -5,7 +5,6 @@ import { reservations } from '@/components/Reservations/mock';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { ReserveFilterOption } from '@/types/dropdown';
-import Link from 'next/link';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
 
@@ -43,15 +42,7 @@ function Reservation() {
       </div>
 
       {filteredReservations.map((reservation) => (
-        <Link
-          key={reservation.id}
-          href={{
-            pathname: `/mypage/reservations/${reservation.id}`,
-            query: { id: reservation.id },
-          }}
-        >
-          <Card key={reservation.id} data={reservation} />
-        </Link>
+        <Card key={reservation.id} data={reservation} />
       ))}
 
       {/* 무한 스크롤을 위한 target */}

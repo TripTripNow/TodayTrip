@@ -17,7 +17,7 @@
   }
 }
 
-.header {
+.link {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -45,7 +45,7 @@
   border-radius: 4rem;
 }
 
-.h1 {
+.header {
   color: var(--black1B);
   font-size: 3.2rem;
   font-weight: 700;

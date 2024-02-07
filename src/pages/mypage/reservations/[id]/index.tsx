@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { ReactElement, useState } from 'react';
+import Link from 'next/link';
 
 import ArrowIcon from '#/icons/icon-arrowBack.svg';
 import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
@@ -11,10 +12,9 @@ import { CANCELED, COMPLETED, CONFIRMED, DECLINED, PENDING, RESERVATION_STATUS }
 import { Reservations } from '@/types/reservations';
 import formatDateString from '@/utils/formatDateString';
 import { priceFormat } from '@/utils/priceFormat';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
+// @todo id값을 사용해서 해당 카드 데이터 불러오기
 const item: Reservations['data'] = {
   id: 1,
   activity: {
@@ -65,10 +65,6 @@ function ReservationID() {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-  // @todo id값을 사용해서 해당 카드 데이터 불러오기
-  const router = useRouter();
-  const { id } = router.query;
-
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
   };
@@ -79,13 +75,13 @@ function ReservationID() {
 
   return (
     <div className={styles.container}>
-      <Link href="/mypage/reservations" className={styles.header}>
+      <Link href="/mypage/reservations" className={styles.link}>
         <ArrowIcon className={styles.iconBack} alt="뒤로 가기 아이콘" />
         <div className={styles.back}>뒤로 가기</div>
       </Link>
 
       <div className={styles.main}>
-        <h1 className={styles.h1}>예약 상세</h1>
+        <h1 className={styles.header}>예약 상세</h1>
         <div className={styles.imageWrapper}>
           <Image priority fill src={item.activity.bannerImageUrl} alt="예약 상세 이미지" />
         </div>
