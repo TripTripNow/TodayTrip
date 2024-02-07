@@ -73,7 +73,7 @@ export default NextAuth({
       name: 'Credentials',
       type: 'credentials',
       credentials: {
-        email: {},
+        email: { type: 'email' },
         password: { type: 'password' },
       },
       async authorize(credentials): Promise<any> {
