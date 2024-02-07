@@ -1,4 +1,4 @@
-import { STATUS } from '@/constants/reservation';
+import { RESERVATION_STATUS } from '@/constants/reservation';
 
 type Activity = {
   bannerImageUrl: string;
@@ -6,7 +6,7 @@ type Activity = {
   id: number;
 };
 
-type Status = keyof typeof STATUS;
+type Status = keyof typeof RESERVATION_STATUS;
 
 export interface Reservations {
   data: {
