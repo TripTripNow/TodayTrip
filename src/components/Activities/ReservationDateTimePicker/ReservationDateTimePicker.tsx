@@ -4,7 +4,7 @@ import Button from '@/components/common/Button/Button';
 import MinusIcon from '#/icons/icon-minus.svg';
 import PlusIcon from '#/icons/icon-plus.svg';
 import dayjs from 'dayjs';
-import Calendar, { OnArgs } from 'react-calendar';
+import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Activity } from '@/types/Actvity';
@@ -43,6 +43,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   };
 
   const handleCalendarMonthChange = () => {
+    setClickedTimeButtonId(null);
     setFilteredTimes([]);
     setDateValue(null);
   };
@@ -73,19 +74,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         </p>
         <hr className={style.hr} />
         <div className={styles.calendar}>
-          <h2 className={style.h2} style={{ alignSelf: 'self-start' }}>
-            날짜
-          </h2>
-          <button
-            className={styles.selectButton}
-            onClick={() => {
-              // if (clickedTimeButtonId) {
-              //   setDateButtonText('날짜 선택하기');
-              //   setClickedTimeButtonId(null);
-              // }
-              handleModalToggle();
-            }}
-          >
+          <h2 className={style.label}>날짜</h2>
+          <button className={styles.selectButton} onClick={handleModalToggle}>
             {dateButtonText}
           </button>
 
@@ -102,7 +92,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           />
         </div>
         <div className={styles.possibleTime}>
-          <h2 className={style.h2}>예약 가능한 시간</h2>
+          <h2 className={style.label}>예약 가능한 시간</h2>
 
           <div className={styles.timeButtonContainer}>
             {filteredTimes?.map((time) => (
@@ -125,7 +115,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         </div>
         <hr className={style.hr} />
         <div className={styles.participants}>
-          <h2 className={style.h2}>참여 인원 수</h2>
+          <h2 className={style.label}>참여 인원 수</h2>
           <div className={styles.stepper}>
             <button
               className={styles.minusButton}
@@ -139,7 +129,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
               value={participantsValue}
               onChange={handleParticipantsValueChange}
               min={1}
-              style={{ width: '3rem' }}
               // 숫자가 아닌 값을 입력할 경우 1로 세팅되게 만듦
               onInput={(e: ChangeEvent<HTMLInputElement>) => {
                 if (isNaN(+e.target.value)) {
@@ -158,8 +147,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <hr className={style.hr} style={{ marginTop: '0.8rem' }} />
         <div>
           <div className={styles.totalPrice}>
-            <h2 className={style.h2}>총 합계</h2>
-            <p className={style.h2}>￦{(data.price * participantsValue).toLocaleString('ko-KR')}</p>
+            <h2 className={style.label}>총 합계</h2>
+            <p className={style.label}>￦{(data.price * participantsValue).toLocaleString('ko-KR')}</p>
           </div>
         </div>
       </div>
@@ -189,6 +178,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
           handleCalendarMonthChange={handleCalendarMonthChange}
+          clickedTimeButtonId={clickedTimeButtonId}
         />
       )}
     </>

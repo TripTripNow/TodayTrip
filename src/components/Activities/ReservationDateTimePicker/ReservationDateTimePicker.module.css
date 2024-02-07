@@ -124,6 +124,10 @@
   align-items: center;
 }
 
+.calendar > h2 {
+  align-self: self-start;
+}
+
 .selectButton {
   display: flex;
   color: var(--nomad_black);
@@ -181,6 +185,9 @@
   margin-bottom: 0.8rem;
 }
 
+.stepper input {
+  width: 3rem;
+}
 .minusButton svg {
   color: var(--gray4B);
 }

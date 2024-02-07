@@ -22,7 +22,7 @@ function ReviewList({ totalRating }: { totalRating: number }) {
 
   return (
     <section className={styles.reviewListContainer}>
-      <h2 className={style.h2}>후기</h2>
+      <h2 className={style.label}>후기</h2>
       <div className={styles.ratingWrapper}>
         <h3 className={styles.totalRating}>{totalRating}</h3>
         <div className={styles.detailRating}>

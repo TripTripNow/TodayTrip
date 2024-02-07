@@ -21,7 +21,7 @@
   justify-content: space-between;
 }
 
-.h2 {
+.bigLabel {
   display: flex;
   color: var(--nomad_black);
   font-weight: 700;
@@ -30,6 +30,10 @@
   align-items: center;
 }
 
+.label {
+  composes: bigLabel;
+  font-size: 1.8rem;
+}
 .visible {
   @media tablet {
     display: block !important;
@@ -37,6 +41,8 @@
 }
 
 .content {
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   gap: 3.2rem;
   align-items: center;

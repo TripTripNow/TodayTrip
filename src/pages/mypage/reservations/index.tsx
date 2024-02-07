@@ -36,7 +36,7 @@ function Reservation() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.h2}>예약 내역</h2>
+        <h2 className={styles.label}>예약 내역</h2>
 
         <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>

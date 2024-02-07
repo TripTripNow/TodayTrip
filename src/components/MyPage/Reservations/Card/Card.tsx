@@ -31,7 +31,7 @@ function Card({ data }: CardProps) {
 
       <div className={styles.detailContainer}>
         <p className={clsx(styles.status, styles[data.status])}>{STATUS[data.status]}</p>
-        <h2 className={styles.h2}>{data.activity.title}</h2>
+        <h2 className={styles.label}>{data.activity.title}</h2>
         <p className={styles.dateDetail}>
           <span>{formatDateString(data.date)}</span>
           <span>·</span>

@@ -49,7 +49,7 @@ function MainContent({ data }: MainContentProps) {
       <hr className={style.hr} />
 
       <section className={styles.descriptionWrapper}>
-        <h2 className={style.h2}>체험 설명</h2>
+        <h2 className={style.label}>체험 설명</h2>
         <p className={styles.description}>{data.description}</p>
       </section>
       <hr className={style.hr} />

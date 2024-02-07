@@ -32,7 +32,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
       <div className={styles.modalWrapper}>
         {/* 상단부 */}
         <div className={styles.header}>
-          <h2 className={styles.h2}>후기 작성</h2>
+          <h2 className={styles.label}>후기 작성</h2>
           <button onClick={handleModalClose}>
             <ModalCloseIcon alt="닫기 아이콘" width="4rem" height="4rem" />
           </button>

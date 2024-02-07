@@ -1,7 +1,7 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReservationModal.module.css';
 import CloseIcon from '#/icons/icon-modalClose.svg';
-import Calendar, { OnArgs } from 'react-calendar';
+import Calendar from 'react-calendar';
 import Button from '@/components/common/Button/Button';
 import style from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker.module.css';
 import MinusIcon from '#/icons/icon-minus.svg';
@@ -22,6 +22,7 @@ interface ReservationModalProps {
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
   handleCalendarMonthChange: () => void;
+  clickedTimeButtonId: number | null;
 }
 
 function ReservationModal({
@@ -34,8 +35,9 @@ function ReservationModal({
   participantsValue,
   setParticipantsValue,
   handleCalendarMonthChange,
+  clickedTimeButtonId,
 }: ReservationModalProps) {
-  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(null);
+  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(clickedTimeButtonId);
 
   const handleSelectButtonClick = () => {
     handleModalToggle();
@@ -54,40 +56,48 @@ function ReservationModal({
     }
   };
 
+  const handleCalendarMonthChangeInModal = () => {
+    handleCalendarMonthChange();
+    setClickedPossibleTimeIdInModal(null);
+  };
+
   return (
     <ModalLayout handleModalClose={handleModalToggle}>
       <div className={styles.wrapper}>
         <div className={styles.header}>
-          <h2 className={styles.h2}>날짜</h2>
+          <h1 className={styles.bigLabel}>날짜</h1>
           <button onClick={handleModalToggle}>
             <CloseIcon alt="모달 닫기 아이콘" />
           </button>
         </div>
 
-        <div className={styles.content} style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className={styles.content}>
           <Calendar
             prev2Label={null}
             next2Label={null}
             calendarType="gregory"
             locale="en"
             onChange={handleCalendarDateChange}
-            onActiveStartDateChange={handleCalendarMonthChange}
+            onActiveStartDateChange={handleCalendarMonthChangeInModal}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}
           />
           <div className={style.possibleTime} style={{ display: 'flex' }}>
-            <h2 className={styles.h2} style={{ fontSize: '1.8rem' }}>
-              예약 가능한 시간
-            </h2>
+            <h2 className={styles.label}>예약 가능한 시간</h2>
             <div className={style.timeButtonContainer}>
               {filteredTimes?.map((time) => (
                 <Button
                   key={time.id}
                   type="time"
-                  color={time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'}
+                  color={
+                    time.id === clickedTimeButtonId || time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'
+                  }
                   onClick={() => {
-                    if (clickedPossibleTimeIdInModal === time.id) {
+                    if (clickedTimeButtonId) {
+                      handleTimeButtonClick(null);
+                    }
+                    if (clickedPossibleTimeIdInModal === time.id || clickedTimeButtonId === time.id) {
                       setClickedPossibleTimeIdInModal(null);
                       return;
                     }
@@ -99,9 +109,7 @@ function ReservationModal({
               ))}
             </div>
             <div className={clsx(style.participants, styles.onlyMobile)}>
-              <h2 className={styles.h2} style={{ fontSize: '1.8rem' }}>
-                참여 인원 수
-              </h2>
+              <h2 className={styles.label}>참여 인원 수</h2>
               <div className={style.stepper}>
                 <button
                   className={style.minusButton}
@@ -115,7 +123,6 @@ function ReservationModal({
                   value={participantsValue}
                   onChange={(e) => setParticipantsValue(+e.target.value)}
                   min={1}
-                  style={{ width: '3rem' }}
                   // 숫자가 아닌 값을 입력할 경우 1로 세팅되게 만듦
                   onInput={(e: ChangeEvent<HTMLInputElement>) => {
                     if (isNaN(+e.target.value)) {
