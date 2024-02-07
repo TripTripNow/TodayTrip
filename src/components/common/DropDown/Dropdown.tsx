@@ -18,9 +18,9 @@ interface DropdownProps {
   placeholder: string | null;
 }
 
-function Dropdown({ items, setDropdownItem, type, placeholder }: DropdownProps) {
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(placeholder ?? items[0].title);
+  const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -54,7 +54,7 @@ function Dropdown({ items, setDropdownItem, type, placeholder }: DropdownProps) 
       </button>
       {isOpen && (
         <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
-          {items.map((itemValue) => (
+          {dropDownItems.map((itemValue) => (
             <div
               key={itemValue.id}
               className={clsx(styles.list, type === '시간' && styles.timeList)}
