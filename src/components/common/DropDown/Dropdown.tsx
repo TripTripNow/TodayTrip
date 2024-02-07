@@ -34,10 +34,12 @@ function Dropdown({ items, setDropdownItem, type, dropDownItem, placeholder }: D
   };
 
   const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: DropdownItems) => {
-    e.preventDefault();
     setValue(val.title);
     setDropdownItem(val);
-    handleDropdownClose();
+
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 250);
   };
 
   return (

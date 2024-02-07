@@ -85,7 +85,6 @@
 }
 
 .calendarDayWrapper > p {
-  padding-left: 1.2rem;
   color: var(--gray96);
   font-family: Inter;
   font-size: 2.1rem;
@@ -114,6 +113,16 @@
 .calendarDayWrapperTop {
   display: flex;
   gap: 0.4rem;
+}
+
+.calendarDayWrapperTop > p:first-child {
+  padding-left: 1.2rem;
+  color: var(--gray96);
+  font-family: Inter;
+  font-size: 2.1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .calendarCircle {

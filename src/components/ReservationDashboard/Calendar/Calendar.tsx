@@ -18,8 +18,8 @@ interface CalendarProps {
 const renderCircle = (reservation: Reservations) => {
   const { completed, confirmed, pending } = reservation;
   if (completed + confirmed + pending === 0) return null;
-  else if (pending + confirmed === 0 && completed !== 0) return <div className={styles.grayCircle}></div>;
-  else if (pending + confirmed > 0) return <div className={styles.blueCircle}></div>;
+  else if (pending + confirmed === 0 && completed !== 0) return <p className={styles.grayCircle}></p>;
+  else if (pending + confirmed > 0) return <p className={styles.blueCircle}></p>;
 };
 
 function Calendar({ activityId }: CalendarProps) {
@@ -79,10 +79,10 @@ function Calendar({ activityId }: CalendarProps) {
               const hasData = !!monthData[day];
               return (
                 <div key={day} className={styles.calendarDayWrapper} onClick={() => handleOpenModal(day, hasData)}>
-                  <p className={styles.calendarDayWrapperTop}>
-                    {day}
+                  <div className={styles.calendarDayWrapperTop}>
+                    <p>{day}</p>
                     {hasData && renderCircle(monthData[day])}
-                  </p>
+                  </div>
                   {hasData && (
                     <div className={styles.chipWrapper}>
                       {!!monthData[day][PENDING] && <Chips status={PENDING} number={monthData[day][PENDING]} />}
