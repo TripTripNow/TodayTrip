@@ -13,16 +13,14 @@ export interface DropdownItems {
 
 interface DropdownProps {
   type: '시간' | '카테고리' | '예약한 시간' | '체험';
-  items: DropdownItems[];
+  dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
-  dropDownItem?: DropdownItems;
-  placeholder?: string | null;
+  placeholder: string | null;
 }
 
-function Dropdown({ items, setDropdownItem, type, dropDownItem, placeholder }: DropdownProps) {
-  const initialValue = placeholder ?? (dropDownItem?.id === 0 ? items[0].title : dropDownItem?.title);
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -41,20 +39,22 @@ function Dropdown({ items, setDropdownItem, type, dropDownItem, placeholder }: D
     }, 250);
   };
 
+  const isPlaceHolder = value === '카테고리' || value === '00:00';
+
   return (
     <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
       {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}
-        className={clsx(styles.wrapper, value === placeholder && styles.placeholder)}
+        className={clsx(styles.wrapper, isPlaceHolder && styles.placeholder)}
         onClick={handleDropdownToggle}
       >
         {value}
-        {isOpen ? <ArrowUpIcon alt="위쪽 방향 아이콘" /> : <ArrowDownIcon alt="아래쪽 방향 아이콘" />}
+        {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
       </button>
       {isOpen && (
         <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
-          {items.map((itemValue) => (
+          {dropDownItems.map((itemValue) => (
             <div
               key={itemValue.id}
               className={clsx(styles.list, type === '시간' && styles.timeList)}

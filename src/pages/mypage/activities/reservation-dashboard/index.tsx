@@ -30,7 +30,12 @@ function ReservationDashboard() {
       <h1 className={styles.title}>예약 현황</h1>
       {experiencesData.length > 0 ? (
         <>
-          <Dropdown type="체험" items={experiencesData} setDropdownItem={setDropdownItem} dropDownItem={dropDownItem} />
+          <Dropdown
+            type="체험"
+            dropDownItems={experiencesData}
+            setDropdownItem={setDropdownItem}
+            placeholder={experiencesData[0].title}
+          />
           <Calendar activityId={dropDownItem.id} />
         </>
       ) : (

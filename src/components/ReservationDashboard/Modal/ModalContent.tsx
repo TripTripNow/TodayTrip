@@ -33,7 +33,12 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Omit<Mo
     <div className={styles.dateContainer}>
       <h2 className={styles.subTitle}>예약 날짜</h2>
       <p className={styles.date}>{`${showDateArr[0]}년 ${showDateArr[1]}월 ${showDateArr[2]}일`}</p>
-      <Dropdown type="예약한 시간" setDropdownItem={setDropdownItem} items={timeItems} dropDownItem={dropdownItem} />
+      <Dropdown
+        type="예약한 시간"
+        setDropdownItem={setDropdownItem}
+        dropDownItems={timeItems}
+        placeholder={dropdownItem.title}
+      />
     </div>
   );
 }
