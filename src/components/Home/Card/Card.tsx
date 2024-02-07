@@ -3,13 +3,15 @@ import Link from 'next/link';
 
 import { priceFormat } from '@/utils/priceFormat';
 import { intToFloat } from '@/utils/intToFloat';
-import { CardItem } from '@/types/api';
 
 import StarIcon from '#/icons/icon-star.svg';
 
 import styles from './Card.module.css';
+import { Activities } from '@/types/myActivities';
 
-function Card({ item }: CardItem) {
+type CardProps = { item: Pick<Activities, Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>> };
+
+function Card({ item }: CardProps) {
   return (
     <Link href={`activities/${item.id}`}>
       <div className={styles.container}>

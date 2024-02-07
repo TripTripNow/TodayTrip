@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
 import { RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-import { ReservedScheduleItem } from '@/types/api';
+import { GetReservedScheduleRes } from '@/types/myActivities';
 import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
@@ -12,7 +12,7 @@ import styles from './Modal.module.css';
 interface ModalProps {
   handleModalClose: () => void;
   date: string;
-  items: ReservedScheduleItem[];
+  items: GetReservedScheduleRes[];
   activityId: number;
 }
 

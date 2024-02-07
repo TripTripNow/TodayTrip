@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH } from '@/constants/calendar';
 import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDaysInMonth';
 import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
-import { ReservationDashboardItem } from '@/types/api';
+import { GetReservationDashboardRes } from '@/types/myActivities';
 import { RESERVATION_DETAILS_MONTH_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 export type DateObj = Record<string, { pending: number; confirmed: number; completed: number }>;
@@ -13,7 +13,7 @@ interface useCalendarProps {
 }
 
 export const useCalendar = ({ activityId }: useCalendarProps) => {
-  const dateItems: ReservationDashboardItem[] = RESERVATION_DETAILS_MONTH_MOCK_DATA;
+  const dateItems: GetReservationDashboardRes[] = RESERVATION_DETAILS_MONTH_MOCK_DATA;
   const { curYear, curMonth } = showTodayDate();
   const [monthData, setMonthData] = useState<DateObj>({});
 

@@ -6,18 +6,20 @@ import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
 import NoResult from '@/components/common/NoResult/NoResult';
 import Button from '@/components/common/Button/Button';
-import { CardItem } from '@/types/api';
+
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
+import { Activities } from '@/types/myActivities';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
   handleSortByPrice: (val: string) => void;
-  showCards: CardItem['item'][];
+
+  showCards: Pick<Activities, Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>>[];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
   totalPages: number;

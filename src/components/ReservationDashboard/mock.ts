@@ -1,4 +1,4 @@
-import { CardItem, ReservationDashboardItem, ReservedScheduleItem } from '@/types/api';
+import { GetReservedScheduleRes, GetReservationDashboardRes, Activities } from '@/types/myActivities';
 import card1 from '#/images/img-carousel1.png';
 import card2 from '#/images/img-carousel2.png';
 import card3 from '#/images/img-carousel3.png';
@@ -35,7 +35,10 @@ export interface RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS {
   }[];
 }
 
-export const RESERVATION_CARDS_MOCK_DATA: CardItem['item'][] = [
+export const RESERVATION_CARDS_MOCK_DATA: Pick<
+  Activities,
+  Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>
+>[] = [
   {
     id: 1,
     userId: 0,
@@ -271,7 +274,7 @@ export const RESERVATION_DETAILS_MY_ACTIVITIES_MOCK_DATA = {
 };
 
 // 월별로 있는 데이터
-export const RESERVATION_DETAILS_MONTH_MOCK_DATA: ReservationDashboardItem[] = [
+export const RESERVATION_DETAILS_MONTH_MOCK_DATA: GetReservationDashboardRes[] = [
   {
     date: '2024-01-31',
     reservations: {
@@ -341,7 +344,7 @@ export const RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA: RESERVATION_DETAILS_M
   },
 ];
 
-export const RESERVATION_DETAILS_MODAL_MOCK_DATA: ReservedScheduleItem[] = [
+export const RESERVATION_DETAILS_MODAL_MOCK_DATA: GetReservedScheduleRes[] = [
   {
     scheduleId: 1,
     startTime: '00:00',

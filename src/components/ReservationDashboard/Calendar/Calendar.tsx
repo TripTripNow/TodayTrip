@@ -6,7 +6,7 @@ import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-import { Reservations } from '@/types/api';
+import { Reservations } from '@/types/myActivities';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
 import styles from './Calendar.module.css';
 
