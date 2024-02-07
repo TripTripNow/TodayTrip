@@ -50,6 +50,7 @@ function ActivityEdit() {
       title: items.title,
       price: items.price,
       address: items.address,
+      description: items.description,
       images: {
         bannerImg: items.bannerImageUrl,
         subImgs: items.subImageUrls,
@@ -105,12 +106,17 @@ function ActivityEdit() {
     <div className={styles.addContainer}>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
         <div className={styles.addHeaderWrapper}>
-          <p className={styles.addHeader}>내 체험 등록</p>
+          <p className={styles.addHeader}>내 체험 수정</p>
         </div>
 
         <Input name="title" control={control} placeholder="제목" type="text" />
 
-        <Dropdown type="카테고리" setDropdownItem={setCategoryItem} items={CATEGORY_LIST} dropDownItem={categoryItem} />
+        <Dropdown
+          type="카테고리"
+          setDropdownItem={setCategoryItem}
+          dropDownItems={CATEGORY_LIST}
+          placeholder={items.category}
+        />
 
         <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
 

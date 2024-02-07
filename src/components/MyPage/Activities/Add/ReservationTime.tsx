@@ -7,6 +7,7 @@ import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IsDateTime } from '@/pages/mypage/activities/add';
+import toast from 'react-hot-toast';
 
 interface ReservationTimeProps {
   isDate: {
@@ -24,11 +25,11 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
 
   const handleAddButton = (isSelectedDate: string, startTime: string, endTime: string) => {
     if (!startTime || !endTime || !isSelectedDate) {
-      alert('날짜, 시간을 선택해 주세요.');
+      toast('날짜, 시간을 선택해 주세요.');
       return;
     }
     if (startTime >= endTime) {
-      alert('시간을 확인해 주세요.');
+      toast('시간을 확인해 주세요.');
       return;
     }
     if (
@@ -37,7 +38,7 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
           `${e.date}+${e.startTime}+${e.endTime}` === `${isSelectedDate}+${startTimeItem.title}+${endTimeItem.title}`,
       ).length > 0
     ) {
-      alert('동일한 시간이 있습니다.');
+      toast('동일한 시간이 있습니다.');
       return;
     }
 
@@ -68,23 +69,11 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
           <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
           <div className={styles.dateDropDownWrapper}>
             <div className={styles.dateDropDown}>
-              <Dropdown
-                type="시간"
-                setDropdownItem={setStartTimeItem}
-                items={TIME_LIST}
-                dropDownItem={startTimeItem}
-                placeholder="0:00"
-              />
+              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
             <p className={styles.dateWave}>~</p>
             <div className={styles.dateDropDown}>
-              <Dropdown
-                type="시간"
-                setDropdownItem={setEndTimeItem}
-                items={TIME_LIST}
-                dropDownItem={endTimeItem}
-                placeholder="0:00"
-              />
+              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
           </div>
           <button onClick={() => handleAddButton(isSelectedDate, startTimeItem.title, endTimeItem.title)}>

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
 import '@/styles/globals.css';
 import '@/styles/reset.css';
 import '@/styles/variables.css';
@@ -38,7 +39,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
     <>
       <Head>
         <title>TodayTrip</title>
-        <link rel="icon" href="/icons/icon-logo.svg" />
+        <link rel="icon" href="/icons/icon-logoMark.png" />
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
@@ -48,6 +49,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
             {!router.pathname.includes('sign') && <Footer />}
           </div>
         </HydrationBoundary>
+        <Toaster containerStyle={{ fontSize: '2.5rem', fontWeight: '600' }} />
         <div style={{ fontSize: '16px' }}>
           <ReactQueryDevtools initialIsOpen={false} />
         </div>

@@ -67,8 +67,7 @@ function ActivityAdd() {
         <Dropdown
           type="카테고리"
           setDropdownItem={setCategoryItem}
-          items={CATEGORY_LIST}
-          dropDownItem={categoryItem}
+          dropDownItems={CATEGORY_LIST}
           placeholder={'카테고리'}
         />
         <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
