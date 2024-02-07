@@ -1,12 +1,13 @@
 import { ReactElement, ReactNode, useState } from 'react';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import { Toaster } from 'react-hot-toast';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
-import { Toaster } from 'react-hot-toast';
-
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { SessionProvider } from 'next-auth/react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import Footer from '@/components/Footer/Footer';
 import Navbar from '@/components/common/Navbar/Navbar';
 import '@/styles/globals.css';
@@ -22,13 +23,14 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function App({ Component, pageProps }: AppPropsWithLayout) {
+function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000,
+            retry: 1,
           },
         },
       }),
@@ -42,13 +44,16 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
         <title>TodayTrip</title>
         <link rel="icon" href="/icons/icon-logo.svg" />
       </Head>
+
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          <div className="root">
-            {!router.pathname.includes('sign') && <Navbar />}
-            <div className="content">{getLayout(<Component {...pageProps} />)}</div>
-            {!router.pathname.includes('sign') && <Footer />}
-          </div>
+          <SessionProvider session={session}>
+            <div className="root">
+              {!router.pathname.includes('sign') && <Navbar />}
+              <div className="content">{getLayout(<Component {...pageProps} />)}</div>
+              {!router.pathname.includes('sign') && <Footer />}
+            </div>
+          </SessionProvider>
         </HydrationBoundary>
         <Toaster containerStyle={{ fontSize: '2.5rem', fontWeight: '600' }} />
         <div style={{ fontSize: '16px' }}>
