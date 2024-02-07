@@ -6,10 +6,6 @@ import PlusIcon from '#/icons/icon-plus.svg';
 import { Control, FieldValues, useController } from 'react-hook-form';
 
 interface ImageContainerProps {
-  // bannerImgSrc: string | undefined;
-  // setBannerImgSrc: Dispatch<SetStateAction<string | undefined>>;
-  // imgSrc: string[];
-  // setImgSrc: Dispatch<SetStateAction<string[]>>;
   name: string;
   control: Control<FieldValues, any>;
 }

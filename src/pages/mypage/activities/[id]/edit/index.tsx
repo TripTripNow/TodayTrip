@@ -52,7 +52,13 @@ function ActivityEdit() {
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: items ? items.title : '',
+      title: items.title,
+      price: items.price,
+      address: items.address,
+      images: {
+        bannerImg: items.bannerImageUrl,
+        subimgs: [items.subImageUrls],
+      },
     },
   });
 
@@ -133,14 +139,7 @@ function ActivityEdit() {
         <ReservationTime isDate={isDate} setIsDate={setIsDate} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer
-          // bannerImgSrc={bannerImageUrl}
-          // setBannerImgSrc={setBannerImageUrl}
-          // imgSrc={subImageUrls}
-          // setImgSrc={setSubImageUrls}
-          control={control}
-          name="images"
-        />
+        <ImageContainer control={control} name="images" />
       </form>
     </div>
   );

@@ -17,8 +17,6 @@ export interface IsDateTime {
 }
 
 function ActivityAdd() {
-  // const [description, setDescription] = useState('');
-  // const [price, setPrice] = useState<number>();
   const [isDate, setIsDate] = useState<IsDateTime[]>([]);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
 
@@ -27,9 +25,9 @@ function ActivityAdd() {
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: '제목',
-      price: '가격(원)',
-      address: '주소',
+      title: '',
+      price: '',
+      address: '',
       images: {
         bannerImg: '',
         subimgs: [],
@@ -38,10 +36,6 @@ function ActivityAdd() {
   });
 
   const { handleSubmit, control, setValue, register } = methods;
-
-  // const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   setDescription(e.target.value);
-  // };
 
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     //이벤트가 발생한 요소가 <textarea>외에서는 enter 막음
@@ -61,12 +55,7 @@ function ActivityAdd() {
 
   const handleOnSubmit = (data: FieldValues) => {
     data.category = categoryItem.title;
-    // data.description = description;
-    data.address = addressData;
-    // data.price = price;
     data.schedules = isDate;
-    // data.bannerImageUrl = bannerImageUrl;
-    // data.subImageUrls = subImageUrls;
     if (data) console.log(data);
   };
 
@@ -98,14 +87,7 @@ function ActivityAdd() {
         <ReservationTime isDate={isDate} setIsDate={setIsDate} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer
-          // bannerImgSrc={bannerImageUrl}
-          // setBannerImgSrc={setBannerImageUrl}
-          // imgSrc={subImageUrls}
-          // setImgSrc={setSubImageUrls}
-          control={control}
-          name="images"
-        />
+        <ImageContainer control={control} name="images" />
         <div className={styles.addButtonWrapper}>
           <button className={styles.addButton}>등록하기</button>
         </div>
