@@ -5,3 +5,9 @@ export const RESERVATION_STATUS = {
   canceled: '예약 취소',
   completed: '체험 완료',
 };
+
+export const PENDING = 'pending';
+export const CONFIRMED = 'confirmed';
+export const DECLINED = 'declined';
+export const CANCELED = 'canceled';
+export const COMPLETED = 'completed';

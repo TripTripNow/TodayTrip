@@ -7,7 +7,7 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
-import { RESERVATION_STATUS } from '@/constants/reservation';
+import { CANCELED, COMPLETED, CONFIRMED, DECLINED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
 import { Reservations } from '@/types/reservations';
 import formatDateString from '@/utils/formatDateString';
 import { priceFormat } from '@/utils/priceFormat';
@@ -23,7 +23,7 @@ const item: Reservations['data'] = {
     id: 101,
   },
   scheduleId: 201,
-  status: 'canceled',
+  status: 'completed',
   reviewSubmitted: false,
   totalPrice: 10000,
   headCount: 10,
@@ -42,17 +42,17 @@ interface CheckStatusProps {
 const CheckStatus = ({ status }: CheckStatusProps) => {
   return (
     <div className={styles.status}>
-      {status === 'canceled' || status === 'declined' ? (
+      {status === CANCELED || status === DECLINED ? (
         <div className={styles[status]}>{RESERVATION_STATUS[status]}</div>
       ) : (
         <>
-          <div className={status === 'pending' ? styles.active : styles.inactive}>{RESERVATION_STATUS['pending']}</div>
+          <div className={status === PENDING ? styles.active : styles.inactive}>{RESERVATION_STATUS['pending']}</div>
           <ArrowRightIcon alt="예약 신청에서 예약 승인으로 가는 화살표" />
-          <div className={status === 'confirmed' ? styles.active : styles.inactive}>
+          <div className={status === CONFIRMED ? styles.active : styles.inactive}>
             {RESERVATION_STATUS['confirmed']}
           </div>
           <ArrowRightIcon alt="예약 승인에서 체험 완료로 가는 화살표" />
-          <div className={status === 'completed' ? styles.active : styles.inactive}>
+          <div className={status === COMPLETED ? styles.active : styles.inactive}>
             {RESERVATION_STATUS['completed']}
           </div>
         </>
@@ -106,20 +106,12 @@ function ReservationID() {
         <div className={styles.bottom}>
           <div className={styles.price}>￦{priceFormat(item.totalPrice)}</div>
 
-          {item.status === 'pending' && (
+          {item.status === PENDING && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
               예약 취소
             </Button>
           )}
-          {isAlertModalOpen && (
-            <AlertModal
-              text="예약을 취소하시겠습니까?"
-              buttonText="취소하기"
-              handleModalClose={handleCancelModalToggle}
-              handleCancel={handleCancelModalToggle}
-            />
-          )}
-          {item.status === 'completed' && (
+          {item.status === COMPLETED && (
             <Button
               type="reservation"
               color="green"
@@ -128,6 +120,15 @@ function ReservationID() {
             >
               후기 작성
             </Button>
+          )}
+
+          {isAlertModalOpen && (
+            <AlertModal
+              text="예약을 취소하시겠습니까?"
+              buttonText="취소하기"
+              handleModalClose={handleCancelModalToggle}
+              handleCancel={handleCancelModalToggle}
+            />
           )}
           {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={item} />}
         </div>
