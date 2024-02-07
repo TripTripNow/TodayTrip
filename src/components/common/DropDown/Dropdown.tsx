@@ -20,10 +20,9 @@ interface DropdownProps {
 }
 
 function Dropdown({ items, setDropdownItem, type, dropDownItem, placeholder }: DropdownProps) {
+  const initialValue = placeholder ?? (dropDownItem?.id === 0 ? items[0].title : dropDownItem?.title);
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(
-    placeholder ? placeholder : dropDownItem?.id === 0 ? items[0].title : dropDownItem?.title,
-  );
+  const [value, setValue] = useState(initialValue);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
