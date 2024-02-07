@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from './Card.module.css';
+import { priceFormat } from '@/utils/priceFormat';
 
 function Card({ data }: Reservations) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
@@ -43,7 +44,7 @@ function Card({ data }: Reservations) {
             <span>{data.headCount}명</span>
           </p>
           <div className={styles.bottom}>
-            <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
+            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
             {data.status === PENDING && (
               <Button
                 color="white"
