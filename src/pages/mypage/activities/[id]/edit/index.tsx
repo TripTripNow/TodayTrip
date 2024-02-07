@@ -36,16 +36,11 @@ const ACTIVITY_ITEM = {
 
 function ActivityEdit() {
   const [items, setItems] = useState(ACTIVITY_ITEM);
-  const [description, setDescription] = useState(items ? items.description : '');
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
-  const [price, setPrice] = useState<number>(items ? items.price : 0);
   const [isDate, setIsDate] = useState<IsDateTime[]>(items ? items.schedules : []);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(
     items ? { id: 1, title: items.category } : INITIAL_DROPDOWN_ITEM,
   );
-  const [bannerImageUrl, setBannerImageUrl] = useState<string | undefined>(items ? items.bannerImageUrl : undefined);
-  const [subImageUrls, setSubImageUrls] = useState<string[]>(items ? items.subImageUrls : []);
-  const [addressData, setAddressData] = useState<string | undefined>(items ? items.address : '주소를 입력해주세요');
   const router = useRouter();
   const id = router.query.id;
 
@@ -57,31 +52,31 @@ function ActivityEdit() {
       address: items.address,
       images: {
         bannerImg: items.bannerImageUrl,
-        subimgs: [items.subImageUrls],
+        subImgs: items.subImageUrls,
       },
     },
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, register, setValue } = methods;
 
-  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    //이벤트가 발생한 요소가 <textarea>외에서는 enter 막음
+    if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
+      e.preventDefault();
+    }
   };
 
-  const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const onlyNumber = value.replace(/[^0-9]/g, '');
-    setPrice(+onlyNumber);
-  };
+  control.register('price', {
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      const onlyNumber = value.replace(/[^0-9]/g, '');
+      setValue('price', priceFormat(+onlyNumber));
+    },
+  });
 
   const handleOnSubmit = (data: FieldValues) => {
-    data.category = categoryItem;
-    data.description = description;
-    data.address = addressData;
-    data.price = price;
+    data.category = categoryItem.title;
     data.schedules = isDate;
-    data.bannerImageUrl = bannerImageUrl;
-    data.subImageUrls = subImageUrls;
     if (data) console.log(data);
   };
 
@@ -101,38 +96,30 @@ function ActivityEdit() {
     }
   };
 
-  useEffect(() => {
-    //id 바뀔때마다 api 호출해서 items에 받아오기
-  }, [id]);
-
   //처음 불러올때 받은 주소 -> 위도 경도로 바꿔줌
   useEffect(() => {
-    calculateLatlng(addressData!);
+    calculateLatlng(items.address);
   }, []);
 
   return (
     <div className={styles.addContainer}>
-      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer}>
+      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
         <div className={styles.addHeaderWrapper}>
           <p className={styles.addHeader}>내 체험 등록</p>
-          <button className={styles.addHeaderButton}>등록하기</button>
         </div>
+
         <Input name="title" control={control} placeholder="제목" type="text" />
+
         <Dropdown type="카테고리" setDropdownItem={setCategoryItem} items={CATEGORY_LIST} dropDownItem={categoryItem} />
-        <textarea value={description} onChange={handleTextAreaChange} className={styles.textarea} placeholder="설명" />
-        <label className={styles.priceWrapper}>가격(원)</label>
-        <input
-          value={price !== undefined ? priceFormat(price) : ''}
-          type="text"
-          className={styles.priceInput}
-          onChange={handlePriceChange}
-          placeholder="가격(원)"
-        />
+
+        <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
+
+        <Input name="price" control={control} label="가격(원)" type="text" placeholder="가격(원)" />
 
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} control={control} name="address" />
+          <MapContainer latlng={latlng} control={control} name="address" />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
@@ -140,6 +127,9 @@ function ActivityEdit() {
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
         <ImageContainer control={control} name="images" />
+        <div className={styles.addButtonWrapper}>
+          <button className={styles.addButton}>등록하기</button>
+        </div>
       </form>
     </div>
   );

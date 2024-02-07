@@ -39,6 +39,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
     inputRef.current.click();
   }, []);
 
+  console.log(imageSrc);
   return (
     <div className={`${styles.profileContainer} ${isProfileBox && styles.display}`}>
       <Image

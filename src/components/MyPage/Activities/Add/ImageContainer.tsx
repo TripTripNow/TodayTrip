@@ -1,7 +1,7 @@
 import styles from '@/pages/mypage/activities/add/Add.module.css';
 import Image from 'next/image';
 import ImgCloseIcon from '#/icons/icon-imgClose.svg';
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
 import { Control, FieldValues, useController } from 'react-hook-form';
 
@@ -11,12 +11,12 @@ interface ImageContainerProps {
 }
 
 function ImageContainer({ name, control }: ImageContainerProps) {
+  const { field } = useController({ name, control });
+  const value = field.value;
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>();
-  const [imgSrc, setImgSrc] = useState<string[]>([]);
-
-  const { field } = useController({ name, control });
+  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>(value.bannerImg);
+  const [imgSrc, setImgSrc] = useState<string[]>(value.subImgs || []);
 
   const handleImgClick = (banner: boolean) => {
     if (banner) {
@@ -27,7 +27,6 @@ function ImageContainer({ name, control }: ImageContainerProps) {
   };
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>, banner: boolean) => {
-    const value = field.value;
     if (e.target && e.target.files?.length !== 0) {
       const targetFiles = e.target.files?.[0];
       const selectedFiles = URL.createObjectURL(targetFiles!);
@@ -46,7 +45,6 @@ function ImageContainer({ name, control }: ImageContainerProps) {
   };
 
   const handleImgDelete = (item: number, banner: boolean) => {
-    const value = field.value;
     if (banner) {
       setBannerImgSrc(null);
       field.onChange({ ...value, bannerImgSrc: '' });
@@ -65,6 +63,7 @@ function ImageContainer({ name, control }: ImageContainerProps) {
       }
     }
   };
+
   return (
     <>
       <div className={styles.cotentTitleWrapper}>
@@ -82,7 +81,7 @@ function ImageContainer({ name, control }: ImageContainerProps) {
                 ref={bannerImgRef}
                 onChange={(e) => handleUpload(e, true)}
               />
-              <PlusIcon alt="이미지 등록" />
+              <PlusIcon alt="이미지 추가 이미지" />
               <div>이미지 등록</div>
             </div>
           </div>
@@ -91,12 +90,12 @@ function ImageContainer({ name, control }: ImageContainerProps) {
           <div className={styles.addedImg}>
             <ImgCloseIcon
               className={styles.imgCloseButton}
-              alt="이미지 닫기 버튼"
+              alt="이미지 닫기 이미지"
               onClick={() => handleImgDelete(0, true)}
               width={40}
               height={40}
             />
-            <Image src={bannerImgSrc} className={styles.profileImg} alt="profileImg" width={180} height={180} />
+            <Image src={bannerImgSrc} className={styles.profileImg} alt="배너 이미지" width={180} height={180} />
           </div>
         )}
       </div>
@@ -131,7 +130,7 @@ function ImageContainer({ name, control }: ImageContainerProps) {
                 width={40}
                 height={40}
               />
-              <Image src={item} className={styles.profileImg} alt="profileImg" width={180} height={180} />
+              <Image src={item} className={styles.profileImg} alt="소개 이미지" width={180} height={180} />
             </div>
           ))}
       </div>

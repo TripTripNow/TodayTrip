@@ -1,5 +1,5 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import { ChangeEvent, ReactElement, useState } from 'react';
 import styles from './Add.module.css';
 import Input from '@/components/Input/Input';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -20,8 +20,6 @@ function ActivityAdd() {
   const [isDate, setIsDate] = useState<IsDateTime[]>([]);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
 
-  const [addressData, setAddressData] = useState<string | undefined>('주소를 입력해주세요');
-
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -30,7 +28,7 @@ function ActivityAdd() {
       address: '',
       images: {
         bannerImg: '',
-        subimgs: [],
+        subImgs: [],
       },
     },
   });
@@ -80,7 +78,7 @@ function ActivityAdd() {
         {/*지도 부분 컴포넌트*/}
         <div className={styles.addressContainer}>
           <p className={styles.addressTitle}>주소</p>
-          <MapContainer setAddressData={setAddressData} control={control} name="address" />
+          <MapContainer control={control} name="address" />
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
@@ -98,6 +96,3 @@ function ActivityAdd() {
 
 export default ActivityAdd;
 ActivityAdd.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
-function priceForMat(arg0: number): any {
-  throw new Error('Function not implemented.');
-}

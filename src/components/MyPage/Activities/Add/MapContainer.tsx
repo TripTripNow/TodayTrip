@@ -26,7 +26,7 @@ class LoadScriptOnlyIfNeeded extends LoadScript {
 }
 
 interface MapContainerProps {
-  setAddressData: Dispatch<SetStateAction<string | undefined>>;
+  // setAddressData: Dispatch<SetStateAction<string | undefined>>;
   address?: string;
   latlng?: { lat: number; lng: number } | null;
   name: string;
@@ -35,15 +35,15 @@ interface MapContainerProps {
 
 const libraries = ['places'];
 
-function MapContainer({ setAddressData, address, latlng, control, name }: MapContainerProps) {
-  const [inputValue, setInputValue] = useState<string>(address || '');
+function MapContainer({ latlng, control, name }: MapContainerProps) {
+  const { field } = useController({ name, control });
+  const value = field.value;
+  const [inputValue, setInputValue] = useState<string>(value);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
   const [markerPosition, setMarkerPosition] = useState<{ lat: number; lng: number } | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  const { field } = useController({ name, control });
 
   // Autocomplete가 로드될 때 호출되는 함수
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
@@ -55,8 +55,7 @@ function MapContainer({ setAddressData, address, latlng, control, name }: MapCon
     const value = field.value;
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
-      setAddressData(place.formatted_address || '');
-      field.onChange({ ...value, address: place.formatted_address || '' });
+      // setAddressData(place.formatted_address || '');
 
       if (place.geometry && place.geometry.location) {
         const newPosition = {
@@ -71,6 +70,7 @@ function MapContainer({ setAddressData, address, latlng, control, name }: MapCon
           if (status === 'OK' && results && results[0]) {
             const clickedAddress = results[0].formatted_address || '';
             setInputValue(clickedAddress);
+            field.onChange(clickedAddress);
           }
         });
       }
@@ -92,15 +92,16 @@ function MapContainer({ setAddressData, address, latlng, control, name }: MapCon
     geocoder.geocode({ location: clickedPosition }, (results, status) => {
       if (status === 'OK' && results && results[0]) {
         const clickedAddress = results[0].formatted_address || '';
-        setAddressData(clickedAddress);
-        field.onChange({ ...value, address: clickedAddress });
+        // setAddressData(clickedAddress);
+        field.onChange(clickedAddress);
         // 클릭한 곳의 주소를 input 칸에 보여주기
         if (inputRef.current) {
           setInputValue(clickedAddress);
         }
-      } else {
-        setAddressData('');
       }
+      //  else {
+      //   setAddressData('');
+      // }
     });
     // 클릭한 곳 마커
     setMarkerPosition(clickedPosition);
