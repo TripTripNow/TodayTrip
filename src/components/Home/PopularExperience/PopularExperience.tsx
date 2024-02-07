@@ -54,7 +54,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
 
       <Splide
         ref={splideRef}
-        onMoved={(object: any, newIndex: number) => {
+        onMoved={(object: unknown, newIndex: number) => {
           setSlideIndex(newIndex);
         }}
         options={{

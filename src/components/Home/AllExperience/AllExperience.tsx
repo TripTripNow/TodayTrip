@@ -79,7 +79,7 @@ function AllExperience({
       <div className={styles.categoryWrapper}>
         {!searchResult && (
           <Splide
-            onMoved={(obj: any, move: number) => setMove(move)}
+            onMoved={(obj: unknown, move: number) => setMove(move)}
             options={{
               mediaQuery: 'min',
               fixedWidth: '8.8rem',

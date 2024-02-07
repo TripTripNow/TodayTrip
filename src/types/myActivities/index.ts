@@ -182,10 +182,10 @@ export interface PatchMyActivityReq {
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageIdsToRemove: any[];
-  subImageUrlsToAdd: any[];
-  scheduleIdsToRemove: any[];
-  schedulesToAdd: any[];
+  subImageIdsToRemove: unknown[];
+  subImageUrlsToAdd: unknown[];
+  scheduleIdsToRemove: unknown[];
+  schedulesToAdd: unknown[];
 }
 
 /**
