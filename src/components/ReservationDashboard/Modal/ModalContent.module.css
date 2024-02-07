@@ -4,17 +4,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
   width: 100%;
 }
 
 .dateContainer {
-  margin-top: 2.7rem;
-}
-
-.detailsContainer {
-  /* height: 35.4rem; */
+  margin-bottom: 0.7rem;
 }
 
 .cardsWrapper {
@@ -32,10 +27,8 @@
 .subTitle {
   color: var(--black1B);
   font-size: 2rem;
-  font-style: normal;
   font-weight: 600;
   line-height: normal;
-
   margin-top: 2.5rem;
 }
 

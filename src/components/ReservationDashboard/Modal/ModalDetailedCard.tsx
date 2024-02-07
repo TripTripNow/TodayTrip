@@ -35,11 +35,11 @@ function ModalDetailedCard({
           </Button>
         </div>
       ) : tabStatus === CONFIRMED ? (
-        <div className={clsx(styles.statusBtn, styles.statusConfirmed)}>
+        <div className={clsx(styles.statusWrapper, styles.statusConfirmed)}>
           <p>예약 승인</p>
         </div>
       ) : (
-        <div className={clsx(styles.statusBtn, styles.statusDeclined)}>
+        <div className={clsx(styles.statusWrapper, styles.statusDeclined)}>
           <p>예약 거절</p>
         </div>
       )}

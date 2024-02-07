@@ -10,8 +10,8 @@ interface ChipsProps {
 function Chips({ status, number }: ChipsProps) {
   return (
     <div className={clsx(styles.container, styles[`${status}State`])}>
-      <span className={clsx(styles.text, styles[`${status}State`])}>{CHIP_MAP[status]}</span>
-      <span className={clsx(styles.text, styles[`${status}State`])}>{number}</span>
+      <span>{CHIP_MAP[status]}</span>
+      <span>{number}</span>
     </div>
   );
 }

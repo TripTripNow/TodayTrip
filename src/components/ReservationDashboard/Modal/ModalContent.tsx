@@ -61,7 +61,7 @@ function ReservationDetails({
   const showItems = items.filter((item) => item.status === tabStatus).slice(0, visibleItems);
 
   return (
-    <div className={styles.detailsContainer}>
+    <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
       <div className={styles.cardsWrapper}>
         {showItems.map((item) => (

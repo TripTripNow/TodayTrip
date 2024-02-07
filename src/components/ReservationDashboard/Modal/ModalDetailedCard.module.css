@@ -61,7 +61,7 @@
   padding-right: 1.6rem;
 }
 
-.statusBtn {
+.statusWrapper {
   width: 8.5rem;
   display: inline-flex;
   padding: 1rem 1.5rem;
@@ -71,10 +71,9 @@
   border-radius: 2.65rem;
   margin-right: 1.6rem;
   margin-bottom: 1.2rem;
-  cursor: pointer;
 }
 
-.statusBtn > p {
+.statusWrapper > p {
   text-align: center;
   font-size: 1.4rem;
   font-style: normal;
