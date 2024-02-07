@@ -26,6 +26,7 @@ function ActivityAdd() {
       title: '',
       price: '',
       address: '',
+      description: '',
       images: {
         bannerImg: '',
         subImgs: [],
