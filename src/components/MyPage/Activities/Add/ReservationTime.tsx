@@ -32,12 +32,12 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
       return;
     }
     if (
-      dateValue.filter(
+      dateValue.some(
         (e: any) =>
           `${e.date}+${e.startTime}+${e.endTime}` === `${isSelectedDate}+${startTimeItem.title}+${endTimeItem.title}`,
-      ).length > 0
+      )
     ) {
-      toast('동일한 시간이 있습니다.');
+      toast.error('동일한 시간이 있습니다.');
       return;
     }
     field.onChange([
