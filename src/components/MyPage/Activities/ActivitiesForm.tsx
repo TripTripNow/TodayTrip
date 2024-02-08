@@ -1,14 +1,13 @@
-import { ChangeEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styles from '@/pages/mypage/activities/add/Add.module.css';
 import Input from '@/components/Input/Input';
-import { FieldValues, UseFormReturn, useForm } from 'react-hook-form';
-import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
-import { CATEGORY_LIST, INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import Dropdown from '@/components/common/DropDown/Dropdown';
+import { CATEGORY_LIST } from '@/constants/dropdown';
 import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
 import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
 import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
 import { priceFormat } from '@/utils/priceFormat';
-import { IsDateTime } from '@/pages/mypage/activities/add';
 
 interface ActivitiesFormProps {
   handleOnSubmit: (data: FieldValues) => void;
@@ -21,9 +20,6 @@ interface ActivitiesFormProps {
 
 function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps) {
   const { handleSubmit, control, setValue, register, getValues } = methods;
-
-  const [isDate, setIsDate] = useState<IsDateTime[]>([]);
-  const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [category, setCategory] = useState(getValues('category'));
 
   //훅폼 이용 숫자(양수)만 입력되게 + number형으로
@@ -41,6 +37,10 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
       e.preventDefault();
     }
   };
+
+  useEffect(() => {
+    if (category) setValue('category', category.title ? category.title : category);
+  }, [category]);
 
   return (
     <div className={styles.addContainer}>

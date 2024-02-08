@@ -1,4 +1,4 @@
-import React, { useState, useRef, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import styles from './MapContainer.module.css';
 import { Control, FieldValues, useController } from 'react-hook-form';
@@ -26,8 +26,6 @@ class LoadScriptOnlyIfNeeded extends LoadScript {
 }
 
 interface MapContainerProps {
-  // setAddressData: Dispatch<SetStateAction<string | undefined>>;
-  address?: string;
   latlng?: { lat: number; lng: number } | null;
   name: string;
   control: Control<FieldValues, any>;
@@ -38,6 +36,7 @@ const libraries = ['places'];
 function MapContainer({ latlng, control, name }: MapContainerProps) {
   const { field } = useController({ name, control });
   const value = field.value;
+
   const [inputValue, setInputValue] = useState<string>(value);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 37.56, lng: 126.98 });
@@ -52,7 +51,6 @@ function MapContainer({ latlng, control, name }: MapContainerProps) {
 
   // 장소가 선택되었을 때 호출되는 함수
   const onPlaceChanged = () => {
-    const value = field.value;
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
       // setAddressData(place.formatted_address || '');
@@ -79,8 +77,6 @@ function MapContainer({ latlng, control, name }: MapContainerProps) {
 
   // 맵을 클릭했을 때 호출되는 함수
   const onMapClick = (event: google.maps.MapMouseEvent) => {
-    const value = field.value;
-
     // 클릭한 곳의 좌표 얻기
     const clickedPosition = {
       lat: event.latLng?.lat() || 0,

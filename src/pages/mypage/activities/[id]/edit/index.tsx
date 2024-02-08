@@ -1,17 +1,10 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import styles from '@/pages/mypage/activities/add/Add.module.css';
-import Input from '@/components/Input/Input';
+import { ReactElement, useEffect, useState } from 'react';
+
 import { FieldValues, useForm } from 'react-hook-form';
-import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
-import { CATEGORY_LIST, INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
-import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
-import { priceFormat } from '@/utils/priceFormat';
-import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
-import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
-import { useRouter } from 'next/router';
-import { IsDateTime } from '@/pages/mypage/activities/add';
+
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
+import { priceFormat } from '@/utils/priceFormat';
 
 const ACTIVITY_ITEM = {
   title: '함께 배우면 즐거운 스트릿댄스',
@@ -33,16 +26,12 @@ const ACTIVITY_ITEM = {
 function ActivityEdit() {
   const [items, setItems] = useState(ACTIVITY_ITEM);
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
-  const [isDate, setIsDate] = useState<IsDateTime[]>(items ? items.schedules : []);
-  const [categoryItem, setCategoryItem] = useState<DropdownItems>(
-    items ? { id: 1, title: items.category } : INITIAL_DROPDOWN_ITEM,
-  );
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
       title: items.title,
-      price: items.price,
+      price: priceFormat(items.price),
       address: items.address,
       description: items.description,
       category: items.category,
@@ -54,13 +43,11 @@ function ActivityEdit() {
     },
   });
 
-  // const { handleSubmit, control, register, setValue } = methods;
   const handleOnSubmit = (data: FieldValues) => {
-    // data.category = categoryItem.title;
-    // data.schedules = isDate;
     if (data) console.log(data);
   };
 
+  //처음 불러올때 받은 주소 -> 위도 경도로 바꿔주는 함수
   const calculateLatlng = async (addressData: string) => {
     if (addressData) {
       const response = await fetch(
@@ -75,7 +62,6 @@ function ActivityEdit() {
     }
   };
 
-  //처음 불러올때 받은 주소 -> 위도 경도로 바꿔줌
   useEffect(() => {
     calculateLatlng(items.address);
   }, []);

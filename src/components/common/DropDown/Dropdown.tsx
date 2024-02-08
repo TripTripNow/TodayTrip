@@ -1,11 +1,9 @@
 import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import clsx from 'clsx';
-
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
 import styles from './Dropdown.module.css';
-import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
 
 export interface DropdownItems {
   id: number;
@@ -17,14 +15,11 @@ interface DropdownProps {
   dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
-  setCategory?: Dispatch<any>;
-  control?: Control<FieldValues, any>;
-  name?: string;
 }
 
 function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [visibleItem, setVisibleItem] = useState(placeholder ?? dropDownItems[0].title);
+  const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -35,24 +30,24 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
   };
 
   const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: DropdownItems) => {
-    setVisibleItem(val.title);
+    setValue(val.title);
     setDropdownItem(val);
     setTimeout(() => {
       setIsOpen(false);
     }, 250);
   };
 
-  const isPlaceHolder = visibleItem === '카테고리' || visibleItem === '00:00';
+  const isPlaceHolder = value === '카테고리' || value === '00:00';
 
   return (
     <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
       {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
-        value={visibleItem}
+        value={value}
         className={clsx(styles.wrapper, isPlaceHolder && styles.placeholder)}
         onClick={handleDropdownToggle}
       >
-        {visibleItem}
+        {value}
         {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
       </button>
       {isOpen && (

@@ -13,6 +13,7 @@ interface ImageContainerProps {
 function ImageContainer({ name, control }: ImageContainerProps) {
   const { field } = useController({ name, control });
   const value = field.value;
+
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const [bannerImgSrc, setBannerImgSrc] = useState<string | null>(value.bannerImg);

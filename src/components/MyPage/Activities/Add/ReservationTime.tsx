@@ -5,25 +5,18 @@ import styles from '@/pages/mypage/activities/add/Add.module.css';
 import PlusButtonIcon from '#/icons/icon-plusButton.svg';
 import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { IsDateTime } from '@/pages/mypage/activities/add';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Control, FieldValues, UseFormReturn, useController } from 'react-hook-form';
+import { Control, FieldValues, useController } from 'react-hook-form';
 
 interface ReservationTimeProps {
-  // isDate: {
-  //   date: string;
-  //   startTime: string;
-  //   endTime: string;
-  // }[];
-  // setIsDate: Dispatch<SetStateAction<IsDateTime[]>>;
   name: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues>;
 }
 
 function ReservationTime({ name, control }: ReservationTimeProps) {
   const { field } = useController({ name, control });
-  const isDate = field.value;
+  const dateValue = field.value;
 
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
@@ -39,7 +32,7 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
       return;
     }
     if (
-      isDate.filter(
+      dateValue.filter(
         (e: any) =>
           `${e.date}+${e.startTime}+${e.endTime}` === `${isSelectedDate}+${startTimeItem.title}+${endTimeItem.title}`,
       ).length > 0
@@ -47,11 +40,18 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
       toast('동일한 시간이 있습니다.');
       return;
     }
+    field.onChange([
+      ...dateValue,
+      {
+        date: isSelectedDate,
+        startTime: startTimeItem.title,
+        endTime: endTimeItem.title,
+      },
+    ]);
   };
 
-  // field.onChange({ ...value, subImgs: [...field.value.subImgs, e.target.files?.[0]] });
   const handleDeleteButton = (item: string) => {
-    field.onChange(field.value.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
+    field.onChange(dateValue.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
   };
 
   return (
@@ -67,25 +67,11 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
           <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
           <div className={styles.dateDropDownWrapper}>
             <div className={styles.dateDropDown}>
-              <Dropdown
-                type="시간"
-                setDropdownItem={setStartTimeItem}
-                dropDownItems={TIME_LIST}
-                placeholder="0:00"
-                control={control}
-                name="startTime"
-              />
+              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
             <p className={styles.dateWave}>~</p>
             <div className={styles.dateDropDown}>
-              <Dropdown
-                type="시간"
-                setDropdownItem={setEndTimeItem}
-                dropDownItems={TIME_LIST}
-                placeholder="0:00"
-                control={control}
-                name="endTime"
-              />
+              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
           </div>
           <button onClick={() => handleAddButton(isSelectedDate, startTimeItem.title, endTimeItem.title)}>
@@ -94,8 +80,8 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
         </div>
         <hr className={styles.dateHr} />
         <div className={styles.plusDateWrapper}>
-          {isDate &&
-            isDate.map((item: any, index: number) => {
+          {dateValue[0]?.date &&
+            dateValue.map((item: any, index: number) => {
               return (
                 <div key={index}>
                   <div className={styles.dateContent}>
