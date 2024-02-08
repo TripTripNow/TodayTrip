@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
 
 const instance = axios.create({
@@ -8,14 +9,20 @@ const instance = axios.create({
   },
 });
 
+let context = <GetServerSidePropsContext>{};
+
+export const setContext = (_context: GetServerSidePropsContext) => {
+  context = _context;
+};
+
 const redirectToLoginPage = () => {
-  window.location.href = `${process.env.NEXT_PUBLIC_URL}/signin`;
+  //window.location.href = `${process.env.NEXT_PUBLIC_URL}/signin`;
+  console.log('refresh token!!');
 };
 
 instance.interceptors.request.use(
   async (config) => {
-    // 요청 바로 직전
-    const session = await getSession();
+    const session = await getSession(context);
 
     if (!session || !session.user.accessToken) {
       return config;
@@ -37,14 +44,11 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const {
-      config,
-      response: { status },
-    } = error;
+    const { config, response } = error;
 
-    if (status === 401 && error.response.data.message === 'Unauthorized') {
+    if (response && response.status === 401 && error.response.data.message === 'Unauthorized') {
       const originalRequest = config;
-      const session = await getSession();
+      const session = await getSession(context);
 
       try {
         if (!session) throw new Error();

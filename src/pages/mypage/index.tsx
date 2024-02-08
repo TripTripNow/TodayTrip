@@ -6,21 +6,54 @@ import Input from '@/components/Input/Input';
 import { passwordCheck } from '@/utils/passwordCheck';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 import Button from '@/components/common/Button/Button';
-function MyPage() {
+import { useQuery } from '@tanstack/react-query';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getUsersMe } from '@/api/user/user';
+import { getUsersMeRes } from '@/types/users';
+import { GetServerSideProps } from 'next';
+import { setContext } from '@/api/axiosInstance';
+
+interface MyPageProps {
+  userData: getUsersMeRes;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  setContext(context);
+
+  let userData;
+
+  try {
+    userData = await getUsersMe();
+  } catch (e) {
+    console.error(e);
+  }
+
+  return {
+    props: { userData },
+  };
+};
+
+function MyPage({ userData }: MyPageProps) {
+  const { isLoading, data } = useQuery<getUsersMeRes>({
+    queryKey: [QUERY_KEYS.useersMe],
+    queryFn: () => getUsersMe(),
+    initialData: userData,
+  });
+
   const methods = useForm<FieldValues>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: {
-      nickName: '닉네임',
-      email: 'test@test.com',
+      nickName: data.nickname,
+      email: data.email,
       mypagePassword: '',
       mypagePasswordCheck: '',
     },
   });
 
   const { handleSubmit, control, setError } = methods;
-
   const { isValid } = methods.formState;
+  const { getValues } = useFormContext();
 
   const handleOnSubmit = (data: FieldValues) => {
     const isValidPwCheck = passwordCheck(data.mypagePasswordCheck, data.mypagePassword, setError);
@@ -30,8 +63,6 @@ function MyPage() {
     console.log(getValues('profileImageUrl'));
     console.log(data);
   };
-
-  const { getValues } = useFormContext();
 
   return (
     <div>
@@ -46,30 +77,32 @@ function MyPage() {
 
           <ProfileInput isProfileBox={false} isEdit={true} />
         </div>
-        <div className={styles.formContainer}>
-          <Input
-            name={'nickName'}
-            control={control}
-            label={'닉네임'}
-            placeholder={'닉네임을 입력해주세요'}
-            type={'text'}
-          />
-          <Input name={'email'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
-          <Input
-            name={'mypagePassword'}
-            control={control}
-            label={'비밀번호'}
-            placeholder={'8자 이상 입력해 주세요'}
-            type={'password'}
-          />
-          <Input
-            name={'mypagePasswordCheck'}
-            control={control}
-            label={'비밀번호 확인'}
-            placeholder={'비밀번호를 한번 더 입력해 주세요'}
-            type={'password'}
-          />
-        </div>
+        {!isLoading && (
+          <div className={styles.formContainer}>
+            <Input
+              name={'nickName'}
+              control={control}
+              label={'닉네임'}
+              placeholder={'닉네임을 입력해주세요'}
+              type={'text'}
+            />
+            <Input name={'email'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
+            <Input
+              name={'mypagePassword'}
+              control={control}
+              label={'비밀번호'}
+              placeholder={'8자 이상 입력해 주세요'}
+              type={'password'}
+            />
+            <Input
+              name={'mypagePasswordCheck'}
+              control={control}
+              label={'비밀번호 확인'}
+              placeholder={'비밀번호를 한번 더 입력해 주세요'}
+              type={'password'}
+            />
+          </div>
+        )}
       </form>
     </div>
   );

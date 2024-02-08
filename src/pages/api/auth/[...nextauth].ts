@@ -1,7 +1,7 @@
 import instance from '@/api/axiosInstance';
 import { postSignup } from '@/api/user/user';
 import { AxiosError } from 'axios';
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
@@ -37,7 +37,7 @@ const handleSocialLogin = async (profile: any) => {
   }
 };
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
@@ -144,4 +144,6 @@ export default NextAuth({
   pages: {
     signIn: '/signin',
   },
-});
+};
+
+export default NextAuth(authOptions);
