@@ -131,7 +131,7 @@ function MapContainer({ latlng, control, name }: MapContainerProps) {
             <Marker
               position={markerPosition}
               icon={{
-                url: '/icons/icon-logoMarker.png',
+                url: '/icons/icon-logoMarker.svg',
                 scaledSize: new window.google.maps.Size(35, 60),
               }}
             />

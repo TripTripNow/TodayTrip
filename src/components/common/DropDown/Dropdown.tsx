@@ -13,14 +13,14 @@ export interface DropdownItems {
 
 interface DropdownProps {
   type: '시간' | '카테고리' | '예약한 시간' | '체험';
-  dropDownItems: DropdownItems[];
+  items: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
 }
 
-function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
+function Dropdown({ items, setDropdownItem, type, placeholder }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
+  const [value, setValue] = useState(placeholder ?? items[0].title);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -54,7 +54,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
       </button>
       {isOpen && (
         <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
-          {dropDownItems.map((itemValue) => (
+          {items.map((itemValue) => (
             <div
               key={itemValue.id}
               className={clsx(styles.list, type === '시간' && styles.timeList)}

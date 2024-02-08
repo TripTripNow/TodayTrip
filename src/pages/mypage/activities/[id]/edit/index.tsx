@@ -10,12 +10,8 @@ import { priceFormat } from '@/utils/priceFormat';
 import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
 import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
 import { useRouter } from 'next/router';
-
-export interface IsDateTime {
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+import { IsDateTime } from '@/pages/mypage/activities/add';
+import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 
 const ACTIVITY_ITEM = {
   title: '함께 배우면 즐거운 스트릿댄스',
@@ -41,8 +37,6 @@ function ActivityEdit() {
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(
     items ? { id: 1, title: items.category } : INITIAL_DROPDOWN_ITEM,
   );
-  const router = useRouter();
-  const id = router.query.id;
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
@@ -51,6 +45,7 @@ function ActivityEdit() {
       price: items.price,
       address: items.address,
       description: items.description,
+      category: items.category,
       images: {
         bannerImg: items.bannerImageUrl,
         subImgs: items.subImageUrls,
@@ -58,26 +53,10 @@ function ActivityEdit() {
     },
   });
 
-  const { handleSubmit, control, register, setValue } = methods;
-
-  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    //이벤트가 발생한 요소가 <textarea>외에서는 enter 막음
-    if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
-      e.preventDefault();
-    }
-  };
-
-  control.register('price', {
-    onChange: (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      const onlyNumber = value.replace(/[^0-9]/g, '');
-      setValue('price', priceFormat(+onlyNumber));
-    },
-  });
-
+  // const { handleSubmit, control, register, setValue } = methods;
   const handleOnSubmit = (data: FieldValues) => {
-    data.category = categoryItem.title;
-    data.schedules = isDate;
+    // data.category = categoryItem.title;
+    // data.schedules = isDate;
     if (data) console.log(data);
   };
 
@@ -86,9 +65,7 @@ function ActivityEdit() {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressData)}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!}`,
       );
-
       const data = await response.json();
-
       if (data.results && data.results.length > 0) {
         const location = data.results[0].geometry.location;
         const newLatlng = { lat: location.lat, lng: location.lng };
@@ -103,41 +80,9 @@ function ActivityEdit() {
   }, []);
 
   return (
-    <div className={styles.addContainer}>
-      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
-        <div className={styles.addHeaderWrapper}>
-          <p className={styles.addHeader}>내 체험 수정</p>
-        </div>
-
-        <Input name="title" control={control} placeholder="제목" type="text" />
-
-        <Dropdown
-          type="카테고리"
-          setDropdownItem={setCategoryItem}
-          dropDownItems={CATEGORY_LIST}
-          placeholder={items.category}
-        />
-
-        <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
-
-        <Input name="price" control={control} label="가격(원)" type="text" placeholder="가격(원)" />
-
-        {/*지도 부분 컴포넌트*/}
-        <div className={styles.addressContainer}>
-          <p className={styles.addressTitle}>주소</p>
-          <MapContainer latlng={latlng} control={control} name="address" />
-        </div>
-
-        {/*예약 날짜 추가 제거 컴포넌트*/}
-        <ReservationTime isDate={isDate} setIsDate={setIsDate} />
-
-        {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer control={control} name="images" />
-        <div className={styles.addButtonWrapper}>
-          <button className={styles.addButton}>등록하기</button>
-        </div>
-      </form>
-    </div>
+    <>
+      <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} />
+    </>
   );
 }
 
