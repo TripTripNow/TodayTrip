@@ -1,12 +1,13 @@
-import styles from './Reservations.module.css';
 import { ReactElement, useEffect, useState } from 'react';
+
+import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
+import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
-import { STATUS } from '@/constants/reservation';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
+import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReserveFilterOption } from '@/types/dropdown';
+import styles from './Reservations.module.css';
 
 function Reservation() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
@@ -24,7 +25,7 @@ function Reservation() {
     selectedStatus === '전체' || selectedStatus === '예약 상태'
       ? reservations.slice(0, visibleReservations)
       : reservations
-          .filter((reservation) => STATUS[reservation.status] === selectedStatus)
+          .filter((reservation) => RESERVATION_STATUS[reservation.status] === selectedStatus)
           .slice(0, visibleReservations);
 
   //TODO : api 연동 이후 쿼리 업데이트를 위해 해당 코드 사용 예정
@@ -44,6 +45,7 @@ function Reservation() {
       {filteredReservations.map((reservation) => (
         <Card key={reservation.id} data={reservation} />
       ))}
+
       {/* 무한 스크롤을 위한 target */}
       <div ref={targetRef}></div>
     </div>

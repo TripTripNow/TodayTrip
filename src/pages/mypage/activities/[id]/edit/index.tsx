@@ -50,6 +50,7 @@ function ActivityEdit() {
         bannerImg: items.bannerImageUrl,
         subImgs: items.subImageUrls,
       },
+      schedules: items.schedules,
     },
   });
 
@@ -79,11 +80,7 @@ function ActivityEdit() {
     calculateLatlng(items.address);
   }, []);
 
-  return (
-    <>
-      <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} />
-    </>
-  );
+  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} />;
 }
 
 export default ActivityEdit;

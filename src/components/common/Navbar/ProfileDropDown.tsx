@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import styles from './ProfileDropDown.module.css';
+import { signOut } from 'next-auth/react';
 
 const DropDown_ARR = [
   { link: '/mypage', title: '내 정보' },
@@ -13,6 +14,12 @@ interface ProfileDropDownProps {
 }
 
 function ProfileDropDown({ isOpen }: ProfileDropDownProps) {
+  const handleLogout = () => {
+    signOut({
+      callbackUrl: '/',
+    });
+  };
+
   return (
     <div className={isOpen ? styles.profileDropDownContainer : styles.profileDropDownCloseContainer}>
       {DropDown_ARR.map((item, index) => (
@@ -24,9 +31,9 @@ function ProfileDropDown({ isOpen }: ProfileDropDownProps) {
       ))}
       <hr className={styles.styledHr} />
       <div className={styles.profileDropDownContent}>
-        <Link href="/" className={styles.profileDropDown}>
+        <button className={styles.profileDropDown} onClick={() => handleLogout()}>
           로그아웃
-        </Link>
+        </button>
       </div>
     </div>
   );

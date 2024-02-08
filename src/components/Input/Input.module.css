@@ -60,10 +60,6 @@
   line-height: 2.6rem;
 }
 
-.inputContainer .errorMessage {
-  margin-top: -0.8rem;
-}
-
 .errorMessage {
   color: var(--redFF4);
   font-size: 1.2rem;

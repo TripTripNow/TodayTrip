@@ -20,11 +20,11 @@ interface ActivitiesFormProps {
 }
 
 function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps) {
+  const { handleSubmit, control, setValue, register, getValues } = methods;
+
   const [isDate, setIsDate] = useState<IsDateTime[]>([]);
   const [categoryItem, setCategoryItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
-
-  const { handleSubmit, control, setValue, register, getValues } = methods;
-  const category = getValues('category');
+  const [category, setCategory] = useState(getValues('category'));
 
   //훅폼 이용 숫자(양수)만 입력되게 + number형으로
   control.register('price', {
@@ -51,8 +51,8 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
         <Input name="title" control={control} placeholder="제목" type="text" />
         <Dropdown
           type="카테고리"
-          setDropdownItem={setCategoryItem}
-          items={CATEGORY_LIST}
+          setDropdownItem={setCategory}
+          dropDownItems={CATEGORY_LIST}
           placeholder={category ? category : '카테고리'}
         />
         <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
@@ -66,7 +66,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
-        <ReservationTime isDate={isDate} setIsDate={setIsDate} />
+        <ReservationTime name="schedules" control={control} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
         <ImageContainer control={control} name="images" />

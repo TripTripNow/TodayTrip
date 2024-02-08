@@ -8,17 +8,23 @@ import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IsDateTime } from '@/pages/mypage/activities/add';
 import toast from 'react-hot-toast';
+import { Control, FieldValues, UseFormReturn, useController } from 'react-hook-form';
 
 interface ReservationTimeProps {
-  isDate: {
-    date: string;
-    startTime: string;
-    endTime: string;
-  }[];
-  setIsDate: Dispatch<SetStateAction<IsDateTime[]>>;
+  // isDate: {
+  //   date: string;
+  //   startTime: string;
+  //   endTime: string;
+  // }[];
+  // setIsDate: Dispatch<SetStateAction<IsDateTime[]>>;
+  name: string;
+  control: Control<FieldValues, any>;
 }
 
-function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
+function ReservationTime({ name, control }: ReservationTimeProps) {
+  const { field } = useController({ name, control });
+  const isDate = field.value;
+
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
@@ -34,26 +40,18 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
     }
     if (
       isDate.filter(
-        (e) =>
+        (e: any) =>
           `${e.date}+${e.startTime}+${e.endTime}` === `${isSelectedDate}+${startTimeItem.title}+${endTimeItem.title}`,
       ).length > 0
     ) {
       toast('동일한 시간이 있습니다.');
       return;
     }
-
-    setIsDate((prev) => [
-      ...prev,
-      {
-        date: isSelectedDate,
-        startTime: startTime,
-        endTime: endTime,
-      },
-    ]);
   };
 
+  // field.onChange({ ...value, subImgs: [...field.value.subImgs, e.target.files?.[0]] });
   const handleDeleteButton = (item: string) => {
-    setIsDate((prev) => prev.filter((e) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
+    field.onChange(field.value.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
   };
 
   return (
@@ -69,11 +67,25 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
           <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
           <div className={styles.dateDropDownWrapper}>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setStartTimeItem} items={TIME_LIST} placeholder="0:00" />
+              <Dropdown
+                type="시간"
+                setDropdownItem={setStartTimeItem}
+                dropDownItems={TIME_LIST}
+                placeholder="0:00"
+                control={control}
+                name="startTime"
+              />
             </div>
             <p className={styles.dateWave}>~</p>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setEndTimeItem} items={TIME_LIST} placeholder="0:00" />
+              <Dropdown
+                type="시간"
+                setDropdownItem={setEndTimeItem}
+                dropDownItems={TIME_LIST}
+                placeholder="0:00"
+                control={control}
+                name="endTime"
+              />
             </div>
           </div>
           <button onClick={() => handleAddButton(isSelectedDate, startTimeItem.title, endTimeItem.title)}>
@@ -83,7 +95,7 @@ function ReservationTime({ isDate, setIsDate }: ReservationTimeProps) {
         <hr className={styles.dateHr} />
         <div className={styles.plusDateWrapper}>
           {isDate &&
-            isDate.map((item, index) => {
+            isDate.map((item: any, index: number) => {
               return (
                 <div key={index}>
                   <div className={styles.dateContent}>

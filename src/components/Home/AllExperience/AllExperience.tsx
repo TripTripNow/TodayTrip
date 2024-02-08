@@ -1,23 +1,25 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
-import NoResult from '@/components/Home/NoResult/NoResult';
+import NoResult from '@/components/common/NoResult/NoResult';
 import Button from '@/components/common/Button/Button';
-import { CardItem } from '@/types/api';
+
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
+import { Activities } from '@/types/myActivities';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
   handleSortByPrice: (val: string) => void;
-  showCards: CardItem['item'][];
+
+  showCards: Pick<Activities, Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>>[];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
   totalPages: number;
@@ -77,7 +79,7 @@ function AllExperience({
       <div className={styles.categoryWrapper}>
         {!searchResult && (
           <Splide
-            onMoved={(obj: any, move: number) => setMove(move)}
+            onMoved={(obj: unknown, move: number) => setMove(move)}
             options={{
               mediaQuery: 'min',
               fixedWidth: '8.8rem',

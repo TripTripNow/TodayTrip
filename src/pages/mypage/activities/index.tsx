@@ -1,7 +1,7 @@
 import styles from './Activities.module.css';
 import { useState, ReactElement, useEffect } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';

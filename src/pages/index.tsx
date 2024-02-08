@@ -6,8 +6,8 @@ import AllExperience from '@/components/Home/AllExperience/AllExperience';
 import Banner from '@/components/Home/Banner/Banner';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
-import NoResult from '@/components/Home/NoResult/NoResult';
-import { MOCK_DATA } from '@/constants/mock';
+import NoResult from '@/components/common/NoResult/NoResult';
+import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 
 import styles from './Home.module.css';
 
@@ -18,11 +18,11 @@ function Home() {
   const [sortByPrice, setSortByPrice] = useState('lowPriceOrder'); // 정렬 순서
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
   const [allCards, setAllCards] = useState(() => [
-    ...MOCK_DATA,
-    ...MOCK_DATA,
-    ...MOCK_DATA,
-    ...MOCK_DATA,
-    ...MOCK_DATA,
+    ...RESERVATION_CARDS_MOCK_DATA,
+    ...RESERVATION_CARDS_MOCK_DATA,
+    ...RESERVATION_CARDS_MOCK_DATA,
+    ...RESERVATION_CARDS_MOCK_DATA,
+    ...RESERVATION_CARDS_MOCK_DATA,
   ]); // 모든 카드 데이터
   const [pageNumber, setPageNumber] = useState(1); // 현재 페이지 넘버
   const searchedCards = allCards.filter((card) => card.title.includes(searchResult)); // 검색된 카드 데이터

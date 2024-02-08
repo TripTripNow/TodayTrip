@@ -44,6 +44,8 @@
 }
 
 .menu {
+  position: relative;
+  z-index: 100;
   border: 0.1rem solid var(--gray79);
   width: 100%;
   display: flex;
