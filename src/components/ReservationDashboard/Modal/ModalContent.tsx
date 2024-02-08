@@ -19,6 +19,30 @@ interface ModalContentProps {
   tabStatus: string;
 }
 
+function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }: ModalContentProps) {
+  const scheduleId = items.find((item) => {
+    const [startTime, endTime] = dropdownItem.title.split(' ~ ');
+    if (item.startTime === startTime && item.endTime === endTime) return item;
+  })?.scheduleId;
+
+  const cardItems = RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA.reservations;
+
+  return (
+    <div className={styles.mainContainer}>
+      {items ? (
+        <>
+          <ReservationDate setDropdownItem={setDropdownItem} items={items} dropdownItem={dropdownItem} date={date} />
+          <ReservationDetails items={cardItems} tabStatus={tabStatus} />
+        </>
+      ) : (
+        <NoResult text="예약 정보가 없습니다." />
+      )}
+    </div>
+  );
+}
+
+export default ModalContent;
+
 function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Omit<ModalContentProps, 'tabStatus'>) {
   const showDateArr = date.split('.');
 
@@ -52,6 +76,8 @@ function ReservationDetails({
 }) {
   const [visibleItems, setVisibleItems] = useState(3);
   const { isVisible, targetRef, setIsVisible } = useInfiniteScroll();
+  const showItems = items.filter((item) => item.status === tabStatus).slice(0, visibleItems);
+
   useEffect(() => {
     setVisibleItems(3);
     setIsVisible(false);
@@ -62,8 +88,6 @@ function ReservationDetails({
       setVisibleItems((prev) => prev + 2);
     }
   }, [isVisible]);
-
-  const showItems = items.filter((item) => item.status === tabStatus).slice(0, visibleItems);
 
   return (
     <div>
@@ -77,27 +101,3 @@ function ReservationDetails({
     </div>
   );
 }
-
-function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }: ModalContentProps) {
-  const scheduleId = items.find((item) => {
-    const [startTime, endTime] = dropdownItem.title.split(' ~ ');
-    if (item.startTime === startTime && item.endTime === endTime) return item;
-  })?.scheduleId;
-
-  const cardItems = RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA.reservations;
-
-  return (
-    <div className={styles.mainContainer}>
-      {items ? (
-        <>
-          <ReservationDate setDropdownItem={setDropdownItem} items={items} dropdownItem={dropdownItem} date={date} />
-          <ReservationDetails items={cardItems} tabStatus={tabStatus} />
-        </>
-      ) : (
-        <NoResult text="예약 정보가 없습니다." />
-      )}
-    </div>
-  );
-}
-
-export default ModalContent;
