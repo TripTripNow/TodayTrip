@@ -8,3 +8,9 @@ export const postSignup = async (userData: SignupData) => {
     password: userData.password,
   };
 };
+
+export const getUsersMe = async () => {
+  const res = await instance.get('/users/me');
+
+  return res.data;
+};
