@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useRef, MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './ModalLayout.module.css';
+import useBodyScrollLock from '@/hooks/common/useBodyScrollLock';
 
 interface ModalLayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface ModalLayoutProps {
 
 function ModalLayout({ children, handleModalClose, isAlarmModal }: ModalLayoutProps) {
   const portalRoot = document.getElementById('modal') as HTMLElement;
+  const { lockScroll, openScroll } = useBodyScrollLock();
 
   const modalOutsideRef = useRef<HTMLDivElement>(null);
 
@@ -27,11 +29,14 @@ function ModalLayout({ children, handleModalClose, isAlarmModal }: ModalLayoutPr
         handleModalClose();
       }
     };
+
     // 이벤트 리스너 등록
     document.addEventListener('keydown', handleEscape);
+    lockScroll();
 
     // handleModalClose에 변화가 생길 떄 즉, 다른 모달이 뜰 때 기존 이벤트 리스너 제거
     return () => {
+      openScroll();
       document.removeEventListener('keydown', handleEscape);
     };
   }, [handleModalClose]);
@@ -42,7 +47,7 @@ function ModalLayout({ children, handleModalClose, isAlarmModal }: ModalLayoutPr
       ref={modalOutsideRef}
       className={`${styles.root} ${isAlarmModal && styles.alarmModal}`}
     >
-      <div>{children}</div>
+      {children}
     </div>,
     portalRoot,
   );

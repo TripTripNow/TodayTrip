@@ -1,11 +1,12 @@
+import { ReactElement, useEffect, useState } from 'react';
+
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Card from '@/components/Reservations/Card/Card';
 import { reservations } from '@/components/Reservations/mock';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { RESERVATION_STATUS } from '@/constants/reservation';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { ReserveFilterOption } from '@/types/dropdown';
-import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
 
 function Reservation() {
