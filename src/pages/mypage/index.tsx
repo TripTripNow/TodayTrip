@@ -9,12 +9,12 @@ import Button from '@/components/common/Button/Button';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getUsersMe } from '@/api/user/user';
-import { getUsersMeRes } from '@/types/users';
+import { GetUsersMeRes } from '@/types/users';
 import { GetServerSideProps } from 'next';
 import { setContext } from '@/api/axiosInstance';
 
 interface MyPageProps {
-  userData: getUsersMeRes;
+  userData: GetUsersMeRes;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -34,8 +34,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function MyPage({ userData }: MyPageProps) {
-  const { isLoading, data } = useQuery<getUsersMeRes>({
-    queryKey: [QUERY_KEYS.useersMe],
+  const { isLoading, data } = useQuery<GetUsersMeRes>({
+    queryKey: [QUERY_KEYS.usersMe],
     queryFn: () => getUsersMe(),
     initialData: userData,
   });

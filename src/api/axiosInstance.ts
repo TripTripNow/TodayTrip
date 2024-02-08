@@ -17,7 +17,8 @@ export const setContext = (_context: GetServerSidePropsContext) => {
 
 const redirectToLoginPage = () => {
   //window.location.href = `${process.env.NEXT_PUBLIC_URL}/signin`;
-  console.log('refresh token!!');
+  //TODO window.location 에러 발생함, 이후 수정 필요
+  console.log('refresh token 만료됨');
 };
 
 instance.interceptors.request.use(

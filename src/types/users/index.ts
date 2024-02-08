@@ -1,4 +1,4 @@
-export interface getUsersMeRes {
+export interface GetUsersMeRes {
   email: string;
   id: number;
   nickname: string;

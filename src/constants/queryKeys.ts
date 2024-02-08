@@ -1,5 +1,5 @@
 const QUERY_KEYS = {
-  useersMe: 'usersMe',
+  usersMe: 'usersMe',
 } as const;
 
 export default QUERY_KEYS;
