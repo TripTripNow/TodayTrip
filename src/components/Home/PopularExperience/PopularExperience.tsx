@@ -1,30 +1,48 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useQuery } from '@tanstack/react-query';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Card from '@/components/Home/Card/Card';
-import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-
+import { getActivities } from '@/api/activities/activities';
+import QUERY_KEYS from '@/constants/queryKeys';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import RightArrow from '#/icons/icon-right-arrow.svg';
-
 import styles from './PopularExperience.module.css';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
 function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const splideRef = useRef(null);
+  const [cursorId, setCursorId] = useState<number | null | undefined>();
+  const { data, refetch } = useQuery({
+    queryKey: [QUERY_KEYS.popularActivities],
+    queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 4, cursorId }),
+  });
+  const [cardData, setCardData] = useState(data?.activities ?? []);
 
   /** 버튼을 통한 slide 함수 */
   const handleSlideByBtn = (num: number) => {
     const newIndex = slideIndex + num;
-    if (newIndex < 0 || newIndex + 2 >= RESERVATION_CARDS_MOCK_DATA.length) return;
+    if (newIndex < 0 || newIndex + 2 >= cardData.length) return;
 
     setSlideIndex((prev) => prev + num);
     if (splideRef.current) {
       (splideRef.current as any).go(newIndex);
     }
   };
+  const { isVisible, targetRef } = useInfiniteScroll();
+  useEffect(() => {
+    if (cursorId === null) return;
+    if (isVisible) refetch();
+  }, [isVisible]);
+
+  useEffect(() => {
+    setCardData((prev) => [...prev, ...(data?.activities ?? [])]);
+    setCursorId(data?.cursorId);
+  }, [data]);
+  console.log(cursorId, cardData, isVisible);
 
   return (
     <section className={styles.container}>
@@ -44,7 +62,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
               alt="오른쪽 화살표"
               className={clsx(
                 styles.arrow,
-                slideIndex + 3 === RESERVATION_CARDS_MOCK_DATA.length ? styles.arrowEnable : styles.arrowDisable,
+                slideIndex + 3 === cardData.length ? styles.arrowEnable : styles.arrowDisable,
               )}
               onClick={() => handleSlideByBtn(1)}
             />
@@ -67,13 +85,14 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           breakpoints: {
             1200: {
               perPage: 2,
-              gap: 0,
-              fixedWidth: '41.6rem',
+              gap: '2.8rem',
+              // fixedWidth: '41.6rem',
             },
             767: {
               perPage: 2,
-              gap: 0,
-              fixedWidth: '20.2rem',
+              gap: '1.6rem',
+              fixedWidth: '18.6rem',
+              // fixedWidth: '20.2rem',
             },
           },
           clones: undefined,
@@ -81,11 +100,12 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           lazyLoad: 'nearby',
         }}
       >
-        {RESERVATION_CARDS_MOCK_DATA.map((card) => (
+        {cardData.map((card) => (
           <SplideSlide tag="div" key={card.id}>
             <Card item={card} />
           </SplideSlide>
         ))}
+        <div style={{ marginLeft: '-100px' }} ref={targetRef}></div>
       </Splide>
     </section>
   );
