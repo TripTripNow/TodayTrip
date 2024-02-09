@@ -71,7 +71,7 @@ function Carousel() {
     if (slideRef.current) {
       slideRef.current.style.transform = `translateX(-${slideIndex * 100}%)`;
     }
-    // handleSlideAuto();
+    handleSlideAuto();
 
     return () => clearTimeout(slideTimer);
   }, [slideIndex, mouseOnSlider]);
