@@ -8,7 +8,6 @@ import Card from '@/components/Home/Card/Card';
 import { getActivities } from '@/api/activities/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
-import RightArrow from '#/icons/icon-right-arrow.svg';
 import styles from './PopularExperience.module.css';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
@@ -57,10 +56,11 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
               })}
               onClick={() => handleSlideByBtn(-1)}
             />
-            <RightArrow
+            <LeftArrow
               alt="오른쪽 화살표"
               className={clsx(
                 styles.arrow,
+                styles.rotateReverse,
                 slideIndex + 3 === cardData.length ? styles.arrowEnable : styles.arrowDisable,
               )}
               onClick={() => handleSlideByBtn(1)}

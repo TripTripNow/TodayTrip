@@ -80,3 +80,7 @@
     gap: 1.6rem;
   }
 }
+
+.rotateReverse {
+  rotate: 180deg;
+}
