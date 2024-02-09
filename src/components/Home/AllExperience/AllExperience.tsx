@@ -17,8 +17,6 @@ const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관�
 
 interface AllExperienceProps {
   searchResult: string;
-  handleSortByPrice: (val: string) => void;
-
   showCards: GetActivitiesRes['activities'];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
@@ -32,7 +30,6 @@ interface AllExperienceProps {
 
 function AllExperience({
   searchResult,
-  handleSortByPrice,
   showCards,
   totalCardsNum,
   handlePaginationByClick,

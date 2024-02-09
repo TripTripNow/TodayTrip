@@ -174,7 +174,6 @@ function Home() {
         {!searchedBuyNoData ? (
           <AllExperience
             searchResult={searchResult}
-            handleSortByPrice={handleSortByPrice}
             showCards={cardData}
             totalCardsNum={cardData.length}
             handlePaginationByClick={handlePaginationByClick}
