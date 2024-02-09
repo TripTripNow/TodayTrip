@@ -42,7 +42,6 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
     setCardData((prev) => [...prev, ...(data?.activities ?? [])]);
     setCursorId(data?.cursorId);
   }, [data]);
-  console.log(cursorId, cardData, isVisible);
 
   return (
     <section className={styles.container}>
