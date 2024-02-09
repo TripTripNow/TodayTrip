@@ -2,33 +2,36 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 
-import Carousel1 from '#/images/img-carousel1.png';
-import Carousel2 from '#/images/img-carousel2.png';
-import Carousel3 from '#/images/img-carousel3.png';
+import MainBanner1 from '#/images/img-mainBanner1.png';
+import MainBanner2 from '#/images/img-mainBanner2.png';
+import MainBanner3 from '#/images/img-mainBanner3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
-import RightArrow from '#/icons/icon-right-arrow.svg';
 
 import styles from './Banner.module.css';
+import StyledButton from '@/components/Home/StyledButton/StyledButton';
 
 /** 배너에 관련된 정보입니다. */
 const BANNER = [
   {
     id: 1,
-    src: Carousel1,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: '1월의 인기 체험 BEST 🔥',
+    src: MainBanner1,
+    title: '여행을 떠나보세요',
+    description: `
+새로운 모험을 찾고 싶다면, TodayTrip을 만나보세요. 
+여행을 더욱 특별하게 만들어 줄 다양한 체험을 제공합니다. ✈️`,
   },
   {
     id: 2,
-    src: Carousel2,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: '1월의 인기 체험 BEST 🔥',
+    src: MainBanner2,
+    title: '체험을 등록과 예약',
+    description: `
+여행 체험을 등록하고 예약할 수 있는 간편한 방법을 제공합니다.`,
   },
   {
     id: 3,
-    src: Carousel3,
-    title: '함께 배우면 즐거운 스트릿 댄스',
-    description: '1월의 인기 체험 BEST 🔥',
+    src: MainBanner3,
+    title: '이제 등록하러 가볼까요?',
+    description: <StyledButton />,
   },
 ];
 
@@ -68,7 +71,7 @@ function Carousel() {
     if (slideRef.current) {
       slideRef.current.style.transform = `translateX(-${slideIndex * 100}%)`;
     }
-    handleSlideAuto();
+    // handleSlideAuto();
 
     return () => clearTimeout(slideTimer);
   }, [slideIndex, mouseOnSlider]);
@@ -86,11 +89,12 @@ function Carousel() {
             <Image src={data.src} alt={String(data.id)} fill />
             <div className={styles.textContainer}>
               <h1>{data.title}</h1>
-              <p>{data.description}</p>
+              <pre>{data.description}</pre>
             </div>
           </div>
         ))}
       </div>
+
       <button
         className={styles.leftArrow}
         onClick={() => handleSlide(-1)}
@@ -99,7 +103,7 @@ function Carousel() {
       >
         <LeftArrow
           alt="왼쪽 화살표"
-          stroke="var(--gray4B)"
+          stroke="var(--whiteFF)"
           className={clsx(arrowHover.left ? styles.opacity100 : styles.opacity30)}
         />
       </button>
@@ -109,10 +113,10 @@ function Carousel() {
         onMouseEnter={() => handleArrowHover('right', true)}
         onMouseLeave={() => handleArrowHover('right', false)}
       >
-        <RightArrow
+        <LeftArrow
           alt="오른쪽 화살표"
-          stroke="var(--gray4B)"
-          className={clsx(arrowHover.right ? styles.opacity100 : styles.opacity30)}
+          stroke="var(--whiteFF)"
+          className={clsx(styles.rotateReverse, arrowHover.right ? styles.opacity100 : styles.opacity30)}
         />
       </button>
     </div>

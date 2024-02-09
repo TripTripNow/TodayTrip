@@ -12,6 +12,7 @@
 }
 
 .slider {
+  position: relative;
   display: flex;
   transition: all 0.5s ease-in-out;
   height: 100%;
@@ -49,7 +50,7 @@
   height: 100%;
   position: absolute;
   z-index: 1;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
 }
 
 .textContainer {
@@ -71,7 +72,7 @@
 
 .textContainer > h1 {
   display: inline-block;
-  width: 50.2rem;
+  width: 70rem;
   color: var(--whiteFF);
   font-size: 6.8rem;
   font-style: normal;
@@ -90,7 +91,7 @@
   }
 }
 
-.textContainer > p {
+.textContainer > pre {
   color: var(--whiteFF);
   font-size: 2.4rem;
   font-style: normal;
@@ -112,4 +113,8 @@
 
 .opacity100 {
   opacity: 100%;
+}
+
+.rotateReverse {
+  rotate: 180deg;
 }
