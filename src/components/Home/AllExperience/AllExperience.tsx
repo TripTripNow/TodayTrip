@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
@@ -11,19 +11,23 @@ import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
-import { Activities } from '@/types/myActivities';
+import { GetActivitiesRes } from '@/types/activities';
 
-const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
+const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
   handleSortByPrice: (val: string) => void;
 
-  showCards: Pick<Activities, Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>>[];
+  showCards: GetActivitiesRes['activities'];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
+  handleClickCategory: (val: string) => void;
   totalPages: number;
   pageNumber: number;
+  selectedCategory: string;
+  filterValue: PriceFilterOption;
+  setFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
 }
 
 function AllExperience({
@@ -32,25 +36,16 @@ function AllExperience({
   showCards,
   totalCardsNum,
   handlePaginationByClick,
+  handleClickCategory,
   totalPages,
   pageNumber,
+  selectedCategory,
+  filterValue,
+  setFilterValue,
 }: AllExperienceProps) {
-  const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
-  const sortedCards = selectedCategory ? showCards.filter((card) => card.category === selectedCategory) : showCards; // 해당하는 카테고리로 정렬된 카드 데이터
-  const hasCardData = !selectedCategory || sortedCards.length !== 0; // 카드 데이터가 있는지 확인하는 boolean 값
   const [disableShadow, setDisableShadow] = useState(false);
   const [disableRightShadow, setDisableRightShadow] = useState(false);
   const [move, setMove] = useState(0);
-  const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
-
-  // 카테고리 버튼 클릭 함수
-  const handleClickCategory = useCallback(
-    (name: string) => {
-      if (selectedCategory === name) setSelectedCategory('');
-      else setSelectedCategory(name);
-    },
-    [selectedCategory],
-  );
 
   const handleDisableShadow = () => {
     if (move >= 3) {
@@ -69,10 +64,6 @@ function AllExperience({
   useEffect(() => {
     handleDisableShadow();
   }, [move]);
-
-  useEffect(() => {
-    handleSortByPrice(filterValue);
-  }, [filterValue]);
 
   return (
     <section className={styles.container}>
@@ -157,12 +148,12 @@ function AllExperience({
       </div>
 
       <div className={styles.cardWrapper}>
-        {sortedCards.map((card) => (
+        {showCards.map((card) => (
           <CardDetail item={card} key={card.id} />
         ))}
       </div>
 
-      {hasCardData ? (
+      {showCards.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
             pageNumber={pageNumber}

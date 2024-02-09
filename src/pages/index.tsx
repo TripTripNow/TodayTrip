@@ -1,4 +1,6 @@
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { GetServerSideProps } from 'next';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 
 import PopularExperience from '@/components/Home/PopularExperience/PopularExperience';
 import Searchbar from '@/components/Home/Searchbar/Searchbar';
@@ -7,109 +9,154 @@ import Banner from '@/components/Home/Banner/Banner';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
 import NoResult from '@/components/common/NoResult/NoResult';
-import { RESERVATION_CARDS_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-
+import { getActivities } from '@/api/activities/activities';
+import { GetActivitiesParam, GetActivitiesRes } from '@/types/activities';
+import { setContext } from '@/api/axiosInstance';
+import QUERY_KEYS from '@/constants/queryKeys';
 import styles from './Home.module.css';
+import { PriceFilterOption } from '@/types/dropdown';
+
+const calculateLimit = (deviceType: string | undefined) => {
+  switch (deviceType) {
+    case 'pc':
+      return 8;
+    case 'tablet':
+      return 9;
+    default:
+      return 4;
+  }
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  setContext(context);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.allActivities],
+    queryFn: () => getActivities({ method: 'offset', sort: 'latest' }),
+  });
+
+  return {
+    props: { dehydratedState: dehydrate(queryClient) },
+  };
+};
 
 function Home() {
   const deviceType = useDeviceType();
+  const [sortByPrice, setSortByPrice] = useState<GetActivitiesParam['sort']>('latest'); // 정렬 순서
+  const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
+  const [currentPageNumber, setCurrentPageNumber] = useState(1); // 현재 페이지 넘버
+  const [limit, setLimit] = useState(calculateLimit(deviceType)); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
-  const [limit, setLimit] = useState(deviceType === 'pc' ? 8 : deviceType === 'tablet' ? 9 : 4); // 한 페이지에 보여줄 카드의 개수
-  const [sortByPrice, setSortByPrice] = useState('lowPriceOrder'); // 정렬 순서
+  const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
+
+  const { data, refetch } = useQuery({
+    queryKey: [QUERY_KEYS.allActivities],
+    queryFn: () =>
+      getActivities({
+        method: 'offset',
+        sort: sortByPrice,
+        category: selectedCategory,
+        page: currentPageNumber,
+        size: limit,
+        keyword: searchResult,
+      }),
+  });
+
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
-  const [allCards, setAllCards] = useState(() => [
-    ...RESERVATION_CARDS_MOCK_DATA,
-    ...RESERVATION_CARDS_MOCK_DATA,
-    ...RESERVATION_CARDS_MOCK_DATA,
-    ...RESERVATION_CARDS_MOCK_DATA,
-    ...RESERVATION_CARDS_MOCK_DATA,
-  ]); // 모든 카드 데이터
-  const [pageNumber, setPageNumber] = useState(1); // 현재 페이지 넘버
-  const searchedCards = allCards.filter((card) => card.title.includes(searchResult)); // 검색된 카드 데이터
-  const showCards = searchedCards.slice((pageNumber - 1) * limit, pageNumber * limit); // 화면에서 보여주는 카드 데이터
-  const totalPages = Math.ceil(searchedCards.length / limit); // 전체 페이지 숫자
-  const [recentText, setRecentText] = useState<string[]>([]); // 최근 검색어 배열
+  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]); // 최근 검색어 배열
+
+  const [cardData, setCardData] = useState<GetActivitiesRes['activities']>(data?.activities ?? []); // 모든 카드 데이터
+  const totalPageNumber = Math.ceil((data?.totalCount ?? 0) / limit);
 
   // 검색 후 submit 함수
-  const handleSearchSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setSearchResult(inputSearchText);
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchResult(inputSearchText);
+    setFilterValue('가격');
+    setSelectedCategory('');
 
-      if (!inputSearchText.trim()) return;
+    if (!inputSearchText.trim()) return;
 
-      const storedText = localStorageGetItem('recentText');
+    const storedText = localStorageGetItem('recentSearchKeywords');
 
-      if (!storedText) {
-        localStorageSetItem('recentText', inputSearchText);
-      } else {
-        const splittedText = storedText!.split(',');
-        if (!splittedText.includes(inputSearchText)) {
-          if (splittedText.length >= 10) {
-            localStorageSetItem('recentText', [inputSearchText, ...splittedText.slice(0, 9)].join(',')!);
-          } else {
-            localStorageSetItem('recentText', [inputSearchText, ...splittedText].join(',')!);
-          }
+    if (!storedText) {
+      localStorageSetItem('recentSearchKeywords', inputSearchText);
+    } else {
+      const keywordArray = storedText!.split(',');
+      if (!keywordArray.includes(inputSearchText)) {
+        if (keywordArray.length >= 10) {
+          localStorageSetItem('recentSearchKeywords', [inputSearchText, ...keywordArray.slice(0, 9)].join(',')!);
+        } else {
+          localStorageSetItem('recentSearchKeywords', [inputSearchText, ...keywordArray].join(',')!);
         }
       }
-      handleRecentText();
-    },
-    [inputSearchText],
-  );
+    }
+    setRecentSearchKeywords(storedText ? storedText.split(',') : []);
+  };
 
   // 검색창 input state 실시간 변경 함수
-  const handleSearchText = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
     setInputSearchText(e.target.value);
-  }, []);
+  };
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)
-  const handlePaginationByClick = useCallback(
-    (num: number) => {
-      if (num < 1 || num > totalPages) return;
-      setPageNumber(num);
-    },
-    [totalPages],
-  );
+  const handlePaginationByClick = (num: number) => {
+    if (num >= 1 && num <= totalPageNumber) setCurrentPageNumber(num);
+  };
 
-  /** TODO
-   * @description 이 함수는 원래 fetch하는 logic이 들어가는 함수입니다. api 연결시 변경되어야 할 내용입니다.
-   */
-  const handleSortByPrice = useCallback(
-    (val: string) => {
-      if (sortByPrice === val) return;
-      setSortByPrice(val);
-      setPageNumber(1);
-    },
-    [sortByPrice],
-  );
+  // 카테고리 버튼 클릭 함수
+  const handleClickCategory = (name: string) => {
+    if (selectedCategory === name) setSelectedCategory('');
+    else setSelectedCategory(name);
+  };
 
-  const handleRecentText = useCallback(() => {
-    const storedText = localStorageGetItem('recentText');
-    setRecentText(storedText ? storedText.split(',') : []);
-  }, []);
+  const handleSortByPrice = (val: string) => {
+    if (val === '가격') return;
+    if (sortByPrice === 'price_asc' && '낮은 순' === val) return;
+    if (sortByPrice === 'price_desc' && '높은 순' === val) return;
+    if (val === '낮은 순') {
+      setSortByPrice('price_asc');
+    } else {
+      setSortByPrice('price_desc');
+    }
+    setCurrentPageNumber(1);
+  };
+
+  useEffect(() => {
+    const handleCardLimitByWindowWidth = () => {
+      const changedLimit = calculateLimit(deviceType);
+
+      // 페이지 1일 때는 window resize에 대해서 currentPageNumber에 변화가 있으면 안된다
+      if (currentPageNumber !== 1) {
+        const calc = Math.ceil(((currentPageNumber - 1) * limit + 1) / changedLimit);
+        setCurrentPageNumber(calc > 0 ? calc : 1);
+      }
+      setLimit(changedLimit);
+    };
+
+    handleCardLimitByWindowWidth();
+  }, [deviceType]);
 
   // 초기 렌더링
   useEffect(() => {
-    handleRecentText();
+    const storedText = localStorageGetItem('recentSearchKeywords');
+    setRecentSearchKeywords(storedText ? storedText.split(',') : []);
   }, []);
 
   useEffect(() => {
-    // window width에 따른 카드 개수 및 페이지 넘버 변경 함수
-    const handleChangePageNum = () => {
-      let newLimit = 8;
+    handleSortByPrice(filterValue);
+  }, [filterValue]);
 
-      if (deviceType === 'tablet') newLimit = 9;
-      else if (deviceType === 'mobile') newLimit = 4;
+  useEffect(() => {
+    refetch();
+  }, [sortByPrice, selectedCategory, currentPageNumber, limit]);
 
-      const newPage = Math.ceil((pageNumber * limit) / newLimit);
+  useEffect(() => {
+    if (data) setCardData(data.activities);
+  }, [data]);
 
-      setLimit(newLimit);
-      setPageNumber(newPage);
-    };
-
-    handleChangePageNum();
-  }, [pageNumber, deviceType, limit]);
-
+  const searchedBuyNoData = searchResult && cardData.length === 0; // 검색 시 데이터가 없는 경우
   return (
     <main className={styles.main}>
       <Banner />
@@ -119,20 +166,24 @@ function Home() {
             handleSearchSubmit={handleSearchSubmit}
             handleSearchText={handleSearchText}
             inputSearchText={inputSearchText}
-            recentText={recentText}
+            recentText={recentSearchKeywords}
           />
         </div>
         {!searchResult && <PopularExperience deviceType={deviceType} />}
 
-        {showCards.length > 0 ? (
+        {!searchedBuyNoData ? (
           <AllExperience
             searchResult={searchResult}
             handleSortByPrice={handleSortByPrice}
-            showCards={showCards}
-            totalCardsNum={allCards.length}
+            showCards={cardData}
+            totalCardsNum={cardData.length}
             handlePaginationByClick={handlePaginationByClick}
-            totalPages={totalPages}
-            pageNumber={pageNumber}
+            totalPages={totalPageNumber}
+            pageNumber={currentPageNumber}
+            handleClickCategory={handleClickCategory}
+            selectedCategory={selectedCategory}
+            setFilterValue={setFilterValue}
+            filterValue={filterValue}
           />
         ) : (
           <NoResult />
