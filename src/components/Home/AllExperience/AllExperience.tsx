@@ -67,6 +67,7 @@ function AllExperience({
 
   return (
     <section className={styles.container}>
+      {/* 카테고리 버튼 영역 */}
       <div className={styles.categoryWrapper}>
         {!searchResult && (
           <Splide
@@ -130,6 +131,7 @@ function AllExperience({
         {disableRightShadow && <div className={styles.categoryRightShadow}></div>}
       </div>
 
+      {/* 체험 Header 영역 */}
       <div className={styles.titleWrapper}>
         {!searchResult ? (
           <div className={styles.header}>
@@ -147,12 +149,14 @@ function AllExperience({
         )}
       </div>
 
+      {/* 카드 영역 */}
       <div className={styles.cardWrapper}>
         {showCards.map((card) => (
           <CardDetail item={card} key={card.id} />
         ))}
       </div>
 
+      {/* 페이지네이션 영역 */}
       {showCards.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
