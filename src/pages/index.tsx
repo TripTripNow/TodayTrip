@@ -156,22 +156,20 @@ function Home() {
     if (data) setCardData(data.activities);
   }, [data]);
 
-  const searchedBuyNoData = searchResult && cardData.length === 0; // 검색 시 데이터가 없는 경우
+  const searchedByNoData = searchResult && cardData.length === 0; // 검색 시 데이터가 없는 경우
   return (
-    <main className={styles.main}>
+    <main className={styles.container}>
       <Banner />
-      <div className={styles.container}>
-        <div className={styles.searchbarWrapper}>
-          <Searchbar
-            handleSearchSubmit={handleSearchSubmit}
-            handleSearchText={handleSearchText}
-            inputSearchText={inputSearchText}
-            recentText={recentSearchKeywords}
-          />
-        </div>
+      <div className={styles.mainWrapper}>
+        <Searchbar
+          handleSearchSubmit={handleSearchSubmit}
+          handleSearchText={handleSearchText}
+          inputSearchText={inputSearchText}
+          recentText={recentSearchKeywords}
+        />
         {!searchResult && <PopularExperience deviceType={deviceType} />}
 
-        {!searchedBuyNoData ? (
+        {!searchedByNoData ? (
           <AllExperience
             searchResult={searchResult}
             showCards={cardData}

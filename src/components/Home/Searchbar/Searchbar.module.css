@@ -1,6 +1,22 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
 .container {
+  width: 100%;
+
+  @media tablet {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
+
+  @media mobile {
+    width: 100%;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
+}
+
+.mainWrapper {
+  width: 100%;
   position: relative;
   margin-top: -4rem;
   z-index: 2;
@@ -9,7 +25,6 @@
   padding: 3.2rem 2.4rem 0;
   flex-direction: column;
   justify-content: center;
-
   border-radius: 1.6rem;
   background: var(--whiteFF);
   box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
@@ -17,6 +32,7 @@
   @media tablet {
     margin-top: -2.4rem;
   }
+
   @media mobile {
     margin-top: -2.4rem;
   }
@@ -54,7 +70,7 @@
   border: 0.1rem solid var(--gray79);
   height: 100%;
   border-radius: 0.4rem;
-
+  padding-left: 1rem;
   gap: 1.2rem;
 }
 
