@@ -1,6 +1,9 @@
 import instance from '@/api/axiosInstance';
 import { GetActivitiesParam, GetActivitiesRes } from '@/types/activities';
 
+/**
+ * 체험 리스트 조회
+ */
 export const getActivities = async ({
   method,
   cursorId,
