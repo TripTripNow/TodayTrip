@@ -1,4 +1,4 @@
-import { GetReservedScheduleRes, GetReservationDashboardRes, Activities } from '@/types/myActivities';
+import { GetReservedScheduleRes, GetReservationDashboardRes, Activity } from '@/types/myActivities';
 import card1 from '#/images/img-carousel1.png';
 import card2 from '#/images/img-carousel2.png';
 import card3 from '#/images/img-carousel3.png';
@@ -36,8 +36,8 @@ export interface RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS {
 }
 
 export const RESERVATION_CARDS_MOCK_DATA: Pick<
-  Activities,
-  Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>
+  Activity,
+  Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>
 >[] = [
   {
     id: 1,

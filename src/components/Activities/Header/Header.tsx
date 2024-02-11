@@ -4,8 +4,8 @@ import StarIcon from '#/icons/icon-star.svg';
 import LocationIcon from '#/icons/icon-location.svg';
 import KebabIcon from '#/icons/icon-kebab.svg';
 import Image from 'next/image';
-import { Activity } from '@/types/Actvity';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import { Activity } from '@/types/common/api';
 
 function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);

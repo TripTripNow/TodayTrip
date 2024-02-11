@@ -1,8 +1,12 @@
-import { Reservation } from '@/types/reservations';
+import { Reservation } from '@/types/common/api';
 
 export const reservations: Reservation[] = [
   {
     id: 1,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/block.png',
       title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
@@ -19,6 +23,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 2,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Culinary Tour',
@@ -35,6 +43,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 3,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/react.png',
       title: 'Mountain Biking',
@@ -51,6 +63,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 4,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Beach Picnic',
@@ -67,6 +83,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 5,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/block.png',
       title: 'City Sightseeing',
@@ -83,6 +103,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 6,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
@@ -99,6 +123,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 7,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/block.png',
       title: 'Culinary Tour',
@@ -115,6 +143,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 8,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/react.png',
       title: 'Mountain Biking',
@@ -131,6 +163,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 9,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Beach Picnic',
@@ -147,6 +183,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 10,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'City Sightseeing City Sightseeing City Sightseeing City Sightseeing City Sightseeing',
@@ -163,6 +203,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 11,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Fun Dance Class',
@@ -179,6 +223,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 12,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Artistic Workshop',
@@ -195,6 +243,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 13,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower2.png',
       title: 'Nature Photography',
@@ -211,6 +263,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 14,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Cooking Class',
@@ -227,6 +283,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 15,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/a.png',
       title: 'Historical Tour',
@@ -243,6 +303,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 16,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
@@ -259,6 +323,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 33,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
@@ -275,6 +343,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 34,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
@@ -291,6 +363,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 35,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Yoga Retreat',
@@ -307,6 +383,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 100,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/nextjs.png',
       title: 'Yoga Retreat',
@@ -323,6 +403,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 17,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/flower.png',
       title: 'Wine Tasting',
@@ -339,6 +423,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 18,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/react.png',
       title: 'Adventure Hike',
@@ -355,6 +443,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 19,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/block.png',
       title: 'Salsa Dance Night',
@@ -371,6 +463,10 @@ export const reservations: Reservation[] = [
   },
   {
     id: 20,
+    teamId: '9',
+    userId: 3,
+    createdAt: '2024-02-11T08:43:26.752Z',
+    updatedAt: '2024-02-11T08:43:26.752Z',
     activity: {
       bannerImageUrl: '/images/a.png',
       title: 'Scuba Diving',

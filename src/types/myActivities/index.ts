@@ -1,22 +1,9 @@
+import { Activity, Category, TimeSlot } from '@/types/common/api';
+
 export interface Reservations {
   completed: number;
   confirmed: number;
   pending: number;
-}
-
-export interface Activities {
-  id: number;
-  userId: number;
-  title: string;
-  description: string;
-  category: '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
-  price: number;
-  address: string;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface ReservedScheduleCount {
@@ -60,7 +47,7 @@ export interface GetMyActivitiesParam {
 export interface GetMyActivitiesRes {
   cursorId: number;
   totalCount: number;
-  activities: Activities[];
+  activities: Activity[];
 }
 
 /**
@@ -177,7 +164,7 @@ export interface PatchMyActivityParam {
 
 export interface PatchMyActivityReq {
   title: string;
-  category: '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
+  category: Category;
   description: string;
   price: number;
   address: string;
@@ -192,26 +179,6 @@ export interface PatchMyActivityReq {
  * 내 체험 수정 Response
  */
 
-export interface PatchMyActivityRes {
-  id: number;
-  userId: number;
-  title: string;
-  description: string;
-  category: '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
-  price: number;
-  address: string;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  createdAt: string;
-  updatedAt: string;
-  subImages: { imageUrl: string; id: number }[];
-  schedules: {
-    times: {
-      endTime: string;
-      startTime: string;
-      id: number;
-    }[];
-    date: string;
-  }[];
+export interface PatchMyActivityRes extends Activity {
+  schedules: TimeSlot[];
 }
