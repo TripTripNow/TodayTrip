@@ -1,5 +1,5 @@
 import { Activity, TimeSlot } from '@/types/common/api';
-import { GetReviewsRes } from '@/types/Activities';
+import { GetReviewsRes } from '@/types/activities';
 export const activityData: Activity = {
   id: 7,
   userId: 21,
