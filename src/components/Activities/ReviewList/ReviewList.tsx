@@ -7,8 +7,9 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
 import { useState } from 'react';
-import { RATINGS } from '@/constants/rating';
+
 import determineSatisfaction from '@/utils/determineSatisfaction';
+import { RATINGS } from '@/constants/rating';
 
 function ReviewList({ totalRating }: { totalRating: number }) {
   const { reviews, totalCount } = reviewData;
