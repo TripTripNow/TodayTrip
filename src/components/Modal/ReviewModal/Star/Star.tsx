@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import EmptyStarIcon from '#/icons/icon-emptyStar.svg';
 import YellowStarIcon from '#/icons/icon-yellowStar.svg';
 import LightYellowStarIcon from '#/icons/icon-lightYellowStar.svg';
-import { RATINGS } from '@/constants/Rating';
+import { RATINGS } from '@/constants/rating';
 
 type Rating = (typeof RATINGS)[number];
 

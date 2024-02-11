@@ -7,7 +7,7 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
 import { useState } from 'react';
-import { RATINGS } from '@/constants/Rating';
+import { RATINGS } from '@/constants/rating';
 
 const determineSatisfaction = (rating: number) => {
   if (rating >= 4.5) {

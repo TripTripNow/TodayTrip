@@ -1,12 +1,12 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReviewModal.module.css';
 import ModalCloseIcon from '#/icons/icon-modalClose.svg';
-import formatDateString from '@/utils/formatDateString';
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
 import { Reservation } from '@/types/reservations';
-import { RATINGS } from '@/constants/Rating';
+import { RATINGS } from '@/constants/rating';
+import dayjs from 'dayjs';
 
 interface ReviewModalProps {
   data: Reservation;
@@ -45,7 +45,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
           <div className={styles.detailContainer}>
             <h2 className={styles.title}>{data.activity.title}</h2>
             <p className={styles.dateDetail}>
-              <span>{formatDateString(data.date)}</span>
+              <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
               <span>·</span>
               <span>
                 {data.startTime} - {data.endTime}

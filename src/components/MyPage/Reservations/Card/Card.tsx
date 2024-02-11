@@ -2,8 +2,6 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-
-import formatDateString from '@/utils/formatDateString';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,6 +9,7 @@ import { useState } from 'react';
 import styles from './Card.module.css';
 import { priceFormat } from '@/utils/priceFormat';
 import { Reservation } from '@/types/reservations';
+import dayjs from 'dayjs';
 
 interface CardProps {
   data: Reservation;
@@ -39,7 +38,7 @@ function Card({ data }: CardProps) {
           <p className={clsx(styles.status, styles[data.status])}>{RESERVATION_STATUS[data.status]}</p>
           <h2 className={styles.h2}>{data.activity.title}</h2>
           <p className={styles.dateDetail}>
-            <span>{formatDateString(data.date)}</span>
+            <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
             <span>·</span>
             <span>
               {data.startTime} - {data.endTime}
