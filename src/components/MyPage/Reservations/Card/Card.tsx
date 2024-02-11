@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from './Card.module.css';
 import { priceFormat } from '@/utils/priceFormat';
-import { Reservation } from '@/types/reservations';
 import dayjs from 'dayjs';
+import { Reservation } from '@/types/common/api';
 
 interface CardProps {
   data: Reservation;

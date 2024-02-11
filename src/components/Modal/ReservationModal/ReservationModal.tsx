@@ -9,8 +9,9 @@ import PlusIcon from '#/icons/icon-plus.svg';
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';
-import { Time, Value } from '@/types/Calendar';
+import { Value } from '@/types/Calendar';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { Time } from '@/types/common/api';
 
 interface ReservationModalProps {
   dateValue: Value;

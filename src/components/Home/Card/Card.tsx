@@ -5,11 +5,12 @@ import { priceFormat } from '@/utils/priceFormat';
 import { intToFloat } from '@/utils/intToFloat';
 
 import StarIcon from '#/icons/icon-star.svg';
-
 import styles from './Card.module.css';
-import { Activity } from '@/types/myActivities';
+import { Activity } from '@/types/common/api';
 
-type CardProps = { item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>> };
+type CardProps = {
+  item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>;
+};
 
 function Card({ item }: CardProps) {
   return (

@@ -1,7 +1,7 @@
-import { Activity, ReturnReview } from '@/types/Actvity';
-import { TimeSlot } from '@/types/Calendar';
+import { ReturnReview } from '@/types/Actvity';
+import { ActivityWithSubImages, TimeSlot } from '@/types/common/api';
 
-export const activityData: Activity = {
+export const activityData: ActivityWithSubImages = {
   id: 7,
   userId: 21,
   title: '함께 배우면 즐거운 스트릿댄스',

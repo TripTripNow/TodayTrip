@@ -4,9 +4,9 @@ import ModalCloseIcon from '#/icons/icon-modalClose.svg';
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
-import { Reservation } from '@/types/reservations';
 import { RATINGS } from '@/constants/rating';
 import dayjs from 'dayjs';
+import { Reservation } from '@/types/common/api';
 
 interface ReviewModalProps {
   data: Reservation;

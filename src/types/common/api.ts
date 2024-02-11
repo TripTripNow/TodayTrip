@@ -16,11 +16,14 @@ export interface Activity {
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageUrls: SubImageUrl[];
   rating: number;
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ActivityWithSubImages extends Activity {
+  subImageUrls: SubImageUrl[];
 }
 
 type ActivityInfo = {

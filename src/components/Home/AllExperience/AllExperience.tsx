@@ -11,7 +11,7 @@ import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
-import { Activity } from '@/types/myActivities';
+import { Activity } from '@/types/common/api';
 
 const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 

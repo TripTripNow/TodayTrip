@@ -7,13 +7,14 @@ import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Activity } from '@/types/Actvity';
+
 import { timeSlot } from '@/components/Activities/mock';
-import { Time, Value } from '@/types/Calendar';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
+import { ActivityWithSubImages, Time } from '@/types/common/api';
+import { Value } from '@/types/Calendar';
 
 interface ReservationDateTimePickerProps {
-  data: Activity;
+  data: ActivityWithSubImages;
 }
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 캘린더

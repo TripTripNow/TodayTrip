@@ -4,8 +4,8 @@ import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-m
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import LocationIcon from '#/icons/icon-location.svg';
-import { Activity } from '@/types/Actvity';
 import ReviewList from '@/components/Activities/ReviewList/ReviewList';
+import { ActivityWithSubImages } from '@/types/common/api';
 
 //지도 크기 설정
 const containerStyle = {
@@ -14,7 +14,7 @@ const containerStyle = {
 };
 
 interface MainContentProps {
-  data: Activity;
+  data: ActivityWithSubImages;
 }
 
 function MainContent({ data }: MainContentProps) {
