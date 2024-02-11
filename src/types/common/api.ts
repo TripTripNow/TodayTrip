@@ -1,6 +1,12 @@
 import { RESERVATION_STATUS } from '@/constants/reservation';
 
 export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
+
+interface SubImageUrl {
+  id: number;
+  imageUrl: string;
+}
+
 export interface Activity {
   id: number;
   userId: number;
@@ -14,21 +20,13 @@ export interface Activity {
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
-}
-
-interface SubImageUrl {
-  id: number;
-  imageUrl: string;
-}
-
-export interface ActivityWithSubImages extends Activity {
-  subImageUrls: SubImageUrl[];
+  subImageUrls?: SubImageUrl[];
 }
 
 interface ActivityInfo {
-  bannerImageUrl: string;
-  title: string;
   id: number;
+  title: string;
+  bannerImageUrl: string;
 }
 
 export type ReservationStatus = keyof typeof RESERVATION_STATUS;
@@ -65,6 +63,6 @@ export type Time = {
 };
 
 export type TimeSlot = {
-  date: string;
   times: Time[];
+  date: string;
 };

@@ -5,9 +5,9 @@ import LocationIcon from '#/icons/icon-location.svg';
 import KebabIcon from '#/icons/icon-kebab.svg';
 import Image from 'next/image';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
-import { ActivityWithSubImages } from '@/types/common/api';
+import { Activity } from '@/types/common/api';
 
-function Header({ data }: { data: ActivityWithSubImages }) {
+function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
 
   const handleKebabBlur = () => {

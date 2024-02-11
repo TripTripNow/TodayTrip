@@ -1,7 +1,7 @@
-import { ReturnReview } from '@/types/Actvity';
-import { ActivityWithSubImages, TimeSlot } from '@/types/common/api';
+import { GetReviewsRes } from '@/types/Actvity';
+import { Activity, TimeSlot } from '@/types/common/api';
 
-export const activityData: ActivityWithSubImages = {
+export const activityData: Activity = {
   id: 7,
   userId: 21,
   title: '함께 배우면 즐거운 스트릿댄스',
@@ -98,7 +98,7 @@ export const timeSlot: TimeSlot[] = [
   },
 ];
 
-export const reviewData: ReturnReview = {
+export const reviewData: GetReviewsRes = {
   reviews: [
     {
       id: 1,

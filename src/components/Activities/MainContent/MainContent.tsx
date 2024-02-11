@@ -3,9 +3,9 @@ import style from '@/pages/activities/[id]/Activity.module.css';
 import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import LocationIcon from '#/icons/icon-location.svg';
+import LocationIcon from '#/icons/icon-logoMarker.svg';
 import ReviewList from '@/components/Activities/ReviewList/ReviewList';
-import { ActivityWithSubImages } from '@/types/common/api';
+import { Activity } from '@/types/common/api';
 
 //지도 크기 설정
 const containerStyle = {
@@ -14,7 +14,7 @@ const containerStyle = {
 };
 
 interface MainContentProps {
-  data: ActivityWithSubImages;
+  data: Activity;
 }
 
 function MainContent({ data }: MainContentProps) {

@@ -10,11 +10,11 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { timeSlot } from '@/components/Activities/mock';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
-import { ActivityWithSubImages, Time } from '@/types/common/api';
+import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
 
 interface ReservationDateTimePickerProps {
-  data: ActivityWithSubImages;
+  data: Activity;
 }
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 캘린더
