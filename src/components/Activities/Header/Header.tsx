@@ -63,11 +63,11 @@ function Header({ data }: { data: Activity }) {
           <Image fill src={data.bannerImageUrl} alt="배너 이미지" />
         </div>
 
-        <div className={data.subImageUrls.length === 1 ? styles.oneSubImage : styles.subImages}>
-          {data.subImageUrls.map((subImage) => (
+        <div className={data.subImageUrls?.length === 1 ? styles.oneSubImage : styles.subImages}>
+          {data.subImageUrls?.map((subImage) => (
             <div
               key={subImage.id}
-              className={data.subImageUrls.length === 1 ? styles.oneSubImageWrapper : styles.subImageWrapper}
+              className={data.subImageUrls?.length === 1 ? styles.oneSubImageWrapper : styles.subImageWrapper}
             >
               <Image fill src={subImage.imageUrl} alt="서브 이미지" />
             </div>

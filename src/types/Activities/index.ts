@@ -14,7 +14,7 @@ interface Review {
   updatedAt: string;
 }
 
-export type GetReviewRes = {
+export type GetReviewsRes = {
   reviews: Review[];
   totalCount: number;
 };
