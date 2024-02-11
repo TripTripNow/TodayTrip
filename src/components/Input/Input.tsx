@@ -12,7 +12,7 @@ import {
 } from '@/constants/user';
 
 interface InputProps {
-  label: string;
+  label?: string;
   placeholder?: string;
   control: Control<FieldValues>;
   name: FieldPath<FieldValues>;
@@ -41,14 +41,13 @@ function Input({ label, placeholder, control, name, type, state = 'default', isD
         {label}
       </label>
       <input
-        className={`${styles.input} ${error && styles.errorInput}`}
+        className={`${styles.input} ${error && styles.errorInput} `}
         placeholder={placeholder}
         type={type}
         id={field.name}
         name={field.name}
         value={field.value}
         onChange={field.onChange}
-        onBlur={field.onBlur}
         disabled={isDisabled}
       />
       {error && <p className={styles.errorMessage}>{error.message}</p>}

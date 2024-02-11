@@ -6,6 +6,7 @@ import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock'
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function Activities() {
   const [visibleMock, setVisibleMock] = useState(6);
@@ -26,9 +27,9 @@ function Activities() {
         <div className={styles.activitiesContent}>
           <div className={styles.activitiesContentHeader}>
             <p>내 체험 관리</p>
-            <button className={styles.activitiesButton} onClick={handleEnrollButton}>
+            <Link className={styles.activitiesButton} href={'/mypage/activities/add'}>
               체험 등록하기
-            </button>
+            </Link>
           </div>
           <div className={styles.activitiesItemContainer}>
             {myActivitiesMock.totalCount ? (

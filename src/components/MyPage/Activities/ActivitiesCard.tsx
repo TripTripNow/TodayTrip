@@ -5,6 +5,7 @@ import DanceImg from '#/images/img-dance.jpg';
 import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import { useRouter } from 'next/router';
 
 interface ActivitiesCardProps {
   item: {
@@ -23,6 +24,7 @@ interface ActivitiesCardProps {
 }
 
 function ActivitiesCard({ item }: ActivitiesCardProps) {
+  const router = useRouter();
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -37,7 +39,8 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   };
 
   const handleEditButton = (id: number) => {
-    console.log('이 수정하기 content의 id 값은 :', id);
+    // 페이지 이동
+    router.push(`/mypage/activities/${id}/edit`);
   };
 
   const handleDeleteButton = () => {

@@ -23,5 +23,6 @@ module.exports = {
         pathname: '/globalnomad/profile_image/**',
       },
     ],
+    domains: ['i.ibb.co'],
   },
 };

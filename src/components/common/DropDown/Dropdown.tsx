@@ -1,6 +1,5 @@
 import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
 import clsx from 'clsx';
-
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
@@ -33,7 +32,6 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
   const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: DropdownItems) => {
     setValue(val.title);
     setDropdownItem(val);
-
     setTimeout(() => {
       setIsOpen(false);
     }, 250);
@@ -69,5 +67,4 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
     </div>
   );
 }
-
 export default Dropdown;
