@@ -9,20 +9,6 @@ import Pagination from '@/components/common/Pagination/Pagination';
 import { useState } from 'react';
 import { RATINGS } from '@/constants/rating';
 
-const determineSatisfaction = (rating: number) => {
-  if (rating >= 4.5) {
-    return '매우 만족';
-  } else if (rating >= 4.0) {
-    return '만족';
-  } else if (rating >= 3.0) {
-    return '보통';
-  } else if (rating >= 2.5) {
-    return '불만족';
-  } else {
-    return '매우 불만족';
-  }
-};
-
 function ReviewList({ totalRating }: { totalRating: number }) {
   const { reviews, totalCount } = reviewData;
 
