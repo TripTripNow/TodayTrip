@@ -30,7 +30,7 @@ const MENU_LIST = [
     title: '예약 현황',
     icon: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" alt="예액 현황 페이지를 나타내는 아이콘" />,
     activeIcon: <DashboardIcon fill="#112211" stroke="#112211" alt="예약 현황 페이지 호버 시 보이는 아이콘" />,
-    link: '/mypage/activities/dashboard',
+    link: '/mypage/activities/reservation-dashboard',
   },
 ];
 

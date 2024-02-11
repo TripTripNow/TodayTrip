@@ -29,6 +29,7 @@ const useInfiniteScroll = () => {
   return {
     isVisible,
     targetRef,
+    setIsVisible,
   };
 };
 

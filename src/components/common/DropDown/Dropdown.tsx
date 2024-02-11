@@ -4,32 +4,23 @@ import clsx from 'clsx';
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
-
 import styles from './Dropdown.module.css';
 
-const CATEGORY_LIST = ['문화 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
-
-interface DropdownProps {
-  activities?: {
-    id: number;
-    userId: number;
-    title: string;
-    description: string;
-    category: string;
-    price: number;
-    address: string;
-    bannerImageUrl: string;
-    rating: number;
-    reviewCount: number;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  setDropdownItem: Dispatch<SetStateAction<string | number>>;
+export interface DropdownItems {
+  id: number;
+  title: string;
 }
 
-function Dropdown({ activities, setDropdownItem }: DropdownProps) {
+interface DropdownProps {
+  type: '시간' | '카테고리' | '예약한 시간' | '체험';
+  dropDownItems: DropdownItems[];
+  setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
+  placeholder: string | null;
+}
+
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(activities ? activities[0].title : '카테고리');
+  const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -39,32 +30,38 @@ function Dropdown({ activities, setDropdownItem }: DropdownProps) {
     setIsOpen(false);
   };
 
-  const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: string) => {
-    e.preventDefault();
-    setValue(val);
+  const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: DropdownItems) => {
+    setValue(val.title);
     setDropdownItem(val);
-    handleDropdownClose();
+
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 250);
   };
 
-  const showLists = activities ? activities.map((activity) => activity.title) : CATEGORY_LIST;
+  const isPlaceHolder = value === '카테고리' || value === '00:00';
 
   return (
-    <div className={styles.container} style={{ border: '1px solid #000' }} onBlur={handleDropdownClose}>
-      {activities && <p className={styles.subTitle}>체험명</p>}
+    <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
+      {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}
-        className={clsx(styles.wrapper, value === '카테고리' && styles.placeholder)}
+        className={clsx(styles.wrapper, isPlaceHolder && styles.placeholder)}
         onClick={handleDropdownToggle}
       >
         {value}
-        {isOpen ? <ArrowUpIcon alt="위쪽 방향 아이콘" /> : <ArrowDownIcon alt="아래쪽 방향 아이콘" />}
+        {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
       </button>
       {isOpen && (
-        <div className={styles.menu}>
-          {showLists.map((value, index) => (
-            <div key={index} className={styles.list} onMouseDown={(e) => handleDropdownClick(e, value)}>
-              <CheckIcon alt="체크 아이콘" className={styles.icon} />
-              {value}
+        <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
+          {dropDownItems.map((itemValue) => (
+            <div
+              key={itemValue.id}
+              className={clsx(styles.list, type === '시간' && styles.timeList)}
+              onMouseDown={(e) => handleDropdownClick(e, itemValue)}
+            >
+              {type !== '시간' && <CheckIcon alt="체크 아이콘" className={styles.icon} />}
+              {itemValue.title}
             </div>
           ))}
         </div>

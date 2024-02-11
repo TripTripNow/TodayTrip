@@ -3,11 +3,12 @@ import UserLayout from '@/components/User/UserLayout';
 import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
-import { useRouter } from 'next/router';
 import CheckboxInput from '@/components/Input/CheckboxInput';
+import { signIn } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 function SignIn() {
-  const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -20,14 +21,29 @@ function SignIn() {
 
   const { handleSubmit, control } = methods;
 
-  const handleOnSubmit = (data: FieldValues) => {
-    console.log(data);
-    router.push('/');
-  };
-
   const { isValid } = methods.formState;
 
   const isPasswordVisible = methods.watch('checkbox');
+
+  const router = useRouter();
+
+  const handleOnSubmit = async (data: FieldValues) => {
+    const { email, password } = data;
+
+    const result = await signIn('signin-credentials', {
+      email: email,
+      password: password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      toast.error('로그인이 실패하였습니다.');
+      return;
+    }
+
+    toast.success('로그인이 완료되었습니다.');
+    router.push('/');
+  };
 
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
