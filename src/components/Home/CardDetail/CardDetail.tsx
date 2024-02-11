@@ -6,9 +6,9 @@ import { priceFormat } from '@/utils/priceFormat';
 import StarIcon from '#/icons/icon-star.svg';
 import NoImage from '#/images/img-noImage.png';
 import styles from './CardDetail.module.css';
-import { Activities } from '@/types/activities';
+import { Activity } from '@/types/common/api';
 
-type CardDetailProps = { item: Activities };
+type CardDetailProps = { item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>> };
 
 function CardDetail({ item }: CardDetailProps) {
   return (

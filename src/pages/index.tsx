@@ -15,6 +15,7 @@ import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import styles from './Home.module.css';
 import { PriceFilterOption } from '@/types/dropdown';
+import { Category } from '@/types/common/api';
 
 const calculateLimit = (deviceType: string | undefined) => {
   switch (deviceType) {
@@ -44,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 function Home() {
   const deviceType = useDeviceType();
   const [sortByPrice, setSortByPrice] = useState<GetActivitiesParam['sort']>('latest'); // 정렬 순서
-  const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
+  const [selectedCategory, setSelectedCategory] = useState<Category>(''); // 선택된 카테고리
   const [currentPageNumber, setCurrentPageNumber] = useState(1); // 현재 페이지 넘버
   const [limit, setLimit] = useState(calculateLimit(deviceType)); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
@@ -106,7 +107,7 @@ function Home() {
   };
 
   // 카테고리 버튼 클릭 함수
-  const handleClickCategory = (name: string) => {
+  const handleClickCategory = (name: Category) => {
     if (selectedCategory === name) setSelectedCategory('');
     else setSelectedCategory(name);
   };

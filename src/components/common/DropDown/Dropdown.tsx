@@ -1,4 +1,4 @@
-import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import clsx from 'clsx';
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
@@ -29,7 +29,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
     setIsOpen(false);
   };
 
-  const handleDropdownClick = (e: MouseEvent<HTMLDivElement>, val: DropdownItems) => {
+  const handleDropdownClick = (val: DropdownItems) => {
     setValue(val.title);
     setDropdownItem(val);
     setTimeout(() => {
@@ -56,7 +56,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
             <div
               key={itemValue.id}
               className={clsx(styles.list, type === '시간' && styles.timeList)}
-              onMouseDown={(e) => handleDropdownClick(e, itemValue)}
+              onMouseDown={() => handleDropdownClick(itemValue)}
             >
               {type !== '시간' && <CheckIcon alt="체크 아이콘" className={styles.icon} />}
               {itemValue.title}

@@ -1,0 +1,40 @@
+@values tablet, mobile from "@/styles/breakpoints.css";
+
+.leftContentContainer {
+  display: flex;
+  width: 79rem;
+  gap: 4rem;
+  flex-direction: column;
+
+  @media tablet {
+    width: 42.8rem;
+  }
+
+  @media mobile {
+    width: 32.7rem;
+    gap: 1.6rem;
+  }
+}
+
+.descriptionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.description {
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+}
+
+.mapWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+}

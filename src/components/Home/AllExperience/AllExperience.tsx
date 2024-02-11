@@ -11,13 +11,15 @@ import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
-import { GetActivitiesRes } from '@/types/activities';
+import { Activity } from '@/types/common/api';
 
 const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
 
 interface AllExperienceProps {
   searchResult: string;
-  showCards: GetActivitiesRes['activities'];
+  handleSortByPrice: (val: string) => void;
+
+  showCards: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>[];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
   handleClickCategory: (val: string) => void;

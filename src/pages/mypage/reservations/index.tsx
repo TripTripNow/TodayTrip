@@ -1,13 +1,12 @@
 import { ReactElement, useEffect, useState } from 'react';
-
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import Card from '@/components/Reservations/Card/Card';
-import { reservations } from '@/components/Reservations/mock';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReserveFilterOption } from '@/types/dropdown';
 import styles from './Reservations.module.css';
+import Card from '@/components/MyPage/Reservations/Card/Card';
+import { reservations } from '@/components/MyPage/Reservations/mock';
 
 function Reservation() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
@@ -37,7 +36,7 @@ function Reservation() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.h2}>예약 내역</h2>
+        <h2 className={styles.label}>예약 내역</h2>
 
         <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>
