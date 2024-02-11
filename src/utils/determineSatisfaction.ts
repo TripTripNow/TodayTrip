@@ -11,3 +11,5 @@ const determineSatisfaction = (rating: number) => {
     return '매우 불만족';
   }
 };
+
+export default determineSatisfaction;

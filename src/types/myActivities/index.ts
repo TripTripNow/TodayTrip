@@ -1,33 +1,15 @@
-import { Activity, Category, TimeSlot } from '@/types/common/api';
+import { Activity, Category, ReservationStatus, ScheduledReservation, TimeSlot } from '@/types/common/api';
 
-export interface Reservations {
+export interface MonthlyReservationStatusCount {
   completed: number;
   confirmed: number;
   pending: number;
 }
 
-export interface ReservedScheduleCount {
+export interface DailyReservationStatusCount {
   declined: number;
   confirmed: number;
   pending: number;
-}
-
-export interface ScheduleReservation {
-  id: number;
-  nickname: string;
-  userId: number;
-  teamId: string;
-  activityId: number;
-  scheduleId: number;
-  status: string;
-  reviewSubmitted: boolean;
-  totalPrice: number;
-  headCount: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 /**
@@ -67,7 +49,7 @@ export interface GetReservationDashboardParam {
 
 export interface GetReservationDashboardRes {
   date: string;
-  reservations: Reservations;
+  reservations: MonthlyReservationStatusCount;
 }
 
 /**
@@ -88,7 +70,7 @@ export interface GetReservedScheduleRes {
   scheduleId: number;
   startTime: string;
   endTime: string;
-  count: ReservedScheduleCount;
+  count: DailyReservationStatusCount;
 }
 
 /**
@@ -101,7 +83,7 @@ export interface GetReservationsParam {
   cursorId?: number;
   size?: number;
   scheduleId: number;
-  status: 'declined' | 'pending' | 'confirmed';
+  status: keyof DailyReservationStatusCount;
 }
 
 /**
@@ -111,7 +93,7 @@ export interface GetReservationsParam {
 export interface GetReservationsRes {
   cursorId: number;
   totalCount: number;
-  reservations: ScheduleReservation[];
+  reservations: ScheduledReservation[];
 
   // nickname 없이
 }
@@ -131,14 +113,14 @@ export interface PatchReservationsParam {
  */
 
 export interface PatchReservationsReq {
-  status: string;
+  status: ReservationStatus;
 }
 
 /**
  * 내 체험 예약 상태(승인, 거절) 업데이트 Response
  */
 
-export type PatchReservationsRes = Omit<ScheduleReservation, 'nickname'>;
+export type PatchReservationsRes = Omit<ScheduledReservation, 'nickname'>;
 
 /**
  * 내 체험 삭제 Parameter

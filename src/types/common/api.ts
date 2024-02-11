@@ -31,13 +31,12 @@ interface ActivityInfo {
   id: number;
 }
 
-type ReservationStatus = keyof typeof RESERVATION_STATUS;
+export type ReservationStatus = keyof typeof RESERVATION_STATUS;
 
-export interface Reservation {
+interface ReservationBase {
   id: number;
   teamId: string;
   userId: number;
-  activity: ActivityInfo;
   scheduleId: number;
   status: ReservationStatus;
   reviewSubmitted: boolean;
@@ -48,6 +47,15 @@ export interface Reservation {
   endTime: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Reservation extends ReservationBase {
+  activity: ActivityInfo;
+}
+
+export interface ScheduledReservation extends ReservationBase {
+  nickname: string;
+  activityId: number;
 }
 
 export type Time = {
