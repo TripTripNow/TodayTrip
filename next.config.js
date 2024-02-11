@@ -17,5 +17,6 @@ module.exports = {
         pathname: '/globalnomad/activity_registration_image/**',
       },
     ],
+    domains: ['i.ibb.co'],
   },
 };

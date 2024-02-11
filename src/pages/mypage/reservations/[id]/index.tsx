@@ -9,7 +9,6 @@ import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
 import { CANCELED, COMPLETED, CONFIRMED, DECLINED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
 import dayjs from 'dayjs';
