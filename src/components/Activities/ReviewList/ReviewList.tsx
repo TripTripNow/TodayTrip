@@ -6,8 +6,22 @@ import EmptyStarIcon from '#/icons/icon-littleEmptyStar.svg';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { RATINGS } from '@/constants/Rating';
+
+const determineSatisfaction = (rating: number) => {
+  if (rating >= 4.5) {
+    return '매우 만족';
+  } else if (rating >= 4.0) {
+    return '만족';
+  } else if (rating >= 3.0) {
+    return '보통';
+  } else if (rating >= 2.5) {
+    return '불만족';
+  } else {
+    return '매우 불만족';
+  }
+};
 
 function ReviewList({ totalRating }: { totalRating: number }) {
   const { reviews, totalCount } = reviewData;
@@ -26,7 +40,7 @@ function ReviewList({ totalRating }: { totalRating: number }) {
       <div className={styles.ratingWrapper}>
         <h3 className={styles.totalRating}>{totalRating}</h3>
         <div className={styles.detailRating}>
-          <p className={styles.satisfaction}>매우 만족</p>
+          <p className={styles.satisfaction}>{determineSatisfaction(totalRating)}</p>
           <p className={styles.reviewCount}>
             <StarIcon style={{ marginBottom: '0.18rem' }} alt="별 아이콘" />
             {totalCount.toLocaleString('ko-KR')}개 후기
@@ -35,8 +49,8 @@ function ReviewList({ totalRating }: { totalRating: number }) {
       </div>
       <div className={styles.reviewListWrapper}>
         {slicedReviews.map((review, index) => (
-          <Fragment key={review.id}>
-            <div className={styles.reviewWrapper}>
+          <>
+            <div key={review.id} className={styles.reviewWrapper}>
               <Image
                 style={{ borderRadius: '100%' }}
                 src={review.user.profileImageUrl}
@@ -45,26 +59,26 @@ function ReviewList({ totalRating }: { totalRating: number }) {
                 alt="프로필 이미지"
               />
               <div className={styles.detailReview}>
-                <div className={styles.nameAndDate}>
+                <div className={styles.reviewerInfo}>
                   <h3 className={styles.nickname}>{review.user.nickname}</h3>
-                  <div className={styles.separator}>|</div>
-                  <div className={styles.starCount}>
-                    {RATINGS.map((_, index) =>
-                      index < review.rating ? (
-                        <StarIcon key={index} alt="별 아이콘" />
-                      ) : (
-                        <EmptyStarIcon key={index} alt="빈 별 아이콘" />
-                      ),
-                    )}
+                  <div className={styles.starAndDate}>
+                    <div className={styles.starCount}>
+                      {RATINGS.map((_, index) =>
+                        index < review.rating ? (
+                          <StarIcon key={index} alt="별 아이콘" />
+                        ) : (
+                          <EmptyStarIcon key={index} alt="빈 별 아이콘" />
+                        ),
+                      )}
+                    </div>
+                    <p className={styles.date}>{dayjs(review.createdAt).format('YYYY.MM.DD')}</p>
                   </div>
-                  <div className={styles.separator}>|</div>
-                  <p className={styles.date}>{dayjs(review.createdAt).format('YYYY.MM.DD')}</p>
                 </div>
                 <p className={styles.reviewContent}>{review.content}</p>
               </div>
             </div>
             {index !== slicedReviews.length - 1 && <hr className={style.hr} />}
-          </Fragment>
+          </>
         ))}
       </div>
       <Pagination

@@ -30,7 +30,7 @@ export const activityData: Activity = {
     },
   ],
   reviewCount: 5,
-  rating: 4.74,
+  rating: 4.2,
   createdAt: '2023-12-31T21:28:50.589Z',
   updatedAt: '2023-12-31T21:28:50.589Z',
 };

@@ -56,14 +56,6 @@ function Header({ data }: { data: Activity }) {
               </button>
             </div>
           )}
-          {isDeleteModalOpen && (
-            <AlertModal
-              handleModalClose={handleDeleteModalToggle}
-              handleCancel={handleDeleteModalToggle}
-              buttonText="삭제하기"
-              text="체험을 삭제하시겠습니까?"
-            />
-          )}
         </div>
       </header>
       <section className={styles.imageContainer}>
@@ -82,6 +74,15 @@ function Header({ data }: { data: Activity }) {
           ))}
         </div>
       </section>
+
+      {isDeleteModalOpen && (
+        <AlertModal
+          handleModalClose={handleDeleteModalToggle}
+          handleCancel={handleDeleteModalToggle}
+          buttonText="삭제하기"
+          text="체험을 삭제하시겠습니까?"
+        />
+      )}
     </>
   );
 }

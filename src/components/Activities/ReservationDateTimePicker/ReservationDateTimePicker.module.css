@@ -2,7 +2,7 @@
 
 .container {
   display: flex;
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   width: 38.4rem;
   height: fit-content;
@@ -13,6 +13,7 @@
   border-radius: 2rem;
 
   @media tablet {
+    position: sticky;
     top: 5rem;
     width: 25.1rem;
   }
