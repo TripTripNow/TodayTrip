@@ -2,16 +2,21 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-import { Reservations } from '@/types/reservations';
-import formatDateString from '@/utils/formatDateString';
+
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from './Card.module.css';
 import { priceFormat } from '@/utils/priceFormat';
+import dayjs from 'dayjs';
+import { Reservation } from '@/types/common/api';
 
-function Card({ data }: Reservations) {
+interface CardProps {
+  data: Reservation;
+}
+
+function Card({ data }: CardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
@@ -35,7 +40,7 @@ function Card({ data }: Reservations) {
           <p className={clsx(styles.status, styles[data.status])}>{RESERVATION_STATUS[data.status]}</p>
           <h2 className={styles.h2}>{data.activity.title}</h2>
           <p className={styles.dateDetail}>
-            <span>{formatDateString(data.date)}</span>
+            <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
             <span>·</span>
             <span>
               {data.startTime} - {data.endTime}
