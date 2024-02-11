@@ -6,7 +6,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
 import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
-import { RATINGS } from '@/constants/rating';
+import { RATINGS } from '@/constants/ratingArray';
 
 interface ReviewModalProps {
   data: Reservation;
