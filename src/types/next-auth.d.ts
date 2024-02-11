@@ -4,6 +4,7 @@ declare module 'next-auth' {
     user: {
       accessToken: JWT;
       refreshToken: JWT;
+      type: string;
     } & DefaultSession['user'];
   }
   interface User {

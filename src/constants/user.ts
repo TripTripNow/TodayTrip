@@ -16,3 +16,13 @@ export const EMAIL_STANDARD = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 //비밀번호 형식: 영문, 숫자, 특수기호 포함 8자 이상
 export const PASSWORD_STANDARD = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+interface SocailEmailContent {
+  [key: string]: string;
+}
+
+export const SOCIAL_EMAIL_CONTENT: SocailEmailContent = {
+  kakao: '카카오 로그인됨',
+  google: '구글 로그인됨',
+  naver: '네이버 로그인됨',
+};

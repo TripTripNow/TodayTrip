@@ -44,6 +44,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
         profile.nickname = profile.properties.nickname;
+        profile.type = 'kakao';
 
         return handleSocialLogin(profile);
       },
@@ -54,6 +55,7 @@ export const authOptions: NextAuthOptions = {
       async profile(profile) {
         profile.id = profile.response.id;
         profile.nickname = profile.response.nickname;
+        profile.type = 'naver';
 
         return handleSocialLogin(profile);
       },
@@ -64,6 +66,7 @@ export const authOptions: NextAuthOptions = {
       async profile(profile) {
         profile.nickname = profile.name;
         profile.id = profile.sub;
+        profile.type = 'google';
 
         return handleSocialLogin(profile);
       },
@@ -84,7 +87,9 @@ export const authOptions: NextAuthOptions = {
           };
 
           const res = await instance.post(`/auth/login`, data);
-          return { accessToken: res.data.accessToken, refreshToken: res.data.refreshToken } || null;
+          return (
+            { accessToken: res.data.accessToken, refreshToken: res.data.refreshToken, type: 'credentials' } || null
+          );
         } catch (e: unknown) {
           if (e instanceof AxiosError) {
             throw new Error(e.response?.data.message || e);
@@ -127,9 +132,10 @@ export const authOptions: NextAuthOptions = {
         token.refreshToken = user.refreshToken;
       }
 
-      return token;
+      return { ...token, ...user };
     },
     async session({ session, token }) {
+      if (typeof token.type === 'string') session.user.type = token.type;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       return session;
