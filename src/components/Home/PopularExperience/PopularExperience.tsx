@@ -7,9 +7,9 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import Card from '@/components/Home/Card/Card';
 import { getActivities } from '@/api/activities/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import styles from './PopularExperience.module.css';
-import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
 function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -20,6 +20,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
     queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 4, cursorId }),
   });
   const [cardData, setCardData] = useState(data?.activities ?? []);
+  const { isVisible, targetRef } = useInfiniteScroll();
 
   /** 버튼을 통한 slide 함수 */
   const handleSlideByBtn = (num: number) => {
@@ -31,7 +32,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
       (splideRef.current as any).go(newIndex);
     }
   };
-  const { isVisible, targetRef } = useInfiniteScroll();
+
   useEffect(() => {
     if (cursorId === null) return;
     if (isVisible) refetch();
@@ -50,10 +51,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
           <div className={styles.arrowWrapper}>
             <LeftArrow
               alt="왼쪽 화살표"
-              className={clsx(styles.arrow, {
-                [styles.arrowEnable]: slideIndex === 0,
-                [styles.arrowDisable]: slideIndex !== 0,
-              })}
+              className={clsx(styles.arrow, slideIndex === 0 && styles.arrowEnable)}
               onClick={() => handleSlideByBtn(-1)}
             />
             <LeftArrow
@@ -61,7 +59,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
               className={clsx(
                 styles.arrow,
                 styles.rotateReverse,
-                slideIndex + 3 === cardData.length ? styles.arrowEnable : styles.arrowDisable,
+                slideIndex + 3 === cardData.length && styles.arrowEnable,
               )}
               onClick={() => handleSlideByBtn(1)}
             />
@@ -85,13 +83,11 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
             1200: {
               perPage: 2,
               gap: '2.8rem',
-              // fixedWidth: '41.6rem',
             },
             767: {
               perPage: 2,
               gap: '1.6rem',
               fixedWidth: '18.6rem',
-              // fixedWidth: '20.2rem',
             },
           },
           clones: undefined,

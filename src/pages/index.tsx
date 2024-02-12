@@ -77,20 +77,17 @@ function Home() {
     setFilterValue('가격');
     setSelectedCategory('');
 
-    if (!inputSearchText.trim()) return;
+    const trimmedText = inputSearchText.trim();
+    if (!trimmedText) return;
 
     const storedText = localStorageGetItem('recentSearchKeywords');
-
     if (!storedText) {
-      localStorageSetItem('recentSearchKeywords', inputSearchText);
+      localStorageSetItem('recentSearchKeywords', trimmedText);
     } else {
       const keywordArray = storedText!.split(',');
-      if (!keywordArray.includes(inputSearchText)) {
-        if (keywordArray.length >= 10) {
-          localStorageSetItem('recentSearchKeywords', [inputSearchText, ...keywordArray.slice(0, 9)].join(',')!);
-        } else {
-          localStorageSetItem('recentSearchKeywords', [inputSearchText, ...keywordArray].join(',')!);
-        }
+      if (!keywordArray.includes(trimmedText)) {
+        const updatedKeywords = [trimmedText, ...keywordArray.slice(0, 9)];
+        localStorageSetItem('recentSearchKeywords', updatedKeywords.join(','));
       }
     }
     setRecentSearchKeywords(storedText ? storedText.split(',') : []);
@@ -116,11 +113,8 @@ function Home() {
     if (val === '가격') return;
     if (sortByPrice === 'price_asc' && '낮은 순' === val) return;
     if (sortByPrice === 'price_desc' && '높은 순' === val) return;
-    if (val === '낮은 순') {
-      setSortByPrice('price_asc');
-    } else {
-      setSortByPrice('price_desc');
-    }
+    const newSortByPrice = val === '낮은 순' ? 'price_asc' : 'price_desc';
+    setSortByPrice(newSortByPrice);
     setCurrentPageNumber(1);
   };
 
