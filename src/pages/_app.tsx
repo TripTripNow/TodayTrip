@@ -42,7 +42,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLa
     <>
       <Head>
         <title>TodayTrip</title>
-        <link rel="icon" href="/icons/icon-logo.svg" />
+        <link rel="icon" href="/icons/icon-logoMark.png" />
       </Head>
 
       <QueryClientProvider client={queryClient}>

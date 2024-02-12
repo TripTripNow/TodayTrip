@@ -4,26 +4,7 @@
   display: inline-flex;
   align-items: flex-start;
   gap: 1rem;
-}
-
-.arrow {
-  position: absolute;
-  cursor: pointer;
-  width: 21px;
-  height: 21px;
-
-  @media mobile {
-    width: 15.273px;
-    height: 15.273px;
-  }
-}
-
-.arrowDisabled {
-  color: #a1a1a1;
-}
-
-.arrowEnabled {
-  color: #0b3b2d;
+  align-self: center;
 }
 
 .paginationNumberWrapper {
@@ -37,6 +18,7 @@
   border-radius: 1.5rem;
   background: var(--whiteFF);
   cursor: pointer;
+  border: 0.1rem solid var(--green0B);
 
   @media mobile {
     display: flex;
@@ -46,12 +28,25 @@
   }
 }
 
-.paginationEnabled {
-  border: 0.1rem solid var(--green0B);
+.paginationNumberWrapper svg {
+  position: absolute;
+  cursor: pointer;
+  width: 21px;
+  height: 21px;
+
+  @media mobile {
+    width: 15.273px;
+    height: 15.273px;
+  }
+  color: #0b3b2d;
 }
 
-.paginationDisabled {
+.paginationNumberWrapper:disabled {
   border: 0.1rem solid var(--grayDD);
+}
+
+.paginationNumberWrapper:disabled svg {
+  color: #a1a1a1;
 }
 
 .selectedNumber {

@@ -1,17 +1,18 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReviewModal.module.css';
 import ModalCloseIcon from '#/icons/icon-modalClose.svg';
-import formatDateString from '@/utils/formatDateString';
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
-import { Reservations } from '@/types/reservations';
+import dayjs from 'dayjs';
+import { Reservation } from '@/types/common/api';
+import { RATINGS } from '@/constants/ratingArray';
 
-export const RATINGS = [1, 2, 3, 4, 5] as const;
-
-interface ReviewModalProps extends Reservations {
+interface ReviewModalProps {
+  data: Reservation;
   handleModalClose: () => void;
 }
+
 function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
   const [ratingInputValue, setRatingInputValue] = useState(0);
   const [textInputValue, setTextInputValue] = useState('');
@@ -31,7 +32,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
       <div className={styles.modalWrapper}>
         {/* 상단부 */}
         <div className={styles.header}>
-          <h2 className={styles.h2}>후기 작성</h2>
+          <h2 className={styles.label}>후기 작성</h2>
           <button onClick={handleModalClose}>
             <ModalCloseIcon alt="닫기 아이콘" width="4rem" height="4rem" />
           </button>
@@ -44,7 +45,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
           <div className={styles.detailContainer}>
             <h2 className={styles.title}>{data.activity.title}</h2>
             <p className={styles.dateDetail}>
-              <span>{formatDateString(data.date)}</span>
+              <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
               <span>·</span>
               <span>
                 {data.startTime} - {data.endTime}

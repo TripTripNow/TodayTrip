@@ -9,14 +9,18 @@ import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
 import { CANCELED, COMPLETED, CONFIRMED, DECLINED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-import { Reservations } from '@/types/reservations';
-import formatDateString from '@/utils/formatDateString';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
+import dayjs from 'dayjs';
+import { Reservation } from '@/types/common/api';
 
 // @todo id값을 사용해서 해당 카드 데이터 불러오기
-const item: Reservations['data'] = {
+const item: Reservation = {
   id: 1,
+  teamId: '9',
+  userId: 3,
+  createdAt: '2024-02-11T08:43:26.752Z',
+  updatedAt: '2024-02-11T08:43:26.752Z',
   activity: {
     bannerImageUrl: '/images/flower.png',
     title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
@@ -89,7 +93,7 @@ function ReservationID() {
           <CheckStatus status={item.status} />
           <h2 className={styles.title}>{item.activity.title}</h2>
           <p className={styles.date}>
-            <span>{formatDateString(item.date)}</span>
+            <span>{dayjs(item.date).format('YYYY.MM.DD')}</span>
             <span> · </span>
             <span>
               {item.startTime} - {item.endTime}
