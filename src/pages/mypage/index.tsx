@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let userData;
   const sessionData = await getSession(context);
-  const type = sessionData?.user.type;
+  const type = sessionData?.user.type || 'credentials';
 
   try {
     userData = await getUsersMe();
@@ -39,28 +39,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 function MyPage({ userData, type }: MyPageProps) {
-  const {
-    isLoading,
-    data: getUserData,
-    refetch,
-  } = useQuery<GetUsersMeRes>({
-    queryKey: [QUERY_KEYS.usersMe],
-    queryFn: () => getUsersMe(),
-    initialData: userData,
-  });
-
   const methods = useForm<FieldValues>({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     defaultValues: {
-      nickName: getUserData.nickname,
-      mypageEmail: type === 'credentials' ? getUserData.email : SOCIAL_EMAIL_CONTENT[type],
+      nickName: userData.nickname,
+      mypageEmail: type === 'credentials' ? userData.email : SOCIAL_EMAIL_CONTENT[type],
       mypagePassword: '',
       mypagePasswordCheck: '',
     },
   });
 
-  const { handleSubmit, control, setError, reset } = methods;
+  const { handleSubmit, control, setError, reset, resetField } = methods;
   const { isValid } = methods.formState;
   const { getValues } = useFormContext();
 
@@ -68,7 +58,8 @@ function MyPage({ userData, type }: MyPageProps) {
     mutationFn: (data: PatchUsersMeReq) => patchUsersMe(data),
     onSuccess: () => {
       toast.success('수정이 완료되었습니다.');
-      refetch();
+      resetField('mypagePassword');
+      resetField('mypagePasswordCheck');
     },
     onError: (e) => {
       toast.error('수정이 실패하였습니다.');
@@ -83,13 +74,15 @@ function MyPage({ userData, type }: MyPageProps) {
     const patchUsersMeReq: PatchUsersMeReq = {
       nickname: data.nickName,
     };
+    const profileImageUrl = getValues('profileImageUrl');
+
     if (data.mypagePassword !== '') patchUsersMeReq.newPassword = data.mypagePassword;
 
-    patchUserMeMutation.mutate(patchUsersMeReq);
+    if (profileImageUrl) {
+      patchUsersMeReq.profileImageUrl = profileImageUrl.profileImageUrl;
+    }
 
-    // 생성된 프로필 이미지 url
-    console.log(getValues('profileImageUrl'));
-    console.log(data);
+    patchUserMeMutation.mutate(patchUsersMeReq);
   };
 
   return (
@@ -103,36 +96,35 @@ function MyPage({ userData, type }: MyPageProps) {
             </Button>
           </div>
 
-          <ProfileInput isProfileBox={false} isEdit={true} />
+          <ProfileInput isProfileBox={false} isEdit={true} profileImage={userData.profileImageUrl} />
         </div>
-        {!isLoading && (
-          <div className={styles.formContainer}>
-            <Input
-              name={'nickName'}
-              control={control}
-              label={'닉네임'}
-              placeholder={'닉네임을 입력해주세요'}
-              type={'text'}
-            />
-            <Input name={'mypageEmail'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
-            <Input
-              name={'mypagePassword'}
-              control={control}
-              label={'비밀번호'}
-              placeholder={'8자 이상 입력해 주세요'}
-              type={'password'}
-              isDisabled={type !== 'crendentials'}
-            />
-            <Input
-              name={'mypagePasswordCheck'}
-              control={control}
-              label={'비밀번호 확인'}
-              placeholder={'비밀번호를 한번 더 입력해 주세요'}
-              type={'password'}
-              isDisabled={type !== 'crendentials'}
-            />
-          </div>
-        )}
+
+        <div className={styles.formContainer}>
+          <Input
+            name={'nickName'}
+            control={control}
+            label={'닉네임'}
+            placeholder={'닉네임을 입력해주세요'}
+            type={'text'}
+          />
+          <Input name={'mypageEmail'} control={control} label={'이메일'} type={'email'} isDisabled={true} />
+          <Input
+            name={'mypagePassword'}
+            control={control}
+            label={'비밀번호'}
+            placeholder={'8자 이상 입력해 주세요'}
+            type={'password'}
+            isDisabled={type !== 'credentials'}
+          />
+          <Input
+            name={'mypagePasswordCheck'}
+            control={control}
+            label={'비밀번호 확인'}
+            placeholder={'비밀번호를 한번 더 입력해 주세요'}
+            type={'password'}
+            isDisabled={type !== 'credentials'}
+          />
+        </div>
       </form>
     </div>
   );

@@ -21,3 +21,12 @@ export const patchUsersMe = async (userData: PatchUsersMeReq) => {
 
   return res.data;
 };
+
+export const postUsersMeImage = async (image: FormData) => {
+  const res = await instance.post('/users/me/image', image, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return res.data;
+};

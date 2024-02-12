@@ -7,6 +7,6 @@ export interface GetUsersMeRes {
 
 export interface PatchUsersMeReq {
   nickname?: string;
-  parofileImageUrl?: string;
+  profileImageUrl?: string;
   newPassword?: string;
 }
