@@ -16,6 +16,7 @@ interface Review {
   updatedAt: string;
 }
 
+/** 체험 리스트 조회 Parameter */
 export interface GetActivitiesParam {
   method: 'offset' | 'cursor';
   cursorId?: number | null;
@@ -26,6 +27,7 @@ export interface GetActivitiesParam {
   size?: number;
 }
 
+/** 체험 리스트 조회 Response */
 export interface GetActivitiesRes {
   cursorId: number;
   totalCount: number;
