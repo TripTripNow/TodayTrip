@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 import { intToFloat } from '@/utils/intToFloat';
 import { priceFormat } from '@/utils/priceFormat';
-import { Activities } from '@/types/myActivities';
 import StarIcon from '#/icons/icon-star.svg';
 import styles from './CardDetail.module.css';
+import { Activity } from '@/types/common/api';
 
-type CardDetailProps = { item: Pick<Activities, Exclude<keyof Activities, 'address' | 'createdAt' | 'updatedAt'>> };
+type CardDetailProps = { item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>> };
 
 function CardDetail({ item }: CardDetailProps) {
   return (

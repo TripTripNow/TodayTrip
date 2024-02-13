@@ -6,16 +6,16 @@ import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
-import { Reservations } from '@/types/myActivities';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
 import styles from './Calendar.module.css';
+import { MonthlyReservationStatusCount } from '@/types/myActivities';
 
 interface CalendarProps {
   activityId: number;
 }
 
 /** 예약 승인 완료 상태를 검사 후 날짜 옆의 동그라미 띄우는 함수 */
-const renderCircle = (reservation: Reservations) => {
+const renderCircle = (reservation: MonthlyReservationStatusCount) => {
   const { completed, confirmed, pending } = reservation;
   if (completed + confirmed + pending === 0) return null;
   else if (pending + confirmed === 0 && completed !== 0) return <p className={styles.grayCircle}></p>;
