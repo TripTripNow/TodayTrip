@@ -3,7 +3,7 @@ import style from '@/pages/activities/[id]/Activity.module.css';
 import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import LocationIcon from '#/icons/icon-logoMarker.svg';
+import LocationIcon from '#/icons/icon-location.svg';
 import ReviewList from '@/components/Activities/ReviewList/ReviewList';
 import { Activity } from '@/types/common/api';
 
@@ -59,10 +59,10 @@ function MainContent({ data }: MainContentProps) {
           <GoogleMap mapContainerStyle={containerStyle} zoom={18} center={{ lat: location.lat, lng: location.lng }}>
             <MarkerF
               position={location}
-              icon={{ url: '/images/img-mapMarker.png', scaledSize: new window.google.maps.Size(60, 70) }}
+              icon={{ url: '/icons/icon-logoMarker.svg', scaledSize: new window.google.maps.Size(60, 70) }}
             />
             <InfoWindowF
-              options={{ pixelOffset: new window.google.maps.Size(0, -40) }}
+              options={{ pixelOffset: new window.google.maps.Size(0, -70) }}
               position={{ lat: location.lat, lng: location.lng }}
               zIndex={1}
             >

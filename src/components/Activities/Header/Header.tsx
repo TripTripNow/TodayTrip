@@ -6,6 +6,7 @@ import KebabIcon from '#/icons/icon-kebab.svg';
 import Image from 'next/image';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { Activity } from '@/types/common/api';
+import Link from 'next/link';
 
 function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
@@ -49,7 +50,10 @@ function Header({ data }: { data: Activity }) {
           </button>
           {isKebabOpen && (
             <div className={styles.options}>
-              <button className={styles.option}>수정하기</button>
+              <Link href="/mypage/activities/[id]/edit">
+                <button className={styles.option}>수정하기</button>
+              </Link>
+
               <hr className={styles.hr} />
               <button className={styles.option} onClick={handleDeleteModalToggle}>
                 삭제하기

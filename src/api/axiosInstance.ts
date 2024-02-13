@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
 
@@ -75,5 +75,12 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export const fetchedData = async <T>(config: AxiosRequestConfig) => {
+  const response = await instance({ ...config });
+  const { data }: { data: T } = response;
+
+  return data;
+};
 
 export default instance;

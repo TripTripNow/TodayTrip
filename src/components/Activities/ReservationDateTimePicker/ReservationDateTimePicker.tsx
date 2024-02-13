@@ -2,7 +2,7 @@ import styles from './ReservationDateTimePicker.module.css';
 import style from '@/pages/activities/[id]/Activity.module.css';
 import Button from '@/components/common/Button/Button';
 import MinusIcon from '#/icons/icon-minus.svg';
-import PlusIcon from '#/icons/icon-plus.svg';
+import PlusIcon from '#/icons/icon-smallPlus.svg';
 import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';

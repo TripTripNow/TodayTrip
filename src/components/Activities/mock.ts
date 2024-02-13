@@ -261,3 +261,71 @@ export const reviewData: GetReviewsRes = {
   ],
   totalCount: 12,
 };
+
+const data = {
+  title: '원데이 와인 클래스',
+  category: '식음료',
+  description:
+    '내 입맛에 맞는 와인을 하루 만에 찾고 싶다면?\n똑똑한 와인 소비자가 되고 싶다면?\n단순히 마시기만 하던 와인을 이제는 제대로 알고 마시고 싶다면?\n최근 와인이 많이 대중화되고 있지만 생소한 지명, 이름, 품종, 용어 등 아직까지 조금은 어려운 취미인 것 같습니다. 혹시 와인을 좋아하지만 자신 있게 말하기엔 조금 망설여지시나요?\n"잘은 모르지만..."\n"칠레 와인이 가성비가 좋다던데."\n다양한 품종, 스타일, 익숙하지 않은 표현 등은 와인을 더 어렵게 만드는 요소인데요. 전에 맛있게 먹었던 와인을 다시 구매하려면 막상 마트에서 팔지 않거나 가격이 들쑥날쑥한 경험이 있으셨을 거예요.\n본 클래스를 통해 그동안 어렴풋하게 알고 있던 와인 상식과 정보를 2시간의 압축된 강의로 모두 전달해 드릴게요. 와인은 지식도 중요하지만 반드시 우리 생활에 편안하게 다가가야 합니다. 일상에 유용한 꿀팁부터 구매 노하우까지 말이죠!',
+
+  address: ' 서울특별시 중구 삼일대로 343',
+  price: 65000,
+  schedules: [
+    {
+      date: '2024-03-01',
+      startTime: '12:00',
+      endTime: '14:00',
+    },
+    {
+      date: '2024-03-01',
+      startTime: '14:00',
+      endTime: '16:00',
+    },
+    {
+      date: '2024-03-01',
+      startTime: '16:00',
+      endTime: '18:00',
+    },
+    {
+      date: '2024-03-01',
+      startTime: '18:00',
+      endTime: '20:00',
+    },
+    {
+      date: '2024-03-01',
+      startTime: '20:00',
+      endTime: '22:00',
+    },
+    {
+      date: '2024-03-05',
+      startTime: '12:00',
+      endTime: '14:00',
+    },
+    {
+      date: '2024-03-05',
+      startTime: '14:00',
+      endTime: '16:00',
+    },
+    {
+      date: '2024-03-05',
+      startTime: '16:00',
+      endTime: '18:00',
+    },
+    {
+      date: '2024-03-05',
+      startTime: '18:00',
+      endTime: '20:00',
+    },
+    {
+      date: '2024-03-05',
+      startTime: '20:00',
+      endTime: '22:00',
+    },
+  ],
+
+  bannerImageUrl:
+    'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/1-9_7_1707808996351.png',
+  subImageUrls: [
+    'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/1-9_7_1707809035992.png',
+  ],
+};
