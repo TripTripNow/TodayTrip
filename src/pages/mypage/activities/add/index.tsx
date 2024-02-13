@@ -3,6 +3,8 @@ import { ReactElement } from 'react';
 
 import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
+import { postActivities } from '@/api/activities/activities';
+import { PostActivitiesReq } from '@/types/Activities';
 
 export interface IsDateTime {
   date: string;
@@ -15,20 +17,20 @@ function ActivityAdd() {
     mode: 'onBlur',
     defaultValues: {
       title: '',
-      price: '',
+      price: 0,
       address: '',
       category: '',
       description: '',
-      images: {
-        bannerImg: '',
-        subImgs: [],
-      },
+      bannerImageUrl: '',
+      subImageUrls: [],
       schedules: [],
     },
   });
 
   const handleOnSubmit = (data: FieldValues) => {
     if (data) console.log(data);
+    const ActivityData = postActivities(data as PostActivitiesReq);
+    // console.log(ActivityData);
   };
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;

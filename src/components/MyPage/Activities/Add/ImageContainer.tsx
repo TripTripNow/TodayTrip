@@ -3,21 +3,21 @@ import Image from 'next/image';
 import ImgCloseIcon from '#/icons/icon-imgClose.svg';
 import { ChangeEvent, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
-import { Control, FieldValues, useController } from 'react-hook-form';
+import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
 
 interface ImageContainerProps {
   name: string;
   control: Control<FieldValues, any>;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
-function ImageContainer({ name, control }: ImageContainerProps) {
+function ImageContainer({ name, control, setValue }: ImageContainerProps) {
   const { field } = useController({ name, control });
   const value = field.value;
-
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>(value.bannerImg);
-  const [imgSrc, setImgSrc] = useState<string[]>(value.subImgs || []);
+  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>();
+  const [imgSrc, setImgSrc] = useState<string[]>([]);
 
   const handleImgClick = (banner: boolean) => {
     if (banner) {
@@ -33,13 +33,20 @@ function ImageContainer({ name, control }: ImageContainerProps) {
       const selectedFiles = URL.createObjectURL(targetFiles!);
       if (banner) {
         setBannerImgSrc(selectedFiles);
-        field.onChange({ ...value, bannerImg: e.target.files?.[0] });
+        // field.onChange({ ...value, bannerImageUrl: e.target.files?.[0] });
+        setValue('bannerImageUrl', selectedFiles);
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
-        if (field.value && field.value.subImgs) {
-          field.onChange({ ...value, subImgs: [...field.value.subImgs, e.target.files?.[0]] });
+        if (value) {
+          field.onChange([...value, selectedFiles]);
+          console.log('여기');
+          console.log(field.value);
+          // setValue('subImageUrls', [...field.value.subImageUrls, selectedFiles]);
         } else {
-          field.onChange({ ...value, subImgs: [e.target.files?.[0]] });
+          console.log('dd');
+          console.log(value);
+          field.onChange([selectedFiles]);
+          // setValue('subImageUrls', selectedFiles);
         }
       }
     }
@@ -48,7 +55,8 @@ function ImageContainer({ name, control }: ImageContainerProps) {
   const handleImgDelete = (item: number, banner: boolean) => {
     if (banner) {
       setBannerImgSrc(null);
-      field.onChange({ ...value, bannerImgSrc: '' });
+      // field.onChange({ ...value, bannerImageUrl: '' });
+      setValue('bannerImageUrl', '');
       if (bannerImgRef.current) {
         bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
       }
@@ -58,9 +66,13 @@ function ImageContainer({ name, control }: ImageContainerProps) {
         imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
       }
 
-      if (value.subImgs.length === 1) field.onChange({ ...value, subImgs: [] });
+      if (value.length === 1) field.onChange([]);
       else {
-        field.onChange({ ...value, subImgs: field.value.subImgs.filter((_: any, index: number) => index !== item) });
+        field.onChange(value.filter((_: any, index: number) => index !== item));
+        // setValue(
+        //   'subImageUrls',
+        //   field.value.subImageUrls.filter((_: any, index: number) => index !== item),
+        // );
       }
     }
   };

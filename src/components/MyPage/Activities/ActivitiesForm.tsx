@@ -69,7 +69,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
         <ReservationTime name="schedules" control={control} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer control={control} name="images" />
+        <ImageContainer control={control} name="subImageUrls" setValue={setValue} />
         <div className={styles.addButtonWrapper}>
           <button className={styles.addButton}>등록하기</button>
         </div>

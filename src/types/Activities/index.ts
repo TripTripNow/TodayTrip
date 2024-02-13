@@ -1,3 +1,5 @@
+import { FieldValues } from 'react-hook-form';
+
 interface UserInfo {
   id: number;
   nickname: string;
@@ -12,6 +14,22 @@ interface Review {
   rating: number;
   createdAt: string;
   updatedAt: string;
+}
+
+//체험 등록
+export interface PostActivitiesReq extends FieldValues {
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  // price: number;
+  schedules: {
+    date: string;
+    startTime: string;
+    endTime: string;
+  }[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
 }
 
 export type GetReviewsRes = {
