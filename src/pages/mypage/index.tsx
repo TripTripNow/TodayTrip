@@ -1,12 +1,12 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import styles from './MyPage.module.css';
 import { FieldValues, useForm, useFormContext } from 'react-hook-form';
 import Input from '@/components/Input/Input';
 import { passwordCheck } from '@/utils/passwordCheck';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 import Button from '@/components/common/Button/Button';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getUsersMe, patchUsersMe } from '@/api/user/user';
 import { GetUsersMeRes, PatchUsersMeReq } from '@/types/users';
@@ -53,15 +53,17 @@ function MyPage({ userData, type }: MyPageProps) {
   const { handleSubmit, control, setError, reset, resetField } = methods;
   const { isValid } = methods.formState;
   const { getValues } = useFormContext();
+  const queryClient = useQueryClient();
 
   const patchUserMeMutation = useMutation({
     mutationFn: (data: PatchUsersMeReq) => patchUsersMe(data),
     onSuccess: () => {
       toast.success('수정이 완료되었습니다.');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.usersMe] });
       resetField('mypagePassword');
       resetField('mypagePasswordCheck');
     },
-    onError: (e) => {
+    onError: () => {
       toast.error('수정이 실패하였습니다.');
       reset();
     },
