@@ -1,12 +1,11 @@
 import { ChangeEvent, useCallback, useRef, useState } from 'react';
 import styles from './profileInput.module.css';
-import LogoImg from '#/images/img-naver.png';
+import LogoImg from '#/images/img-logo.png';
 import EditIcon from '#/icons/icon-edit.svg';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { postUsersMeImage } from '@/api/user/user';
-import { AxiosError } from 'axios';
 interface ProfileInputProps {
   isProfileBox: boolean;
   isEdit: boolean;
