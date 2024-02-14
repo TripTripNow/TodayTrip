@@ -1,4 +1,3 @@
-import instance from '@/api/axiosInstance';
 import { postSignup } from '@/api/user/user';
 import { AxiosError } from 'axios';
 import NextAuth, { NextAuthOptions } from 'next-auth';
@@ -7,45 +6,65 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 import GoogleProvider from 'next-auth/providers/google';
 import { postAuthLogin } from '@/api/auth';
+import { PostAuthLoginRes } from '@/types/auth';
+
+const handleData = (data: PostAuthLoginRes, type: string) => {
+  const userset = {
+    id: data.user.id,
+    image: data.user.profileImageUrl,
+    name: data.user.nickname,
+    email: data.user.email,
+    type: type,
+  };
+
+  const tokenset = {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
+
+  return {
+    ...tokenset,
+    ...userset,
+  };
+};
 
 const handleSocialLogin = async (profile: any) => {
+  const email = profile.id + '@todaytrip.com';
+  const password = profile.id + 'todaytrip';
+  const nickname = profile.name || '';
+
   try {
-    const req = {
-      email: profile.id + '@todaytrip.com',
-      password: profile.id + 'todaytrip',
-    };
+    const req = { email, password };
     const data = await postAuthLogin(req);
 
-    const userset = {
-      id: data.user.id,
-      image: data.user.profileImageUrl,
-      name: data.user.nickname,
-      email: data.user.email,
-      type: profile.type,
-    };
-
-    const tokenset = {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-    };
-
-    return {
-      ...tokenset,
-      ...userset,
-    };
+    return handleData(data, profile.type);
   } catch (e) {
     if (e instanceof AxiosError) {
-      profile.errorCode = e.response?.status;
-      return {
-        ...profile,
-      };
+      if (e.response && e.response.status === 404) {
+        try {
+          const req = { email, password, nickname };
+          const res = await postSignup(req);
+          // 회원가입 성공한 경우 로그인
+          if (res) {
+            const req = {
+              email: res.email,
+              password: res.password,
+            };
+            const data = await postAuthLogin(req);
+            return handleData(data, profile.type);
+          }
+
+          // 회원가입 실패한 경우 error
+          throw new Error();
+        } catch (e) {
+          profile.isError = true;
+          return { ...profile };
+        }
+      }
     }
-    profile.errorCode = e;
-    return {
-      profile: {
-        ...profile,
-      },
-    };
+    // 예상하지 못한 에러 발생한 경우
+    profile.isError = true;
+    return { ...profile };
   }
 };
 
@@ -121,29 +140,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, credentials }) {
       if (credentials) return true;
-      if (user.errorCode && user.errorCode === 404) {
-        try {
-          const res = await postSignup({
-            email: user.id + '@todaytrip.com',
-            password: user.id + 'todaytrip',
-            nickname: user.name || '',
-          });
-          // 회원가입 성공한 경우 로그인
-          if (res) {
-            const result = await instance.post(`/auth/login`, {
-              email: res.email,
-              password: res.password,
-            });
-            if (result.status !== 201) throw new Error();
-            return true;
-          }
-
-          // 회원가입 실패한 경우 error
-          throw new Error();
-        } catch (e) {
-          console.log(e);
-          return false;
-        }
+      if (user.isError) {
+        return false;
       }
       return true;
     },
@@ -172,6 +170,7 @@ export const authOptions: NextAuthOptions = {
 
   pages: {
     signIn: '/signin',
+    error: '/signin',
   },
 };
 

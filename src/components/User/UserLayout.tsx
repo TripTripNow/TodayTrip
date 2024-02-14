@@ -1,8 +1,10 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode, useEffect } from 'react';
 import styles from './UserLayout.module.css';
 import Link from 'next/link';
 import LogoIcon from '#/icons/icon-logo.svg';
 import SocialLogin from '@/components/User/SocialLogin';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 
 interface UserLayoutProps {
   children: ReactNode;
@@ -12,6 +14,12 @@ interface UserLayoutProps {
 }
 
 function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildren<UserLayoutProps>) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.error === 'AccessDenied') toast.error('로그인 실패');
+  }, [router]);
+
   return (
     <div className={styles.layoutContainer}>
       <Link href="/" className={styles.topContainer}>

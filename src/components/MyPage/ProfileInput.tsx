@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 interface ProfileInputProps {
   isProfileBox: boolean;
   isEdit: boolean;
-  profileImage: string;
+  profileImage: string | null;
 }
 
 function ProfileInput({ isProfileBox, isEdit, profileImage }: ProfileInputProps) {

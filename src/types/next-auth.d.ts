@@ -9,7 +9,7 @@ declare module 'next-auth' {
     } & DefaultSession['user'];
   }
   interface User {
-    errorCode: number;
+    isError: boolean;
     accessToken: JWT;
     refreshToken: JWT;
     nickname: string;

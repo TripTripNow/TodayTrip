@@ -65,9 +65,11 @@ function ProfileMenuBox() {
 
   return (
     <div className={styles.profileBoxContainer}>
-      {data?.user.image && (
-        <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} profileImage={data?.user.image} />
-      )}
+      <ProfileInput
+        isProfileBox={true}
+        isEdit={router.pathname === '/mypage'}
+        profileImage={data?.user.image || null}
+      />
 
       <div className={styles.memuContainer}>
         {MENU_LIST.map((e, index) => {

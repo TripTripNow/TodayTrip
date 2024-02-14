@@ -26,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const userData = {
     email: sessionData?.user.email,
     nickname: sessionData?.user.name,
+    profileImageUrl: sessionData?.user.image,
   };
 
   return {
