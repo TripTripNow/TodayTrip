@@ -9,17 +9,27 @@ import GoogleProvider from 'next-auth/providers/google';
 
 const handleSocialLogin = async (profile: any) => {
   try {
-    const res = await instance.post(`/auth/login`, {
+    const { data } = await instance.post(`/auth/login`, {
       email: profile.id + '@todaytrip.com',
       password: profile.id + 'todaytrip',
     });
-    const tokenset = {
-      accessToken: res.data.accessToken,
-      refreshToken: res.data.refreshToken,
+
+    const userset = {
+      id: data.user.id,
+      image: data.user.profileImageUrl,
+      name: data.user.nickname,
+      email: data.user.email,
+      type: profile.type,
     };
+
+    const tokenset = {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    };
+
     return {
-      ...profile,
       ...tokenset,
+      ...userset,
     };
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -43,7 +53,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
-        profile.nickname = profile.properties.nickname;
+        profile.name = profile.properties.nickname;
         profile.type = 'kakao';
 
         return handleSocialLogin(profile);
@@ -54,7 +64,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
       async profile(profile) {
         profile.id = profile.response.id;
-        profile.nickname = profile.response.nickname;
+        profile.name = profile.response.nickname;
         profile.type = 'naver';
 
         return handleSocialLogin(profile);
@@ -64,7 +74,6 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
-        profile.nickname = profile.name;
         profile.id = profile.sub;
         profile.type = 'google';
 
@@ -115,7 +124,7 @@ export const authOptions: NextAuthOptions = {
           const res = await postSignup({
             email: user.id + '@todaytrip.com',
             password: user.id + 'todaytrip',
-            nickname: user.nickname || '',
+            nickname: user.name || '',
           });
           // 회원가입 성공한 경우 로그인
           if (res) {
@@ -130,6 +139,7 @@ export const authOptions: NextAuthOptions = {
           // 회원가입 실패한 경우 error
           throw new Error();
         } catch (e) {
+          console.log(e);
           return false;
         }
       }
@@ -145,6 +155,7 @@ export const authOptions: NextAuthOptions = {
       session.user.email = token.email;
       session.user.image = token.picture;
       session.user.id = Number(token.sub);
+      console.log('session', session);
       return session;
     },
   },

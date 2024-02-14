@@ -13,5 +13,6 @@ declare module 'next-auth' {
     accessToken: JWT;
     refreshToken: JWT;
     nickname: string;
+    type: string;
   }
 }
