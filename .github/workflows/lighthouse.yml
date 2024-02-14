@@ -45,7 +45,7 @@ jobs:
                 const { summary, jsonPath } = result;
 
                 const details = JSON.parse(fs.readFileSync(jsonPath));
-                
+
                 const { audits } = details;
                 const formatResult = (res) => Math.round(res * 100);
 
@@ -91,9 +91,9 @@ jobs:
                         audits["total-blocking-time"].displayValue
                     }|`,
                     `| ${score(
-                        audits["largest-contentful-pain"].score * 100
-                    )} Largest Contentful Pain | ${
-                        audits["largest-contentful-pain"].displayValue
+                        audits["llargest-contentful-paint"].score * 100
+                    )} Largest Contentful Paint | ${
+                        audits["largest-contentful-pait"].displayValue
                     }|`,
                     `| ${score(
                         audits["cumulative-layout-shift"].score * 100
