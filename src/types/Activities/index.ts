@@ -21,4 +21,6 @@ export type GetReviewsRes = {
   totalCount: number;
 };
 
-interface PostReservationRes extends ReservationBase {}
+export interface PostReservationRes extends ReservationBase {
+  activityId: number;
+}

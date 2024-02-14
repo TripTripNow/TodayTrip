@@ -77,7 +77,7 @@ function MainContent({ data }: MainContentProps) {
       </section>
 
       <hr className={style.hr} />
-      <ReviewList totalRating={data.rating} />
+      <ReviewList totalRating={data.rating} activityId={data.id} />
     </div>
   );
 }

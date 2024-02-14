@@ -10,8 +10,11 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 import { Activity, Time, TimeSlot } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import instance from '@/api/axiosInstance';
+import { PostReservationRes } from '@/types/Activities';
+import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -82,13 +85,35 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setIsModalOpen((prev) => !prev);
   };
 
-  // const reserveMutation = useMutation({
-  //   mutationFn: () =>
-  //     fetchedData<>({
-  //       url: `/activities/${data.id}/reservations`,
-  //     }),
-  // });
-  const handleReserveButtonClick = () => {};
+  const reserveMutation = useMutation({
+    mutationFn: () =>
+      instance.post<PostReservationRes>(`/activities/${data.id}/reservations`, {
+        scheduleId: clickedTimeButtonId,
+        headCount: participantsValue,
+      }),
+    onSuccess: () => {
+      toast('예약이 성공적으로 신청되었습니다!');
+      setDateValue(null);
+      setClickedTimeButtonId(null);
+      setParticipantsValue(1);
+      setFilteredTimes([]);
+      setDateButtonText('날짜 선택하기');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast(error.response?.data.message);
+      }
+      setDateValue(null);
+      setClickedTimeButtonId(null);
+      setParticipantsValue(1);
+      setFilteredTimes([]);
+      setDateButtonText('날짜 선택하기');
+    },
+  });
+
+  const handleReserveButtonClick = () => {
+    reserveMutation.mutate();
+  };
 
   return (
     <>

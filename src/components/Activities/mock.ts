@@ -10,7 +10,7 @@ export const activityData: Activity = {
   price: 10000,
   address: '서울 중구 삼일대로 343 대신파이낸스센터 8층',
   bannerImageUrl: '/images/a.png',
-  subImageUrls: [
+  subImages: [
     {
       id: 1,
       imageUrl: '/images/flower.png',

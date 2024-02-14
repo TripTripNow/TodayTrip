@@ -1,26 +1,35 @@
 import styles from './ReviewList.module.css';
 import style from '@/pages/activities/[id]/Activity.module.css';
-import { reviewData } from '@/components/Activities/mock';
 import StarIcon from '#/icons/icon-star.svg';
 import EmptyStarIcon from '#/icons/icon-littleEmptyStar.svg';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import determineSatisfaction from '@/utils/determineSatisfaction';
-
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import instance from '@/api/axiosInstance';
+import { GetReviewsRes } from '@/types/Activities';
+import LogoIcon from '#/icons/icon-logoMark.png';
 const RATINGS = [1, 2, 3, 4, 5];
 
-function ReviewList({ totalRating }: { totalRating: number }) {
-  const { reviews, totalCount } = reviewData;
-
+function ReviewList({ totalRating, activityId }: { totalRating: number; activityId: number }) {
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const slicedReviews = reviews.slice(3 * currentPageNumber - 3, 3 * currentPageNumber);
-  const totalPages = Math.ceil(totalCount / 3);
 
   const handlePaginationByClick = (num: number) => {
     setCurrentPageNumber(num);
   };
+
+  const { data: reviewData } = useQuery<GetReviewsRes>({
+    queryKey: ['reviews', currentPageNumber],
+    queryFn: () => instance.get(`/activities/${activityId}/reviews?page=${currentPageNumber}&size=3`),
+    placeholderData: keepPreviousData,
+  });
+
+  if (!reviewData) return;
+
+  const { reviews, totalCount } = reviewData;
+  const totalPages = Math.ceil(totalCount / 3);
 
   return (
     <section className={styles.reviewListContainer}>
@@ -36,12 +45,12 @@ function ReviewList({ totalRating }: { totalRating: number }) {
         </div>
       </div>
       <div className={styles.reviewListWrapper}>
-        {slicedReviews.map((review, index) => (
-          <>
-            <div key={review.id} className={styles.reviewWrapper}>
+        {reviews.map((review, index) => (
+          <Fragment key={review.id}>
+            <div className={styles.reviewWrapper}>
               <Image
                 style={{ borderRadius: '100%' }}
-                src={review.user.profileImageUrl}
+                src={review.user.profileImageUrl ?? LogoIcon}
                 width={45}
                 height={45}
                 alt="프로필 이미지"
@@ -65,8 +74,8 @@ function ReviewList({ totalRating }: { totalRating: number }) {
                 <p className={styles.reviewContent}>{review.content}</p>
               </div>
             </div>
-            {index !== slicedReviews.length - 1 && <hr className={style.hr} />}
-          </>
+            {index !== reviews.length - 1 && <hr className={style.hr} />}
+          </Fragment>
         ))}
       </div>
       <Pagination

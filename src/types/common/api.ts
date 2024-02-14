@@ -20,7 +20,7 @@ export interface Activity {
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
-  subImageUrls?: SubImageUrl[];
+  subImages?: SubImageUrl[];
 }
 
 interface ActivityInfo {
