@@ -2,8 +2,8 @@ module.exports = {
   ci: {
     collect: {
       startServerCommand: 'npm run dev',
-      url: ['http://localhost:3000'],
-      numberOfRuns: 1,
+      url: ['http://localhost:3000/mypage'],
+      numberOfRuns: 3,
     },
     settings: {
       preset: 'desktop',
