@@ -1,17 +1,45 @@
-import { ReactElement, useEffect, useState } from 'react';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { RESERVATION_STATUS } from '@/constants/reservation';
-import { ReserveFilterOption } from '@/types/dropdown';
-import styles from './Reservations.module.css';
 import Card from '@/components/MyPage/Reservations/Card/Card';
 import { reservations } from '@/components/MyPage/Reservations/mock';
+import { RESERVATION_STATUS } from '@/constants/reservation';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
+import { ReserveFilterOption } from '@/types/dropdown';
+import { ReactElement, useEffect, useState } from 'react';
+import styles from './Reservations.module.css';
+
+import { setContext } from '@/api/axiosInstance';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getMyReservations } from '@/pages/api/reservations';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  setContext(context);
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.myReservations],
+    queryFn: () => getMyReservations(),
+  });
+
+  return {
+    props: { dehydratedState: dehydrate(queryClient) },
+  };
+};
 
 function Reservation() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
   const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
+
+  const { data } = useQuery({
+    queryKey: [QUERY_KEYS.myReservations],
+    queryFn: () => getMyReservations(),
+  });
+
+  console.log(data);
 
   useEffect(() => {
     if (isVisible) {
