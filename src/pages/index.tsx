@@ -9,13 +9,14 @@ import Banner from '@/components/Home/Banner/Banner';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
 import useDeviceType from '@/hooks/common/useDeviceType';
 import NoResult from '@/components/common/NoResult/NoResult';
-import { getActivities } from '@/api/activities/activities';
+import { getActivities } from '@/api/activities';
 import { GetActivitiesParam, GetActivitiesRes } from '@/types/activities';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import styles from './Home.module.css';
 import { PriceFilterOption } from '@/types/dropdown';
 import { Category } from '@/types/common/api';
+import toast from 'react-hot-toast';
 
 const calculateLimit = (deviceType: string | undefined) => {
   switch (deviceType) {

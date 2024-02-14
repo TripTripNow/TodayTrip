@@ -8,7 +8,7 @@ import CheckboxInput from '@/components/Input/CheckboxInput';
 import { passwordCheck } from '@/utils/passwordCheck';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { postSignup } from '@/api/user/user';
+import { postSignup } from '@/api/user';
 import { SignupData } from '@/types/user';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';

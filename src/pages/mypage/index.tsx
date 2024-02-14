@@ -8,7 +8,7 @@ import ProfileInput from '@/components/MyPage/ProfileInput';
 import Button from '@/components/common/Button/Button';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getUsersMe } from '@/api/user/user';
+import { getUsersMe } from '@/api/user';
 import { GetUsersMeRes } from '@/types/users';
 import { GetServerSideProps } from 'next';
 import { setContext } from '@/api/axiosInstance';

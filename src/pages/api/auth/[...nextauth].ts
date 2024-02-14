@@ -1,5 +1,5 @@
 import instance from '@/api/axiosInstance';
-import { postSignup } from '@/api/user/user';
+import { postSignup } from '@/api/user';
 import { AxiosError } from 'axios';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';

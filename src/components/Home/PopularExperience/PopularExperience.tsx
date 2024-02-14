@@ -5,7 +5,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Card from '@/components/Home/Card/Card';
-import { getActivities } from '@/api/activities/activities';
+import { getActivities } from '@/api/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
