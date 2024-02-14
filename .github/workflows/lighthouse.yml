@@ -76,11 +76,6 @@ jobs:
                         audits["first-contentful-paint"].displayValue
                     }|`,
                     `| ${score(
-                        audits["time-to-interactive"].score * 100
-                    )} Time to Interactive | ${
-                        audits["time-to-interactive"].displayValue
-                    }|`,
-                    `| ${score(
                         audits["speed-index"].score * 100
                     )} SpeedIndex | ${
                         audits["speed-index"].displayValue
