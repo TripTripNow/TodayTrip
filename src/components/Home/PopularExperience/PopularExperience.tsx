@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import toast from 'react-hot-toast';
 
 import Card from '@/components/Home/Card/Card';
 import { getActivities } from '@/api/activities';
@@ -15,7 +16,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   const [slideIndex, setSlideIndex] = useState(0);
   const splideRef = useRef(null);
   const [cursorId, setCursorId] = useState<number | null | undefined>();
-  const { data, refetch } = useQuery({
+  const { data, refetch, isError } = useQuery({
     queryKey: [QUERY_KEYS.popularActivities],
     queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 4, cursorId }),
   });
@@ -41,6 +42,7 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
   useEffect(() => {
     setCardData((prev) => [...prev, ...(data?.activities ?? [])]);
     setCursorId(data?.cursorId);
+    if (isError) toast.error('데이터를 불러오지 못했습니다.');
   }, [data]);
 
   return (

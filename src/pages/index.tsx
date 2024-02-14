@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import PopularExperience from '@/components/Home/PopularExperience/PopularExperience';
 import Searchbar from '@/components/Home/Searchbar/Searchbar';
@@ -13,10 +14,9 @@ import { getActivities } from '@/api/activities';
 import { GetActivitiesParam, GetActivitiesRes } from '@/types/activities';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
-import styles from './Home.module.css';
 import { PriceFilterOption } from '@/types/dropdown';
 import { Category } from '@/types/common/api';
-import toast from 'react-hot-toast';
+import styles from './Home.module.css';
 
 const calculateLimit = (deviceType: string | undefined) => {
   switch (deviceType) {
@@ -52,7 +52,7 @@ function Home() {
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isError } = useQuery({
     queryKey: [QUERY_KEYS.allActivities],
     queryFn: () =>
       getActivities({
@@ -150,6 +150,7 @@ function Home() {
 
   useEffect(() => {
     if (data) setCardData(data.activities);
+    if (isError) toast.error('데이터를 불러오지 못했습니다.');
   }, [data]);
 
   const searchedByNoData = searchResult && cardData.length === 0; // 검색 시 데이터가 없는 경우
