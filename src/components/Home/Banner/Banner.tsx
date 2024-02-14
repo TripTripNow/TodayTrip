@@ -86,7 +86,7 @@ function Carousel() {
         {BANNER.map((data) => (
           <div key={data.id} className={styles.bannerContainer}>
             <div className={styles.background}></div>
-            <Image src={data.src} alt={String(data.id)} fill />
+            <Image src={data.src} alt={String(data.id)} fill priority />
             <div className={styles.textContainer}>
               <h1>{data.title}</h1>
               <pre>{data.description}</pre>
