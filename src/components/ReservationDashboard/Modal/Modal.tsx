@@ -3,11 +3,14 @@ import clsx from 'clsx';
 
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
-import { RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import { GetReservedScheduleRes } from '@/types/myActivities';
 import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
+import { DailyReservationStatusCount } from '@/types/common/api';
+import { useQuery } from '@tanstack/react-query';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getReservationsByTime } from '@/api/myActivities/myActivities';
 
 interface ModalProps {
   handleModalClose: () => void;
@@ -19,6 +22,39 @@ interface ModalProps {
 interface ModalTabProps {
   handleStatus: (val: string) => void;
   tabStatus: string;
+  item: DailyReservationStatusCount | undefined;
+}
+
+function Modal({ handleModalClose, date, activityId, items }: ModalProps) {
+  const INITIAL_DROPDOWN_ITEM = {
+    id: items ? items[0].scheduleId : 0,
+    title: items ? `${items[0].startTime} ~ ${items[0].endTime}` : '0',
+  };
+  const [dropdownItem, setDropdownItem] = useState(INITIAL_DROPDOWN_ITEM);
+  const [tabStatus, setTabStatus] = useState('pending');
+
+  const handleStatus = (status: string) => {
+    setTabStatus(status);
+  };
+
+  const selectedItem = items.find((item) => item.scheduleId === dropdownItem.id);
+
+  return (
+    <ModalLayout handleModalClose={handleModalClose}>
+      <div className={styles.container}>
+        <ModalHeader handleModalClose={handleModalClose} />
+        <ModalTab handleStatus={handleStatus} tabStatus={tabStatus} item={selectedItem?.count} />
+        <ModalContent
+          setDropdownItem={setDropdownItem}
+          items={items}
+          dropdownItem={dropdownItem.id !== 0 ? INITIAL_DROPDOWN_ITEM : dropdownItem}
+          date={date}
+          tabStatus={tabStatus}
+          activityId={activityId}
+        />
+      </div>
+    </ModalLayout>
+  );
 }
 
 function ModalHeader({ handleModalClose }: Pick<ModalProps, 'handleModalClose'>) {
@@ -32,8 +68,8 @@ function ModalHeader({ handleModalClose }: Pick<ModalProps, 'handleModalClose'>)
   );
 }
 
-function ModalTab({ handleStatus, tabStatus }: ModalTabProps) {
-  const item = RESERVATION_DETAILS_MONTH_DECLIEND_MOCK_DATA;
+function ModalTab({ handleStatus, tabStatus, item }: ModalTabProps) {
+  if (!item) return null;
 
   return (
     <div className={styles.tabWrapper}>
@@ -45,43 +81,13 @@ function ModalTab({ handleStatus, tabStatus }: ModalTabProps) {
               {CALENDAR_MODAL_MAP[status]}
             </span>
             <span className={clsx(status === tabStatus ? styles.tabTextEnabled : styles.tabTextDisabled)}>
-              {item[0].reservations[status]}
+              {item[status]}
             </span>
             {status === tabStatus && <div className={styles.tabEnabledStroke}></div>}
           </div>
         </div>
       ))}
     </div>
-  );
-}
-
-function Modal({ handleModalClose, date, activityId, items }: ModalProps) {
-  const INITIAL_DROPDOWN_ITEM = {
-    id: items[0].scheduleId,
-    title: `${items[0].startTime} ~ ${items[0].endTime}`,
-  };
-
-  const [dropdownItem, setDropdownItem] = useState(INITIAL_DROPDOWN_ITEM);
-  const [tabStatus, setTabStatus] = useState('pending');
-
-  const handleStatus = (status: string) => {
-    setTabStatus(status);
-  };
-
-  return (
-    <ModalLayout handleModalClose={handleModalClose}>
-      <div className={styles.container}>
-        <ModalHeader handleModalClose={handleModalClose} />
-        <ModalTab handleStatus={handleStatus} tabStatus={tabStatus} />
-        <ModalContent
-          setDropdownItem={setDropdownItem}
-          items={items}
-          dropdownItem={dropdownItem}
-          date={date}
-          tabStatus={tabStatus}
-        />
-      </div>
-    </ModalLayout>
   );
 }
 

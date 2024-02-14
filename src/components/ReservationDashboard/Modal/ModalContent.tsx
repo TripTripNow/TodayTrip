@@ -10,6 +10,9 @@ import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import NoResult from '@/components/common/NoResult/NoResult';
 import { GetReservedScheduleRes } from '@/types/myActivities';
 import styles from './ModalContent.module.css';
+import { useQuery } from '@tanstack/react-query';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getReservationsByTime } from '@/api/myActivities/myActivities';
 
 interface ModalContentProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
@@ -17,13 +20,18 @@ interface ModalContentProps {
   dropdownItem: DropdownItems;
   date: string;
   tabStatus: string;
+  activityId: number;
 }
 
-function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }: ModalContentProps) {
-  const scheduleId = items.find((item) => {
-    const [startTime, endTime] = dropdownItem.title.split(' ~ ');
-    if (item.startTime === startTime && item.endTime === endTime) return item;
-  })?.scheduleId;
+function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus, activityId }: ModalContentProps) {
+  const [cursorId, setCursorId] = useState();
+  const { data } = useQuery({
+    queryKey: [QUERY_KEYS.timeReservation],
+    queryFn: () =>
+      getReservationsByTime({ activityId, cursorId, size: 3, scheduleId: dropdownItem.id, status: tabStatus }),
+  });
+
+  console.log('데이터', data);
 
   const cardItems = RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA.reservations;
 
@@ -32,7 +40,7 @@ function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }:
       {items ? (
         <>
           <ReservationDate setDropdownItem={setDropdownItem} items={items} dropdownItem={dropdownItem} date={date} />
-          <ReservationDetails items={cardItems} tabStatus={tabStatus} />
+          <ReservationDetails items={data?.reservations} tabStatus={tabStatus} />
         </>
       ) : (
         <NoResult text="예약 정보가 없습니다." />
@@ -44,7 +52,7 @@ function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus }:
 export default ModalContent;
 
 function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Omit<ModalContentProps, 'tabStatus'>) {
-  const showDateArr = date.split('.');
+  const showDateArr = date.split('-');
 
   const timeItems = items.map((item) => {
     return {
