@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { postUsersMeImage } from '@/api/user/user';
+import toast from 'react-hot-toast';
 interface ProfileInputProps {
   isProfileBox: boolean;
   isEdit: boolean;
@@ -24,7 +25,7 @@ function ProfileInput({ isProfileBox, isEdit, profileImage }: ProfileInputProps)
       setValue('profileImageUrl', data);
     },
     onError: () => {
-      alert('문제가 발생했습니다. 다시 시도해주세요.');
+      toast.error('문제가 발생했습니다. 다시 시도해주세요.');
       setImageSrc(profileImage);
     },
   });
