@@ -86,9 +86,9 @@ jobs:
                         audits["total-blocking-time"].displayValue
                     }|`,
                     `| ${score(
-                        audits["llargest-contentful-paint"].score * 100
+                        audits["largest-contentful-paint"].score * 100
                     )} Largest Contentful Paint | ${
-                        audits["largest-contentful-pait"].displayValue
+                        audits["largest-contentful-paint"].displayValue
                     }|`,
                     `| ${score(
                         audits["cumulative-layout-shift"].score * 100
