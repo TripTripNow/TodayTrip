@@ -74,4 +74,4 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.createComment(${{steps.format_lighthouse_score.outputs.comments}})
+            github.issues.createComment({${{steps.format_lighthouse_score.outputs.comments}}})
