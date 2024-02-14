@@ -8,10 +8,9 @@ import ProfileInput from '@/components/MyPage/ProfileInput';
 import Button from '@/components/common/Button/Button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getUsersMe, patchUsersMe } from '@/api/user/user';
+import { patchUsersMe } from '@/api/user/user';
 import { GetUsersMeRes, PatchUsersMeReq } from '@/types/users';
 import { GetServerSideProps } from 'next';
-import { setContext } from '@/api/axiosInstance';
 import { getSession } from 'next-auth/react';
 import { SOCIAL_EMAIL_CONTENT } from '@/constants/user';
 import toast from 'react-hot-toast';
@@ -22,17 +21,12 @@ interface MyPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  setContext(context);
-
-  let userData;
   const sessionData = await getSession(context);
   const type = sessionData?.user.type || 'credentials';
-
-  try {
-    userData = await getUsersMe();
-  } catch (e) {
-    console.error(e);
-  }
+  const userData = {
+    email: sessionData?.user.email,
+    nickname: sessionData?.user.name,
+  };
 
   return {
     props: { userData, type },

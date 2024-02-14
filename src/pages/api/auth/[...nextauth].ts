@@ -81,14 +81,23 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials): Promise<any> {
         try {
-          const data = {
+          const loginData = {
             email: credentials?.email,
             password: credentials?.password,
           };
 
-          const res = await instance.post(`/auth/login`, data);
+          const { data } = await instance.post(`/auth/login`, loginData);
+          const { user } = data;
           return (
-            { accessToken: res.data.accessToken, refreshToken: res.data.refreshToken, type: 'credentials' } || null
+            {
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+              type: 'credentials',
+              id: user.id,
+              image: user.profileImageUrl,
+              name: user.nickname,
+              email: user.email,
+            } || null
           );
         } catch (e: unknown) {
           if (e instanceof AxiosError) {
@@ -127,17 +136,15 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-      }
-
       return { ...token, ...user };
     },
     async session({ session, token }) {
       if (typeof token.type === 'string') session.user.type = token.type;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
+      session.user.email = token.email;
+      session.user.image = token.picture;
+      session.user.id = Number(token.sub);
       return session;
     },
   },

@@ -6,10 +6,7 @@ import ActivitiesIcon from '#/icons/icon-activities.svg';
 import DashboardIcon from '#/icons/icon-dashboard.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
-import { GetUsersMeRes } from '@/types/users';
-import { useQuery } from '@tanstack/react-query';
-import { getUsersMe } from '@/api/user/user';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { useSession } from 'next-auth/react';
 
 const MENU_LIST = [
   {
@@ -42,10 +39,7 @@ function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
   const [selectedMenu, setSelectedMenu] = useState<string>();
-  const { data, isSuccess } = useQuery<GetUsersMeRes>({
-    queryKey: [QUERY_KEYS.usersMe],
-    queryFn: () => getUsersMe(),
-  });
+  const { data } = useSession();
 
   useEffect(() => {
     setSelectedMenu(
@@ -71,8 +65,8 @@ function ProfileMenuBox() {
 
   return (
     <div className={styles.profileBoxContainer}>
-      {isSuccess && (
-        <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} profileImage={data.profileImageUrl} />
+      {data?.user.image && (
+        <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} profileImage={data?.user.image} />
       )}
 
       <div className={styles.memuContainer}>
