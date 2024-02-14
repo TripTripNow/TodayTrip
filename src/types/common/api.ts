@@ -2,6 +2,18 @@ import { RESERVATION_STATUS } from '@/constants/reservation';
 
 export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
 
+export interface MonthlyReservationStatusCount {
+  completed: number;
+  confirmed: number;
+  pending: number;
+}
+
+export interface DailyReservationStatusCount {
+  declined: number;
+  confirmed: number;
+  pending: number;
+}
+
 interface SubImageUrl {
   id: number;
   imageUrl: string;
