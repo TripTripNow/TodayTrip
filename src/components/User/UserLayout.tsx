@@ -17,7 +17,7 @@ function UserLayout({ children, memberStatus, link, linkTitle }: PropsWithChildr
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.error === 'AccessDenied') toast.error('로그인 실패');
+    if (router.query.error === 'AccessDenied') toast.error('로그인이 실패하였습니다.');
   }, [router]);
 
   return (
