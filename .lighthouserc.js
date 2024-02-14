@@ -5,15 +5,21 @@ module.exports = {
       url: ['http://localhost:3000'],
       numberOfRuns: 5,
     },
-    upload: [
-      {
-        target: 'filesystem',
-        outputDir: './lhci_reports',
-        reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
+    settings: {
+      preset: 'desktop',
+    },
+    upload: {
+      target: 'filesystem',
+      outputDir: './lhci_reports',
+      reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['warn', { minScore: 0.9 }],
+        'categories:accessibility': ['warn', { minScore: 0.9 }],
+        'categories:best-practices': ['warn', { minScore: 0.9 }],
+        'categories:seo': ['warn', { minScore: 0.9 }],
       },
-      {
-        target: 'temporary-public-storage',
-      },
-    ],
+    },
   },
 };

@@ -6,6 +6,9 @@ jobs:
   lhci:
     name: Lighthouse CI
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -17,18 +20,20 @@ jobs:
 
       - name: Install packages
         run: |
-          npm ci
+          npm ci && npm install -g @lhci/cli
+        working-directory: ${{ env.working-directory }}
 
       - name: Build
         run: |
           npm run build
+        working-directory: ${{ env.working-directory }}
 
       - name: Run Lighthouse CI
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
-          npm install -g @lhci/cli
           lhci autorun || echo "Fail to Run Lighthouse CI!"
+        working-directory: ${{ env.working-directory }}
 
       - name: Format lighthouse score
         id: format_lighthouse_score
