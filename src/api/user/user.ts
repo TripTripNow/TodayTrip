@@ -1,8 +1,7 @@
 import instance from '@/api/axiosInstance';
-import { SignupData } from '@/types/user';
-import { PatchUsersMeReq } from '@/types/users';
+import { PatchUsersMeReq, PatchUsersMeRes, PostSignupReq } from '@/types/users';
 
-export const postSignup = async (userData: SignupData) => {
+export const postSignup = async (userData: PostSignupReq) => {
   await instance.post(`/users`, userData);
   return {
     email: userData.email,
@@ -11,22 +10,18 @@ export const postSignup = async (userData: SignupData) => {
 };
 
 export const getUsersMe = async () => {
-  const res = await instance.get('/users/me');
-
-  return res.data;
+  return await instance.get('/users/me');
 };
 
 export const patchUsersMe = async (userData: PatchUsersMeReq) => {
-  const res = await instance.patch('/users/me', userData);
-
-  return res.data;
+  const data: PatchUsersMeRes = await instance.patch('/users/me', userData);
+  return data;
 };
 
 export const postUsersMeImage = async (image: FormData) => {
-  const res = await instance.post('/users/me/image', image, {
+  return await instance.post('/users/me/image', image, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return res.data;
 };

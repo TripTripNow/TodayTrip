@@ -11,7 +11,7 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { patchUsersMe } from '@/api/user/user';
 import { GetUsersMeRes, PatchUsersMeReq } from '@/types/users';
 import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { SOCIAL_EMAIL_CONTENT } from '@/constants/user';
 import toast from 'react-hot-toast';
 
@@ -48,10 +48,12 @@ function MyPage({ userData, type }: MyPageProps) {
   const { isValid } = methods.formState;
   const { getValues } = useFormContext();
   const queryClient = useQueryClient();
+  const { update } = useSession();
 
   const patchUserMeMutation = useMutation({
     mutationFn: (data: PatchUsersMeReq) => patchUsersMe(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      update({ image: data.profileImageUrl, name: data.nickname });
       toast.success('수정이 완료되었습니다.');
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.usersMe] });
       resetField('mypagePassword');

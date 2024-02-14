@@ -6,13 +6,15 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 import GoogleProvider from 'next-auth/providers/google';
+import { postAuthLogin } from '@/api/auth';
 
 const handleSocialLogin = async (profile: any) => {
   try {
-    const { data } = await instance.post(`/auth/login`, {
+    const req = {
       email: profile.id + '@todaytrip.com',
       password: profile.id + 'todaytrip',
-    });
+    };
+    const data = await postAuthLogin(req);
 
     const userset = {
       id: data.user.id,
@@ -90,12 +92,12 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials): Promise<any> {
         try {
-          const loginData = {
-            email: credentials?.email,
-            password: credentials?.password,
+          const req = {
+            email: credentials?.email || '',
+            password: credentials?.password || '',
           };
 
-          const { data } = await instance.post(`/auth/login`, loginData);
+          const data = await postAuthLogin(req);
           const { user } = data;
           return (
             {
@@ -145,7 +147,11 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session.image && session.name) {
+        token.picture = session.image;
+        token.name = session.name;
+      }
       return { ...token, ...user };
     },
     async session({ session, token }) {
@@ -155,7 +161,6 @@ export const authOptions: NextAuthOptions = {
       session.user.email = token.email;
       session.user.image = token.picture;
       session.user.id = Number(token.sub);
-      console.log('session', session);
       return session;
     },
   },

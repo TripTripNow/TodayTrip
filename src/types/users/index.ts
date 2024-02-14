@@ -10,3 +10,14 @@ export interface PatchUsersMeReq {
   profileImageUrl?: string;
   newPassword?: string;
 }
+
+export interface PatchUsersMeRes {
+  profileImageUrl: string;
+  nickname: string;
+}
+
+export interface PostSignupReq {
+  email: string;
+  nickname: string;
+  password: string;
+}
