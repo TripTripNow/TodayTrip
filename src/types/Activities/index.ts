@@ -1,3 +1,5 @@
+import { ReservationBase } from '@/types/common/api';
+
 interface UserInfo {
   id: number;
   nickname: string;
@@ -18,3 +20,5 @@ export type GetReviewsRes = {
   reviews: Review[];
   totalCount: number;
 };
+
+interface PostReservationRes extends ReservationBase {}

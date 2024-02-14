@@ -42,7 +42,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   function (response) {
-    return response;
+    return response.data;
   },
   async (error) => {
     const { config, response } = error;
@@ -75,12 +75,5 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export const fetchedData = async <T>(config: AxiosRequestConfig) => {
-  const response = await instance({ ...config });
-  const { data }: { data: T } = response;
-
-  return data;
-};
 
 export default instance;

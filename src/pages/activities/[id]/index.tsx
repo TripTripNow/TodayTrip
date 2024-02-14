@@ -1,12 +1,10 @@
 import Header from '@/components/Activities/Header/Header';
 import styles from './Activity.module.css';
 import MainContent from '@/components/Activities/MainContent/MainContent';
-import { activityData } from '@/components/Activities/mock';
 import ReservationDateTimePicker from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import instance, { fetchedData } from '@/api/axiosInstance';
+import instance from '@/api/axiosInstance';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { Activity } from '@/types/common/api';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -14,17 +12,17 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchQuery<Activity>({
     queryKey: ['activity', activityId],
-    queryFn: () => fetchedData<Activity>({ url: `/activities/${activityId}` }),
+    queryFn: () => instance.get(`/activities/${activityId}`),
   });
   return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 
 function ActivityID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: activityData } = useQuery({
+  const { data: activityData } = useQuery<Activity>({
     queryKey: ['activity', activityId],
-    queryFn: () => fetchedData<Activity>({ url: `/activities/${activityId}` }),
+    queryFn: () => instance.get(`/activities/${activityId}`),
   });
 
   if (!activityData) return;

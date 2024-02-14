@@ -50,7 +50,7 @@ function Header({ data }: { data: Activity }) {
           </button>
           {isKebabOpen && (
             <div className={styles.options}>
-              <Link href="/mypage/activities/[id]/edit">
+              <Link href={`/mypage/activities/${data.id}/edit`}>
                 <button className={styles.option}>수정하기</button>
               </Link>
 
