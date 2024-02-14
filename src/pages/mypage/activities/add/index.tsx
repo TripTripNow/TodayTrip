@@ -5,6 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { postActivities } from '@/api/activities/activities';
 import { PostActivitiesReq } from '@/types/Activities';
+import { useRouter } from 'next/router';
 
 export interface IsDateTime {
   date: string;
@@ -13,6 +14,7 @@ export interface IsDateTime {
 }
 
 function ActivityAdd() {
+  const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -27,10 +29,16 @@ function ActivityAdd() {
     },
   });
 
-  const handleOnSubmit = (data: FieldValues) => {
-    if (data) console.log(data);
-    const ActivityData = postActivities(data as PostActivitiesReq);
-    // console.log(ActivityData);
+  const handleOnSubmit = async (data: FieldValues) => {
+    data.price = Number(data.price.replace(/,/g, ''));
+    try {
+      const result = await postActivities(data as PostActivitiesReq);
+      if (result === 201) {
+        router.push('/mypage/activities');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;

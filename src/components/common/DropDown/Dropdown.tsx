@@ -21,7 +21,8 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsOpen((prev) => !prev);
   };
 

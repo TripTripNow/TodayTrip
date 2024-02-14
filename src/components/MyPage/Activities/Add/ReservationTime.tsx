@@ -22,7 +22,13 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
 
-  const handleAddButton = (isSelectedDate: string, startTime: string, endTime: string) => {
+  const handleAddButton = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    isSelectedDate: string,
+    startTime: string,
+    endTime: string,
+  ) => {
+    e.preventDefault();
     if (!startTime || !endTime || !isSelectedDate) {
       toast('날짜, 시간을 선택해 주세요.');
       return;
@@ -74,7 +80,7 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
               <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
           </div>
-          <button onClick={() => handleAddButton(isSelectedDate, startTimeItem.title, endTimeItem.title)}>
+          <button onClick={(e) => handleAddButton(e, isSelectedDate, startTimeItem.title, endTimeItem.title)}>
             <PlusButtonIcon className={styles.datePlusButton} alt="플러스 버튼" width={56} height={56} />
           </button>
         </div>

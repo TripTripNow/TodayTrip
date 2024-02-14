@@ -4,6 +4,7 @@ import ImgCloseIcon from '#/icons/icon-imgClose.svg';
 import { ChangeEvent, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
 import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
+import instance from '@/api/axiosInstance';
 
 interface ImageContainerProps {
   name: string;
@@ -31,22 +32,25 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
     if (e.target && e.target.files?.length !== 0) {
       const targetFiles = e.target.files?.[0];
       const selectedFiles = URL.createObjectURL(targetFiles!);
+
+      const formData = new FormData();
+      formData.append('image', targetFiles!);
+      const response = await instance.post('/activities/image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const imageUrl = response.data.activityImageUrl;
+
       if (banner) {
         setBannerImgSrc(selectedFiles);
-        // field.onChange({ ...value, bannerImageUrl: e.target.files?.[0] });
-        setValue('bannerImageUrl', selectedFiles);
+        setValue('bannerImageUrl', imageUrl);
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
         if (value) {
-          field.onChange([...value, selectedFiles]);
-          console.log('여기');
-          console.log(field.value);
-          // setValue('subImageUrls', [...field.value.subImageUrls, selectedFiles]);
+          field.onChange([...value, imageUrl]);
         } else {
-          console.log('dd');
-          console.log(value);
-          field.onChange([selectedFiles]);
-          // setValue('subImageUrls', selectedFiles);
+          field.onChange([imageUrl]);
         }
       }
     }
@@ -55,7 +59,6 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
   const handleImgDelete = (item: number, banner: boolean) => {
     if (banner) {
       setBannerImgSrc(null);
-      // field.onChange({ ...value, bannerImageUrl: '' });
       setValue('bannerImageUrl', '');
       if (bannerImgRef.current) {
         bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
@@ -69,10 +72,6 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
       if (value.length === 1) field.onChange([]);
       else {
         field.onChange(value.filter((_: any, index: number) => index !== item));
-        // setValue(
-        //   'subImageUrls',
-        //   field.value.subImageUrls.filter((_: any, index: number) => index !== item),
-        // );
       }
     }
   };

@@ -22,7 +22,7 @@ export interface PostActivitiesReq extends FieldValues {
   category: string;
   description: string;
   address: string;
-  // price: number;
+  price: number;
   schedules: {
     date: string;
     startTime: string;
@@ -30,6 +30,14 @@ export interface PostActivitiesReq extends FieldValues {
   }[];
   bannerImageUrl: string;
   subImageUrls: string[];
+}
+
+//체험 이미지 url 생성
+export interface PostActivitiesImageReq {
+  image: string;
+}
+export interface PostActivitiesImageRes {
+  profileImageUrl: string;
 }
 
 export type GetReviewsRes = {

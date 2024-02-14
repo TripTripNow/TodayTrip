@@ -33,7 +33,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
 
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     //이벤트가 발생한 요소가 <textarea>외에서는 enter 막음
-    if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
+    if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement) && !(e.target instanceof Dropdown)) {
       e.preventDefault();
     }
   };
