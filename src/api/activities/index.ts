@@ -12,15 +12,12 @@ export const getActivities = async ({
   sort = 'latest',
   page = 1,
   size = 9,
-}: GetActivitiesParam) => {
+}: GetActivitiesParam): Promise<GetActivitiesRes> => {
   let path = '';
   if (cursorId) path += `&cursorId=${cursorId}`;
   if (category) path += `&category=${category}`;
   if (keyword) path += `&keyword=${keyword}`;
   if (sort) path += `&sort=${sort}`;
 
-  const { data } = await instance.get<GetActivitiesRes>(
-    `/activities?method=${method}&page=${page}&size=${size}${path}`,
-  );
-  return data;
+  return await instance.get(`/activities?method=${method}&page=${page}&size=${size}${path}`);
 };
