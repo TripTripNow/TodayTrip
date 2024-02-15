@@ -66,3 +66,7 @@ export interface TimeSlot {
   times: Time[];
   date: string;
 }
+
+export interface ActivityId {
+  activityId: number;
+}

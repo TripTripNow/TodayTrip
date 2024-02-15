@@ -7,10 +7,16 @@ import Image from 'next/image';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { Activity } from '@/types/common/api';
 import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
+import { deleteMyActivity } from '@/api/myActivities';
+import toast from 'react-hot-toast';
+import instance from '@/api/axiosInstance';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 
 function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
-
+  const router = useRouter();
   const handleKebabBlur = () => {
     setTimeout(() => {
       setIsKebabOpen(false);
@@ -25,6 +31,23 @@ function Header({ data }: { data: Activity }) {
 
   const handleDeleteModalToggle = () => {
     setIsDeleteModalOpen((prev) => !prev);
+  };
+
+  const deleteActivityMutation = useMutation({
+    mutationFn: () => deleteMyActivity({ activityId: data.id }),
+    onSuccess: () => {
+      toast.success('체험이 성공적으로 삭제되었습니다.');
+      router.push('/');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
+  });
+
+  const handleDeleteActivity = () => {
+    deleteActivityMutation.mutate();
   };
 
   return (
@@ -82,7 +105,7 @@ function Header({ data }: { data: Activity }) {
       {isDeleteModalOpen && (
         <AlertModal
           handleModalClose={handleDeleteModalToggle}
-          handleCancel={handleDeleteModalToggle}
+          handleActionButtonClick={handleDeleteActivity}
           buttonText="삭제하기"
           text="체험을 삭제하시겠습니까?"
         />

@@ -3,13 +3,13 @@ import CheckIcon from '#/icons/icon-check.svg';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import clsx from 'clsx';
 
-interface CancelModalProps {
+interface AlertModalProps {
   handleModalClose: () => void;
-  handleCancel: () => void;
+  handleActionButtonClick: () => void;
   text: string;
   buttonText: string;
 }
-function AlertModal({ handleModalClose, handleCancel, text, buttonText }: CancelModalProps) {
+function AlertModal({ handleModalClose, handleActionButtonClick, text, buttonText }: AlertModalProps) {
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.wrapper}>
@@ -19,7 +19,7 @@ function AlertModal({ handleModalClose, handleCancel, text, buttonText }: Cancel
           <button className={clsx(styles.button, styles.white)} onClick={handleModalClose}>
             닫기
           </button>
-          <button className={clsx(styles.button, styles.primary)} onClick={handleCancel}>
+          <button className={clsx(styles.button, styles.primary)} onClick={handleActionButtonClick}>
             {buttonText}
           </button>
         </div>

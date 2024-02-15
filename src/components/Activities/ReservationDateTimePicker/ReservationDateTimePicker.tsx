@@ -8,14 +8,13 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
-import { Activity, Time, TimeSlot } from '@/types/common/api';
+import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import instance from '@/api/axiosInstance';
-import { PostReservationRes } from '@/types/Activities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
+import { getAvailableSchedule, postReservation } from '@/api/activities';
 
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -28,10 +27,9 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
   const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
 
-  const { data: monthlyAvailableScheduleData } = useQuery<TimeSlot[]>({
+  const { data: monthlyAvailableScheduleData } = useQuery({
     queryKey: [QUERY_KEYS.activity, data.id, selectedYear, selectedMonth],
-    queryFn: () =>
-      instance.get(`/activities/${data.id}/available-schedule?year=${selectedYear}&month=${selectedMonth}`),
+    queryFn: () => getAvailableSchedule({ activityId: data.id, year: selectedYear, month: selectedMonth }),
     enabled: !!dateValue,
   });
 
@@ -45,7 +43,11 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       return;
     }
     const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-    const filteredTimes = monthlyAvailableScheduleData.find((slot) => slot.date === formattedValue)?.times;
+    const currentTime = dayjs();
+    const filteredTimes = monthlyAvailableScheduleData
+      .find((slot) => slot.date === formattedValue)
+      ?.times.filter((time) => dayjs(time.startTime).isAfter(currentTime));
+
     setFilteredTimes(filteredTimes);
   }, [dateValue, monthlyAvailableScheduleData]);
 
@@ -88,22 +90,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   const reserveMutation = useMutation({
     mutationFn: () =>
-      instance.post<PostReservationRes>(`/activities/${data.id}/reservations`, {
-        scheduleId: clickedTimeButtonId,
-        headCount: participantsValue,
-      }),
+      postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
     onSuccess: () => {
       toast('예약이 성공적으로 신청되었습니다!');
-      setDateValue(null);
-      setClickedTimeButtonId(null);
-      setParticipantsValue(1);
-      setFilteredTimes([]);
-      setDateButtonText('날짜 선택하기');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast(error.response?.data.message);
       }
+    },
+    onSettled: () => {
       setDateValue(null);
       setClickedTimeButtonId(null);
       setParticipantsValue(1);

@@ -8,7 +8,6 @@ import Pagination from '@/components/common/Pagination/Pagination';
 import { Fragment, useState } from 'react';
 import determineSatisfaction from '@/utils/determineSatisfaction';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { GetReviewsRes } from '@/types/Activities';
 import LogoIcon from '#/icons/icon-logoMark.png';
 import { getReviews } from '@/api/activities';
 

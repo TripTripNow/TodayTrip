@@ -27,6 +27,18 @@ export interface GetReviewsParams {
   size: 3;
 }
 
+export interface GetAvailableScheduleParams {
+  activityId: number;
+  year: string;
+  month: string;
+}
+
+export interface PostReservationReq {
+  activityId: number;
+  scheduleId: number;
+  headCount: number;
+}
+
 export interface PostReservationRes extends ReservationBase {
   activityId: number;
 }
