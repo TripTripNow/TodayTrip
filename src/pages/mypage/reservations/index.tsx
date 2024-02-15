@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.myReservations],
-    queryFn: getMyReservations,
+    queryFn: () => getMyReservations(),
   });
 
   return {
