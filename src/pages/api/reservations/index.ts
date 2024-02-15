@@ -7,4 +7,6 @@ export const getMyReservations = async () => {
   const { data } = await instance.get<getMyReservationsRes>('my-reservations');
 
   return data;
+
+  // return await instance.get<getMyReservationsRes>('my-reservations');
 };

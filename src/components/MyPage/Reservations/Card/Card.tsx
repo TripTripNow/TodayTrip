@@ -2,14 +2,14 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
+import { Reservation } from '@/types/common/api';
+import { priceFormat } from '@/utils/priceFormat';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from './Card.module.css';
-import { priceFormat } from '@/utils/priceFormat';
-import dayjs from 'dayjs';
-import { Reservation } from '@/types/common/api';
 
 interface CardProps {
   data: Reservation;
@@ -28,9 +28,33 @@ function Card({ data }: CardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
+  console.log(data);
+  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = data;
+  const activityId = data.activity.id;
+
   return (
     <>
-      <div className={styles.cardWrapper} onClick={() => router.push(`/mypage/reservations/${data.id}`)}>
+      <div
+        className={styles.cardWrapper}
+        onClick={() =>
+          router.push(
+            {
+              pathname: `/mypage/reservations/${data.id}`,
+              query: {
+                activityId,
+                status,
+                reviewSubmitted,
+                headCount,
+                date,
+                startTime,
+                endTime,
+                totalPrice,
+              },
+            },
+            `/mypage/reservations/${data.id}`,
+          )
+        }
+      >
         <div className={styles.imageWrapper}>
           <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>

@@ -12,6 +12,7 @@ import { COMPLETED, PENDING } from '@/constants/reservation';
 import { Reservation } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
 // @todo id값을 사용해서 해당 카드 데이터 불러오기
@@ -43,6 +44,12 @@ function ReservationID() {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
+  const router = useRouter();
+  console.log(router);
+  const data = router.query;
+  console.log(data);
+  const { activityId, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = data;
+
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
   };
@@ -64,32 +71,32 @@ function ReservationID() {
           <Image priority fill src={item.activity.bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
-          <CheckStatus status={item.status} />
+          <CheckStatus status={String(status)} />
           <h2 className={styles.title}>{item.activity.title}</h2>
           <p className={styles.date}>
-            <span>{dayjs(item.date).format('YYYY.MM.DD')}</span>
+            <span>{dayjs(String(date)).format('YYYY.MM.DD')}</span>
             <span> · </span>
             <span>
-              {item.startTime} - {item.endTime}
+              {startTime} - {endTime}
             </span>
             <span> · </span>
-            <span>{item.headCount}명</span>
+            <span>{headCount}명</span>
           </p>
           <p className={styles.address}>{address}</p>
         </div>
         <div className={styles.bottom}>
-          <div className={styles.price}>￦{priceFormat(item.totalPrice)}</div>
+          <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
 
-          {item.status === PENDING && (
+          {status === PENDING && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
               예약 취소
             </Button>
           )}
-          {item.status === COMPLETED && (
+          {status === COMPLETED && (
             <Button
               type="reservation"
               color="green"
-              isDisabled={item.reviewSubmitted}
+              isDisabled={Boolean(reviewSubmitted)}
               onClick={handleReviewModalToggle}
             >
               후기 작성
