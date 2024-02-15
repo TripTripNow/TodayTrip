@@ -36,7 +36,7 @@ jobs:
           urls: |
             http://localhost:3000/
             http://localhost:3000/mypage
-          configPath: ./lighthouserc.js
+          configPath: './lighthouserc.json'
           budgetPath: ./budget.json
           temporaryPublicStorage: true
           uploadExtraArgs: "--githubToke='${{ secrets.LHCI_GITHUB_APP_TOKEN }}'"
