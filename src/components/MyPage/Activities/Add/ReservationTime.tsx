@@ -7,14 +7,15 @@ import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Control, FieldValues, useController } from 'react-hook-form';
+import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
 
 interface ReservationTimeProps {
   name: string;
   control: Control<FieldValues>;
+  setValue?: UseFormSetValue<FieldValues>;
 }
 
-function ReservationTime({ name, control }: ReservationTimeProps) {
+function ReservationTime({ name, control, setValue }: ReservationTimeProps) {
   const { field } = useController({ name, control });
   const dateValue = field.value;
 
@@ -57,6 +58,9 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
   };
 
   const handleDeleteButton = (item: string) => {
+    // if (name === 'schedulesToAdd') {
+    //   setValue('scheduleIdsToRemove',[...])
+    // }
     field.onChange(dateValue.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
   };
 

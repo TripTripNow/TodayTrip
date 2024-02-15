@@ -3,29 +3,45 @@ import Image from 'next/image';
 import ImgCloseIcon from '#/icons/icon-imgClose.svg';
 import { ChangeEvent, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
-import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
+import { Control, FieldValues, UseFormGetValues, UseFormSetValue, useController } from 'react-hook-form';
 import instance from '@/api/axiosInstance';
 
 interface ImageContainerProps {
   name: string;
   control: Control<FieldValues, any>;
   setValue: UseFormSetValue<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  isEdit?: boolean;
 }
 
-function ImageContainer({ name, control, setValue }: ImageContainerProps) {
+interface imageUrlArrayType {
+  id: number;
+  imageUrl: string;
+}
+[];
+
+function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageContainerProps) {
   const { field } = useController({ name, control });
   const value = field.value;
+
+  // const imageUrlArray = value.map((item: imageUrlArrayType) => item.imageUrl);
+
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>();
-  const [imgSrc, setImgSrc] = useState<string[]>([]);
-
+  const [bannerImgSrc, setBannerImgSrc] = useState<string | null>(getValues('bannerImageUrl') ?? null);
+  const [imgSrc, setImgSrc] = useState<(imageUrlArrayType | string)[]>(value ?? []);
+  // console.log(imgSrc);
   const handleImgClick = (banner: boolean) => {
     if (banner) {
       if (bannerImgRef.current) bannerImgRef.current.click();
     } else {
       if (imgRef.current) imgRef.current.click();
     }
+  };
+
+  const imageSrcReturn = (item: imageUrlArrayType | string) => {
+    if (typeof item !== 'string') return item.imageUrl;
+    return item;
   };
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>, banner: boolean) => {
@@ -47,16 +63,14 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
         setValue('bannerImageUrl', imageUrl);
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
-        if (value) {
-          field.onChange([...value, imageUrl]);
-        } else {
-          field.onChange([imageUrl]);
-        }
+
+        field.onChange([...value, imageUrl]);
+        setValue('subImageUrlsToAdd', [...getValues('subImageUrlsToAdd'), imageUrl]);
       }
     }
   };
 
-  const handleImgDelete = (item: number, banner: boolean) => {
+  const handleImgDelete = (currentIndex: number, item: imageUrlArrayType | string, banner: boolean) => {
     if (banner) {
       setBannerImgSrc(null);
       setValue('bannerImageUrl', '');
@@ -64,20 +78,28 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
         bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
       }
     } else {
-      setImgSrc(imgSrc.filter((_, index) => index !== item));
+      setImgSrc(imgSrc.filter((_, index) => index !== currentIndex));
       if (imgRef.current) {
         imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
       }
 
-      if (value.length === 1) field.onChange([]);
-      else {
-        field.onChange(value.filter((_: any, index: number) => index !== item));
+      if (typeof item === 'string') {
+        const deleteIndex = currentIndex - imgSrc.length + getValues('subImageUrlsToAdd').length;
+        console.log('deleteIndex', deleteIndex);
+        const lastToAddImage = getValues('subImageUrlsToAdd').filter(
+          (_: string, index: number) => index !== deleteIndex,
+        );
+        setValue('subImageUrlsToAdd', lastToAddImage);
+      } else {
+        setValue('subImageIdsToRemove', [...getValues('subImageIdsToRemove'), item.id]);
       }
+      field.onChange(value.filter((_: any, index: number) => index !== currentIndex));
     }
   };
 
   return (
     <>
+      {/* 배너 이미지 */}
       <div className={styles.cotentTitleWrapper}>
         <p className={styles.contentTitle}>배너 이미지</p>
         <p className={styles.warningMessage}>*이미지는 최대 1개까지 등록 가능합니다.</p>
@@ -103,7 +125,7 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
             <ImgCloseIcon
               className={styles.imgCloseButton}
               alt="이미지 닫기 이미지"
-              onClick={() => handleImgDelete(0, true)}
+              onClick={() => handleImgDelete(0, bannerImgSrc, true)}
               width={40}
               height={40}
             />
@@ -112,6 +134,7 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
         )}
       </div>
 
+      {/* 소개 이미지 */}
       <div className={styles.cotentTitleWrapper}>
         <p className={styles.contentTitle}>소개 이미지</p>
         <p className={styles.warningMessage}>*이미지는 최대 4개까지 등록 가능합니다.</p>
@@ -138,11 +161,17 @@ function ImageContainer({ name, control, setValue }: ImageContainerProps) {
               <ImgCloseIcon
                 className={styles.imgCloseButton}
                 alt="이미지 닫기 버튼"
-                onClick={() => handleImgDelete(index, false)}
+                onClick={() => handleImgDelete(index, item, false)}
                 width={40}
                 height={40}
               />
-              <Image src={item} className={styles.profileImg} alt="소개 이미지" width={180} height={180} />
+              <Image
+                src={imageSrcReturn(item)}
+                className={styles.profileImg}
+                alt="소개 이미지"
+                width={180}
+                height={180}
+              />
             </div>
           ))}
       </div>

@@ -32,6 +32,32 @@ export interface PostActivitiesReq extends FieldValues {
   subImageUrls: string[];
 }
 
+export interface GetActivitiesRes {
+  id: number;
+  userId: number;
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  price: number;
+  rating: number;
+  reviewCount: number;
+  createdAt: string;
+  updatedAt: string;
+  schedules: {
+    times: [
+      {
+        endTime: string;
+        startTime: string;
+        id: number;
+      },
+    ];
+    date: string;
+  }[];
+  bannerImageUrl: string;
+  subImages: { imageUrl: string; id: number }[];
+}
+
 //체험 이미지 url 생성
 export interface PostActivitiesImageReq {
   image: string;

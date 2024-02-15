@@ -5,28 +5,40 @@ import { FieldValues, useForm } from 'react-hook-form';
 
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { priceFormat } from '@/utils/priceFormat';
+import { useRouter } from 'next/router';
+import { getActivitiesId } from '@/api/activities/activities';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { GetActivitiesRes } from '@/types/Activities';
+import { PatchMyActivityReq } from '@/types/myActivities';
+import { patchActivitiesId } from '@/api/myActivities/myActivities';
+import toast from 'react-hot-toast';
 
-const ACTIVITY_ITEM = {
-  title: '함께 배우면 즐거운 스트릿댄스',
-  category: '투어',
-  description: '둠칫 둠칫 두둠칫',
-  address: '대한민국 서울특별시 중구 을지로 위워크',
-  price: 10000,
-  schedules: [
-    {
-      date: '2023-12-01',
-      startTime: '12:00',
-      endTime: '13:00',
-    },
-  ],
-  bannerImageUrl: 'https://i.ibb.co/dWT3JmW/image.png',
-  subImageUrls: ['https://i.ibb.co/dWT3JmW/image.png'],
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const activityId = Number(context.query['id']);
+
+  console.log(activityId);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['activity', activityId],
+    queryFn: () => getActivitiesId(activityId),
+  });
+  return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 
-function ActivityEdit() {
-  const [items, setItems] = useState(ACTIVITY_ITEM);
-  const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
+function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data: activityData } = useQuery<GetActivitiesRes>({
+    queryKey: ['activity', activityId],
+    queryFn: () => getActivitiesId(activityId),
+  });
 
+  const [items, setItems] = useState(activityData!);
+  const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
+  const router = useRouter();
+  const id = Number(router.query.id);
+
+  // console.log(items);
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -35,16 +47,35 @@ function ActivityEdit() {
       address: items.address,
       description: items.description,
       category: items.category,
-      images: {
-        bannerImg: items.bannerImageUrl,
-        subImgs: items.subImageUrls,
-      },
+      bannerImageUrl: items.bannerImageUrl,
+      subImageUrls: items.subImages,
       schedules: items.schedules,
+      subImageIdsToRemove: [],
+      subImageUrlsToAdd: [],
+
+      scheduleIdsToRemove: [],
+      schedulesToAdd: [],
     },
   });
 
-  const handleOnSubmit = (data: FieldValues) => {
+  const handleOnSubmit = async (data: FieldValues) => {
+    delete data.subImageUrls;
+    delete data.schedules;
+    if (data.price === 0) return toast('가격을 입력해 주세요.');
+    // if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
+    data.price = Number(data.price.replace(/,/g, ''));
     if (data) console.log(data);
+    const result = await patchActivitiesId(activityId, data as PatchMyActivityReq);
+    if (result === 200) {
+      // router.push('/mypage/activities');
+      console.log('성공');
+    }
+  };
+
+  const getItems = async (id: number) => {
+    const result = await getActivitiesId(id);
+    setItems(result);
+    return result;
   };
 
   //처음 불러올때 받은 주소 -> 위도 경도로 바꿔주는 함수
@@ -64,9 +95,10 @@ function ActivityEdit() {
 
   useEffect(() => {
     calculateLatlng(items.address);
+    getItems(id);
   }, []);
 
-  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} />;
+  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;
 }
 
 export default ActivityEdit;

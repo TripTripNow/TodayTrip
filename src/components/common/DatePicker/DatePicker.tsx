@@ -16,7 +16,14 @@ interface DatePickerInputProps {
 
 const CustomInput = forwardRef<HTMLButtonElement, Props>(({ value, onClick }, ref) => (
   <label className={styles.container}>
-    <button ref={ref} className={styles.input} onClick={onClick}>
+    <button
+      ref={ref}
+      className={styles.input}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.();
+      }}
+    >
       {value ? <>{value}</> : <span>{'YY/MM/DD'}</span>}
     </button>
     <CalendarIcon className={styles.icon} alt="달력 모양 아이콘" />

@@ -10,6 +10,15 @@ import {
   ERROR_PASSWORD_SECOND_EMPTY,
   ERROR_PASSWORD_VALIDATION,
 } from '@/constants/user';
+import {
+  ERROR_ACTIVITY_ADDRESS,
+  ERROR_ACTIVITY_BANNER_IMAGE,
+  ERROR_ACTIVITY_CATEGORY,
+  ERROR_ACTIVITY_DESCRIPTION,
+  ERROR_ACTIVITY_PRICE,
+  ERROR_ACTIVITY_SCHEDULE,
+  ERROR_ACTIVITY_TITLE,
+} from '@/constants/activityEnroll';
 
 interface InputProps {
   label?: string;
@@ -90,6 +99,37 @@ const inputObj = [
     type: 'mypagePassword',
     rule: {
       minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
+    },
+  },
+  {
+    type: 'title',
+    rule: {
+      required: ERROR_ACTIVITY_TITLE,
+    },
+  },
+
+  {
+    type: 'address',
+    rule: {
+      required: ERROR_ACTIVITY_ADDRESS,
+    },
+  },
+  {
+    type: 'category',
+    rule: {
+      required: ERROR_ACTIVITY_CATEGORY,
+    },
+  },
+  {
+    type: 'description',
+    rule: {
+      required: ERROR_ACTIVITY_DESCRIPTION,
+    },
+  },
+  {
+    type: 'bannerImageUrl',
+    rule: {
+      required: ERROR_ACTIVITY_BANNER_IMAGE,
     },
   },
 ];

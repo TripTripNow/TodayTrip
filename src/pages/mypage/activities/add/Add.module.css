@@ -46,6 +46,10 @@
   }
 }
 
+.addButton:disabled {
+  background: var(--grayA4);
+}
+
 .formContainer input {
   height: 5.6rem;
 }

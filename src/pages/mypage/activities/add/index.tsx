@@ -6,6 +6,7 @@ import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { postActivities } from '@/api/activities/activities';
 import { PostActivitiesReq } from '@/types/Activities';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 
 export interface IsDateTime {
   date: string;
@@ -26,18 +27,27 @@ function ActivityAdd() {
       bannerImageUrl: '',
       subImageUrls: [],
       schedules: [],
+      subImageIdsToRemove: [],
+      subImageUrlsToAdd: [],
+
+      scheduleIdsToRemove: [],
+      schedulesToAdd: [],
     },
   });
 
   const handleOnSubmit = async (data: FieldValues) => {
+    delete data.subImageIdsToRemove;
+    delete data.subImageUrlsToAdd;
+    delete data.scheduleIdsToRemove;
+    delete data.schedulesToAdd;
+    if (data.price === 0) return toast('가격을 입력해 주세요.');
+    if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
-    try {
-      const result = await postActivities(data as PostActivitiesReq);
-      if (result === 201) {
-        router.push('/mypage/activities');
-      }
-    } catch (error) {
-      console.error('Error:', error);
+
+    const result = await postActivities(data as PostActivitiesReq);
+    if (result === 201) {
+      // router.push('/mypage/activities');
+      console.log('성공');
     }
   };
 

@@ -1,4 +1,5 @@
 import { Activity, Category, ReservationStatus, ScheduledReservation, TimeSlot } from '@/types/common/api';
+import { FieldValues } from 'react-hook-form';
 
 export interface MonthlyReservationStatusCount {
   completed: number;
@@ -144,17 +145,17 @@ export interface PatchMyActivityParam {
  * 내 체험 수정 Request
  */
 
-export interface PatchMyActivityReq {
+export interface PatchMyActivityReq extends FieldValues {
   title: string;
   category: Category;
   description: string;
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageIdsToRemove: unknown[];
-  subImageUrlsToAdd: unknown[];
-  scheduleIdsToRemove: unknown[];
-  schedulesToAdd: unknown[];
+  subImageIdsToRemove: number[];
+  subImageUrlsToAdd: string[];
+  scheduleIdsToRemove: number[];
+  schedulesToAdd: { date: string; startTime: string; endTime: string }[];
 }
 
 /**

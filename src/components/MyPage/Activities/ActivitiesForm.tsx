@@ -16,10 +16,12 @@ interface ActivitiesFormProps {
     lat: number;
     lng: number;
   } | null;
+  isEdit?: boolean;
 }
 
-function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps) {
+function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesFormProps) {
   const { handleSubmit, control, setValue, register, getValues } = methods;
+  const { isValid } = methods.formState;
   const [category, setCategory] = useState(getValues('category'));
 
   //훅폼 이용 숫자(양수)만 입력되게 + number형으로
@@ -37,7 +39,6 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
       e.preventDefault();
     }
   };
-
   useEffect(() => {
     if (category) setValue('category', category.title ? category.title : category);
   }, [category]);
@@ -66,12 +67,20 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng }: ActivitiesFormProps
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
-        <ReservationTime name="schedules" control={control} />
+        <ReservationTime name={isEdit ? 'schedulesToAdd' : 'schedules'} control={control} setValue={setValue} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer control={control} name="subImageUrls" setValue={setValue} />
+        <ImageContainer
+          control={control}
+          name="subImageUrls"
+          setValue={setValue}
+          getValues={getValues}
+          isEdit={isEdit}
+        />
         <div className={styles.addButtonWrapper}>
-          <button className={styles.addButton}>등록하기</button>
+          <button className={styles.addButton} disabled={!isValid}>
+            등록하기
+          </button>
         </div>
       </form>
     </div>
