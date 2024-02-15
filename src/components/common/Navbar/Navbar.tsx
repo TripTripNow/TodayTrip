@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 import LogoIcon from '#/icons/icon-logo.svg';
-import ProfileIcon from '#/icons/icon-profile.svg';
 import AlarmIcon from '#/icons/icon-alarm.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
 import { useState } from 'react';
 import AlarmModal from '@/components/common/Navbar/AlarmModal';
 import ProfileDropDown from '@/components/common/Navbar/ProfileDropDown';
+import LogoImg from '#/images/img-logo.png';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
-const USER_DATA = { name: '종민박' };
 const alarmData = {
   notifications: [
     {
@@ -38,6 +39,8 @@ function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const { data: userData } = useSession();
+
   const handleDropDownClick = () => {
     setIsOpen((prev) => !prev);
     if (isOpen) {
@@ -64,46 +67,53 @@ function Navbar() {
 
   return (
     <div className={styles.container}>
-      <Link href="/">
-        <div className={styles.logoWrapper}>
-          <div className={styles.logoImg}>
-            <LogoIcon alt="로고 아이콘" />
-          </div>
-          <p className={styles.logoTitle}>TodayTrip</p>
-        </div>
-      </Link>
-      <div></div>
-      <div className={styles.wrapper}>
-        {USER_DATA ? (
-          <>
-            <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
-              {alarmData.totalCount ? (
-                <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />
-              ) : (
-                ''
-              )}
-            </button>
-            {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
-            <div className={styles.border}></div>
-            <div onBlur={handleBlurDropDown}>
-              <button className={styles.userName} onClick={handleDropDownClick}>
-                <ProfileIcon alt="프로필 이미지" />
-                <p>{USER_DATA.name}</p>
-              </button>
+      <div className={styles.navContainer}>
+        <Link href="/">
+          <div className={styles.logoWrapper}>
+            <div className={styles.logoImg}>
+              <LogoIcon alt="로고 아이콘" />
             </div>
-            <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
-          </>
-        ) : (
-          <>
-            <Link className={styles.loginContent} href="/signin">
-              로그인
-            </Link>
-            <Link className={styles.loginContent} href="/signup">
-              회원가입
-            </Link>
-          </>
-        )}
+            <p className={styles.logoTitle}>TodayTrip</p>
+          </div>
+        </Link>
+        <div className={styles.wrapper}>
+          {userData ? (
+            <>
+              <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
+                <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
+                {alarmData.totalCount ? (
+                  <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />
+                ) : (
+                  ''
+                )}
+              </button>
+              {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
+              <div className={styles.border}></div>
+              <div onBlur={handleBlurDropDown}>
+                <button className={styles.userName} onClick={handleDropDownClick}>
+                  <Image
+                    className={styles.userProfile}
+                    src={userData.user.image || LogoImg}
+                    alt="프로필 이미지"
+                    width={32}
+                    height={32}
+                  />
+                  <p>{userData.user.name}</p>
+                </button>
+              </div>
+              <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
+            </>
+          ) : (
+            <>
+              <Link className={styles.loginContent} href="/signin">
+                로그인
+              </Link>
+              <Link className={styles.loginContent} href="/signup">
+                회원가입
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

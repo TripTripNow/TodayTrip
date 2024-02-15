@@ -6,7 +6,8 @@ import ActivitiesIcon from '#/icons/icon-activities.svg';
 import DashboardIcon from '#/icons/icon-dashboard.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
+import LogoImg from '#/images/img-logo.png';
 
 const MENU_LIST = [
   {
@@ -40,6 +41,7 @@ function ProfileMenuBox() {
   const { pathname } = router;
   const [selectedMenu, setSelectedMenu] = useState<string>();
   const { data } = useSession();
+  const [profileImg, setProfileImg] = useState<string>();
 
   useEffect(() => {
     setSelectedMenu(
@@ -63,11 +65,22 @@ function ProfileMenuBox() {
     );
   };
 
+  const getSessionData = async () => {
+    const a = await getSession();
+    if (a && a.user.image) setProfileImg(a.user.image);
+  };
+
+  useEffect(() => {
+    getSessionData();
+  }, []);
+
+  useEffect(() => {
+    console.log(profileImg);
+  }, [profileImg]);
+
   return (
     <div className={styles.profileBoxContainer}>
-      {data?.user.image && (
-        <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} profileImage={data.user.image} />
-      )}
+      <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} />
 
       <div className={styles.memuContainer}>
         {MENU_LIST.map((e, index) => {

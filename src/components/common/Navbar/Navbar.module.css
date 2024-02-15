@@ -5,9 +5,23 @@
   width: 100%;
   height: 7rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   padding: 1.9rem 0;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  min-width: 124rem;
+
+  @media tablet {
+    min-width: 72rem;
+  }
+
+  @media mobile {
+    min-width: 100%;
+  }
 }
 
 .logoWrapper {
@@ -55,6 +69,10 @@
   color: var(--black1B);
   font-size: 1.4rem;
   font-weight: 500;
+}
+
+.userProfile {
+  border-radius: 50%;
 }
 
 .loginContent {
