@@ -28,7 +28,17 @@ jobs:
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
         run: |
-          lhci autorun && lhci autorun --upload.target=temporary-public-storage || echo "Fail to Run Lighthouse CI!"
+          lhci autorun || echo "Fail to Run Lighthouse CI!"
+
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            http://localhost:3000/
+            http://localhost:3000/mypage
+          budgetPath: ./budget.json
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true
 
       - name: Format lighthouse score
         id: format_lighthouse_score

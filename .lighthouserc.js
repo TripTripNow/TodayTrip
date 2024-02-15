@@ -13,7 +13,6 @@ module.exports = {
       outputDir: './lhci_reports',
       reportFilenamePattern: '%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%',
     },
-    puppeteerScript: './puppeteer-script.js',
     assert: {
       assertions: {
         'categories:performance': ['warn', { minScore: 0.9 }],
