@@ -24,23 +24,11 @@ jobs:
         run: |
           npm run build
 
-      # - name: Run Lighthouse CI
-      #   env:
-      #     LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-      #   run: |
-      #     lhci autorun || echo "Fail to Run Lighthouse CI!"
-
-      - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v11
-        with:
-          urls: |
-            http://localhost:3000/
-            http://localhost:3000/mypage
-          budgetPath: ./budget.json
-          temporaryPublicStorage: true
-          uploadExtraArgs: "--githubToke='${{ secrets.LHCI_GITHUB_APP_TOKEN }}' --target='filesystem' --outputDir='./lhci_reports' --reportFilenamePattern='%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%'"
-          basicAuthUsername: 'test123@codeit.com'
-          basicAuthPassword: 'test12345'
+      - name: Run Lighthouse CI
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: |
+          lhci autorun || echo "Fail to Run Lighthouse CI!"
 
       - name: Format lighthouse score
         id: format_lighthouse_score
