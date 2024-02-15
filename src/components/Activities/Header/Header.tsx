@@ -10,13 +10,17 @@ import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
 import { deleteMyActivity } from '@/api/myActivities';
 import toast from 'react-hot-toast';
-import instance from '@/api/axiosInstance';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const router = useRouter();
+
+  const userData = useSession();
+
+  console.log(userData);
   const handleKebabBlur = () => {
     setTimeout(() => {
       setIsKebabOpen(false);

@@ -76,7 +76,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     }
   };
 
-  const handleCalendarMonthChange = () => {
+  const handleResetFilteredData = () => {
     setClickedTimeButtonId(null);
     setFilteredTimes([]);
     setDateValue(null);
@@ -115,6 +115,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           setIsAlertReserveModalOpen(true);
+
           return;
         }
 
@@ -122,10 +123,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       }
     },
     onSettled: () => {
-      setDateValue(null);
-      setClickedTimeButtonId(null);
+      handleResetFilteredData();
       setParticipantsValue(1);
-      setFilteredTimes([]);
       setDateButtonText('날짜 선택하기');
     },
   });
@@ -155,7 +154,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             locale="en"
             onChange={handleCalendarDateChange}
             className={styles.customCalendar}
-            onActiveStartDateChange={handleCalendarMonthChange}
+            onActiveStartDateChange={handleResetFilteredData}
             value={dateValue}
             minDate={new Date()}
           />
@@ -255,7 +254,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           handleTimeButtonClick={handleTimeButtonClick}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
-          handleCalendarMonthChange={handleCalendarMonthChange}
+          handleCalendarMonthChange={handleResetFilteredData}
           clickedTimeButtonId={clickedTimeButtonId}
         />
       )}
