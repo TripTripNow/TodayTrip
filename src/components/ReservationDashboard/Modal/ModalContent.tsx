@@ -12,7 +12,7 @@ import { GetReservedScheduleRes } from '@/types/myActivities';
 import styles from './ModalContent.module.css';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservationsByTime } from '@/api/myActivities/myActivities';
+import { getReservationsByTime } from '@/api/myActivities';
 
 interface ModalContentProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;

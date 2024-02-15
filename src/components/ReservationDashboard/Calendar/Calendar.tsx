@@ -10,7 +10,7 @@ import styles from './Calendar.module.css';
 import { MonthlyReservationStatusCount } from '@/types/common/api';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservedSchedule } from '@/api/myActivities/myActivities';
+import { getReservedSchedule } from '@/api/myActivities';
 
 interface CalendarProps {
   activityId: number;

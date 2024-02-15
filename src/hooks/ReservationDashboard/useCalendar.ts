@@ -5,7 +5,7 @@ import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDays
 import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservationDashboard } from '@/api/myActivities/myActivities';
+import { getReservationDashboard } from '@/api/myActivities';
 
 export type DateObj = Record<string, { pending: number; confirmed: number; completed: number }>;
 

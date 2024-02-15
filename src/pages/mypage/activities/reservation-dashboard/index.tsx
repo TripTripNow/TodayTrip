@@ -10,7 +10,7 @@ import { GetServerSideProps } from 'next';
 import { setContext } from '@/api/axiosInstance';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getMyActivities } from '@/api/myActivities/myActivities';
+import { getMyActivities } from '@/api/myActivities';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);

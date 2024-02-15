@@ -10,7 +10,7 @@ import styles from './Modal.module.css';
 import { DailyReservationStatusCount } from '@/types/common/api';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservationsByTime } from '@/api/myActivities/myActivities';
+import { getReservationsByTime } from '@/api/myActivities';
 
 interface ModalProps {
   handleModalClose: () => void;
