@@ -39,6 +39,7 @@ jobs:
           budgetPath: ./budget.json
           uploadArtifacts: true # save results as an action artifacts
           temporaryPublicStorage: true
+          uploadExtraArgs: "--githubToke='${{ secrets.LHCI_GITHUB_APP_TOKEN }}' --outputDir='./lhci_reports' --reportFilenamePattern='%%PATHNAME%%-%%DATETIME%%-report.%%EXTENSION%%'"
 
       - name: Format lighthouse score
         id: format_lighthouse_score
