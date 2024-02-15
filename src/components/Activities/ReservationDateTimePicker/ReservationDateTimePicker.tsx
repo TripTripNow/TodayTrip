@@ -15,7 +15,9 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getAvailableSchedule, postReservation } from '@/api/activities';
-
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useRouter } from 'next/router';
+dayjs.extend(customParseFormat);
 interface ReservationDateTimePickerProps {
   data: Activity;
 }
@@ -33,8 +35,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     enabled: !!dateValue,
   });
 
-  // 선택한 날짜의 예약 가능 시간 대를 필터링하기 위한 useEffect
-
+  const router = useRouter();
   useEffect(() => {
     if (!dateValue) {
       return;
@@ -42,11 +43,20 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     if (!monthlyAvailableScheduleData) {
       return;
     }
+
     const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
+    const todayAvailableScheduleData = monthlyAvailableScheduleData.find((slot) => slot.date === formattedValue);
+
     const currentTime = dayjs();
-    const filteredTimes = monthlyAvailableScheduleData
-      .find((slot) => slot.date === formattedValue)
-      ?.times.filter((time) => dayjs(time.startTime).isAfter(currentTime));
+
+    const filteredTimes = todayAvailableScheduleData?.times.filter((time) => {
+      const startTime = time.startTime;
+
+      /* 오늘 날짜의 경우 현재 시간이 시작 시간 이전인 것만 보여줘야함 
+    만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링*/
+
+      return dayjs().isSame(formattedValue, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
+    });
 
     setFilteredTimes(filteredTimes);
   }, [dateValue, monthlyAvailableScheduleData]);
@@ -92,10 +102,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     mutationFn: () =>
       postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
     onSuccess: () => {
-      toast('예약이 성공적으로 신청되었습니다!');
+      toast('예약이 완료되었습니다.');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          toast.error('로그인 이후 이용하실 수 있습니다.');
+          router.push('/signin');
+          return;
+        }
+
         toast(error.response?.data.message);
       }
     },
