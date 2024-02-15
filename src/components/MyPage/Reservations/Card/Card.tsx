@@ -28,7 +28,6 @@ function Card({ data }: CardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
-  console.log(data);
   const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = data;
   const activityId = data.activity.id;
 

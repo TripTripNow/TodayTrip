@@ -1,7 +1,6 @@
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Card from '@/components/MyPage/Reservations/Card/Card';
-import { reservations } from '@/components/MyPage/Reservations/mock';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { ReserveFilterOption } from '@/types/dropdown';

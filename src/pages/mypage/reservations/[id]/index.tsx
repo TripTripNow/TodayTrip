@@ -9,13 +9,18 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import CheckStatus from '@/components/Reservations/Id/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING } from '@/constants/reservation';
-import { Reservation } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
-// @todo id값을 사용해서 해당 카드 데이터 불러오기
+import { setContext } from '@/api/axiosInstance';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getActivityById } from '@/pages/api/activities';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { Reservation } from '@/types/common/api';
+
 const item: Reservation = {
   id: 1,
   teamId: '9',
@@ -37,18 +42,37 @@ const item: Reservation = {
   endTime: '12:00',
 };
 
-// @todo 주소 데이터 불러오기
-const address = '서울특별시 강남구 테헤란로 427';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  setContext(context);
+  const activityId = Number(context.query.activityId);
 
-function ReservationID() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.activityId],
+    queryFn: () => getActivityById({ activityId }),
+  });
+
+  return {
+    props: { activityId, dehydratedState: dehydrate(queryClient) },
+  };
+};
+
+function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const router = useRouter();
-  console.log(router);
-  const data = router.query;
-  console.log(data);
-  const { activityId, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = data;
+  const res = router.query;
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = res;
+
+  const { data } = useQuery({
+    queryKey: [QUERY_KEYS.activityId],
+    queryFn: () => getActivityById({ activityId }),
+  });
+
+  if (!data) return;
+  const { bannerImageUrl, title, address } = data;
 
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
@@ -68,11 +92,11 @@ function ReservationID() {
       <div className={styles.main}>
         <h1 className={styles.header}>예약 상세</h1>
         <div className={styles.imageWrapper}>
-          <Image priority fill src={item.activity.bannerImageUrl} alt="예약 상세 이미지" />
+          <Image priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
           <CheckStatus status={String(status)} />
-          <h2 className={styles.title}>{item.activity.title}</h2>
+          <h2 className={styles.title}>{title}</h2>
           <p className={styles.date}>
             <span>{dayjs(String(date)).format('YYYY.MM.DD')}</span>
             <span> · </span>
