@@ -5,9 +5,9 @@ import EmptyStarIcon from '#/icons/icon-littleEmptyStar.svg';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import determineSatisfaction from '@/utils/determineSatisfaction';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import LogoIcon from '#/icons/icon-logoMark.png';
 import { getReviews } from '@/api/activities';
 
@@ -25,6 +25,15 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
     queryFn: () => getReviews({ activityId, page: currentPageNumber, size: 3 }),
     placeholderData: keepPreviousData,
   });
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ['reviews', currentPageNumber + 1],
+      queryFn: () => getReviews({ activityId, page: currentPageNumber + 1, size: 3 }),
+    });
+  }, [currentPageNumber]);
 
   if (!reviewData) return;
 

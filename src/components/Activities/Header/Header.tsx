@@ -18,9 +18,8 @@ function Header({ data }: { data: Activity }) {
   const [isKebabOpen, setIsKebabOpen] = useState(false);
   const router = useRouter();
 
-  const userData = useSession();
+  const { data: userData } = useSession();
 
-  console.log(userData);
   const handleKebabBlur = () => {
     setTimeout(() => {
       setIsKebabOpen(false);
@@ -72,20 +71,23 @@ function Header({ data }: { data: Activity }) {
           </div>
         </div>
         <div>
-          <button onClick={handleKebabToggle}>
-            <KebabIcon className={styles.kebabButton} width={40} height={40} alt="케밥 버튼" />
-          </button>
-          {isKebabOpen && (
-            <div className={styles.options}>
-              <Link href={`/mypage/activities/${data.id}/edit`}>
-                <button className={styles.option}>수정하기</button>
-              </Link>
-
-              <hr className={styles.hr} />
-              <button className={styles.option} onClick={handleDeleteModalToggle}>
-                삭제하기
+          {userData?.user.id === data.userId && (
+            <>
+              <button onClick={handleKebabToggle}>
+                <KebabIcon className={styles.kebabButton} width={40} height={40} alt="케밥 버튼" />
               </button>
-            </div>
+              {isKebabOpen && (
+                <div className={styles.options}>
+                  <Link href={`/mypage/activities/${data.id}/edit`}>
+                    <button className={styles.option}>수정하기</button>
+                  </Link>
+                  <hr className={styles.hr} />
+                  <button className={styles.option} onClick={handleDeleteModalToggle}>
+                    삭제하기
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </header>

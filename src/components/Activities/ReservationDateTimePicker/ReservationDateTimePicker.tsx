@@ -18,6 +18,7 @@ import { getAvailableSchedule, postReservation } from '@/api/activities';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useRouter } from 'next/router';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import { useSession } from 'next-auth/react';
 dayjs.extend(customParseFormat);
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -37,6 +38,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   });
 
   const router = useRouter();
+  const userData = useSession();
+
   useEffect(() => {
     if (!dateValue) {
       return;
@@ -113,12 +116,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        if (error.response?.status === 401) {
-          setIsAlertReserveModalOpen(true);
-
-          return;
-        }
-
         toast(error.response?.data.message);
       }
     },
@@ -130,6 +127,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   });
 
   const handleReserveButtonClick = () => {
+    if (userData.status === 'unauthenticated') {
+      setIsAlertReserveModalOpen(true);
+      return;
+    }
     reserveMutation.mutate();
   };
 
