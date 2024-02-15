@@ -9,9 +9,9 @@ import { passwordCheck } from '@/utils/passwordCheck';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { postSignup } from '@/api/user/user';
-import { SignupData } from '@/types/user';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
+import { PostSignupReq } from '@/types/users';
 
 function SignUp() {
   const router = useRouter();
@@ -29,7 +29,7 @@ function SignUp() {
 
   // 회원가입
   const signupMutation = useMutation({
-    mutationFn: (data: SignupData) => postSignup(data),
+    mutationFn: (data: PostSignupReq) => postSignup(data),
     onSuccess: async (res) => {
       //회원가입한 이메일, 비밀번호로 로그인 진행
       const result = await signIn('signin-credentials', {
@@ -65,7 +65,7 @@ function SignUp() {
     const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
     if (!isValidPwCheck) return;
 
-    const userData: SignupData = {
+    const userData: PostSignupReq = {
       email: data.email,
       nickname: data.nickName,
       password: data.password,

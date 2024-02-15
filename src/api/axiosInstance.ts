@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react';
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    accept: 'application/json',
+    'Content-Type': 'application/json',
   },
 });
 
@@ -42,7 +42,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   function (response) {
-    return response;
+    return response.data;
   },
   async (error) => {
     const { config, response } = error;

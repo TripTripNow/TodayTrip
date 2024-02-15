@@ -1,4 +1,3 @@
-import instance from '@/api/axiosInstance';
 import { postSignup } from '@/api/user/user';
 import { AxiosError } from 'axios';
 import NextAuth, { NextAuthOptions } from 'next-auth';
@@ -6,34 +5,66 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
 import GoogleProvider from 'next-auth/providers/google';
+import { postAuthLogin } from '@/api/auth';
+import { PostAuthLoginRes } from '@/types/auth';
+
+const handleData = (data: PostAuthLoginRes, type: string) => {
+  const userset = {
+    id: data.user.id,
+    image: data.user.profileImageUrl,
+    name: data.user.nickname,
+    email: data.user.email,
+    type: type,
+  };
+
+  const tokenset = {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
+
+  return {
+    ...tokenset,
+    ...userset,
+  };
+};
 
 const handleSocialLogin = async (profile: any) => {
+  const email = profile.id + '@todaytrip.com';
+  const password = profile.id + 'todaytrip';
+  const nickname = profile.name || '';
+
   try {
-    const res = await instance.post(`/auth/login`, {
-      email: profile.id + '@todaytrip.com',
-      password: profile.id + 'todaytrip',
-    });
-    const tokenset = {
-      accessToken: res.data.accessToken,
-      refreshToken: res.data.refreshToken,
-    };
-    return {
-      ...profile,
-      ...tokenset,
-    };
+    const req = { email, password };
+    const data = await postAuthLogin(req);
+
+    return handleData(data, profile.type);
   } catch (e) {
     if (e instanceof AxiosError) {
-      profile.errorCode = e.response?.status;
-      return {
-        ...profile,
-      };
+      if (e.response && e.response.status === 404) {
+        try {
+          const req = { email, password, nickname };
+          const res = await postSignup(req);
+          // 회원가입 성공한 경우 로그인
+          if (res) {
+            const req = {
+              email: res.email,
+              password: res.password,
+            };
+            const data = await postAuthLogin(req);
+            return handleData(data, profile.type);
+          }
+
+          // 회원가입 실패한 경우 error
+          throw new Error();
+        } catch (e) {
+          profile.isError = true;
+          return { ...profile };
+        }
+      }
     }
-    profile.errorCode = e;
-    return {
-      profile: {
-        ...profile,
-      },
-    };
+    // 예상하지 못한 에러 발생한 경우
+    profile.isError = true;
+    return { ...profile };
   }
 };
 
@@ -43,7 +74,8 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
-        profile.nickname = profile.properties.nickname;
+        profile.name = profile.properties.nickname;
+        profile.type = 'kakao';
 
         return handleSocialLogin(profile);
       },
@@ -53,7 +85,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
       async profile(profile) {
         profile.id = profile.response.id;
-        profile.nickname = profile.response.nickname;
+        profile.name = profile.response.nickname;
+        profile.type = 'naver';
 
         return handleSocialLogin(profile);
       },
@@ -62,8 +95,8 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
-        profile.nickname = profile.name;
         profile.id = profile.sub;
+        profile.type = 'google';
 
         return handleSocialLogin(profile);
       },
@@ -78,13 +111,24 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials): Promise<any> {
         try {
-          const data = {
-            email: credentials?.email,
-            password: credentials?.password,
+          const req = {
+            email: credentials?.email || '',
+            password: credentials?.password || '',
           };
 
-          const res = await instance.post(`/auth/login`, data);
-          return { accessToken: res.data.accessToken, refreshToken: res.data.refreshToken } || null;
+          const data = await postAuthLogin(req);
+          const { user } = data;
+          return (
+            {
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+              type: 'credentials',
+              id: user.id,
+              image: user.profileImageUrl,
+              name: user.nickname,
+              email: user.email,
+            } || null
+          );
         } catch (e: unknown) {
           if (e instanceof AxiosError) {
             throw new Error(e.response?.data.message || e);
@@ -96,42 +140,25 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, credentials }) {
       if (credentials) return true;
-      if (user.errorCode && user.errorCode === 404) {
-        try {
-          const res = await postSignup({
-            email: user.id + '@todaytrip.com',
-            password: user.id + 'todaytrip',
-            nickname: user.nickname || '',
-          });
-          // 회원가입 성공한 경우 로그인
-          if (res) {
-            const result = await instance.post(`/auth/login`, {
-              email: res.email,
-              password: res.password,
-            });
-            if (result.status !== 201) throw new Error();
-            return true;
-          }
-
-          // 회원가입 실패한 경우 error
-          throw new Error();
-        } catch (e) {
-          return false;
-        }
+      if (user.isError) {
+        return false;
       }
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session.image && session.name) {
+        token.picture = session.image;
+        token.name = session.name;
       }
-
-      return token;
+      return { ...token, ...user };
     },
     async session({ session, token }) {
+      if (typeof token.type === 'string') session.user.type = token.type;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
+      session.user.email = token.email;
+      session.user.image = token.picture;
+      session.user.id = Number(token.sub);
       return session;
     },
   },
@@ -143,6 +170,7 @@ export const authOptions: NextAuthOptions = {
 
   pages: {
     signIn: '/signin',
+    error: '/signin',
   },
 };
 
