@@ -3,8 +3,8 @@ module.exports = {
     collect: {
       startServerCommand: 'npm run dev',
       url: ['http://localhost:3000', 'http://localhost:3000/mypage'],
-      numberOfRuns: 3,
       puppeteerScript: './puppeteer-script.js',
+      numberOfRuns: 3,
     },
     settings: {
       preset: 'desktop',
