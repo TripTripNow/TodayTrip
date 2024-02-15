@@ -13,10 +13,11 @@
 .navContainer {
   display: flex;
   justify-content: space-between;
-  min-width: 124rem;
+  min-width: 120rem;
 
   @media tablet {
-    min-width: 72rem;
+    min-width: 100%;
+    padding: 0 8rem;
   }
 
   @media mobile {
