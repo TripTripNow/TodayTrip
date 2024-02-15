@@ -3,26 +3,27 @@ import styles from './Activity.module.css';
 import MainContent from '@/components/Activities/MainContent/MainContent';
 import ReservationDateTimePicker from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import instance from '@/api/axiosInstance';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/common/api';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getActivityById } from '@/api/activities';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const activityId = context.query['id'];
+  const activityId = Number(context.query['id']);
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery<Activity>({
-    queryKey: ['activity', activityId],
-    queryFn: () => instance.get(`/activities/${activityId}`),
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.activity, activityId],
+    queryFn: () => getActivityById({ activityId }),
   });
   return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 
 function ActivityID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: activityData } = useQuery<Activity>({
-    queryKey: ['activity', activityId],
-    queryFn: () => instance.get(`/activities/${activityId}`),
+    queryKey: [QUERY_KEYS.activity, activityId],
+    queryFn: () => getActivityById({ activityId }),
   });
 
   if (!activityData) return;

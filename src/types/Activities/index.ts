@@ -16,10 +16,16 @@ interface Review {
   updatedAt: string;
 }
 
-export type GetReviewsRes = {
+export interface GetReviewsRes {
   reviews: Review[];
   totalCount: number;
-};
+}
+
+export interface GetReviewsParams {
+  activityId: number;
+  page: number;
+  size: 3;
+}
 
 export interface PostReservationRes extends ReservationBase {
   activityId: number;

@@ -8,9 +8,10 @@ import Pagination from '@/components/common/Pagination/Pagination';
 import { Fragment, useState } from 'react';
 import determineSatisfaction from '@/utils/determineSatisfaction';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import instance from '@/api/axiosInstance';
 import { GetReviewsRes } from '@/types/Activities';
 import LogoIcon from '#/icons/icon-logoMark.png';
+import { getReviews } from '@/api/activities';
+
 const RATINGS = [1, 2, 3, 4, 5];
 
 function ReviewList({ totalRating, activityId }: { totalRating: number; activityId: number }) {
@@ -20,9 +21,9 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
     setCurrentPageNumber(num);
   };
 
-  const { data: reviewData } = useQuery<GetReviewsRes>({
+  const { data: reviewData } = useQuery({
     queryKey: ['reviews', currentPageNumber],
-    queryFn: () => instance.get(`/activities/${activityId}/reviews?page=${currentPageNumber}&size=3`),
+    queryFn: () => getReviews({ activityId, page: currentPageNumber, size: 3 }),
     placeholderData: keepPreviousData,
   });
 

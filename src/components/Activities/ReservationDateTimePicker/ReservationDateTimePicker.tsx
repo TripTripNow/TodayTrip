@@ -15,6 +15,7 @@ import instance from '@/api/axiosInstance';
 import { PostReservationRes } from '@/types/Activities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -27,8 +28,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
   const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
 
-  const { data: monthlyAvailableSchedule } = useQuery<TimeSlot[]>({
-    queryKey: ['activity', data.id, selectedYear, selectedMonth],
+  const { data: monthlyAvailableScheduleData } = useQuery<TimeSlot[]>({
+    queryKey: [QUERY_KEYS.activity, data.id, selectedYear, selectedMonth],
     queryFn: () =>
       instance.get(`/activities/${data.id}/available-schedule?year=${selectedYear}&month=${selectedMonth}`),
     enabled: !!dateValue,
@@ -40,13 +41,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     if (!dateValue) {
       return;
     }
-    if (!monthlyAvailableSchedule) {
+    if (!monthlyAvailableScheduleData) {
       return;
     }
     const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-    const filteredTimes = monthlyAvailableSchedule.find((slot) => slot.date === formattedValue)?.times;
+    const filteredTimes = monthlyAvailableScheduleData.find((slot) => slot.date === formattedValue)?.times;
     setFilteredTimes(filteredTimes);
-  }, [dateValue, monthlyAvailableSchedule]);
+  }, [dateValue, monthlyAvailableScheduleData]);
 
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
