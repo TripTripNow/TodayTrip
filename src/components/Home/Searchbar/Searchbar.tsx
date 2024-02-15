@@ -1,9 +1,8 @@
 import { ChangeEvent, FormEvent } from 'react';
 
-import SearchIcon from '#/icons/icon-search.svg';
-
-import styles from './Searchbar.module.css';
 import Button from '@/components/common/Button/Button';
+import SearchIcon from '#/icons/icon-search.svg';
+import styles from './Searchbar.module.css';
 
 interface SearchbarProps {
   inputSearchText: string;

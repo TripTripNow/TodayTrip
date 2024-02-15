@@ -1,17 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 
+import StyledButton from '@/components/Home/StyledButton/StyledButton';
+import { useBanner } from '@/hooks/Home/useBanner';
 import MainBanner1 from '#/images/img-mainBanner1.png';
 import MainBanner2 from '#/images/img-mainBanner2.png';
 import MainBanner3 from '#/images/img-mainBanner3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
-
 import styles from './Banner.module.css';
-import StyledButton from '@/components/Home/StyledButton/StyledButton';
 
 /** 배너에 관련된 정보입니다. */
-const BANNER = [
+export const BANNER = [
   {
     id: 1,
     src: MainBanner1,
@@ -36,45 +35,7 @@ const BANNER = [
 ];
 
 function Carousel() {
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [mouseOnSlider, setMouseOnSlider] = useState(false);
-  const [arrowHover, setArrowHover] = useState({ left: false, right: false });
-
-  const slideRef = useRef<HTMLDivElement>(null);
-  let slideTimer: NodeJS.Timeout | undefined;
-
-  // 화살표 버튼을 통한 slide 함수
-  const handleSlide = (num: number) => {
-    setSlideIndex((prev) => (prev + num + BANNER.length) % BANNER.length);
-  };
-
-  // 캐러셀 자동 넘기기 함수
-  const handleSlideAuto = () => {
-    if (!mouseOnSlider) {
-      slideTimer = setTimeout(() => {
-        handleSlide(1);
-      }, 5000);
-    } else {
-      clearTimeout(slideTimer);
-    }
-  };
-
-  const handleMouseOnSlider = (bool: boolean) => {
-    setMouseOnSlider(bool);
-  };
-
-  const handleArrowHover = (direction: string, bool: boolean) => {
-    setArrowHover((prev) => ({ ...prev, [direction]: bool }));
-  };
-
-  useEffect(() => {
-    if (slideRef.current) {
-      slideRef.current.style.transform = `translateX(-${slideIndex * 100}%)`;
-    }
-    handleSlideAuto();
-
-    return () => clearTimeout(slideTimer);
-  }, [slideIndex, mouseOnSlider]);
+  const { handleMouseOnSlider, slideRef, handleSlide, handleArrowHover, arrowHover } = useBanner();
 
   return (
     <div

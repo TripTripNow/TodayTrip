@@ -12,6 +12,7 @@ import { PriceFilterOption } from '@/types/dropdown';
 
 import styles from './AllExperience.module.css';
 import { Activity, Category } from '@/types/common/api';
+import { useAllExperience } from '@/hooks/Home/useAllExperience';
 
 const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
 
@@ -40,27 +41,8 @@ function AllExperience({
   filterValue,
   setFilterValue,
 }: AllExperienceProps) {
-  const [disableShadow, setDisableShadow] = useState(false);
-  const [disableRightShadow, setDisableRightShadow] = useState(false);
-  const [move, setMove] = useState(0);
-
-  const handleDisableShadow = () => {
-    if (move >= 3) {
-      setDisableRightShadow(false);
-    } else {
-      setDisableRightShadow(true);
-    }
-
-    if (move === 0) {
-      setDisableShadow(false);
-    } else {
-      setDisableShadow(true);
-    }
-  };
-
-  useEffect(() => {
-    handleDisableShadow();
-  }, [move]);
+  const { setMove, handleDisableShadow } = useAllExperience();
+  const { disableShadow, disableRightShadow } = handleDisableShadow();
 
   return (
     <section className={styles.container}>
