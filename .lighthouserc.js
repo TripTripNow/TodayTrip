@@ -4,6 +4,7 @@ module.exports = {
       startServerCommand: 'npm run dev',
       url: ['http://localhost:3000', 'http://localhost:3000/mypage'],
       numberOfRuns: 3,
+      puppeteerScript: './puppeteer-script.js',
     },
     settings: {
       preset: 'desktop',
