@@ -11,6 +11,6 @@ export const patchActivitiesId = async (activityId: number, activityData: PatchM
     return status;
   } catch (error) {
     console.error(error);
-    if (error instanceof AxiosError) console.log(error.response?.data.message);
+    if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
   }
 };

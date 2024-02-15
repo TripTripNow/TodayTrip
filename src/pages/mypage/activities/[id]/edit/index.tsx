@@ -38,7 +38,6 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   const router = useRouter();
   const id = Number(router.query.id);
 
-  // console.log(items);
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -50,6 +49,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
       bannerImageUrl: items.bannerImageUrl,
       subImageUrls: items.subImages,
       schedules: items.schedules,
+
       subImageIdsToRemove: [],
       subImageUrlsToAdd: [],
 
@@ -61,8 +61,9 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   const handleOnSubmit = async (data: FieldValues) => {
     delete data.subImageUrls;
     delete data.schedules;
-    if (data.price === 0) return toast('가격을 입력해 주세요.');
-    // if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
+    console.log(typeof data.price);
+    if (data.price.toString() === '0') return toast('가격을 입력해 주세요.');
+    // if (data.schedules.length === 0) Areturn toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
     if (data) console.log(data);
     const result = await patchActivitiesId(activityId, data as PatchMyActivityReq);
