@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react';
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    accept: 'application/json',
+    'Content-Type': 'application/json',
   },
 });
 

@@ -6,6 +6,7 @@ import ActivitiesIcon from '#/icons/icon-activities.svg';
 import DashboardIcon from '#/icons/icon-dashboard.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
+import { useSession } from 'next-auth/react';
 
 const MENU_LIST = [
   {
@@ -38,6 +39,7 @@ function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
   const [selectedMenu, setSelectedMenu] = useState<string>();
+  const { data } = useSession();
 
   useEffect(() => {
     setSelectedMenu(
@@ -63,7 +65,10 @@ function ProfileMenuBox() {
 
   return (
     <div className={styles.profileBoxContainer}>
-      <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} />
+      {data?.user.image && (
+        <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} profileImage={data.user.image} />
+      )}
+
       <div className={styles.memuContainer}>
         {MENU_LIST.map((e, index) => {
           return (
