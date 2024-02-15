@@ -17,6 +17,7 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { getAvailableSchedule, postReservation } from '@/api/activities';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useRouter } from 'next/router';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 dayjs.extend(customParseFormat);
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -92,10 +93,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
 
   // 날짜 및 시간 선택하는 모달
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
 
-  const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev);
+  const handleReserveModalToggle = () => {
+    setIsReserveModalOpen((prev) => !prev);
+  };
+
+  const [isAlertReserveModalOpen, setIsAlertReserveModalOpen] = useState(false);
+
+  const handleAlertModalToggle = () => {
+    setIsAlertReserveModalOpen((prev) => !prev);
   };
 
   const reserveMutation = useMutation({
@@ -107,8 +114,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
-          toast.error('로그인 이후 이용하실 수 있습니다.');
-          router.push('/signin');
+          setIsAlertReserveModalOpen(true);
           return;
         }
 
@@ -138,7 +144,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <hr className={style.hr} />
         <div className={styles.calendar}>
           <h2 className={style.label}>날짜</h2>
-          <button className={styles.selectButton} onClick={handleModalToggle}>
+          <button className={styles.selectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
 
@@ -226,7 +232,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <p className={styles.pricePerPersonWrapper}>
             ￦{(data.price * participantsValue).toLocaleString('ko-KR')} / {participantsValue}인
           </p>
-          <button className={styles.mobileSelectButton} onClick={handleModalToggle}>
+          <button className={styles.mobileSelectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
         </div>
@@ -239,11 +245,11 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         </button>
       </div>
 
-      {isModalOpen && (
+      {isReserveModalOpen && (
         <ReservationModal
           setDateButtonText={setDateButtonText}
           filteredTimes={filteredTimes}
-          handleModalToggle={handleModalToggle}
+          handleModalToggle={handleReserveModalToggle}
           dateValue={dateValue}
           setDateValue={setDateValue}
           handleTimeButtonClick={handleTimeButtonClick}
@@ -251,6 +257,14 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           setParticipantsValue={setParticipantsValue}
           handleCalendarMonthChange={handleCalendarMonthChange}
           clickedTimeButtonId={clickedTimeButtonId}
+        />
+      )}
+      {isAlertReserveModalOpen && (
+        <AlertModal
+          text={'체험 예약을 위해서는\n 로그인이 필요합니다.'}
+          handleModalClose={handleAlertModalToggle}
+          buttonText="로그인"
+          handleActionButtonClick={() => router.push('/signin')}
         />
       )}
     </>
