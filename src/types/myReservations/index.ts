@@ -4,6 +4,7 @@ export interface GetMyReservationsParams {
   cursorId?: number;
   size?: number;
   status: ReservationStatus | undefined;
+  accessToken?: string;
 }
 
 export interface GetMyReservationsRes {
