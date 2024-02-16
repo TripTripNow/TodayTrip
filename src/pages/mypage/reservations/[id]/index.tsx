@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import ArrowIcon from '#/icons/icon-arrowBack.svg';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
@@ -15,7 +15,6 @@ import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
 import { setContext } from '@/api/axiosInstance';
-import QUERY_KEYS from '@/constants/queryKeys';
 import { getActivityById } from '@/pages/api/activities';
 import { Reservation } from '@/types/common/api';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
@@ -62,13 +61,22 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
-  const router = useRouter();
-  const res = router.query;
-  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = res;
-
   const { data } = useQuery({
     queryKey: [activityId],
     queryFn: () => getActivityById({ activityId }),
+  });
+
+  const router = useRouter();
+  const res = router.query;
+
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = res;
+
+  const hasResult = Object.keys(res).length > 1;
+
+  useEffect(() => {
+    if (!hasResult) {
+      router.push('/mypage/reservations');
+    }
   });
 
   if (!data) return;
