@@ -22,7 +22,7 @@ export const usePopularExperience = () => {
 
   const [cardData, setCardData] = useState(popularActivityData?.activities ?? []);
   const { isVisible, targetRef } = useInfiniteScroll();
-  const queryClient = new QueryClient();
+  const queryClient = useRef(new QueryClient());
 
   /** 버튼을 통한 slide 함수 */
   const handleSlideByBtn = (num: number) => {
@@ -57,12 +57,13 @@ export const usePopularExperience = () => {
   }, [isError]);
 
   useEffect(() => {
-    queryClient.prefetchQuery({
+    if (cursorId === null) return;
+
+    queryClient.current.prefetchQuery({
       queryKey: [QUERY_KEYS.popularActivities, cursorId],
       queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 4, cursorId }),
     });
   }, [cursorId]);
 
-  console.log('카드 데이터', cardData);
   return { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData };
 };
