@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { BACKEND_RESERVATION_STATUS, RESERVATION_STATUS } from '@/constants/reservation';
+import { BACKEND_RESERVATION_STATUS } from '@/constants/reservation';
 import { ReserveFilterOption } from '@/types/dropdown';
 import styles from './Reservations.module.css';
 import Card from '@/components/MyPage/Reservations/ReservationCard/ReservationCard';
@@ -13,27 +13,17 @@ import { getMyReservations } from '@/api/myReservations';
 
 function Reservations() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
-  const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
-
-  useEffect(() => {
-    if (isVisible) {
-      setVisibleReservations((prev) => prev + 6);
-    }
-  }, [isVisible]);
 
   const reservations = useInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations],
     queryFn: ({ pageParam }) => {
       const status = BACKEND_RESERVATION_STATUS[selectedStatus];
-      console.log(pageParam);
-      return getMyReservations({ size: 6, status, cursorId: undefined });
+      return getMyReservations({ size: 6, status, cursorId: pageParam });
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.cursorId,
   });
-
-  console.log(reservations);
 
   // // TODO : api 연동 후 지울 예정
   // const filteredReservations =

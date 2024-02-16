@@ -7,6 +7,6 @@ export const getMyReservations = async ({
   status,
 }: GetMyReservationsParams): Promise<GetMyReservationsRes> => {
   return await instance.get(
-    `/my-reservations?${cursorId === undefined ? '' : `&cursorId=${cursorId}`}&size=${size}${status === undefined ? '' : `&status=${status}`}`,
+    `/my-reservations?${cursorId ? '' : `&cursorId=${cursorId}`}&size=${size}${status ? '' : `&status=${status}`}`,
   );
 };
