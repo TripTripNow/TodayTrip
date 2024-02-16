@@ -72,7 +72,7 @@ export interface GetReservedScheduleRes {
 
 export interface GetReservationsParam {
   activityId: number;
-  cursorId?: number;
+  cursorId?: number | null;
   size?: number;
   scheduleId: number;
   status: keyof DailyReservationStatusCount;
@@ -95,9 +95,9 @@ export interface GetReservationsRes {
  */
 
 export interface PatchReservationsParam {
-  teamId: string;
   activityId: number;
   reservationId: number;
+  status: 'confirmed' | 'declined';
 }
 
 /**
