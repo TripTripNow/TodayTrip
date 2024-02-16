@@ -11,13 +11,10 @@ import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getMyActivities } from '@/api/myActivities';
 import styles from './ReservationDashboard.module.css';
-import { getSession } from 'next-auth/react';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
-  const sessionData = await getSession(context);
   const queryClient = new QueryClient();
-  console.log(sessionData);
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.myActivities],
     queryFn: () => getMyActivities({}),
@@ -29,20 +26,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function ReservationDashboard() {
-  const { data: ASD } = useQuery({
+  const { data } = useQuery({
     queryKey: [QUERY_KEYS.myActivities],
     queryFn: () => getMyActivities({}),
   });
-  console.log(ASD);
-  const data = [];
-  // const dropdownData =
-  //   data?.activities.map((activity) => {
-  //     return {
-  //       id: activity.id,
-  //       title: activity.title,
-  //     };
-  //   }) ?? [];
-  const dropdownData = [];
+  const dropdownData =
+    data?.activities.map((activity) => {
+      return {
+        id: activity.id,
+        title: activity.title,
+      };
+    }) ?? [];
   const [dropDownItem, setDropdownItem] = useState<DropdownItems>(dropdownData[0] ?? INITIAL_DROPDOWN_ITEM); // 드랍다운 value 값
 
   return (
