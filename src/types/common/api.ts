@@ -31,6 +31,13 @@ interface ActivityInfo {
 
 export type ReservationStatus = keyof typeof RESERVATION_STATUS;
 
+export enum ReservationStatusEnum {
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  DECLINED = 'declined',
+  CANCELED = 'canceled',
+  COMPLETED = 'completed',
+}
 interface ReservationBase {
   id: number;
   teamId: string;
