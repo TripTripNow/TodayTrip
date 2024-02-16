@@ -8,9 +8,6 @@ import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
 import { DailyReservationStatusCount } from '@/types/common/api';
-import { useQuery } from '@tanstack/react-query';
-import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservationsByTime } from '@/api/myActivities';
 
 interface ModalProps {
   handleModalClose: () => void;
@@ -20,7 +17,7 @@ interface ModalProps {
 }
 
 interface ModalTabProps {
-  handleStatus: (val: string) => void;
+  handleStatus: (val: keyof DailyReservationStatusCount) => void;
   tabStatus: string;
   item: DailyReservationStatusCount | undefined;
 }
@@ -31,9 +28,9 @@ function Modal({ handleModalClose, date, activityId, items }: ModalProps) {
     title: items ? `${items[0].startTime} ~ ${items[0].endTime}` : '0',
   };
   const [dropdownItem, setDropdownItem] = useState(INITIAL_DROPDOWN_ITEM);
-  const [tabStatus, setTabStatus] = useState('pending');
+  const [tabStatus, setTabStatus] = useState<keyof DailyReservationStatusCount>('pending');
 
-  const handleStatus = (status: string) => {
+  const handleStatus = (status: keyof DailyReservationStatusCount) => {
     setTabStatus(status);
   };
 
@@ -47,7 +44,7 @@ function Modal({ handleModalClose, date, activityId, items }: ModalProps) {
         <ModalContent
           setDropdownItem={setDropdownItem}
           items={items}
-          dropdownItem={dropdownItem.id !== 0 ? INITIAL_DROPDOWN_ITEM : dropdownItem}
+          dropdownItem={dropdownItem}
           date={date}
           tabStatus={tabStatus}
           activityId={activityId}

@@ -1,45 +1,62 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
-import {
-  RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA,
-  RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS,
-} from '@/components/ReservationDashboard/mock';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import NoResult from '@/components/common/NoResult/NoResult';
 import { GetReservedScheduleRes } from '@/types/myActivities';
-import styles from './ModalContent.module.css';
-import { useQuery } from '@tanstack/react-query';
+import { DailyReservationStatusCount, ScheduledReservation } from '@/types/common/api';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getReservationsByTime } from '@/api/myActivities';
+import styles from './ModalContent.module.css';
 
 interface ModalContentProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   items: GetReservedScheduleRes[];
   dropdownItem: DropdownItems;
   date: string;
-  tabStatus: string;
+  tabStatus: keyof DailyReservationStatusCount;
   activityId: number;
 }
 
-function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus, activityId }: ModalContentProps) {
-  const [cursorId, setCursorId] = useState();
-  const { data } = useQuery({
+interface ReservationDetailsProps {
+  items: ScheduledReservation[];
+  tabStatus: keyof DailyReservationStatusCount;
+}
+
+type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
+
+function ModalContent({
+  setDropdownItem,
+  items: timeItems,
+  dropdownItem,
+  date,
+  tabStatus,
+  activityId,
+}: ModalContentProps) {
+  const [cursorId, setCursorId] = useState<number | undefined | null>();
+  const { data, refetch } = useQuery({
     queryKey: [QUERY_KEYS.timeReservation],
     queryFn: () =>
       getReservationsByTime({ activityId, cursorId, size: 3, scheduleId: dropdownItem.id, status: tabStatus }),
   });
 
-  console.log('데이터', data);
-
-  const cardItems = RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA.reservations;
+  useEffect(() => {
+    refetch();
+    if (data?.cursorId !== null) setCursorId(data?.cursorId);
+  }, [dropdownItem.id, tabStatus]);
 
   return (
     <div className={styles.mainContainer}>
-      {items ? (
+      {timeItems && data?.reservations ? (
         <>
-          <ReservationDate setDropdownItem={setDropdownItem} items={items} dropdownItem={dropdownItem} date={date} />
+          <ReservationDate
+            setDropdownItem={setDropdownItem}
+            items={timeItems}
+            dropdownItem={dropdownItem}
+            date={date}
+          />
           <ReservationDetails items={data?.reservations} tabStatus={tabStatus} />
         </>
       ) : (
@@ -51,7 +68,7 @@ function ModalContent({ setDropdownItem, items, dropdownItem, date, tabStatus, a
 
 export default ModalContent;
 
-function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Omit<ModalContentProps, 'tabStatus'>) {
+function ReservationDate({ setDropdownItem, items, dropdownItem, date }: ReservationDateProps) {
   const showDateArr = date.split('-');
 
   const timeItems = items.map((item) => {
@@ -75,13 +92,7 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Omit<Mo
   );
 }
 
-function ReservationDetails({
-  items,
-  tabStatus,
-}: {
-  items: RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS['reservations'];
-  tabStatus: string;
-}) {
+function ReservationDetails({ items, tabStatus }: ReservationDetailsProps) {
   const [visibleItems, setVisibleItems] = useState(3);
   const { isVisible, targetRef, setIsVisible } = useInfiniteScroll();
   const showItems = items.filter((item) => item.status === tabStatus).slice(0, visibleItems);
@@ -97,15 +108,32 @@ function ReservationDetails({
     }
   }, [isVisible]);
 
+  let text = '신청 내역이 없습니다.';
+  switch (tabStatus) {
+    case 'confirmed':
+      text = '승인 내역이 없습니다.';
+      break;
+    case 'declined':
+      text = '거절 내역이 없습니다.';
+      break;
+    case 'pending':
+      text = '신청 내역이 없습니다.';
+      break;
+  }
+
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
-      <div className={styles.cardsWrapper}>
-        {showItems.map((item) => (
-          <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
-        ))}
-        <div ref={targetRef}></div>
-      </div>
+      {showItems.length > 0 ? (
+        <div className={styles.cardsWrapper}>
+          {showItems.map((item) => (
+            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
+          ))}
+          <div ref={targetRef}></div>
+        </div>
+      ) : (
+        <NoResult text={text} />
+      )}
     </div>
   );
 }

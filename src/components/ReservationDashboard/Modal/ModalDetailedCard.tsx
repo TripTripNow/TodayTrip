@@ -1,17 +1,34 @@
 import clsx from 'clsx';
 
-import { RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS } from '@/components/ReservationDashboard/mock';
 import { CONFIRMED, PENDING } from '@/constants/calendar';
 import Button from '@/components/common/Button/Button';
 import styles from './ModalDetailedCard.module.css';
+import { DailyReservationStatusCount, ScheduledReservation } from '@/types/common/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { patchReservationsById } from '@/api/myActivities';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { PatchReservationsParam } from '@/types/myActivities';
 
-function ModalDetailedCard({
-  item,
-  tabStatus,
-}: {
-  item: RESERVATION_DETAILS_MODAL_DETAILED_TIME_MOCK_DATA_PROPS['reservations'][0];
-  tabStatus: string;
-}) {
+interface ModalDetailedCardProps {
+  item: ScheduledReservation;
+  tabStatus: keyof DailyReservationStatusCount;
+}
+
+function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
+  const queryClient = useQueryClient();
+  const confirmMutate = useMutation({
+    mutationFn: (res: PatchReservationsParam) => patchReservationsById(res),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.monthlyReservation] });
+    },
+  });
+  const handleConfirm = () => {
+    confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
+  };
+
+  const handleDecline = () => {
+    confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
+  };
   return (
     <div className={styles.container}>
       <div className={styles.textWrapper}>
@@ -27,10 +44,10 @@ function ModalDetailedCard({
 
       {tabStatus === PENDING ? (
         <div className={styles.btnWrapper}>
-          <Button type="modalDouble" color="green">
+          <Button type="modalDouble" color="green" onClick={handleConfirm}>
             승인하기
           </Button>
-          <Button type="modalDouble" color="white">
+          <Button type="modalDouble" color="white" onClick={handleDecline}>
             거절하기
           </Button>
         </div>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH } from '@/constants/calendar';
 import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDaysInMonth';
 import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
-import { useQuery } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getReservationDashboard } from '@/api/myActivities';
 
@@ -31,7 +31,7 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
       : DAYS_IN_LONG_MONTH - allDays.length - dayOfWeek;
   const emptyLastCards = Array.from({ length: lengthCondition }, (_, v) => v + 1);
 
-  const { data: monthlyData } = useQuery({
+  const { data: monthlyData, refetch } = useQuery({
     queryKey: [QUERY_KEYS.monthlyReservation],
     queryFn: () =>
       getReservationDashboard({
@@ -69,7 +69,11 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
 
   useEffect(() => {
     handleMonthData();
-  }, [month, monthlyData, year, activityId]);
+  }, [monthlyData]);
+
+  useEffect(() => {
+    refetch();
+  }, [month, year, activityId]);
 
   return {
     year,
