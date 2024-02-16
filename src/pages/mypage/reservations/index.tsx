@@ -9,7 +9,7 @@ import styles from './Reservations.module.css';
 
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getMyReservations } from '@/pages/api/reservations';
+import { getMyReservations } from '@/api/reservations';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 

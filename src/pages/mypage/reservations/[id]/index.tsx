@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
 import { setContext } from '@/api/axiosInstance';
-import { getActivityById } from '@/pages/api/activities';
+import { getActivityById } from '@/api/activities';
 import { Reservation } from '@/types/common/api';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
