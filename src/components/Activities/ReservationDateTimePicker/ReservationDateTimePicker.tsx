@@ -112,11 +112,11 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     mutationFn: () =>
       postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
     onSuccess: () => {
-      toast('예약이 완료되었습니다.');
+      toast.success('예약이 완료되었습니다.');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        toast(error.response?.data.message);
+        toast.error(error.response?.data.message);
       }
     },
     onSettled: () => {
