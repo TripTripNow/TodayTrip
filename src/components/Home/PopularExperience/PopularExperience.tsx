@@ -7,8 +7,14 @@ import LeftArrow from '#/icons/icon-left-arrow.svg';
 import styles from './PopularExperience.module.css';
 import { usePopularExperience } from '@/hooks/Home/usePopularExperience';
 
-function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
-  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData } = usePopularExperience();
+interface PopularExperienceProps {
+  deviceType: string | undefined;
+  searchResult: string;
+}
+
+function PopularExperience({ deviceType, searchResult }: PopularExperienceProps) {
+  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData } =
+    usePopularExperience(searchResult);
 
   return (
     <section className={styles.container}>
@@ -50,11 +56,13 @@ function PopularExperience({ deviceType }: { deviceType: string | undefined }) {
             1200: {
               perPage: 2,
               gap: '2.8rem',
+              padding: { right: '2.4rem' },
             },
             767: {
               perPage: 2,
               gap: '1.6rem',
               fixedWidth: '18.6rem',
+              padding: { right: '1.6rem' },
             },
           },
           clones: undefined,

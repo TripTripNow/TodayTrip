@@ -1,11 +1,11 @@
-import { ChangeEvent, Dispatch, FormEvent, useEffect, useState, SetStateAction } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { QueryClient, keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { getActivities } from '@/api/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import useDeviceType from '@/hooks/common/useDeviceType';
-import { GetActivitiesParam, GetActivitiesRes } from '@/types/activities';
+import { GetActivitiesParam } from '@/types/activities';
 import { Category } from '@/types/common/api';
 import { PriceFilterOption } from '@/types/dropdown';
 import { localStorageGetItem, localStorageSetItem } from '@/utils/localStorage';
@@ -22,23 +22,7 @@ const calculateLimit = (deviceType: string | undefined) => {
   }
 };
 
-export const useHome = (): {
-  handleSearchSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  handleSearchText: (e: ChangeEvent<HTMLInputElement>) => void;
-  inputSearchText: string;
-  recentSearchKeywords: string[];
-  searchResult: string;
-  deviceType: string | undefined;
-  filterValue: PriceFilterOption;
-  setFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
-  selectedCategory: Category;
-  handleClickCategory: (e: Category) => void;
-  currentPageNumber: number;
-  totalPageNumber: number;
-  handlePaginationByClick: (value: number) => void;
-  activityData: GetActivitiesRes | undefined;
-  searchedByNoData: boolean;
-} => {
+export const useHome = () => {
   const deviceType = useDeviceType();
   const [sortByPrice, setSortByPrice] = useState<GetActivitiesParam['sort']>('latest'); // 정렬 순서
   const [selectedCategory, setSelectedCategory] = useState<Category>(''); // 선택된 카테고리
@@ -67,7 +51,9 @@ export const useHome = (): {
   });
 
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
-  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]); // 최근 검색어 배열
+  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>(
+    localStorageGetItem('recentSearchKeywords')?.split(',') ?? [],
+  ); // 최근 검색어 배열
 
   const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
 
@@ -133,19 +119,13 @@ export const useHome = (): {
     handleCardLimitByWindowWidth();
   }, [deviceType]);
 
-  // 초기 렌더링
-  useEffect(() => {
-    const storedText = localStorageGetItem('recentSearchKeywords');
-    setRecentSearchKeywords(storedText ? storedText.split(',') : []);
-  }, []);
-
   useEffect(() => {
     handleSortByPrice(filterValue);
   }, [filterValue]);
 
   useEffect(() => {
     refetch();
-  }, [sortByPrice, selectedCategory, limit]);
+  }, [sortByPrice, selectedCategory, limit, searchResult]);
 
   useEffect(() => {
     if (isError) toast.error('데이터를 불러오지 못했습니다.');
