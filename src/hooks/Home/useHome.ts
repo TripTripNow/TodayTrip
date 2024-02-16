@@ -77,7 +77,6 @@ export const useHome = () => {
         localStorageSetItem('recentSearchKeywords', updatedKeywords.join(','));
       }
     }
-    setRecentSearchKeywords(storedText?.split(',') ?? []);
   };
 
   // 검색창 input state 실시간 변경 함수
@@ -126,6 +125,11 @@ export const useHome = () => {
   useEffect(() => {
     refetch();
   }, [sortByPrice, selectedCategory, limit, searchResult]);
+
+  useEffect(() => {
+    const storedText = localStorageGetItem('recentSearchKeywords');
+    setRecentSearchKeywords(storedText?.split(',') ?? []);
+  }, [searchResult]);
 
   useEffect(() => {
     if (isError) toast.error('데이터를 불러오지 못했습니다.');
