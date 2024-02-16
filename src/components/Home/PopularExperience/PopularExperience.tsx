@@ -12,7 +12,7 @@ interface PopularExperienceProps {
 }
 
 function PopularExperience({ deviceType }: PopularExperienceProps) {
-  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData } = usePopularExperience();
+  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, cardData } = usePopularExperience();
 
   return (
     <section className={styles.container}>
@@ -73,7 +73,6 @@ function PopularExperience({ deviceType }: PopularExperienceProps) {
             <Card item={card} />
           </SplideSlide>
         ))}
-        <div style={{ marginLeft: '-100px' }} ref={targetRef}></div>
       </Splide>
     </section>
   );
