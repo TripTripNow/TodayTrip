@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.activityId],
+    queryKey: [activityId],
     queryFn: () => getActivityById({ activityId }),
   });
 
@@ -67,7 +67,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = res;
 
   const { data } = useQuery({
-    queryKey: [QUERY_KEYS.activityId],
+    queryKey: [activityId],
     queryFn: () => getActivityById({ activityId }),
   });
 
