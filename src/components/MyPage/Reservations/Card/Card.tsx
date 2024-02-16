@@ -28,7 +28,7 @@ function Card({ data }: CardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
-  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = data;
+  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
   const activityId = data.activity.id;
 
   return (
@@ -38,7 +38,7 @@ function Card({ data }: CardProps) {
         onClick={() =>
           router.push(
             {
-              pathname: `/mypage/reservations/${data.id}`,
+              pathname: `/mypage/reservations/${id}`,
               query: {
                 activityId,
                 status,
@@ -50,28 +50,28 @@ function Card({ data }: CardProps) {
                 totalPrice,
               },
             },
-            `/mypage/reservations/${data.id}`,
+            `/mypage/reservations/${id}`,
           )
         }
       >
         <div className={styles.imageWrapper}>
-          <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
+          <Image fill src={activity.bannerImageUrl} alt="체험 이미지" />
         </div>
         <div className={styles.detailContainer}>
-          <p className={clsx(styles.status, styles[data.status])}>{RESERVATION_STATUS[data.status]}</p>
-          <h2 className={styles.h2}>{data.activity.title}</h2>
+          <p className={clsx(styles.status, styles[status])}>{RESERVATION_STATUS[status]}</p>
+          <h2 className={styles.h2}>{activity.title}</h2>
           <p className={styles.dateDetail}>
-            <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
+            <span>{dayjs(date).format('YYYY.MM.DD')}</span>
             <span>·</span>
             <span>
-              {data.startTime} - {data.endTime}
+              {startTime} - {endTime}
             </span>
             <span>·</span>
-            <span>{data.headCount}명</span>
+            <span>{headCount}명</span>
           </p>
           <div className={styles.bottom}>
-            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
-            {data.status === PENDING && (
+            <p className={styles.price}>￦{priceFormat(totalPrice)}</p>
+            {status === PENDING && (
               <Button
                 color="white"
                 type="reservation"
@@ -85,10 +85,10 @@ function Card({ data }: CardProps) {
             )}
             {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
             {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
-            {data.status === COMPLETED && (
+            {status === COMPLETED && (
               <Button
                 color="green"
-                isDisabled={data.reviewSubmitted}
+                isDisabled={reviewSubmitted}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleReviewModalToggle();

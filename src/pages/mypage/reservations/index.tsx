@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.myReservations],
-    queryFn: () => getMyReservations(),
+    queryFn: getMyReservations,
   });
 
   return {
@@ -45,7 +45,6 @@ function Reservation() {
   }, [isVisible]);
 
   if (!data) return;
-
   const reservations = data.reservations;
 
   // TODO : api 연동 후 지울 예정

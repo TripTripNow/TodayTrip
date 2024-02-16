@@ -17,9 +17,9 @@ import styles from './ReservationId.module.css';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getActivityById } from '@/pages/api/activities';
+import { Reservation } from '@/types/common/api';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { Reservation } from '@/types/common/api';
 
 const item: Reservation = {
   id: 1,
