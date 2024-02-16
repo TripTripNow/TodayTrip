@@ -7,18 +7,49 @@ import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';
 import Image from 'next/image';
 import Link from 'next/link';
+import { QueryClient, dehydrate, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { getMyActivities } from '@/api/myActivities';
+
+export const getServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['myActivities'],
+    queryFn: () => getMyActivities(),
+  });
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+};
 
 function Activities() {
-  const [visibleMock, setVisibleMock] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 
-  const filteredMyActivities = [myActivitiesMock.activities.slice(0, visibleMock)][0];
+  const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['myActivities'],
+    queryFn: ({ pageParam }) => {
+      console.log(pageParam);
+      return getMyActivities(pageParam);
+    },
 
-  const handleEnrollButton = () => {};
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      console.log(lastPage);
+      const currentCursorId = lastPage.cursorId;
+      return currentCursorId;
+    },
+  });
+  // console.log(myActivityItems);
+  // console.log(activityItems);
+  // console.log(
+  //   'myActivityItems',
+  //   myActivityItems?.pages.flatMap((page) => page.activities),
+  // );
+  // console.log(myActivityItems?.pages[myActivityItems?.pages.length - 1].cursorId);
+
+  const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
 
   useEffect(() => {
     if (isVisible) {
-      setVisibleMock((prev) => prev + 6);
+      fetchNextPage();
     }
   }, [isVisible]);
   return (
@@ -33,7 +64,7 @@ function Activities() {
           </div>
           <div className={styles.activitiesItemContainer}>
             {myActivitiesMock.totalCount ? (
-              filteredMyActivities.map((item) => (
+              filteredMyActivities?.map((item) => (
                 <div key={item.id}>
                   <ActivitiesCard item={item} />
                 </div>
