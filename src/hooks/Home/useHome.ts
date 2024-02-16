@@ -51,9 +51,7 @@ export const useHome = () => {
   });
 
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
-  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>(
-    localStorageGetItem('recentSearchKeywords')?.split(',') ?? [],
-  ); // 최근 검색어 배열
+  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]); // 최근 검색어 배열
 
   const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
 
