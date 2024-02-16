@@ -6,7 +6,7 @@ import { getActivities } from '@/api/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
-export const usePopularExperience = (searchResult: string) => {
+export const usePopularExperience = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const splideRef = useRef(null);
   const [cursorId, setCursorId] = useState<number | null | undefined>();
@@ -37,18 +37,19 @@ export const usePopularExperience = (searchResult: string) => {
 
   useEffect(() => {
     if (cursorId === null) return;
-    if (isVisible && !isFetching) refetch();
+    if (isVisible && !isFetching && cardData.length <= 10) refetch();
   }, [isVisible]);
 
   useEffect(() => {
+    if (
+      cardData.length > 0 &&
+      cardData[cardData.length - 1].id === popularActivityData?.activities[popularActivityData.activities.length - 1].id
+    )
+      return;
+
     setCardData((prev) => [...prev, ...(popularActivityData?.activities ?? [])]);
     setCursorId(popularActivityData?.cursorId);
   }, [popularActivityData]);
-
-  useEffect(() => {
-    if (searchResult === '' && !isFetching) refetch();
-    else setCardData([]);
-  }, [searchResult]);
 
   /** 에러 관련 useEffect */
   useEffect(() => {

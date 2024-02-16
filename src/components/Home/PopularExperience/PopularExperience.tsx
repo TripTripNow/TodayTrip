@@ -9,12 +9,10 @@ import { usePopularExperience } from '@/hooks/Home/usePopularExperience';
 
 interface PopularExperienceProps {
   deviceType: string | undefined;
-  searchResult: string;
 }
 
-function PopularExperience({ deviceType, searchResult }: PopularExperienceProps) {
-  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData } =
-    usePopularExperience(searchResult);
+function PopularExperience({ deviceType }: PopularExperienceProps) {
+  const { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, targetRef, cardData } = usePopularExperience();
 
   return (
     <section className={styles.container}>

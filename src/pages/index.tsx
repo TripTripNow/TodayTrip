@@ -56,7 +56,7 @@ function Home() {
           inputSearchText={inputSearchText}
           recentText={recentSearchKeywords}
         />
-        {!searchResult && <PopularExperience deviceType={deviceType} searchResult={searchResult} />}
+        {!searchResult && <PopularExperience deviceType={deviceType} />}
 
         {!searchedByNoData ? (
           <AllExperience

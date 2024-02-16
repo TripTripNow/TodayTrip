@@ -77,7 +77,7 @@ export const useHome = () => {
         localStorageSetItem('recentSearchKeywords', updatedKeywords.join(','));
       }
     }
-    setRecentSearchKeywords(storedText ? storedText.split(',') : []);
+    setRecentSearchKeywords(storedText?.split(',') ?? []);
   };
 
   // 검색창 input state 실시간 변경 함수
