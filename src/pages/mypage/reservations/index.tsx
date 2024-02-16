@@ -8,7 +8,7 @@ import styles from './Reservations.module.css';
 import Card from '@/components/MyPage/Reservations/Card/Card';
 import { reservations } from '@/components/MyPage/Reservations/mock';
 
-function Reservation() {
+function Reservations() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
   const [visibleReservations, setVisibleReservations] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
@@ -51,5 +51,5 @@ function Reservation() {
   );
 }
 
-export default Reservation;
-Reservation.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
+export default Reservations;
+Reservations.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
