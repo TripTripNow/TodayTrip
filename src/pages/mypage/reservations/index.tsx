@@ -11,16 +11,18 @@ import { getMyReservations } from '@/api/myReservations';
 import ReservationCard from '@/components/MyPage/Reservations/ReservationCard/ReservationCard';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
+import { setContext } from '@/api/axiosInstance';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
-  const sessionData = await getSession(context);
+
+  setContext(context);
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations, '예약 상태'],
     queryFn: ({ pageParam }) => {
       const status = BACKEND_RESERVATION_STATUS['예약 상태'];
-      return getMyReservations({ size: 6, status, cursorId: pageParam, accessToken: sessionData?.user.accessToken });
+      return getMyReservations({ size: 6, status, cursorId: pageParam });
     },
     initialPageParam: 0,
   });
