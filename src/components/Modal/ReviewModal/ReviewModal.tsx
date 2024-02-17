@@ -95,7 +95,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
             className={styles.textarea}
             placeholder="후기를 작성해주세요"
           />
-          <button type="submit" disabled={!ratingInputValue || !textInputValue} className={styles.button}>
+          <button type="submit" disabled={!ratingInputValue || !textInputValue.trim()} className={styles.button}>
             작성하기
           </button>
         </form>
