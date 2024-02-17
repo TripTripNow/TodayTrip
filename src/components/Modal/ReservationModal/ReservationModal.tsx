@@ -5,7 +5,7 @@ import Calendar from 'react-calendar';
 import Button from '@/components/common/Button/Button';
 import style from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker.module.css';
 import MinusIcon from '#/icons/icon-minus.svg';
-import PlusIcon from '#/icons/icon-plus.svg';
+import PlusIcon from '#/icons/icon-smallPlus.svg';
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from 'dayjs';

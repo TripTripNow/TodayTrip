@@ -57,13 +57,7 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
         {reviews.map((review, index) => (
           <Fragment key={review.id}>
             <div className={styles.reviewWrapper}>
-              <Image
-                style={{ borderRadius: '100%' }}
-                src={review.user.profileImageUrl ?? LogoIcon}
-                width={45}
-                height={45}
-                alt="프로필 이미지"
-              />
+              <Image src={review.user.profileImageUrl ?? LogoIcon} width={45} height={45} alt="프로필 이미지" />
               <div className={styles.detailReview}>
                 <div className={styles.reviewerInfo}>
                   <h3 className={styles.nickname}>{review.user.nickname}</h3>

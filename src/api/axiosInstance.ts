@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import { getSession } from 'next-auth/react';
 

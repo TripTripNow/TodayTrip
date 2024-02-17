@@ -113,6 +113,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
     onSuccess: () => {
       toast.success('예약이 완료되었습니다.');
+      router.push('/mypage/reservations');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -261,7 +262,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       )}
       {isAlertReserveModalOpen && (
         <AlertModal
-          text={'체험 예약을 위해서는\n 로그인이 필요합니다.'}
+          text={'로그인 하시겠습니까?'}
           handleModalClose={handleAlertModalToggle}
           buttonText="로그인"
           handleActionButtonClick={() => router.push('/signin')}
