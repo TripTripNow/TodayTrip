@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useEffect, useState, useRef } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { QueryClient, keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { getActivities } from '@/api/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
@@ -30,10 +30,13 @@ export const useHome = () => {
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
-  // const queryClient = useRef(new QueryClient());
 
-  const { data: activityData, isError } = useQuery({
-    queryKey: [QUERY_KEYS.allActivities, currentPageNumber, limit, sortByPrice, selectedCategory, searchResult],
+  const {
+    data: activityData,
+    refetch,
+    isError,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.allActivities, currentPageNumber],
     queryFn: () =>
       getActivities({
         method: 'offset',
@@ -48,8 +51,6 @@ export const useHome = () => {
 
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
   const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]); // 최근 검색어 배열
-
-  const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
 
   // 검색 후 submit 함수
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -80,7 +81,7 @@ export const useHome = () => {
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)
   const handlePaginationByClick = (num: number) => {
-    if (num >= 1 && num <= totalPageNumber) setCurrentPageNumber(num);
+    setCurrentPageNumber(num);
   };
 
   // 카테고리 버튼 클릭 함수
@@ -122,26 +123,19 @@ export const useHome = () => {
   }, [searchResult]);
 
   useEffect(() => {
+    refetch();
+  }, [sortByPrice, selectedCategory, currentPageNumber, limit, searchResult]);
+
+  useEffect(() => {
+    setCurrentPageNumber(1);
+  }, [sortByPrice, selectedCategory, searchResult]);
+
+  useEffect(() => {
     if (isError) toast.error('데이터를 불러오지 못했습니다.');
   }, [isError]);
 
-  // useEffect(() => {
-  //   const nextPageNumber = currentPageNumber + 1;
-  //   queryClient.current.prefetchQuery({
-  //     queryKey: [QUERY_KEYS.allActivities, nextPageNumber, limit, sortByPrice, selectedCategory, searchResult],
-  //     queryFn: () =>
-  //       getActivities({
-  //         method: 'offset',
-  //         sort: sortByPrice,
-  //         category: selectedCategory,
-  //         page: nextPageNumber,
-  //         size: limit,
-  //         keyword: searchResult,
-  //       }),
-  //   });
-  // }, [currentPageNumber]);
-
   const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
+  const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
 
   return {
     handleSearchSubmit,
