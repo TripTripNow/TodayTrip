@@ -1,23 +1,25 @@
+import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import ArrowIcon from '#/icons/icon-arrowBack.svg';
+import { getActivityById } from '@/api/activities';
+import { patchMyReservationsId } from '@/api/reservations';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import CheckStatus from '@/components/Reservations/Id/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING } from '@/constants/reservation';
-import { priceFormat } from '@/utils/priceFormat';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
-import styles from './ReservationId.module.css';
-
-import { getActivityById } from '@/api/activities';
 import { Reservation } from '@/types/common/api';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { priceFormat } from '@/utils/priceFormat';
+import styles from './ReservationId.module.css';
 
 const item: Reservation = {
   id: 1,
@@ -67,7 +69,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   const router = useRouter();
   const res = router.query;
 
-  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice } = res;
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = res;
 
   const hasResult = Object.keys(res).length > 1;
 
@@ -75,6 +77,18 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     if (!hasResult) {
       router.push('/mypage/reservations');
     }
+  });
+
+  const patchMyReservationMutation = useMutation({
+    mutationFn: () => patchMyReservationsId(Number(id)),
+    onSuccess: () => {
+      toast.success('예약이 취소되었습니다.');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
   });
 
   if (!data) return;
@@ -86,6 +100,11 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
   const handleReviewModalToggle = () => {
     setIsReviewModalOpen((prev) => !prev);
+  };
+
+  const handleCancelReservation = () => {
+    patchMyReservationMutation.mutate();
+    setIsAlertModalOpen(false);
   };
 
   return (
@@ -138,7 +157,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
               text="예약을 취소하시겠습니까?"
               buttonText="취소하기"
               handleModalClose={handleCancelModalToggle}
-              handleCancel={handleCancelModalToggle}
+              handleCancel={handleCancelReservation}
             />
           )}
           {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={item} />}

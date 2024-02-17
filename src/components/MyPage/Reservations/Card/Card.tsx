@@ -1,19 +1,25 @@
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import clsx from 'clsx';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+
+import { patchMyReservationsId } from '@/api/reservations';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
 import { Reservation } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
-import clsx from 'clsx';
-import dayjs from 'dayjs';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import styles from './Card.module.css';
 
 interface CardProps {
   data: Reservation;
 }
+
 function Card({ data }: CardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -26,6 +32,23 @@ function Card({ data }: CardProps) {
 
   const handleReviewModalToggle = () => {
     setIsReviewModalOpen((prev) => !prev);
+  };
+
+  const patchMyReservationMutation = useMutation({
+    mutationFn: () => patchMyReservationsId(data.id),
+    onSuccess: () => {
+      toast.success('예약이 취소되었습니다.');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
+  });
+
+  const handleCancelReservation = () => {
+    patchMyReservationMutation.mutate();
+    setIsAlertModalOpen(false);
   };
 
   const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
@@ -106,7 +129,7 @@ function Card({ data }: CardProps) {
           text="예약을 취소하시겠습니까?"
           buttonText="취소하기"
           handleModalClose={handleCancelModalToggle}
-          handleCancel={handleCancelModalToggle}
+          handleCancel={handleCancelReservation}
         />
       )}
       {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
