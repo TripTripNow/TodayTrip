@@ -7,6 +7,7 @@ import Star from '@/components/Modal/ReviewModal/Star/Star';
 import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
 import { RATINGS } from '@/constants/ratingArray';
+import { priceFormat } from '@/utils/priceFormat';
 
 interface ReviewModalProps {
   data: Reservation;
@@ -54,7 +55,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
               <span>{data.headCount}명</span>
             </p>
             <div className={styles.separator}></div>
-            <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
+            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
           </div>
         </div>
         {/* 별점, 리뷰 작성 폼 */}

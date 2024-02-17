@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import Pagination from '@/components/common/Pagination/Pagination';
 import { useState } from 'react';
 import determineSatisfaction from '@/utils/determineSatisfaction';
+import { priceFormat } from '@/utils/priceFormat';
 
 const RATINGS = [1, 2, 3, 4, 5];
 
@@ -31,7 +32,7 @@ function ReviewList({ totalRating }: { totalRating: number }) {
           <p className={styles.satisfaction}>{determineSatisfaction(totalRating)}</p>
           <p className={styles.reviewCount}>
             <StarIcon style={{ marginBottom: '0.18rem' }} alt="별 아이콘" />
-            {totalCount.toLocaleString('ko-KR')}개 후기
+            {priceFormat(totalCount)}개 후기
           </p>
         </div>
       </div>

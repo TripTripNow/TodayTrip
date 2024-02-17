@@ -6,6 +6,7 @@ import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { useRouter } from 'next/router';
+import { priceFormat } from '@/utils/priceFormat';
 
 interface ActivitiesCardProps {
   item: {
@@ -67,7 +68,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
         <p className={styles.activitiesItemContentTitle}>{item.title}</p>
         <div className={styles.activitiesItemContentFooter} onBlur={handleKebabBlur}>
           <p>
-            ￦{item.price.toLocaleString()} <span className={styles.activitiesItemContentFooterCount}>/인</span>
+            ￦{priceFormat(item.price)} <span className={styles.activitiesItemContentFooterCount}>/인</span>
           </p>
           <button onClick={handleKebabToggle}>
             <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} alt="케밥버튼" />
