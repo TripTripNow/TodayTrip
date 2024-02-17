@@ -8,9 +8,10 @@ import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
 import { RATINGS } from '@/constants/ratingArray';
 import { priceFormat } from '@/utils/priceFormat';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postMyReservationReview } from '@/api/myReservations';
 import toast from 'react-hot-toast';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 interface ReviewModalProps {
   data: Reservation;
@@ -26,15 +27,18 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
     setTextInputValue(e.target.value);
   };
 
+  const queryClient = useQueryClient();
+
   const uploadReviewMutation = useMutation({
     mutationFn: () =>
       postMyReservationReview({ reservationId: data.id, rating: ratingInputValue, content: textInputValue }),
     onSuccess: () => {
       handleModalClose();
       toast.success('리뷰 작성이 완료되었습니다!');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
     },
   });
-  //TODO : api 연결
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     uploadReviewMutation.mutate();

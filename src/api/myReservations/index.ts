@@ -12,7 +12,7 @@ export const getMyReservations = async ({
 };
 
 export const postMyReservationReview = async ({ reservationId, rating, content }: PostMyReservationReviewReq) => {
-  return await instance.post(`/my-reservations/${reservationId}`, {
+  return await instance.post(`/my-reservations/${reservationId}/reviews`, {
     rating,
     content,
   });

@@ -17,9 +17,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   setContext(context);
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: [QUERY_KEYS.reservations, '예약 상태'],
+    queryKey: [QUERY_KEYS.reservations, '전체'],
     queryFn: ({ pageParam }) => {
-      const status = BACKEND_RESERVATION_STATUS['예약 상태'];
+      const status = BACKEND_RESERVATION_STATUS['전체'];
       return getMyReservations({ size: 6, status, cursorId: pageParam });
     },
     initialPageParam: 0,
@@ -31,8 +31,9 @@ function Reservations() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
   const { isVisible, targetRef } = useInfiniteScroll();
 
+  const queryKey = selectedStatus === '예약 상태' ? '전체' : selectedStatus;
   const reservations = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.reservations, selectedStatus],
+    queryKey: [QUERY_KEYS.reservations, queryKey],
     queryFn: ({ pageParam }) => {
       const status = BACKEND_RESERVATION_STATUS[selectedStatus];
       return getMyReservations({ size: 6, status, cursorId: pageParam });
