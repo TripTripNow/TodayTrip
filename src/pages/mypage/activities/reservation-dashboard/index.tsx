@@ -11,6 +11,7 @@ import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getMyActivities } from '@/api/myActivities';
 import styles from './ReservationDashboard.module.css';
+import { useReservationDashboard } from '@/hooks/ReservationDashboard/useReservationDashboard';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
@@ -26,18 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function ReservationDashboard() {
-  const { data } = useQuery({
-    queryKey: [QUERY_KEYS.myActivities],
-    queryFn: () => getMyActivities({}),
-  });
-  const dropdownData =
-    data?.activities.map((activity) => {
-      return {
-        id: activity.id,
-        title: activity.title,
-      };
-    }) ?? [];
-  const [dropDownItem, setDropdownItem] = useState<DropdownItems>(dropdownData[0] ?? INITIAL_DROPDOWN_ITEM); // 드랍다운 value 값
+  const { dropdownData, dropDownItem, setDropdownItem } = useReservationDashboard();
 
   return (
     <>
