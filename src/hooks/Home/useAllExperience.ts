@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 
 export const useAllExperience = () => {
   const [move, setMove] = useState(0);
+  const [disableLeftShadow, setDisableLeftShadow] = useState(false);
+  const [disableRightShadow, setDisableRightShadow] = useState(false);
 
   const handleDisableShadow = () => {
-    const disableShadow = move !== 0;
-    const disableRightShadow = move >= 3;
-    return { disableShadow, disableRightShadow };
+    setDisableRightShadow(move >= 3);
+    setDisableLeftShadow(move !== 0);
   };
 
   useEffect(() => {
     handleDisableShadow();
   }, [move]);
 
-  return { setMove, handleDisableShadow };
+  return { disableLeftShadow, disableRightShadow, setMove };
 };

@@ -39,9 +39,7 @@ function AllExperience({
   filterValue,
   setFilterValue,
 }: AllExperienceProps) {
-  const { setMove, handleDisableShadow } = useAllExperience();
-  const { disableShadow, disableRightShadow } = handleDisableShadow();
-
+  const { disableLeftShadow, disableRightShadow, setMove } = useAllExperience();
   return (
     <section className={styles.container}>
       {/* 카테고리 버튼 영역 */}
@@ -104,7 +102,7 @@ function AllExperience({
           </Splide>
         )}
 
-        {disableShadow && <div className={styles.categoryLeftShadow}></div>}
+        {disableLeftShadow && <div className={styles.categoryLeftShadow}></div>}
         {disableRightShadow && <div className={styles.categoryRightShadow}></div>}
       </div>
 
