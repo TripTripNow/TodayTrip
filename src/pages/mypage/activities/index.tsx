@@ -1,5 +1,5 @@
 import styles from './Activities.module.css';
-import { useState, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
@@ -7,15 +7,19 @@ import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { QueryClient, dehydrate, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
 import { getMyActivities } from '@/api/myActivities';
+import { setContext } from '@/api/axiosInstance';
+import { GetServerSidePropsContext } from 'next';
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  setContext(context);
+  await queryClient.prefetchInfiniteQuery({
     queryKey: ['myActivities'],
     queryFn: () => getMyActivities(),
+    initialPageParam: 0,
   });
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
@@ -25,25 +29,13 @@ function Activities() {
 
   const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
     queryKey: ['myActivities'],
-    queryFn: ({ pageParam }) => {
-      console.log(pageParam);
-      return getMyActivities(pageParam);
-    },
-
+    queryFn: ({ pageParam }) => getMyActivities(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      console.log(lastPage);
       const currentCursorId = lastPage.cursorId;
       return currentCursorId;
     },
   });
-  // console.log(myActivityItems);
-  // console.log(activityItems);
-  // console.log(
-  //   'myActivityItems',
-  //   myActivityItems?.pages.flatMap((page) => page.activities),
-  // );
-  // console.log(myActivityItems?.pages[myActivityItems?.pages.length - 1].cursorId);
 
   const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
 

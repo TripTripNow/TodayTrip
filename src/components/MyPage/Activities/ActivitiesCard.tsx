@@ -1,7 +1,6 @@
 import styles from '@/pages/mypage/activities/Activities.module.css';
 import Image from 'next/image';
 import KebabIcon from '#/icons/icon-kebab.svg';
-import DanceImg from '#/images/img-dance.jpg';
 import StarIcon from '#/icons/icon-star.svg';
 import { useState } from 'react';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
@@ -55,7 +54,14 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   return (
     <div className={styles.activitiesItemWrapper}>
       <div className={styles.activitiesItemImgDiv}>
-        <Image className={styles.activitiesImg} src={DanceImg} alt="체험이미지" priority />
+        <Image
+          className={styles.activitiesImg}
+          src={item.bannerImageUrl}
+          alt="체험이미지"
+          priority
+          width={204}
+          height={204}
+        />
       </div>
       <div className={styles.activitiesItemContent}>
         <div className={styles.activitiesItemContentHeader}>
