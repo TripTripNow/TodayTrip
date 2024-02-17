@@ -30,7 +30,7 @@ export const useHome = () => {
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
-  const queryClient = useRef(new QueryClient());
+  // const queryClient = useRef(new QueryClient());
 
   const { data: activityData, isError } = useQuery({
     queryKey: [QUERY_KEYS.allActivities, currentPageNumber, limit, sortByPrice, selectedCategory, searchResult],
@@ -139,7 +139,7 @@ export const useHome = () => {
   //         keyword: searchResult,
   //       }),
   //   });
-  // }, [currentPageNumber, queryClient]);
+  // }, [currentPageNumber]);
 
   const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
 
