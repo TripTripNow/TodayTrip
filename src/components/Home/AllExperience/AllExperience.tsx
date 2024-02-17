@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import clsx from 'clsx';
 
 import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
@@ -9,8 +10,8 @@ import Button from '@/components/common/Button/Button';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
 import { Activity, Category } from '@/types/common/api';
-import { useAllExperience } from '@/hooks/Home/useAllExperience';
 import styles from './AllExperience.module.css';
+import Arrow from '#/icons/icon-pagination-left-arrow.svg';
 
 const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
 
@@ -39,14 +40,13 @@ function AllExperience({
   filterValue,
   setFilterValue,
 }: AllExperienceProps) {
-  const { disableLeftShadow, disableRightShadow, setMove } = useAllExperience();
   return (
     <section className={styles.container}>
       {/* 카테고리 버튼 영역 */}
       <div className={styles.categoryWrapper}>
         {!searchResult && (
           <Splide
-            onMoved={(obj: unknown, move: number) => setMove(move)}
+            hasTrack={false}
             options={{
               mediaQuery: 'min',
               fixedWidth: '8.8rem',
@@ -83,27 +83,38 @@ function AllExperience({
                   arrows: true,
                 },
               },
-              arros: true,
               clones: undefined,
             }}
           >
-            {CATEGORY.map((name) => (
-              <SplideSlide key={name}>
-                <Button
-                  key={name}
-                  type="category"
-                  color={selectedCategory === name ? 'lightgreen' : 'lightwhite'}
-                  onClick={() => handleClickCategory(name)}
-                >
-                  {name}
-                </Button>
-              </SplideSlide>
-            ))}
+            <SplideTrack>
+              {CATEGORY.map((name) => (
+                <SplideSlide key={name}>
+                  <Button
+                    key={name}
+                    type="category"
+                    color={selectedCategory === name ? 'lightgreen' : 'lightwhite'}
+                    onClick={() => handleClickCategory(name)}
+                  >
+                    {name}
+                  </Button>
+                </SplideSlide>
+              ))}
+            </SplideTrack>
+
+            <div className="splide__arrows">
+              <div className={clsx(styles.categoryLeftShadow, styles.rotateContrary)}>
+                <button className="splide__arrow splide__arrow--prev">
+                  <Arrow alt="카테고리 왼쪽 이동 버튼" />
+                </button>
+              </div>
+              <div className={clsx(styles.categoryRightShadow, styles.rotateContrary)}>
+                <button className="splide__arrow splide__arrow--next">
+                  <Arrow alt="카테고리 오른쪽 이동 버튼" />
+                </button>
+              </div>
+            </div>
           </Splide>
         )}
-
-        {disableLeftShadow && <div className={styles.categoryLeftShadow}></div>}
-        {disableRightShadow && <div className={styles.categoryRightShadow}></div>}
       </div>
 
       {/* 체험 Header 영역 */}

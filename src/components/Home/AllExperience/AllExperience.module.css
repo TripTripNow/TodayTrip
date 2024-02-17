@@ -26,6 +26,7 @@
   top: 0;
   right: 0;
   flex-shrink: 0;
+  margin-right: -1.5rem;
 
   @media tablet {
     display: block;
@@ -37,6 +38,7 @@
     display: block;
     width: 5.7rem;
     height: 5.3rem;
+    margin-right: -1.8rem;
   }
 
   background: linear-gradient(270deg, #fafbfc 0%, #fafbfc 71.87%, rgba(250, 251, 252, 0) 100%);
@@ -48,6 +50,7 @@
   top: 0;
   left: 0;
   flex-shrink: 0;
+  margin-left: -2.5rem;
 
   @media tablet {
     display: block;
@@ -59,6 +62,7 @@
     display: block;
     width: 5.7rem;
     height: 5.3rem;
+    margin-right: -1rem;
   }
   background: linear-gradient(-270deg, #fafbfc 0%, #fafbfc 71.87%, rgba(250, 251, 252, 0) 100%);
 }
@@ -157,4 +161,8 @@
   @media mobile {
     margin-top: 6.2rem;
   }
+}
+
+.rotateContrary {
+  rotate: 180deg;
 }
