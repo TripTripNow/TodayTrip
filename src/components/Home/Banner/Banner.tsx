@@ -8,6 +8,7 @@ import MainBanner2 from '#/images/img-mainBanner2.png';
 import MainBanner3 from '#/images/img-mainBanner3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import styles from './Banner.module.css';
+import LinkButton from '@/components/Home/LinkButton/LinkButton';
 
 /** 배너에 관련된 정보입니다. */
 export const BANNER = [
@@ -30,7 +31,7 @@ export const BANNER = [
     id: 3,
     src: MainBanner3,
     title: '이제 등록하러 가볼까요?',
-    description: <StyledButton />,
+    description: '',
   },
 ];
 
@@ -48,9 +49,10 @@ function Carousel() {
           <div key={data.id} className={styles.bannerContainer}>
             <div className={styles.background}></div>
             <Image src={data.src} alt={String(data.id)} fill priority />
-            <div className={styles.textContainer}>
-              <h1>{data.title}</h1>
-              <pre>{data.description}</pre>
+            <div className={clsx(data.id !== 3 ? styles.textContainer : styles.textLastContainer)}>
+              <h1 className={clsx(styles.mainTitle, data.id === 3 && styles.mainLastTitle)}>{data.title}</h1>
+              <pre className={styles.text}>{data.description}</pre>
+              {data.id === 3 && <LinkButton />}
             </div>
           </div>
         ))}

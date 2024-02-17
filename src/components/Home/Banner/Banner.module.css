@@ -70,7 +70,22 @@
   }
 }
 
-.textContainer > h1 {
+.textLastContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  margin-top: 15.9rem;
+
+  @media mobile {
+    margin-top: 7.4rem;
+    margin-left: 2.4rem;
+  }
+}
+
+.mainTitle {
   display: inline-block;
   width: 70rem;
   color: var(--whiteFF);
@@ -91,18 +106,26 @@
   }
 }
 
-.textContainer > pre {
+.mainLastTitle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.text {
   color: var(--whiteFF);
   font-size: 2.4rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  margin-bottom: 2rem;
 
   @media tablet {
     font-size: 2rem;
   }
 
   @media mobile {
+    margin-bottom: 1.2rem;
     font-size: 1.4rem;
   }
 }
