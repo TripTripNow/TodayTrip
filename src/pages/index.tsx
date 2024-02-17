@@ -17,11 +17,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.allActivities, 1],
-    queryFn: () => getActivities({ method: 'offset', sort: 'latest' }),
-  });
-
-  await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.popularActivities],
     queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 10 }),
   });

@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { QueryClient, keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -30,14 +30,10 @@ export const useHome = () => {
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
-  const queryClient = new QueryClient();
+  const queryClient = useRef(new QueryClient());
 
-  const {
-    data: activityData,
-    refetch,
-    isError,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.allActivities, currentPageNumber],
+  const { data: activityData, isError } = useQuery({
+    queryKey: [QUERY_KEYS.allActivities, currentPageNumber, limit, sortByPrice, selectedCategory, searchResult],
     queryFn: () =>
       getActivities({
         method: 'offset',
@@ -121,10 +117,6 @@ export const useHome = () => {
   }, [filterValue]);
 
   useEffect(() => {
-    refetch();
-  }, [sortByPrice, selectedCategory, limit, searchResult]);
-
-  useEffect(() => {
     const storedText = localStorageGetItem('recentSearchKeywords');
     setRecentSearchKeywords(storedText?.split(',') ?? []);
   }, [searchResult]);
@@ -133,20 +125,21 @@ export const useHome = () => {
     if (isError) toast.error('데이터를 불러오지 못했습니다.');
   }, [isError]);
 
-  useEffect(() => {
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.allActivities, currentPageNumber + 1],
-      queryFn: () =>
-        getActivities({
-          method: 'offset',
-          sort: sortByPrice,
-          category: selectedCategory,
-          page: currentPageNumber + 1,
-          size: limit,
-          keyword: searchResult,
-        }),
-    });
-  }, [currentPageNumber]);
+  // useEffect(() => {
+  //   const nextPageNumber = currentPageNumber + 1;
+  //   queryClient.current.prefetchQuery({
+  //     queryKey: [QUERY_KEYS.allActivities, nextPageNumber, limit, sortByPrice, selectedCategory, searchResult],
+  //     queryFn: () =>
+  //       getActivities({
+  //         method: 'offset',
+  //         sort: sortByPrice,
+  //         category: selectedCategory,
+  //         page: nextPageNumber,
+  //         size: limit,
+  //         keyword: searchResult,
+  //       }),
+  //   });
+  // }, [currentPageNumber, queryClient]);
 
   const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
 
