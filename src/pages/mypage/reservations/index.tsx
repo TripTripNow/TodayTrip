@@ -9,13 +9,11 @@ import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query'
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getMyReservations } from '@/api/myReservations';
 import ReservationCard from '@/components/MyPage/Reservations/ReservationCard/ReservationCard';
-import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
 import { setContext } from '@/api/axiosInstance';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
-
   setContext(context);
 
   await queryClient.prefetchInfiniteQuery({
@@ -43,29 +41,12 @@ function Reservations() {
     getNextPageParam: (lastPage) => lastPage.cursorId,
   });
 
-  // // TODO : api 연동 후 지울 예정
-  // const filteredReservations =
-  //   selectedStatus === '전체' || selectedStatus === '예약 상태'
-  //     ? reservations.slice(0, visibleReservations)
-  //     : reservations
-  //         .filter((reservation) => RESERVATION_STATUS[reservation.status] === selectedStatus)
-  //         .slice(0, visibleReservations);
-
   useEffect(() => {
     if (isVisible) {
       reservations.fetchNextPage();
     }
   }, [isVisible]);
 
-  //TODO : api 연동 이후 쿼리 업데이트를 위해 해당 코드 사용 예정
-  // const router = useRouter();
-  // useEffect(() => {
-  //   router.push(`/mypage/reservations?status=${selectedStatus}`);
-  // }, [selectedStatus]);
-
-  // useEffect(() => {
-  //   if(reservationsData)
-  // } )
   return (
     <div className={styles.container}>
       <div className={styles.header}>

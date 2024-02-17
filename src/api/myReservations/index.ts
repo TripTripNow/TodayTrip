@@ -1,12 +1,19 @@
 import instance from '@/api/axiosInstance';
-import { GetMyReservationsRes, GetMyReservationsParams } from '@/types/myReservations';
+import { GetMyReservationsRes, GetMyReservationsParam, PostMyReservationReviewReq } from '@/types/myReservations';
 
 export const getMyReservations = async ({
   cursorId,
   size,
   status,
-}: GetMyReservationsParams): Promise<GetMyReservationsRes> => {
+}: GetMyReservationsParam): Promise<GetMyReservationsRes> => {
   return await instance.get(
     `/my-reservations?${cursorId ? `cursorId=${cursorId}` : ''}&size=${size}${status ? `&status=${status}` : ''}`,
   );
+};
+
+export const postMyReservationReview = async ({ reservationId, rating, content }: PostMyReservationReviewReq) => {
+  return await instance.post(`/my-reservations/${reservationId}`, {
+    rating,
+    content,
+  });
 };

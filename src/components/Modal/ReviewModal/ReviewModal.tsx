@@ -8,6 +8,9 @@ import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
 import { RATINGS } from '@/constants/ratingArray';
 import { priceFormat } from '@/utils/priceFormat';
+import { useMutation } from '@tanstack/react-query';
+import { postMyReservationReview } from '@/api/myReservations';
+import toast from 'react-hot-toast';
 
 interface ReviewModalProps {
   data: Reservation;
@@ -23,9 +26,18 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
     setTextInputValue(e.target.value);
   };
 
+  const uploadReviewMutation = useMutation({
+    mutationFn: () =>
+      postMyReservationReview({ reservationId: data.id, rating: ratingInputValue, content: textInputValue }),
+    onSuccess: () => {
+      handleModalClose();
+      toast.success('리뷰 작성이 완료되었습니다!');
+    },
+  });
   //TODO : api 연결
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    uploadReviewMutation.mutate();
   };
 
   return (
@@ -59,7 +71,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
           </div>
         </div>
         {/* 별점, 리뷰 작성 폼 */}
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.ratingInput}>
             {RATINGS.map((number) => (
               <Star
@@ -79,7 +91,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
             className={styles.textarea}
             placeholder="후기를 작성해주세요"
           />
-          <button disabled={!ratingInputValue || !textInputValue} className={styles.button}>
+          <button type="submit" disabled={!ratingInputValue || !textInputValue} className={styles.button}>
             작성하기
           </button>
         </form>

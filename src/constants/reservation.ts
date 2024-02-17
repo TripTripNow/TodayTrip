@@ -1,4 +1,4 @@
-import { ReserveFilterOption, ReserveSortOption } from '@/types/dropdown';
+import { ReserveFilterOption } from '@/types/dropdown';
 
 export const RESERVATION_STATUS = {
   pending: '예약 신청',

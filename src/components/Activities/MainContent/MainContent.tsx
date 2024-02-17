@@ -30,7 +30,7 @@ function MainContent({ data }: MainContentProps) {
     const fetchLocation = async () => {
       try {
         const response = await axios.get('/api/geocode', {
-          params: {
+          Param: {
             address: data.address,
           },
         });
