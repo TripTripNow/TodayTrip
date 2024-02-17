@@ -75,8 +75,9 @@ export const useHome = () => {
   };
 
   // 검색창 input state 실시간 변경 함수
-  const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputSearchText(e.target.value);
+  const handleSearchText = (e: ChangeEvent<HTMLInputElement> | string) => {
+    if (typeof e === 'string') setInputSearchText(e);
+    else setInputSearchText(e.target.value);
   };
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)
