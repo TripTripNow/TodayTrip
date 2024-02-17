@@ -3,8 +3,6 @@ import { getMyReservationsRes } from '@/types/myReservations';
 
 // 내 예약 리스트 조회
 
-export const getMyReservations = async () => {
-  const { data } = await instance.get<getMyReservationsRes>('my-reservations');
-
-  return data;
+export const getMyReservations = async (): Promise<getMyReservationsRes> => {
+  return await instance.get('my-reservations');
 };

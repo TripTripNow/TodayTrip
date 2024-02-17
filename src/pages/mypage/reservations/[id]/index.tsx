@@ -14,7 +14,6 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import styles from './ReservationId.module.css';
 
-import { setContext } from '@/api/axiosInstance';
 import { getActivityById } from '@/api/activities';
 import { Reservation } from '@/types/common/api';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
@@ -42,7 +41,6 @@ const item: Reservation = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  setContext(context);
   const activityId = Number(context.query.activityId);
 
   const queryClient = new QueryClient();
@@ -128,7 +126,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
             <Button
               type="reservation"
               color="green"
-              isDisabled={Boolean(reviewSubmitted)}
+              isDisabled={Boolean(Number(reviewSubmitted))}
               onClick={handleReviewModalToggle}
             >
               후기 작성
