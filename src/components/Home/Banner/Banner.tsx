@@ -53,6 +53,7 @@ function Carousel() {
               <h1 className={clsx(styles.mainTitle, data.id === 3 && styles.mainLastTitle)}>{data.title}</h1>
               <pre className={styles.text}>{data.description}</pre>
               {data.id === 3 && <LinkButton />}
+              {/* {data.id === 3 && <StyledButton />} */}
             </div>
           </div>
         ))}

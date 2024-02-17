@@ -11,7 +11,7 @@ function LinkButton() {
         <button className={`${styles.learnMore} ${styles.button}`}>
           <span className={styles.circle} aria-hidden="true">
             <span className={clsx(styles.icon, styles.arrow)}>
-              <LogoIcon alt="비행기" />
+              <LogoIcon alt="비행기" width={30} height={30} />
             </span>
           </span>
           <span className={styles.buttonText}>체험 등록하기</span>

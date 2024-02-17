@@ -2,7 +2,6 @@
 
 .button {
   display: block;
-  position: absolute;
   top: 9rem;
   left: 0;
   float: left;
@@ -32,10 +31,6 @@
   box-shadow: 0px 5px 0px 0px #007144;
 }
 
-.btnLightBlue.btnPush {
-  box-shadow: 0px 5px 0px 0px #1e8185;
-}
-
 .btnPush:hover {
   margin-top: 15px;
   margin-bottom: 5px;
@@ -45,14 +40,6 @@
   box-shadow: 0px 0px 0px 0px #007144;
 }
 
-.btnLightBlue.btnPush:hover {
-  box-shadow: 0px 0px 0px 0px #1e8185;
-}
-
 .btnBlueGreen {
   background: #00ae68;
-}
-
-.btnLightBlue {
-  background: #5dc8cd;
 }
