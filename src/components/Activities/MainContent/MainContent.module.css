@@ -25,4 +25,5 @@
 .description {
   font-size: 1.6rem;
   line-height: 2.6rem;
+  white-space: pre-line;
 }
