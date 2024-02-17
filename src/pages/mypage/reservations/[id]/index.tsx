@@ -18,6 +18,7 @@ import CheckStatus from '@/components/Reservations/Id/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import { COMPLETED, PENDING } from '@/constants/reservation';
 import { Reservation } from '@/types/common/api';
+import Map from '@/components/common/Map/Map';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
 
@@ -55,6 +56,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: { activityId, dehydratedState: dehydrate(queryClient) },
   };
+};
+
+const containerStyle = {
+  width: '100%',
+  height: '28em',
 };
 
 function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -131,8 +137,9 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
             <span> · </span>
             <span>{headCount}명</span>
           </p>
-          <p className={styles.address}>{address}</p>
+          {/* <p className={styles.address}>{address}</p> */}
         </div>
+        <Map address={address} containerStyle={containerStyle} />
         <div className={styles.bottom}>
           <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
 
@@ -151,7 +158,6 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
               후기 작성
             </Button>
           )}
-
           {isAlertModalOpen && (
             <AlertModal
               text="예약을 취소하시겠습니까?"
