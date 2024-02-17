@@ -16,7 +16,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const queryClient = new QueryClient();
   setContext(context);
 
-  const a = await queryClient.fetchInfiniteQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations, '전체'],
     queryFn: ({ pageParam }) => {
       const status = BACKEND_RESERVATION_STATUS['전체'];
@@ -24,7 +24,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     },
     initialPageParam: 0,
   });
-  console.log('출력', a.pages);
+
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 function Reservations() {
