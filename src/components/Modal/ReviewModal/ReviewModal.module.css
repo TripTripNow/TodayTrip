@@ -1,0 +1,169 @@
+@values mobile from '@/styles/breakpoints.css';
+
+.modalWrapper {
+  width: 48rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2.8rem 2.4rem;
+  border-radius: 2.4rem;
+  background: var(--whiteFF);
+  gap: 2.4rem;
+
+  @media mobile {
+    width: 37.5rem;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  color: var(--black1B);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+  display: flex;
+  align-items: center;
+}
+
+.cardWrapper {
+  display: flex;
+  gap: 2.4rem;
+
+  @media mobile {
+    gap: 0.8rem;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 12.6rem;
+  height: 12.6rem;
+
+  @media mobile {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+.imageWrapper img {
+  border-radius: 1.2rem;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  @media mobile {
+    gap: 0.6rem;
+  }
+}
+
+.detailContainer > * {
+  color: var(--nomad_black);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+  width: 28rem;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  @media mobile {
+    width: 21rem;
+    font-size: 1.6rem;
+  }
+}
+
+.dateDetail {
+  display: flex;
+  gap: 0.6rem;
+  white-space: nowrap;
+  @media mobile {
+    gap: 0.2rem;
+  }
+}
+
+.dateDetail > * {
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+
+  @media mobile {
+    font-size: 1.4rem;
+  }
+}
+
+.separator {
+  width: 28.2rem;
+  height: 0.1rem;
+  opacity: 0.1;
+  background: var(--black1B);
+
+  @media mobile {
+    width: 21rem;
+    height: 0.1rem;
+  }
+}
+.price {
+  font-size: 3.2rem;
+  font-weight: 700;
+
+  @media mobile {
+    font-size: 2rem;
+  }
+}
+
+.ratingInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.textarea {
+  height: 24rem;
+  padding: 1.6rem;
+  border: 0.1rem solid var(--gray79);
+  outline: none;
+  font-size: 1.6rem;
+  resize: none;
+  border-radius: 0.4rem;
+
+  @media mobile {
+    height: 34.6rem;
+  }
+}
+
+.textarea:focus-within {
+  border: 0.1rem solid var(--nomad_black);
+}
+
+.textarea::placeholder {
+  color: var(--gray79);
+}
+
+.button {
+  height: 5.6rem;
+  color: var(--whiteFF);
+  font-size: 1.6rem;
+  background-color: var(--nomad_black);
+  border-radius: 0.4rem;
+  line-height: 2.6rem;
+  font-weight: 700;
+}
+
+.button:disabled {
+  background-color: var(--grayA4);
+}
