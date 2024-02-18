@@ -1,5 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import {
+  FetchNextPageOptions,
+  InfiniteQueryObserverResult,
+  keepPreviousData,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
@@ -11,6 +16,12 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { getReservationsByTime } from '@/api/myActivities';
 import styles from './ModalContent.module.css';
 
+const NO_DATA_IN_RESERVATION_MODAL = {
+  confirmed: '승인 내역이 없습니다.',
+  declined: '거절 내역이 없습니다.',
+  pending: '신청 내역이 없습니다.',
+};
+
 interface ModalContentProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   items: GetReservedScheduleRes[];
@@ -18,11 +29,16 @@ interface ModalContentProps {
   date: string;
   tabStatus: keyof DailyReservationStatusCount;
   activityId: number;
+  handleModalClose: () => void;
 }
 
 interface ReservationDetailsProps {
   items: ScheduledReservation[];
   tabStatus: keyof DailyReservationStatusCount;
+  handleModalClose: () => void;
+  fetchNextPage: (
+    options?: FetchNextPageOptions | undefined,
+  ) => Promise<InfiniteQueryObserverResult<ScheduledReservation[], Error>>;
 }
 
 type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
@@ -34,22 +50,28 @@ function ModalContent({
   date,
   tabStatus,
   activityId,
+  handleModalClose,
 }: ModalContentProps) {
-  const [cursorId, setCursorId] = useState<number | undefined | null>();
-  const { data, refetch } = useQuery({
-    queryKey: [QUERY_KEYS.timeReservation],
-    queryFn: () =>
-      getReservationsByTime({ activityId, cursorId, size: 3, scheduleId: dropdownItem.id, status: tabStatus }),
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
+    queryFn: ({ pageParam }) =>
+      getReservationsByTime({
+        activityId,
+        cursorId: pageParam,
+        size: 3,
+        scheduleId: dropdownItem.id,
+        status: tabStatus,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.cursorId,
+    select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
+    placeholderData: keepPreviousData,
   });
-
-  useEffect(() => {
-    refetch();
-    if (data?.cursorId !== null) setCursorId(data?.cursorId);
-  }, [dropdownItem.id, tabStatus]);
+  const showItems = data?.filter((item) => item.status === tabStatus);
 
   return (
     <div className={styles.mainContainer}>
-      {timeItems && data?.reservations ? (
+      {timeItems && data ? (
         <>
           <ReservationDate
             setDropdownItem={setDropdownItem}
@@ -57,7 +79,12 @@ function ModalContent({
             dropdownItem={dropdownItem}
             date={date}
           />
-          <ReservationDetails items={data?.reservations} tabStatus={tabStatus} />
+          <ReservationDetails
+            items={showItems!}
+            tabStatus={tabStatus}
+            handleModalClose={handleModalClose}
+            fetchNextPage={fetchNextPage}
+          />
         </>
       ) : (
         <NoResult text="예약 정보가 없습니다." />
@@ -70,7 +97,6 @@ export default ModalContent;
 
 function ReservationDate({ setDropdownItem, items, dropdownItem, date }: ReservationDateProps) {
   const showDateArr = date.split('-');
-
   const timeItems = items.map((item) => {
     return {
       id: item.scheduleId,
@@ -92,47 +118,29 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   );
 }
 
-function ReservationDetails({ items, tabStatus }: ReservationDetailsProps) {
-  const [visibleItems, setVisibleItems] = useState(3);
+function ReservationDetails({ items, tabStatus, handleModalClose, fetchNextPage }: ReservationDetailsProps) {
   const { isVisible, targetRef, setIsVisible } = useInfiniteScroll();
-  const showItems = items.filter((item) => item.status === tabStatus).slice(0, visibleItems);
 
   useEffect(() => {
-    setVisibleItems(3);
     setIsVisible(false);
   }, [tabStatus]);
 
   useEffect(() => {
-    if (isVisible && items.length > visibleItems) {
-      setVisibleItems((prev) => prev + 2);
-    }
+    if (isVisible) fetchNextPage();
   }, [isVisible]);
-
-  let text = '신청 내역이 없습니다.';
-  switch (tabStatus) {
-    case 'confirmed':
-      text = '승인 내역이 없습니다.';
-      break;
-    case 'declined':
-      text = '거절 내역이 없습니다.';
-      break;
-    case 'pending':
-      text = '신청 내역이 없습니다.';
-      break;
-  }
 
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
-      {showItems.length > 0 ? (
+      {items.length > 0 ? (
         <div className={styles.cardsWrapper}>
-          {showItems.map((item) => (
-            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
+          {items.map((item) => (
+            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} handleModalClose={handleModalClose} />
           ))}
           <div ref={targetRef}></div>
         </div>
       ) : (
-        <NoResult text={text} />
+        <NoResult text={NO_DATA_IN_RESERVATION_MODAL[tabStatus]} />
       )}
     </div>
   );

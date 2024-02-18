@@ -12,22 +12,27 @@ import { PatchReservationsParam } from '@/types/myActivities';
 interface ModalDetailedCardProps {
   item: ScheduledReservation;
   tabStatus: keyof DailyReservationStatusCount;
+  handleModalClose: () => void;
 }
 
-function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
+function ModalDetailedCard({ item, tabStatus, handleModalClose }: ModalDetailedCardProps) {
   const queryClient = useQueryClient();
   const confirmMutate = useMutation({
     mutationFn: (res: PatchReservationsParam) => patchReservationsById(res),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.monthlyReservation] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.timeReservation, item.scheduleId, tabStatus] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.dailyReservation, item.date] });
     },
   });
   const handleConfirm = () => {
     confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
+    handleModalClose();
   };
 
   const handleDecline = () => {
     confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
+    handleModalClose();
   };
   return (
     <div className={styles.container}>
