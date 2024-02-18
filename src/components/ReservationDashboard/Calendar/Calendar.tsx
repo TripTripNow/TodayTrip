@@ -6,11 +6,8 @@ import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
-import styles from './Calendar.module.css';
 import { MonthlyReservationStatusCount } from '@/types/common/api';
-import { useQuery } from '@tanstack/react-query';
-import QUERY_KEYS from '@/constants/queryKeys';
-import { getReservedSchedule } from '@/api/myActivities';
+import styles from './Calendar.module.css';
 
 interface CalendarProps {
   activityId: number;
@@ -39,19 +36,9 @@ function Calendar({ activityId }: CalendarProps) {
     allDays,
   } = useCalendar({ activityId });
 
-  const { data: dailyReservationData, refetch: dailyReservationRefetch } = useQuery({
-    queryKey: [QUERY_KEYS.dailyReservation, formatDateStringByDot({ year, month, day, padStart: true })],
-    queryFn: () =>
-      getReservedSchedule({
-        activityId,
-        date: formatDateStringByDot({ year, month, day, padStart: true }),
-      }),
-  });
-
   const handleOpenModal = (selectedDay: number, hasData: boolean) => {
     if (!hasData) return;
     setDay(selectedDay);
-    dailyReservationRefetch();
     setModalOpen(true);
   };
 
@@ -61,11 +48,10 @@ function Calendar({ activityId }: CalendarProps) {
 
   return (
     <>
-      {modalOpen && dailyReservationData && (
+      {modalOpen && (
         <Modal
           handleModalClose={handleModalClose}
           date={formatDateStringByDot({ year, month, day })}
-          items={dailyReservationData!}
           activityId={activityId}
         />
       )}

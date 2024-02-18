@@ -1,17 +1,16 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import { GetServerSideProps } from 'next';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 
-import { INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
+import Dropdown from '@/components/common/DropDown/Dropdown';
 import Calendar from '@/components/ReservationDashboard/Calendar/Calendar';
 import NoResult from '@/components/common/NoResult/NoResult';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getMyActivities } from '@/api/myActivities';
-import styles from './ReservationDashboard.module.css';
 import { useReservationDashboard } from '@/hooks/ReservationDashboard/useReservationDashboard';
+import styles from './ReservationDashboard.module.css';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
