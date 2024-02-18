@@ -8,5 +8,5 @@ export const patchActivitiesId = async (activityId: number, activityData: PatchM
 
 export const getMyActivities = async (cursorId?: number | undefined): Promise<GetMyActivitiesRes> => {
   // console.log(cursorId);
-  return await instance.get(`/my-activities?${cursorId ? `cursorId=${cursorId}&` : ''}size=6`);
+  return await instance.get(`/my-activities?size=6${cursorId ? `&cursorId=${cursorId}` : ''}`);
 };
