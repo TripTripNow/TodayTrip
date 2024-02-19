@@ -179,6 +179,9 @@
 
 .oneSubImageWrapper {
   composes: bannerImageWrapper;
+  @media mobile {
+    display: none;
+  }
 }
 
 .oneSubImageWrapper img {

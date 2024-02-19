@@ -163,7 +163,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
               text="예약을 취소하시겠습니까?"
               buttonText="취소하기"
               handleModalClose={handleCancelModalToggle}
-              handleCancel={handleCancelReservation}
+              handleActionButtonClick={handleCancelModalToggle}
             />
           )}
           {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={item} />}

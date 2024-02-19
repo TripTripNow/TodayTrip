@@ -2,17 +2,24 @@ import styles from './ReservationDateTimePicker.module.css';
 import style from '@/pages/activities/[id]/Activity.module.css';
 import Button from '@/components/common/Button/Button';
 import MinusIcon from '#/icons/icon-minus.svg';
-import PlusIcon from '#/icons/icon-plus.svg';
+import PlusIcon from '#/icons/icon-smallPlus.svg';
 import dayjs from 'dayjs';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
-
-import { timeSlot } from '@/components/Activities/mock';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-
+import { useMutation, useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getAvailableSchedule, postReservation } from '@/api/activities';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useRouter } from 'next/router';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import { useSession } from 'next-auth/react';
+dayjs.extend(customParseFormat);
 interface ReservationDateTimePickerProps {
   data: Activity;
 }
@@ -21,16 +28,60 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const [dateValue, setDateValue] = useState<Value>(null);
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
 
-  // 선택한 날짜의 예약 가능 시간 대를 필터링하기 위한 useEffect
-  useEffect(() => {
-    if (dateValue) {
-      const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-      setFilteredTimes(timeSlot.find((slot) => slot.date === formattedValue)?.times);
-    }
-  }, [dateValue]);
+  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
+  const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
+
+  // 날짜 및 시간 선택하는 모달
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
 
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+
+  const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
+  const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
+
+  const { data: monthlyAvailableScheduleData } = useQuery({
+    queryKey: [QUERY_KEYS.activity, data.id, selectedYear, selectedMonth],
+    queryFn: () => getAvailableSchedule({ activityId: data.id, year: selectedYear, month: selectedMonth }),
+    enabled: !!dateValue,
+  });
+
+  const router = useRouter();
+  const userData = useSession();
+
+  useEffect(() => {
+    if (!dateValue) {
+      return;
+    }
+    if (!monthlyAvailableScheduleData) {
+      return;
+    }
+
+    const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
+    const todayAvailableScheduleData = monthlyAvailableScheduleData.find((slot) => slot.date === formattedValue);
+
+    const currentTime = dayjs();
+
+    const filteredTimes = todayAvailableScheduleData?.times.filter((time) => {
+      const startTime = time.startTime;
+
+      /* 오늘 날짜의 경우 현재 시간이 시작 시간 이전인 것만 보여줘야함 
+    만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링*/
+
+      return dayjs().isSame(formattedValue, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
+    });
+
+    setFilteredTimes(filteredTimes);
+  }, [dateValue, monthlyAvailableScheduleData]);
+
+  useEffect(() => {
+    if (clickedTimeButtonId) {
+      setDateButtonText(`
+    ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
+    ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
+    ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
+    }
+  }, [clickedTimeButtonId]);
 
   const handleTimeButtonClick = (id: number | null) => {
     setClickedTimeButtonId(id);
@@ -43,7 +94,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     }
   };
 
-  const handleCalendarMonthChange = () => {
+  const handleResetFilteredData = () => {
     setClickedTimeButtonId(null);
     setFilteredTimes([]);
     setDateValue(null);
@@ -56,14 +107,41 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setParticipantsValue(Number(e.target.value));
   };
 
-  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
-  const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
+  const handleReserveModalToggle = () => {
+    setIsReserveModalOpen((prev) => !prev);
+  };
 
-  // 날짜 및 시간 선택하는 모달
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAlertReserveModalOpen, setIsAlertReserveModalOpen] = useState(false);
 
-  const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev);
+  const handleAlertModalToggle = () => {
+    setIsAlertReserveModalOpen((prev) => !prev);
+  };
+
+  const reserveMutation = useMutation({
+    mutationFn: () =>
+      postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
+    onSuccess: () => {
+      toast.success('예약이 완료되었습니다.');
+      router.push('/mypage/reservations');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
+    onSettled: () => {
+      handleResetFilteredData();
+      setParticipantsValue(1);
+      setDateButtonText('날짜 선택하기');
+    },
+  });
+
+  const handleReserveButtonClick = () => {
+    if (userData.status === 'unauthenticated') {
+      setIsAlertReserveModalOpen(true);
+      return;
+    }
+    reserveMutation.mutate();
   };
 
   return (
@@ -76,7 +154,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <hr className={style.hr} />
         <div className={styles.calendar}>
           <h2 className={style.label}>날짜</h2>
-          <button className={styles.selectButton} onClick={handleModalToggle}>
+          <button className={styles.selectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
 
@@ -87,7 +165,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             locale="en"
             onChange={handleCalendarDateChange}
             className={styles.customCalendar}
-            onActiveStartDateChange={handleCalendarMonthChange}
+            onActiveStartDateChange={handleResetFilteredData}
             value={dateValue}
             minDate={new Date()}
           />
@@ -142,7 +220,12 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             </button>
           </div>
         </div>
-        <Button isDisabled={!clickedTimeButtonId || participantsValue === 0} color="green" type="modalSingle">
+        <Button
+          onClick={handleReserveButtonClick}
+          isDisabled={!clickedTimeButtonId || participantsValue === 0}
+          color="green"
+          type="modalSingle"
+        >
           예약하기
         </Button>
         <hr className={style.hr} style={{ marginTop: '0.8rem' }} />
@@ -159,27 +242,39 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <p className={styles.pricePerPersonWrapper}>
             ￦{(data.price * participantsValue).toLocaleString('ko-KR')} / {participantsValue}인
           </p>
-          <button className={styles.mobileSelectButton} onClick={handleModalToggle}>
+          <button className={styles.mobileSelectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
         </div>
-        <button className={styles.mobileReserveButton} disabled={!clickedTimeButtonId || participantsValue === 0}>
+        <button
+          onClick={handleReserveButtonClick}
+          className={styles.mobileReserveButton}
+          disabled={!clickedTimeButtonId || participantsValue === 0}
+        >
           예약하기
         </button>
       </div>
 
-      {isModalOpen && (
+      {isReserveModalOpen && (
         <ReservationModal
           setDateButtonText={setDateButtonText}
           filteredTimes={filteredTimes}
-          handleModalToggle={handleModalToggle}
+          handleModalToggle={handleReserveModalToggle}
           dateValue={dateValue}
           setDateValue={setDateValue}
           handleTimeButtonClick={handleTimeButtonClick}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
-          handleCalendarMonthChange={handleCalendarMonthChange}
+          handleCalendarMonthChange={handleResetFilteredData}
           clickedTimeButtonId={clickedTimeButtonId}
+        />
+      )}
+      {isAlertReserveModalOpen && (
+        <AlertModal
+          text={'로그인 하시겠습니까?'}
+          handleModalClose={handleAlertModalToggle}
+          buttonText="로그인"
+          handleActionButtonClick={() => router.push('/signin')}
         />
       )}
     </>
