@@ -85,10 +85,11 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     }
   });
 
-  const patchMyReservationMutation = useMutation({
+  const cancelMyReservationMutation = useMutation({
     mutationFn: () => patchMyReservationsId(Number(id)),
     onSuccess: () => {
       toast.success('예약이 취소되었습니다.');
+      router.push('/mypage/reservations');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -109,7 +110,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   };
 
   const handleCancelReservation = () => {
-    patchMyReservationMutation.mutate();
+    cancelMyReservationMutation.mutate();
     setIsAlertModalOpen(false);
   };
 
@@ -137,7 +138,6 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
             <span> · </span>
             <span>{headCount}명</span>
           </p>
-          {/* <p className={styles.address}>{address}</p> */}
         </div>
         <Map address={address} containerStyle={containerStyle} />
         <div className={styles.bottom}>
