@@ -61,6 +61,7 @@ export const useHome = () => {
     e.preventDefault();
     setSearchResult(inputSearchText);
     setFilterValue('가격');
+    setSortByPrice('latest');
     setSelectedCategory('');
 
     const trimmedText = inputSearchText.trim();
@@ -96,8 +97,7 @@ export const useHome = () => {
 
   const handleSortByPrice = (val: string) => {
     if (val === '가격') return;
-    if (sortByPrice === 'price_asc' && '낮은 순' === val) return;
-    if (sortByPrice === 'price_desc' && '높은 순' === val) return;
+
     const newSortByPrice = val === '낮은 순' ? 'price_asc' : 'price_desc';
     setSortByPrice(newSortByPrice);
     setCurrentPageNumber(1);
