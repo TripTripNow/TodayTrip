@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const useInfiniteScroll = () => {
   // 보여지고 있는지를 나타내는 state
   const [isVisible, setIsVisible] = useState(false);
+  const [reRender, setRerender] = useState(false);
   const targetRef = useRef<HTMLDivElement>(null);
 
   // new IntersectionObserver()로 생성한 인스턴스가 observer
@@ -24,13 +25,9 @@ const useInfiniteScroll = () => {
     return () => {
       observer.disconnect();
     };
-  }, [isVisible]);
+  }, [isVisible, reRender]);
 
-  return {
-    isVisible,
-    targetRef,
-    setIsVisible,
-  };
+  return { isVisible, targetRef, setIsVisible, setRerender };
 };
 
 export default useInfiniteScroll;

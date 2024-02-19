@@ -6,6 +6,8 @@ import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
 import styles from './Dropdown.module.css';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
+import { FetchNextPageOptions, InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { Activity } from '@/types/common/api';
 
 export interface DropdownItems {
   id: number;
@@ -17,7 +19,9 @@ interface DropdownProps {
   dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
-  fetchNextPage?: any;
+  fetchNextPage?: (
+    options?: FetchNextPageOptions | undefined,
+  ) => Promise<InfiniteQueryObserverResult<Activity[], Error>>;
 }
 
 function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage }: DropdownProps) {
@@ -27,10 +31,12 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
   const InitialDropdownLength = useRef(dropDownItems.length);
 
   const handleDropdownToggle = () => {
+    setRerender((prev) => !prev);
     setIsOpen((prev) => !prev);
   };
 
   const handleDropdownClose = () => {
+    setRerender((prev) => !prev);
     setIsOpen(false);
   };
 
@@ -38,21 +44,17 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
     setValue(val.title);
     setDropdownItem(val);
     setTimeout(() => {
+      setRerender((prev) => !prev);
       setIsOpen(false);
     }, 250);
   };
 
-  const { isVisible, setIsVisible, targetRef } = useInfiniteScroll();
+  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
 
   useEffect(() => {
-    if (isVisible) fetchNextPage();
+    if (isVisible && fetchNextPage) fetchNextPage!();
   }, [isVisible]);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  console.log(isVisible);
   const isPlaceHolder = value === '카테고리' || value === '00:00';
 
   return (
@@ -71,7 +73,8 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
           className={clsx(
             styles.menu,
             type === '시간' && styles.timeMenu,
-            type === '체험' && InitialDropdownLength.current > 4 ? styles.activityMenu : styles.smallActivityMenu,
+            type === '체험' && InitialDropdownLength.current > 4 && styles.activityMenu,
+            type === '체험' && InitialDropdownLength.current <= 4 && styles.smallActivityMenu,
           )}
         >
           {dropDownItems.map((itemValue) => (

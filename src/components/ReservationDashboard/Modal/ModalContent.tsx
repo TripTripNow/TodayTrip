@@ -1,10 +1,5 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import {
-  FetchNextPageOptions,
-  InfiniteQueryObserverResult,
-  keepPreviousData,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { Dispatch, RefObject, SetStateAction, useEffect } from 'react';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
@@ -37,9 +32,7 @@ interface ReservationDetailsProps {
   items: ScheduledReservation[];
   tabStatus: keyof DailyReservationStatusCount;
   handleModalClose: () => void;
-  fetchNextPage: (
-    options?: FetchNextPageOptions | undefined,
-  ) => Promise<InfiniteQueryObserverResult<ScheduledReservation[], Error>>;
+  targetRef: RefObject<HTMLDivElement>;
 }
 
 type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
@@ -71,6 +64,15 @@ function ModalContent({
   const showItems = data?.filter((item) => item.status === tabStatus);
 
   useEffect(() => {
+    setRerender((prev) => !prev);
+  }, [tabStatus, data]);
+
+  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
+  useEffect(() => {
+    if (isVisible) fetchNextPage();
+  }, [isVisible]);
+
+  useEffect(() => {
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
@@ -88,7 +90,7 @@ function ModalContent({
             items={showItems!}
             tabStatus={tabStatus}
             handleModalClose={handleModalClose}
-            fetchNextPage={fetchNextPage}
+            targetRef={targetRef}
           />
         </>
       ) : (
@@ -123,17 +125,7 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   );
 }
 
-function ReservationDetails({ items, tabStatus, handleModalClose, fetchNextPage }: ReservationDetailsProps) {
-  const { isVisible, targetRef, setIsVisible } = useInfiniteScroll();
-
-  useEffect(() => {
-    setIsVisible(false);
-  }, [tabStatus]);
-
-  useEffect(() => {
-    if (isVisible) fetchNextPage();
-  }, [isVisible]);
-
+function ReservationDetails({ items, tabStatus, handleModalClose, targetRef }: ReservationDetailsProps) {
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
