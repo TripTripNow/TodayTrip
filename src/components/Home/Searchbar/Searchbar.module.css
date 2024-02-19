@@ -16,9 +16,11 @@
 
   @media tablet {
     margin-top: -2.4rem;
+    width: calc(100% - 2.4rem);
   }
   @media mobile {
     margin-top: -2.4rem;
+    width: calc(100% - 1.6rem);
   }
 }
 
