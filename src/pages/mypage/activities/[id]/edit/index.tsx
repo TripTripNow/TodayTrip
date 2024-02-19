@@ -1,8 +1,6 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement, useEffect, useState } from 'react';
-
 import { FieldValues, useForm } from 'react-hook-form';
-
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { priceFormat } from '@/utils/priceFormat';
 import { useRouter } from 'next/router';
@@ -11,7 +9,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
 import { GetActivitiesRes } from '@/types/Activities';
 import { PatchMyActivityReq } from '@/types/myActivities';
-import { patchActivitiesId } from '@/api/myActivities/myActivities';
+import { patchActivitiesId } from '@/api/myActivities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 

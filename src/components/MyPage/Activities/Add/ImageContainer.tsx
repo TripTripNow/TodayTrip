@@ -63,7 +63,6 @@ function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageCon
         setValue('bannerImageUrl', imageUrl);
       } else {
         setImgSrc((prev) => [...prev, selectedFiles]);
-
         field.onChange([...value, imageUrl]);
         setValue('subImageUrlsToAdd', [...getValues('subImageUrlsToAdd'), imageUrl]);
       }
@@ -82,7 +81,6 @@ function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageCon
       if (imgRef.current) {
         imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
       }
-
       if (typeof item === 'string') {
         const deleteIndex = currentIndex - imgSrc.length + getValues('subImageUrlsToAdd').length;
         console.log('deleteIndex', deleteIndex);
