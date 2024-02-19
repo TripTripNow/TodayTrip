@@ -1,12 +1,13 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement } from 'react';
-
 import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
-import { postActivities } from '@/api/activities/activities';
+import { postActivities } from '@/api/activities';
 import { PostActivitiesReq } from '@/types/Activities';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 export interface IsDateTime {
   date: string;
@@ -35,6 +36,17 @@ function ActivityAdd() {
     },
   });
 
+  const activityAddMutation = useMutation({
+    mutationFn: (data: PostActivitiesReq) => postActivities(data),
+    onSuccess: () => {
+      // router.push('/mypage/activities');
+      console.log('성공');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
+    },
+  });
+
   const handleOnSubmit = async (data: FieldValues) => {
     delete data.subImageIdsToRemove;
     delete data.subImageUrlsToAdd;
@@ -44,11 +56,7 @@ function ActivityAdd() {
     if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
 
-    const result = await postActivities(data as PostActivitiesReq);
-    if (result === 201) {
-      // router.push('/mypage/activities');
-      console.log('성공');
-    }
+    activityAddMutation.mutate(data as PostActivitiesReq);
   };
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;

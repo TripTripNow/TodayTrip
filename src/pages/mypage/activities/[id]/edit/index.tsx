@@ -6,18 +6,23 @@ import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { priceFormat } from '@/utils/priceFormat';
 import { useRouter } from 'next/router';
-import { getActivitiesId } from '@/api/activities/activities';
+import { getActivitiesId } from '@/api/activities';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
 import { GetActivitiesRes } from '@/types/Activities';
 import { PatchMyActivityReq } from '@/types/myActivities';
 import { patchActivitiesId } from '@/api/myActivities/myActivities';
 import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
+
+interface activityEditMutationProps {
+  activityId: number;
+  data: FieldValues;
+}
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const activityId = Number(context.query['id']);
 
-  console.log(activityId);
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -58,19 +63,29 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     },
   });
 
+  const activityEditMutation = useMutation({
+    mutationFn: ({ activityId, data }: activityEditMutationProps) =>
+      patchActivitiesId(activityId, data as PatchMyActivityReq),
+    onSuccess: () => {
+      router.push('/mypage/activities');
+      console.log('성공');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
+    },
+  });
+
   const handleOnSubmit = async (data: FieldValues) => {
     delete data.subImageUrls;
     delete data.schedules;
-    console.log(typeof data.price);
     if (data.price.toString() === '0') return toast('가격을 입력해 주세요.');
     // if (data.schedules.length === 0) Areturn toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
     if (data) console.log(data);
-    const result = await patchActivitiesId(activityId, data as PatchMyActivityReq);
-    if (result === 200) {
-      // router.push('/mypage/activities');
-      console.log('성공');
-    }
+
+    activityEditMutation.mutate({ activityId, data });
+
+    // const result = await patchActivitiesId(activityId, data as PatchMyActivityReq);
   };
 
   const getItems = async (id: number) => {
