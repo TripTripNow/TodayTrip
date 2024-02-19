@@ -34,6 +34,9 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 날짜 및 시간 선택하는 모달
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
 
+  // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
+  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+
   const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
   const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
 
@@ -69,17 +72,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
-
-    if (clickedTimeButtonId) {
-      setDateButtonText(`
-      ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
-      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
-      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
-    }
   }, [dateValue, monthlyAvailableScheduleData]);
 
-  // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
-  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+  useEffect(() => {
+    if (clickedTimeButtonId) {
+      setDateButtonText(`
+    ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
+    ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
+    ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
+    }
+  }, [clickedTimeButtonId]);
 
   const handleTimeButtonClick = (id: number | null) => {
     setClickedTimeButtonId(id);
