@@ -34,8 +34,8 @@ function Home() {
     recentSearchKeywords,
     searchResult,
     deviceType,
-    filterValue,
-    setFilterValue,
+    priceFilterValue,
+    setPriceFilterValue,
     selectedCategory,
     handleClickCategory,
     currentPageNumber,
@@ -68,8 +68,8 @@ function Home() {
             pageNumber={currentPageNumber}
             handleClickCategory={handleClickCategory}
             selectedCategory={selectedCategory}
-            setFilterValue={setFilterValue}
-            filterValue={filterValue}
+            setPriceFilterValue={setPriceFilterValue}
+            priceFilterValue={priceFilterValue}
           />
         ) : (
           <NoResult />

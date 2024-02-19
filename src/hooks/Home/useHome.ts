@@ -29,7 +29,7 @@ export const useHome = () => {
   const [currentPageNumber, setCurrentPageNumber] = useState(1); // 현재 페이지 넘버
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
-  const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
+  const [priceFilterValue, setPriceFilterValue] = useState<PriceFilterOption>('가격');
 
   const { data: activityData, isError } = useQuery({
     queryKey: [
@@ -60,7 +60,7 @@ export const useHome = () => {
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchResult(inputSearchText);
-    setFilterValue('가격');
+    setPriceFilterValue('가격');
     setSortByPrice('latest');
     setSelectedCategory('');
 
@@ -95,12 +95,10 @@ export const useHome = () => {
     setSelectedCategory((prev) => (prev === name ? '' : name));
   };
 
-  const handleSortByPrice = (val: string) => {
+  const handleSortByPrice = (val: PriceFilterOption) => {
     if (val === '가격') return;
-
     const newSortByPrice = val === '낮은 순' ? 'price_asc' : 'price_desc';
     setSortByPrice(newSortByPrice);
-    setCurrentPageNumber(1);
   };
 
   useEffect(() => {
@@ -119,8 +117,8 @@ export const useHome = () => {
   }, [deviceType]);
 
   useEffect(() => {
-    handleSortByPrice(filterValue);
-  }, [filterValue]);
+    handleSortByPrice(priceFilterValue);
+  }, [priceFilterValue]);
 
   useEffect(() => {
     setCurrentPageNumber(1);
@@ -140,8 +138,8 @@ export const useHome = () => {
     recentSearchKeywords,
     searchResult,
     deviceType,
-    filterValue,
-    setFilterValue,
+    priceFilterValue,
+    setPriceFilterValue,
     selectedCategory,
     handleClickCategory,
     currentPageNumber,

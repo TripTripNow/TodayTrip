@@ -24,8 +24,8 @@ interface AllExperienceProps {
   totalPages: number;
   pageNumber: number;
   selectedCategory: string;
-  filterValue: PriceFilterOption;
-  setFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
+  priceFilterValue: PriceFilterOption;
+  setPriceFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
 }
 
 function AllExperience({
@@ -37,8 +37,8 @@ function AllExperience({
   totalPages,
   pageNumber,
   selectedCategory,
-  filterValue,
-  setFilterValue,
+  priceFilterValue,
+  setPriceFilterValue,
 }: AllExperienceProps) {
   return (
     <section className={styles.container}>
@@ -122,7 +122,7 @@ function AllExperience({
         {!searchResult ? (
           <div className={styles.header}>
             <h1>{selectedCategory || '🛼 모든 체험'}</h1>
-            <FilterDropDown type="가격" value={filterValue} setValue={setFilterValue} />
+            <FilterDropDown type="가격" value={priceFilterValue} setValue={setPriceFilterValue} />
           </div>
         ) : (
           <div className={styles.searchedHeader}>
