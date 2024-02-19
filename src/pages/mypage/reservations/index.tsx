@@ -1,65 +1,54 @@
+import { setContext } from '@/api/axiosInstance';
+import { getMyReservations } from '@/api/myReservations';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import Card from '@/components/MyPage/Reservations/Card/Card';
-import { RESERVATION_STATUS } from '@/constants/reservation';
+import ReservationCard from '@/components/MyPage/Reservations/ReservationCard/ReservationCard';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { BACKEND_RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { ReserveFilterOption } from '@/types/dropdown';
+import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
+import { GetServerSidePropsContext } from 'next';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
 
-import { setContext } from '@/api/axiosInstance';
-import QUERY_KEYS from '@/constants/queryKeys';
-import { getMyReservations } from '@/api/reservations';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { GetServerSideProps } from 'next';
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const queryClient = new QueryClient();
   setContext(context);
 
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.myReservations],
-    queryFn: getMyReservations,
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [QUERY_KEYS.reservations, QUERY_KEYS.all],
+    queryFn: ({ pageParam }) => {
+      const status = BACKEND_RESERVATION_STATUS[QUERY_KEYS.all];
+      return getMyReservations({ size: 6, status, cursorId: pageParam });
+    },
+    initialPageParam: 0,
   });
 
-  return {
-    props: { dehydratedState: dehydrate(queryClient) },
-  };
+  return { props: { dehydratedState: dehydrate(queryClient) } };
 };
-
-function Reservation() {
-  const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
-  const [visibleReservations, setVisibleReservations] = useState(6);
+function Reservations() {
+  const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>(ReservationStatus.initial);
   const { isVisible, targetRef } = useInfiniteScroll();
 
-  const { data } = useQuery({
-    queryKey: [QUERY_KEYS.myReservations],
-    queryFn: getMyReservations,
+  const queryKey = selectedStatus === ReservationStatus.initial ? ReservationStatus.all : selectedStatus;
+
+  const { data: reservationData, fetchNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.reservations, queryKey],
+    queryFn: ({ pageParam }) => {
+      const status = BACKEND_RESERVATION_STATUS[selectedStatus];
+      return getMyReservations({ size: 6, status, cursorId: pageParam });
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.cursorId,
+    select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
   });
 
   useEffect(() => {
     if (isVisible) {
-      setVisibleReservations((prev) => prev + 6);
+      fetchNextPage();
     }
   }, [isVisible]);
-
-  if (!data) return;
-  const reservations = data.reservations;
-
-  // TODO : api 연동 후 지울 예정
-  const filteredReservations =
-    selectedStatus === '전체' || selectedStatus === '예약 상태'
-      ? reservations.slice(0, visibleReservations)
-      : reservations
-          .filter((reservation) => RESERVATION_STATUS[reservation.status] === selectedStatus)
-          .slice(0, visibleReservations);
-
-  //TODO : api 연동 이후 쿼리 업데이트를 위해 해당 코드 사용 예정
-  // const router = useRouter();
-  // useEffect(() => {
-  //   router.push(`/mypage/reservations?status=${selectedStatus}`);
-  // }, [selectedStatus]);
 
   return (
     <div className={styles.container}>
@@ -69,9 +58,7 @@ function Reservation() {
         <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>
 
-      {filteredReservations.map((reservation) => (
-        <Card key={reservation.id} data={reservation} />
-      ))}
+      {reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
 
       {/* 무한 스크롤을 위한 target */}
       <div ref={targetRef}></div>
@@ -79,5 +66,5 @@ function Reservation() {
   );
 }
 
-export default Reservation;
-Reservation.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;
+export default Reservations;
+Reservations.getLayout = (page: ReactElement) => <MyPageLayout>{page}</MyPageLayout>;

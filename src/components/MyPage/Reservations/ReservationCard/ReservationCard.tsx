@@ -1,3 +1,10 @@
+import { patchMyReservationsId } from '@/api/myReservations';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
+import Button from '@/components/common/Button/Button';
+import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
+import { Reservation } from '@/types/common/api';
+import { priceFormat } from '@/utils/priceFormat';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
@@ -6,36 +13,23 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import styles from './ReservationCard.module.css';
 
-import { patchMyReservationsId } from '@/api/reservations';
-import AlertModal from '@/components/Modal/AlertModal/AlertModal';
-import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
-import Button from '@/components/common/Button/Button';
-import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-import { Reservation } from '@/types/common/api';
-import { priceFormat } from '@/utils/priceFormat';
-import styles from './Card.module.css';
-
-interface CardProps {
+interface ReservationCardProps {
   data: Reservation;
 }
 
-function Card({ data }: CardProps) {
+function ReservationCard({ data }: ReservationCardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-
   const router = useRouter();
 
-  const handleCancelModalToggle = () => {
-    setIsAlertModalOpen((prev) => !prev);
-  };
+  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
+  const activityId = data.activity.id;
+  console.log(typeof totalPrice);
 
-  const handleReviewModalToggle = () => {
-    setIsReviewModalOpen((prev) => !prev);
-  };
-
-  const patchMyReservationMutation = useMutation({
-    mutationFn: () => patchMyReservationsId(data.id),
+  const cancelReservationMutation = useMutation({
+    mutationFn: () => patchMyReservationsId(id),
     onSuccess: () => {
       toast.success('예약이 취소되었습니다.');
     },
@@ -46,13 +40,18 @@ function Card({ data }: CardProps) {
     },
   });
 
-  const handleCancelReservation = () => {
-    patchMyReservationMutation.mutate();
-    setIsAlertModalOpen(false);
+  const handleCancelModalToggle = () => {
+    setIsAlertModalOpen((prev) => !prev);
   };
 
-  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
-  const activityId = data.activity.id;
+  const handleReviewModalToggle = () => {
+    setIsReviewModalOpen((prev) => !prev);
+  };
+
+  const handleCancelReservation = () => {
+    cancelReservationMutation.mutate();
+    setIsAlertModalOpen(false);
+  };
 
   return (
     <>
@@ -78,23 +77,23 @@ function Card({ data }: CardProps) {
         }
       >
         <div className={styles.imageWrapper}>
-          <Image fill src={activity.bannerImageUrl} alt="체험 이미지" />
+          <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>
         <div className={styles.detailContainer}>
-          <p className={clsx(styles.status, styles[status])}>{RESERVATION_STATUS[status]}</p>
-          <h2 className={styles.h2}>{activity.title}</h2>
+          <p className={clsx(styles.status, styles[data.status])}>{ReservationStatus[data.status]}</p>
+          <h2 className={styles.h2}>{data.activity.title}</h2>
           <p className={styles.dateDetail}>
-            <span>{dayjs(date).format('YYYY.MM.DD')}</span>
+            <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
             <span>·</span>
             <span>
-              {startTime} - {endTime}
+              {data.startTime} - {data.endTime}
             </span>
             <span>·</span>
-            <span>{headCount}명</span>
+            <span>{data.headCount}명</span>
           </p>
           <div className={styles.bottom}>
-            <p className={styles.price}>￦{priceFormat(totalPrice)}</p>
-            {status === PENDING && (
+            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
+            {data.status === RESERVATION_STATUS.PENDING && (
               <Button
                 color="white"
                 type="reservation"
@@ -108,10 +107,10 @@ function Card({ data }: CardProps) {
             )}
             {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
             {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
-            {status === COMPLETED && (
+            {data.status === RESERVATION_STATUS.COMPLETED && (
               <Button
                 color="green"
-                isDisabled={reviewSubmitted}
+                isDisabled={data.reviewSubmitted}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleReviewModalToggle();
@@ -129,11 +128,11 @@ function Card({ data }: CardProps) {
           text="예약을 취소하시겠습니까?"
           buttonText="취소하기"
           handleModalClose={handleCancelModalToggle}
-          handleActionButtonClick={handleCancelModalToggle}
+          handleActionButtonClick={handleCancelReservation}
         />
       )}
       {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
     </>
   );
 }
-export default Card;
+export default ReservationCard;

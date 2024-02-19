@@ -1,15 +1,19 @@
 import { Reservation, ReservationStatus } from '@/types/common/api';
 
-// 내 예약 리스트 조회 Parameter
-export interface getMyReservationsParam {
+export interface GetMyReservationsParam {
   cursorId?: number;
   size?: number;
-  status?: ReservationStatus;
+  status: ReservationStatus | undefined;
 }
 
-// 내 예약 리스트 조회 Response
-export interface getMyReservationsRes {
+export interface GetMyReservationsRes {
   cursorId: number;
   reservations: Reservation[];
   totalCount: number;
+}
+
+export interface PostMyReservationReviewReq {
+  rating: number;
+  content: string;
+  reservationId: number;
 }

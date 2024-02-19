@@ -19,6 +19,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useRouter } from 'next/router';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { useSession } from 'next-auth/react';
+import { priceFormat } from '@/utils/priceFormat';
 dayjs.extend(customParseFormat);
 interface ReservationDateTimePickerProps {
   data: Activity;
@@ -148,7 +149,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     <>
       <div className={styles.container}>
         <p className={styles.priceInPerson}>
-          ￦{data.price.toLocaleString('ko-KR')}
+          ￦{priceFormat(data.price)}
           <span className={styles.span}>/ 인</span>
         </p>
         <hr className={style.hr} />
@@ -232,7 +233,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <div>
           <div className={styles.totalPrice}>
             <h2 className={style.label}>총 합계</h2>
-            <p className={style.label}>￦{(data.price * participantsValue).toLocaleString('ko-KR')}</p>
+            <p className={style.label}>￦{priceFormat(data.price * participantsValue)}</p>
           </div>
         </div>
       </div>
@@ -240,7 +241,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       <div className={styles.mobileSelectBar}>
         <div>
           <p className={styles.pricePerPersonWrapper}>
-            ￦{(data.price * participantsValue).toLocaleString('ko-KR')} / {participantsValue}인
+            ￦{priceFormat(data.price * participantsValue)} / {participantsValue}인
           </p>
           <button className={styles.mobileSelectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}

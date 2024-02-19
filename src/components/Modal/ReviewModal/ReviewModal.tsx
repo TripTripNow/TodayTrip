@@ -1,19 +1,36 @@
-import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import styles from './ReviewModal.module.css';
 import ModalCloseIcon from '#/icons/icon-modalClose.svg';
+import { postMyReservationReview } from '@/api/myReservations';
+import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
+import Star from '@/components/Modal/ReviewModal/Star/Star';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { RATINGS } from '@/constants/ratingArray';
+import { ActivityInfo, ReservationStatus } from '@/types/common/api';
+import { priceFormat } from '@/utils/priceFormat';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import Star from '@/components/Modal/ReviewModal/Star/Star';
-import dayjs from 'dayjs';
-import { Reservation } from '@/types/common/api';
-import { RATINGS } from '@/constants/ratingArray';
+import toast from 'react-hot-toast';
+import styles from './ReviewModal.module.css';
+
+type modalData = {
+  id: number;
+  status: ReservationStatus;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  activity: ActivityInfo;
+};
 
 interface ReviewModalProps {
-  data: Reservation;
+  data: modalData;
   handleModalClose: () => void;
+  setIsReviewSubmit?: any;
 }
 
-function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
+function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalProps) {
   const [ratingInputValue, setRatingInputValue] = useState(0);
   const [textInputValue, setTextInputValue] = useState('');
   const [hoveredStarCount, setHoveredStarCount] = useState(0);
@@ -22,9 +39,22 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
     setTextInputValue(e.target.value);
   };
 
-  //TODO : api 연결
+  const queryClient = useQueryClient();
+
+  const uploadReviewMutation = useMutation({
+    mutationFn: () =>
+      postMyReservationReview({ reservationId: data.id, rating: ratingInputValue, content: textInputValue }),
+    onSuccess: () => {
+      handleModalClose();
+      toast.success('리뷰 작성이 완료되었습니다!');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
+      setIsReviewSubmit(true);
+    },
+  });
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    uploadReviewMutation.mutate();
   };
 
   return (
@@ -54,11 +84,11 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
               <span>{data.headCount}명</span>
             </p>
             <div className={styles.separator}></div>
-            <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
+            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
           </div>
         </div>
         {/* 별점, 리뷰 작성 폼 */}
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.ratingInput}>
             {RATINGS.map((number) => (
               <Star
@@ -78,7 +108,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
             className={styles.textarea}
             placeholder="후기를 작성해주세요"
           />
-          <button disabled={!ratingInputValue || !textInputValue} className={styles.button}>
+          <button type="submit" disabled={!ratingInputValue || !textInputValue.trim()} className={styles.button}>
             작성하기
           </button>
         </form>
