@@ -6,9 +6,10 @@ export const getMyReservations = async ({
   size,
   status,
 }: GetMyReservationsParam): Promise<GetMyReservationsRes> => {
-  return await instance.get(
-    `/my-reservations?${cursorId ? `cursorId=${cursorId}` : ''}&size=${size}${status ? `&status=${status}` : ''}`,
-  );
+  const cursorParam = cursorId ? `&cursorId=${cursorId}` : '';
+  const statusParam = status ? `&status=${status}` : '';
+
+  return await instance.get(`/my-reservations?size=${size}${cursorParam}${statusParam}`);
 };
 
 export const postMyReservationReview = async ({ reservationId, rating, content }: PostMyReservationReviewReq) => {

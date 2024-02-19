@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { BACKEND_RESERVATION_STATUS } from '@/constants/reservation';
+import { BACKEND_RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import { ReserveFilterOption } from '@/types/dropdown';
 import styles from './Reservations.module.css';
 import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
@@ -17,9 +17,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   setContext(context);
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: [QUERY_KEYS.reservations, '전체'],
+    queryKey: [QUERY_KEYS.reservations, QUERY_KEYS.all],
     queryFn: ({ pageParam }) => {
-      const status = BACKEND_RESERVATION_STATUS['전체'];
+      const status = BACKEND_RESERVATION_STATUS[QUERY_KEYS.all];
       return getMyReservations({ size: 6, status, cursorId: pageParam });
     },
     initialPageParam: 0,
@@ -28,11 +28,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 function Reservations() {
-  const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>('예약 상태');
+  const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>(ReservationStatus.initial);
   const { isVisible, targetRef } = useInfiniteScroll();
 
-  const queryKey = selectedStatus === '예약 상태' ? '전체' : selectedStatus;
-  const reservations = useInfiniteQuery({
+  const queryKey = selectedStatus === ReservationStatus.initial ? ReservationStatus.all : selectedStatus;
+
+  const { data: reservationData, fetchNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations, queryKey],
     queryFn: ({ pageParam }) => {
       const status = BACKEND_RESERVATION_STATUS[selectedStatus];
@@ -40,11 +41,12 @@ function Reservations() {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.cursorId,
+    select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
   });
 
   useEffect(() => {
     if (isVisible) {
-      reservations.fetchNextPage();
+      fetchNextPage();
     }
   }, [isVisible]);
 
@@ -56,9 +58,7 @@ function Reservations() {
         <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>
 
-      {reservations?.data?.pages.map((reservations) =>
-        reservations.reservations?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />),
-      )}
+      {reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
 
       {/* 무한 스크롤을 위한 target */}
       <div ref={targetRef}></div>
