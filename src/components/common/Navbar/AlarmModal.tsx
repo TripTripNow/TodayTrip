@@ -39,18 +39,33 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   });
 
   const alarmData = data?.pages.flatMap((page) => page.notifications);
-  const totalCount = data?.pages.flatMap((page) => page.totalCount);
+  const totalCount = data?.pages[0].totalCount;
+
+  const renderTime = (date: string) => {
+    const start = new Date(date);
+    const end = new Date();
+
+    const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
+    if (seconds < 60) return '방금 전';
+
+    const minutes = seconds / 60;
+    if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+
+    const hours = minutes / 60;
+    if (hours < 24) return `${Math.floor(hours)}시간 전`;
+
+    const days = hours / 24;
+    if (days < 7) return `${Math.floor(days)}일 전`;
+
+    return `${start.toLocaleDateString()}`;
+  };
 
   useEffect(() => {
     if (isVisible) {
+      console.log(isVisible);
       fetchNextPage();
     }
   }, [isVisible]);
-
-  useEffect(() => {
-    console.log(data);
-    console.log(alarmData);
-  }, [alarmData]);
 
   return (
     <ModalLayout handleModalClose={handleModalClose} isAlarmModal={true}>
@@ -70,23 +85,22 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
                     <div className={styles.alarmModalContentWrapper}>
                       <div className={styles.alarmModalContentHeader}>
                         <div>
-                          {/* {item.status === 'approve' ? (
+                          {item.content.includes('승인') ? (
                             <BlueEllipse alt="예약 승인을 나타내는 아이콘" />
                           ) : (
                             <RedEllipse alt="예약 거절을 나타내는 아이콘" />
-                          )} */}
+                          )}
                         </div>
                         <button onClick={handleAlarmDelete}>
                           <LightCloseIcon alt="닫기 아이콘" />
                         </button>
                       </div>
-                      {/* <p className={styles.alarmModalContent}>{item}</p> */}
-                      <p className={styles.alarmModalContentTime}>전</p>
+                      <p className={styles.alarmModalContent}>{item.content}</p>
+                      <p className={styles.alarmModalContentTime}>{renderTime(item.createdAt)}전</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div ref={targetRef}></div>
             </>
           ) : (
             <div className={styles.noAlarmWrapper}>
