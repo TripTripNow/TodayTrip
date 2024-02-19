@@ -11,13 +11,14 @@ import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query'
 import { getMyActivities } from '@/api/myActivities';
 import { setContext } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
 
   setContext(context);
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['myActivities'],
+    queryKey: [QUERY_KEYS.myActivities],
     queryFn: () => getMyActivities(),
     initialPageParam: 0,
   });
@@ -28,7 +29,7 @@ function Activities() {
   const { isVisible, targetRef } = useInfiniteScroll();
 
   const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['myActivities'],
+    queryKey: [QUERY_KEYS.myActivities],
     queryFn: ({ pageParam }) => getMyActivities(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {

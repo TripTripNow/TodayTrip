@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteMyActivities } from '@/api/myActivities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 interface ActivitiesCardProps {
   item: {
@@ -36,7 +37,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
     mutationFn: (id: number) => deleteMyActivities(id),
     onSuccess: () => {
       toast.success('체험이 성공적으로 삭제되었습니다.');
-      queryClient.invalidateQueries({ queryKey: ['myActivities'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myActivities] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
