@@ -10,6 +10,7 @@ import determineSatisfaction from '@/utils/determineSatisfaction';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import LogoIcon from '#/icons/icon-logoMark.png';
 import { getReviews } from '@/api/activities';
+import NoResultIcon from '#/icons/icon-no-result.svg';
 
 const RATINGS = [1, 2, 3, 4, 5];
 
@@ -56,42 +57,50 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
           </div>
         </div>
       )}
-      <div className={styles.reviewListWrapper}>
-        {reviews.map((review, index) => (
-          <Fragment key={review.id}>
-            <div className={styles.reviewWrapper}>
-              <Image src={review.user.profileImageUrl ?? LogoIcon} width={45} height={45} alt="프로필 이미지" />
-              <div className={styles.detailReview}>
-                <div className={styles.reviewerInfo}>
-                  <h3 className={styles.nickname}>{review.user.nickname}</h3>
-                  <div className={styles.starAndDate}>
-                    <div className={styles.starCount}>
-                      {RATINGS.map((_, index) =>
-                        index < review.rating ? (
-                          <StarIcon key={index} alt="별 아이콘" />
-                        ) : (
-                          <EmptyStarIcon key={index} alt="빈 별 아이콘" />
-                        ),
-                      )}
+      {totalCount !== 0 && (
+        <>
+          <div className={styles.reviewListWrapper}>
+            {reviews.map((review, index) => (
+              <Fragment key={review.id}>
+                <div className={styles.reviewWrapper}>
+                  <Image src={review.user.profileImageUrl ?? LogoIcon} width={45} height={45} alt="프로필 이미지" />
+                  <div className={styles.detailReview}>
+                    <div className={styles.reviewerInfo}>
+                      <h3 className={styles.nickname}>{review.user.nickname}</h3>
+                      <div className={styles.starAndDate}>
+                        <div className={styles.starCount}>
+                          {RATINGS.map((_, index) =>
+                            index < review.rating ? (
+                              <StarIcon key={index} alt="별 아이콘" />
+                            ) : (
+                              <EmptyStarIcon key={index} alt="빈 별 아이콘" />
+                            ),
+                          )}
+                        </div>
+                        <p className={styles.date}>{dayjs(review.createdAt).format('YYYY.MM.DD')}</p>
+                      </div>
                     </div>
-                    <p className={styles.date}>{dayjs(review.createdAt).format('YYYY.MM.DD')}</p>
+                    <p className={styles.reviewContent}>{review.content}</p>
                   </div>
                 </div>
-                <p className={styles.reviewContent}>{review.content}</p>
-              </div>
-            </div>
-            {index !== reviews.length - 1 && <hr className={style.hr} />}
-          </Fragment>
-        ))}
-      </div>
-      {totalCount !== 0 && (
-        <Pagination
-          pageNumber={currentPageNumber}
-          totalPages={totalPages}
-          handlePaginationByClick={handlePaginationByClick}
-        />
+                {index !== reviews.length - 1 && <hr className={style.hr} />}
+              </Fragment>
+            ))}
+          </div>
+
+          <Pagination
+            pageNumber={currentPageNumber}
+            totalPages={totalPages}
+            handlePaginationByClick={handlePaginationByClick}
+          />
+        </>
       )}
-      {totalCount === 0 && <p className={styles.noReview}>아직 후기가 없습니다.</p>}
+      {totalCount === 0 && (
+        <div className={styles.noReview}>
+          <NoResultIcon alt="후기 없는 경우의 이미지" />
+          <p>아직 후기가 없습니다.</p>
+        </div>
+      )}
     </section>
   );
 }
