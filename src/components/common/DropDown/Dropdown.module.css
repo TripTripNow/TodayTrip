@@ -64,9 +64,19 @@
 .timeMenu {
   composes: menu;
   height: 40rem;
-  overflow: scroll;
+  overflow-y: scroll;
   position: relative;
   z-index: 3;
+}
+
+.activityMenu {
+  composes: timeMenu;
+  height: 18rem;
+}
+
+.smallActivityMenu {
+  composes: timeMenu;
+  height: 100%;
 }
 
 .placeholder {

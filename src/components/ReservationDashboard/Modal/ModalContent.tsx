@@ -5,6 +5,7 @@ import {
   keepPreviousData,
   useInfiniteQuery,
 } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import ModalDetailedCard from '@/components/ReservationDashboard/Modal/ModalDetailedCard';
@@ -52,7 +53,7 @@ function ModalContent({
   activityId,
   handleModalClose,
 }: ModalContentProps) {
-  const { data, fetchNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, isError } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
     queryFn: ({ pageParam }) =>
       getReservationsByTime({
@@ -68,6 +69,10 @@ function ModalContent({
     placeholderData: keepPreviousData,
   });
   const showItems = data?.filter((item) => item.status === tabStatus);
+
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
 
   return (
     <div className={styles.mainContainer}>

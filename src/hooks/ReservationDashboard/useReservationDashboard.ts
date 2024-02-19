@@ -1,17 +1,23 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
 import { getMyActivities } from '@/api/myActivities';
 import { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import { INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 
 export const useReservationDashboard = () => {
-  const { data } = useQuery({
+  const { data, fetchNextPage, isError } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: () => getMyActivities({}),
+    queryFn: ({ pageParam }) => getMyActivities({ cursorId: pageParam, size: 5 }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.cursorId,
+    select: (data) => (data?.pages ?? []).flatMap((page) => page.activities),
   });
+
   const dropdownData =
-    data?.activities.map((activity) => {
+    data?.map((activity) => {
       return {
         id: activity.id,
         title: activity.title,
@@ -19,5 +25,9 @@ export const useReservationDashboard = () => {
     }) ?? [];
   const [dropDownItem, setDropdownItem] = useState<DropdownItems>(dropdownData[0] ?? INITIAL_DROPDOWN_ITEM); // 드랍다운 value 값
 
-  return { dropdownData, dropDownItem, setDropdownItem };
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
+
+  return { dropdownData, dropDownItem, setDropdownItem, fetchNextPage };
 };

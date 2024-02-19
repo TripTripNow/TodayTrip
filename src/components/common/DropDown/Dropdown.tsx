@@ -1,9 +1,11 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
 import styles from './Dropdown.module.css';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
 export interface DropdownItems {
   id: number;
@@ -15,11 +17,14 @@ interface DropdownProps {
   dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
+  fetchNextPage?: any;
 }
 
-function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
+
+  const InitialDropdownLength = useRef(dropDownItems.length);
 
   const handleDropdownToggle = () => {
     setIsOpen((prev) => !prev);
@@ -37,6 +42,17 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
     }, 250);
   };
 
+  const { isVisible, setIsVisible, targetRef } = useInfiniteScroll();
+
+  useEffect(() => {
+    if (isVisible) fetchNextPage();
+  }, [isVisible]);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  console.log(isVisible);
   const isPlaceHolder = value === '카테고리' || value === '00:00';
 
   return (
@@ -51,7 +67,13 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
         {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
       </button>
       {isOpen && (
-        <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
+        <div
+          className={clsx(
+            styles.menu,
+            type === '시간' && styles.timeMenu,
+            type === '체험' && InitialDropdownLength.current > 4 ? styles.activityMenu : styles.smallActivityMenu,
+          )}
+        >
           {dropDownItems.map((itemValue) => (
             <div
               key={itemValue.id}
@@ -62,6 +84,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
               {itemValue.title}
             </div>
           ))}
+          <div ref={targetRef}></div>
         </div>
       )}
     </div>

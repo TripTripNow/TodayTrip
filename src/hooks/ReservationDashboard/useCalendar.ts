@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH } from '@/constants/calendar';
 import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDaysInMonth';
@@ -31,8 +32,8 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
       : DAYS_IN_LONG_MONTH - allDays.length - dayOfWeek;
   const emptyLastCards = Array.from({ length: lengthCondition }, (_, v) => v + 1);
 
-  const { data: monthlyData, refetch } = useQuery({
-    queryKey: [QUERY_KEYS.monthlyReservation],
+  const { data: monthlyData, isError } = useQuery({
+    queryKey: [QUERY_KEYS.monthlyReservation, activityId, year, month],
     queryFn: () =>
       getReservationDashboard({
         activityId,
@@ -72,8 +73,8 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
   }, [monthlyData]);
 
   useEffect(() => {
-    refetch();
-  }, [month, year, activityId]);
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
 
   return {
     year,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
@@ -26,7 +27,11 @@ interface ModalTabProps {
 
 function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const [year, month, day] = date.split('-').map(Number);
-  const { data: dailyReservationData, refetch: dailyReservationRefetch } = useQuery({
+  const {
+    data: dailyReservationData,
+    refetch: dailyReservationRefetch,
+    isError,
+  } = useQuery({
     queryKey: [QUERY_KEYS.dailyReservation, formatDateStringByDot({ year, month, day, padStart: true })],
     queryFn: () =>
       getReservedSchedule({ activityId, date: formatDateStringByDot({ year, month, day, padStart: true }) }),
@@ -56,8 +61,11 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
       });
   }, [dailyReservationData]);
 
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
+
   if (!dailyReservationData) return null;
-  console.log(dailyReservationData, tabCount);
 
   return (
     <ModalLayout handleModalClose={handleModalClose}>

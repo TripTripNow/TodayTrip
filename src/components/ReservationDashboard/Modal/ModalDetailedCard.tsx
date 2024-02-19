@@ -1,13 +1,14 @@
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 
 import { CONFIRMED, PENDING } from '@/constants/calendar';
 import Button from '@/components/common/Button/Button';
-import styles from './ModalDetailedCard.module.css';
 import { DailyReservationStatusCount, ScheduledReservation } from '@/types/common/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchReservationsById } from '@/api/myActivities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { PatchReservationsParam } from '@/types/myActivities';
+import styles from './ModalDetailedCard.module.css';
 
 interface ModalDetailedCardProps {
   item: ScheduledReservation;
@@ -23,6 +24,9 @@ function ModalDetailedCard({ item, tabStatus, handleModalClose }: ModalDetailedC
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.monthlyReservation] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.timeReservation, item.scheduleId, tabStatus] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.dailyReservation, item.date] });
+    },
+    onError: () => {
+      toast.error('동작에 실패하였습니다.');
     },
   });
   const handleConfirm = () => {

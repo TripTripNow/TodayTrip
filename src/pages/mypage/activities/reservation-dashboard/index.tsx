@@ -15,9 +15,10 @@ import styles from './ReservationDashboard.module.css';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: () => getMyActivities({}),
+    queryFn: ({ pageParam }) => getMyActivities({ size: 5, cursorId: pageParam }),
+    initialPageParam: 0,
   });
 
   return {
@@ -26,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function ReservationDashboard() {
-  const { dropdownData, dropDownItem, setDropdownItem } = useReservationDashboard();
+  const { dropdownData, dropDownItem, setDropdownItem, fetchNextPage } = useReservationDashboard();
 
   return (
     <>
@@ -38,6 +39,7 @@ function ReservationDashboard() {
             dropDownItems={dropdownData}
             setDropdownItem={setDropdownItem}
             placeholder={dropdownData[0].title}
+            fetchNextPage={fetchNextPage}
           />
           <Calendar activityId={dropDownItem.id} />
         </>

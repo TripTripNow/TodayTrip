@@ -13,8 +13,14 @@ import {
 } from '@/types/myActivities';
 
 /** 내 체험 리스트 조회 */
-export const getMyActivities = async ({ cursorId, size = 20 }: GetMyActivitiesParam): Promise<GetMyActivitiesRes> => {
-  return await instance.get(`/my-activities?size=${size}${cursorId ? `&cursorId=${cursorId}` : ''}`);
+export const getMyActivities = async ({ cursorId, size }: GetMyActivitiesParam): Promise<GetMyActivitiesRes> => {
+  let path = '';
+  if (size) path += `?size=${size}`;
+  if (cursorId) {
+    if (size) path += `&cursorId=${cursorId}`;
+    else path += `?cursorId=${cursorId}`;
+  }
+  return await instance.get(`/my-activities${path}`);
 };
 
 /** 내 체험 월별 예약 현황 조회 */
