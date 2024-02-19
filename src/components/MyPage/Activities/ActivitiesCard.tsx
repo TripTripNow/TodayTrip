@@ -86,7 +86,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
           {isDeleteOpen && (
             <AlertModal
               handleModalClose={handleDeleteButton}
-              handleCancel={() => handleDelete(item.id)}
+              handleActionButtonClick={() => handleDelete(item.id)}
               text="체험을 삭제하시겠습니까?"
               buttonText="삭제하기"
             />
