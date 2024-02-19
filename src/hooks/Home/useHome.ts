@@ -54,7 +54,7 @@ export const useHome = () => {
   });
 
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
-  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]); // 최근 검색어 배열
+  const recentSearchKeywords = localStorageGetItem('recentSearchKeywords')?.split(',') ?? []; // 최신 검색어
 
   // 검색 후 submit 함수
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -121,11 +121,6 @@ export const useHome = () => {
   useEffect(() => {
     handleSortByPrice(filterValue);
   }, [filterValue]);
-
-  useEffect(() => {
-    const storedText = localStorageGetItem('recentSearchKeywords');
-    setRecentSearchKeywords(storedText?.split(',') ?? []);
-  }, [searchResult]);
 
   useEffect(() => {
     setCurrentPageNumber(1);
