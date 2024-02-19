@@ -34,6 +34,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
             placeholder="내가 원하는 체험은"
             onFocus={() => setIsDropdownOpen(true)}
             onBlur={() => setIsDropdownOpen(false)}
+            onClick={() => setIsDropdownOpen(true)}
             onKeyDown={handleEnterClick}
           />
           {inputSearchText && <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>}
@@ -41,7 +42,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
           {/* 드랍다운 내용 */}
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
-              <p className={styles.dropdownDescription}>최근 검색어</p>
+              <p className={styles.dropdownDescription}>최근 검색어{recentText.length <= 0 && ' 없음'}</p>
               {recentText.map((text, index) => (
                 <div key={index} className={styles.dropdownItem} onMouseDown={() => handleSearchText(text)}>
                   {text}
