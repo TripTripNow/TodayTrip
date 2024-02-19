@@ -31,12 +31,16 @@ export const useHome = () => {
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
 
-  const {
-    data: activityData,
-    refetch,
-    isError,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.allActivities, currentPageNumber],
+  const { data: activityData, isError } = useQuery({
+    queryKey: [
+      QUERY_KEYS.allActivities,
+      currentPageNumber,
+      sortByPrice,
+      selectedCategory,
+      currentPageNumber,
+      limit,
+      searchResult,
+    ],
     queryFn: () =>
       getActivities({
         method: 'offset',
@@ -122,10 +126,6 @@ export const useHome = () => {
     const storedText = localStorageGetItem('recentSearchKeywords');
     setRecentSearchKeywords(storedText?.split(',') ?? []);
   }, [searchResult]);
-
-  useEffect(() => {
-    refetch();
-  }, [sortByPrice, selectedCategory, currentPageNumber, limit, searchResult]);
 
   useEffect(() => {
     setCurrentPageNumber(1);
