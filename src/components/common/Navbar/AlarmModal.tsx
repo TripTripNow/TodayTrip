@@ -6,8 +6,8 @@ import BlueEllipse from '#/icons/icon-blueEllipse.svg';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getMyNotifications } from '@/api/myNotifications';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteMyNotifications, getMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
 
 interface AlarmModalProps {
@@ -17,16 +17,7 @@ interface AlarmModalProps {
 function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const handleModalClose = () => {
-    setIsOpen((prev) => !prev);
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 250);
-  };
-
-  const handleAlarmDelete = () => {};
-
-  const { isVisible, targetRef } = useInfiniteScroll();
+  const queryClient = useQueryClient();
 
   const { data, fetchNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myNotifications],
@@ -37,6 +28,26 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
       return currentCursorId;
     },
   });
+
+  const handleModalClose = () => {
+    setIsOpen((prev) => !prev);
+    setTimeout(() => {
+      setIsModalOpen(false);
+    }, 250);
+  };
+
+  const deleteNotificationMutation = useMutation({
+    mutationFn: (notificationId: number) => deleteMyNotifications(notificationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotifications] });
+    },
+  });
+
+  const handleAlarmDelete = (id: number) => {
+    deleteNotificationMutation.mutate(id);
+  };
+
+  const { isVisible, targetRef } = useInfiniteScroll();
 
   const alarmData = data?.pages.flatMap((page) => page.notifications);
   const totalCount = data?.pages[0].totalCount;
@@ -61,8 +72,8 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   };
 
   useEffect(() => {
+    console.log(isVisible);
     if (isVisible) {
-      console.log(isVisible);
       fetchNextPage();
     }
   }, [isVisible]);
@@ -91,7 +102,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
                             <RedEllipse alt="예약 거절을 나타내는 아이콘" />
                           )}
                         </div>
-                        <button onClick={handleAlarmDelete}>
+                        <button onClick={() => handleAlarmDelete(item.id)}>
                           <LightCloseIcon alt="닫기 아이콘" />
                         </button>
                       </div>
@@ -100,6 +111,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
                     </div>
                   </div>
                 ))}
+                <div ref={targetRef}></div>
               </div>
             </>
           ) : (

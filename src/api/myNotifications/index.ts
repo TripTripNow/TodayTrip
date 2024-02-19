@@ -7,3 +7,7 @@ export const getMyNotifications = async (cursorId: number | undefined): Promise<
 
   return await instance.get(path);
 };
+
+export const deleteMyNotifications = async (notificationId: number): Promise<GetNotificationsRes> => {
+  return await instance.delete(`/my-notifications/${notificationId}`);
+};
