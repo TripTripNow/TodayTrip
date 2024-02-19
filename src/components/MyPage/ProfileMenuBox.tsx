@@ -7,7 +7,6 @@ import DashboardIcon from '#/icons/icon-dashboard.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 import { getSession, useSession } from 'next-auth/react';
-import LogoImg from '#/images/img-logo.png';
 
 const MENU_LIST = [
   {
@@ -73,10 +72,6 @@ function ProfileMenuBox() {
   useEffect(() => {
     getSessionData();
   }, []);
-
-  useEffect(() => {
-    console.log(profileImg);
-  }, [profileImg]);
 
   return (
     <div className={styles.profileBoxContainer}>

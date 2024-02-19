@@ -51,6 +51,10 @@
   height: auto;
   padding: 2.4rem 2rem;
   animation: slideinpc 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  height: 40rem;
+  box-sizing: border-box;
 
   @media mobile {
     top: 0;
@@ -83,6 +87,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  overflow-y: scroll;
+  width: fit-content;
 }
 
 .alarmModalContentWrapper {

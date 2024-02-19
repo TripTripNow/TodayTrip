@@ -3,12 +3,16 @@ import styles from './Navbar.module.css';
 import LogoIcon from '#/icons/icon-logo.svg';
 import AlarmIcon from '#/icons/icon-alarm.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AlarmModal from '@/components/common/Navbar/AlarmModal';
 import ProfileDropDown from '@/components/common/Navbar/ProfileDropDown';
 import LogoImg from '#/images/img-logo.png';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getMyNotifications } from '@/api/myNotifications';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 
 const alarmData = {
   notifications: [
@@ -87,7 +91,7 @@ function Navbar() {
                 ''
               )}
             </button>
-            {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} alarmData={alarmData} />}
+            {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} />}
             <div className={styles.border}></div>
             <div onBlur={handleBlurDropDown}>
               <button className={styles.userName} onClick={handleDropDownClick}>
