@@ -1,22 +1,21 @@
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import Button from '@/components/common/Button/Button';
-import { COMPLETED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
-
+import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import styles from './Card.module.css';
+import styles from './ReservationCard.module.css';
 import { priceFormat } from '@/utils/priceFormat';
 import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
 
-interface CardProps {
+interface ReservationCardProps {
   data: Reservation;
 }
 
-function Card({ data }: CardProps) {
+function ReservationCard({ data }: ReservationCardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
@@ -37,7 +36,7 @@ function Card({ data }: CardProps) {
           <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>
         <div className={styles.detailContainer}>
-          <p className={clsx(styles.status, styles[data.status])}>{RESERVATION_STATUS[data.status]}</p>
+          <p className={clsx(styles.status, styles[data.status])}>{ReservationStatus[data.status]}</p>
           <h2 className={styles.h2}>{data.activity.title}</h2>
           <p className={styles.dateDetail}>
             <span>{dayjs(data.date).format('YYYY.MM.DD')}</span>
@@ -50,7 +49,7 @@ function Card({ data }: CardProps) {
           </p>
           <div className={styles.bottom}>
             <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
-            {data.status === PENDING && (
+            {data.status === RESERVATION_STATUS.PENDING && (
               <Button
                 color="white"
                 type="reservation"
@@ -64,7 +63,7 @@ function Card({ data }: CardProps) {
             )}
             {/* TODO : api 연결 후 handleCancel에 적절한 함수 연결 필요 */}
             {/* 체험 완료일 때만 후기 작성 버튼 보이고, reviewSubmit이 true면 disabled */}
-            {data.status === COMPLETED && (
+            {data.status === RESERVATION_STATUS.COMPLETED && (
               <Button
                 color="green"
                 isDisabled={data.reviewSubmitted}
@@ -92,4 +91,4 @@ function Card({ data }: CardProps) {
     </>
   );
 }
-export default Card;
+export default ReservationCard;

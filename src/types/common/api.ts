@@ -1,4 +1,4 @@
-import { RESERVATION_STATUS } from '@/constants/reservation';
+import { ReservationStatus } from '@/constants/reservation';
 
 export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
 
@@ -29,7 +29,7 @@ interface ActivityInfo {
   bannerImageUrl: string;
 }
 
-export type ReservationStatus = keyof typeof RESERVATION_STATUS;
+export type ReservationStatus = keyof typeof ReservationStatus;
 
 export interface ReservationBase {
   id: number;

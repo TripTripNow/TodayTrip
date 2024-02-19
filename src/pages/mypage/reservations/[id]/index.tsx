@@ -8,7 +8,7 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import Button from '@/components/common/Button/Button';
-import { CANCELED, COMPLETED, CONFIRMED, DECLINED, PENDING, RESERVATION_STATUS } from '@/constants/reservation';
+import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
 import dayjs from 'dayjs';
@@ -40,24 +40,26 @@ const item: Reservation = {
 const address = '서울특별시 강남구 테헤란로 427';
 
 interface CheckStatusProps {
-  status: string;
+  status: keyof typeof ReservationStatus;
 }
 
 const CheckStatus = ({ status }: CheckStatusProps) => {
   return (
     <div className={styles.status}>
-      {status === CANCELED || status === DECLINED ? (
-        <div className={styles[status]}>{RESERVATION_STATUS[status]}</div>
+      {status === RESERVATION_STATUS.CANCELED || status === RESERVATION_STATUS.DECLINED ? (
+        <div className={styles[status]}>{ReservationStatus[status]}</div>
       ) : (
         <>
-          <div className={status === PENDING ? styles.active : styles.inactive}>{RESERVATION_STATUS['pending']}</div>
+          <div className={status === RESERVATION_STATUS.PENDING ? styles.active : styles.inactive}>
+            {ReservationStatus['pending']}
+          </div>
           <ArrowRightIcon alt="예약 신청에서 예약 승인으로 가는 화살표" />
-          <div className={status === CONFIRMED ? styles.active : styles.inactive}>
-            {RESERVATION_STATUS['confirmed']}
+          <div className={status === RESERVATION_STATUS.CONFIRMED ? styles.active : styles.inactive}>
+            {ReservationStatus['confirmed']}
           </div>
           <ArrowRightIcon alt="예약 승인에서 체험 완료로 가는 화살표" />
-          <div className={status === COMPLETED ? styles.active : styles.inactive}>
-            {RESERVATION_STATUS['completed']}
+          <div className={status === RESERVATION_STATUS.COMPLETED ? styles.active : styles.inactive}>
+            {ReservationStatus['completed']}
           </div>
         </>
       )}
@@ -106,12 +108,12 @@ function ReservationID() {
         <div className={styles.bottom}>
           <div className={styles.price}>￦{priceFormat(item.totalPrice)}</div>
 
-          {item.status === PENDING && (
+          {item.status === RESERVATION_STATUS.PENDING && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
               예약 취소
             </Button>
           )}
-          {item.status === COMPLETED && (
+          {item.status === RESERVATION_STATUS.COMPLETED && (
             <Button
               type="reservation"
               color="green"
