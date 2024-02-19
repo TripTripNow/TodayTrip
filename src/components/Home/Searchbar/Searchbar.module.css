@@ -115,16 +115,17 @@
   left: 0;
   width: 100%;
   background-color: white;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-top: none;
   border: 0.1rem solid var(--gray79);
-  border-radius: 0 0 5px 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  margin-top: 0.8rem;
   z-index: 10;
 }
 
 .dropdownItem {
-  padding: 10px;
+  padding: 1rem;
   cursor: pointer;
   color: #000;
   font-size: 1.6rem;
@@ -140,6 +141,7 @@
 .dropdownDescription {
   margin-left: 1rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
   color: var(--gray79);
   font-size: 1.6rem;
   font-style: normal;
