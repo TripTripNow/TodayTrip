@@ -84,7 +84,7 @@ function ReservationCard({ data }: ReservationCardProps) {
           text="예약을 취소하시겠습니까?"
           buttonText="취소하기"
           handleModalClose={handleCancelModalToggle}
-          handleCancel={handleCancelModalToggle}
+          handleActionButtonClick={handleCancelModalToggle}
         />
       )}
       {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
