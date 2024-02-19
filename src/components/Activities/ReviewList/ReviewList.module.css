@@ -97,3 +97,15 @@
   flex-direction: column;
   gap: 0.8rem;
 }
+
+.noReview {
+  display: flex;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.noReviewCount {
+  width: 2rem;
+  display: none;
+}

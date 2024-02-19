@@ -60,10 +60,12 @@ function Header({ data }: { data: Activity }) {
           <p className={styles.category}>{data.category}</p>
           <h1 className={styles.h1}>{data.title}</h1>
           <div className={styles.ratingAndLocation}>
-            <p className={styles.rating}>
-              <StarIcon alt="별점 아이콘" />
-              {data.rating} ({data.reviewCount})
-            </p>
+            {data.reviewCount !== 0 && (
+              <p className={styles.rating}>
+                <StarIcon alt="별점 아이콘" />
+                {data.rating} ({data.reviewCount})
+              </p>
+            )}
             <p className={styles.location}>
               <LocationIcon alt="지도 마커 아이콘" />
               {data.address}

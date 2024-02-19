@@ -43,16 +43,19 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
   return (
     <section className={styles.reviewListContainer}>
       <h2 className={style.label}>후기</h2>
-      <div className={styles.ratingWrapper}>
-        <h3 className={styles.totalRating}>{totalRating}</h3>
-        <div className={styles.detailRating}>
-          <p className={styles.satisfaction}>{determineSatisfaction(totalRating)}</p>
-          <p className={styles.reviewCount}>
-            <StarIcon style={{ marginBottom: '0.18rem' }} alt="별 아이콘" />
-            {totalCount.toLocaleString('ko-KR')}개 후기
-          </p>
+      {totalCount !== 0 && (
+        <div className={styles.ratingWrapper}>
+          <h3 className={styles.totalRating}>{totalRating}</h3>
+
+          <div className={styles.detailRating}>
+            <p className={styles.satisfaction}>{determineSatisfaction(totalRating)}</p>
+            <p className={styles.reviewCount}>
+              <StarIcon style={{ marginBottom: '0.18rem' }} alt="별 아이콘" />
+              {totalCount.toLocaleString('ko-KR')}개 후기
+            </p>
+          </div>
         </div>
-      </div>
+      )}
       <div className={styles.reviewListWrapper}>
         {reviews.map((review, index) => (
           <Fragment key={review.id}>
@@ -81,11 +84,14 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
           </Fragment>
         ))}
       </div>
-      <Pagination
-        pageNumber={currentPageNumber}
-        totalPages={totalPages}
-        handlePaginationByClick={handlePaginationByClick}
-      />
+      {totalCount !== 0 && (
+        <Pagination
+          pageNumber={currentPageNumber}
+          totalPages={totalPages}
+          handlePaginationByClick={handlePaginationByClick}
+        />
+      )}
+      {totalCount === 0 && <p className={styles.noReview}>아직 후기가 없습니다.</p>}
     </section>
   );
 }
