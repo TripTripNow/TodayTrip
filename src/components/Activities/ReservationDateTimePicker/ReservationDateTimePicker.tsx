@@ -28,6 +28,12 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const [dateValue, setDateValue] = useState<Value>(null);
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
 
+  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
+  const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
+
+  // 날짜 및 시간 선택하는 모달
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
+
   const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
   const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
 
@@ -63,6 +69,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
+
+    if (clickedTimeButtonId) {
+      setDateButtonText(`
+      ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
+      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
+      ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
+    }
   }, [dateValue, monthlyAvailableScheduleData]);
 
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
@@ -91,12 +104,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const handleParticipantsValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setParticipantsValue(Number(e.target.value));
   };
-
-  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
-  const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
-
-  // 날짜 및 시간 선택하는 모달
-  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
 
   const handleReserveModalToggle = () => {
     setIsReserveModalOpen((prev) => !prev);
