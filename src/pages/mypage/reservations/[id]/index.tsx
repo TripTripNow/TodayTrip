@@ -1,4 +1,4 @@
-import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -17,7 +17,6 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import CheckStatus from '@/components/MyPage/Reservations/Id/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import Map from '@/components/common/Map/Map';
-import QUERY_KEYS from '@/constants/queryKeys';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
@@ -57,7 +56,6 @@ const containerStyle = {
 function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const queryClient = useQueryClient();
   const router = useRouter();
 
   const { data } = useQuery({
@@ -68,6 +66,8 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   const res = router.query as unknown as ResTypes;
   const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = res;
   const [isReviewSubmit, setIsReviewSubmit] = useState(reviewSubmitted === 'true' ? true : false);
+
+  const [currentStatus, setCurrentStatus] = useState(status);
 
   const hasResult = Object.keys(res).length > 1;
 
@@ -81,8 +81,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     mutationFn: () => patchMyReservationsId(Number(id)),
     onSuccess: () => {
       toast.success('예약이 취소되었습니다.');
-      router.back();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
+      setCurrentStatus('canceled');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -136,7 +135,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
           <Image className={styles.image} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
-          {status && <CheckStatus status={status} />}
+          {currentStatus && <CheckStatus status={currentStatus} />}
           <h2 className={styles.title} onClick={handleClickNavigate}>
             {title}
           </h2>
@@ -154,12 +153,12 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
         <div className={styles.bottom}>
           <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
 
-          {status === RESERVATION_STATUS.PENDING && (
+          {currentStatus === RESERVATION_STATUS.PENDING && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
               예약 취소
             </Button>
           )}
-          {status === RESERVATION_STATUS.COMPLETED && (
+          {currentStatus === RESERVATION_STATUS.COMPLETED && (
             <Button type="reservation" color="green" isDisabled={isReviewSubmit} onClick={handleReviewModalToggle}>
               후기 작성
             </Button>
