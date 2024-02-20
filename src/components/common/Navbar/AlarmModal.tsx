@@ -3,7 +3,7 @@ import CloseIcon from '#/icons/icon-close.svg';
 import LightCloseIcon from '#/icons/icon-lightClose.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
 import BlueEllipse from '#/icons/icon-blueEllipse.svg';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
