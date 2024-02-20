@@ -73,7 +73,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
   useEffect(() => {
     if (!hasResult) {
-      router.push('/mypage/reservations');
+      router.back();
     }
   });
 
@@ -108,15 +108,15 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   };
 
   const modalData = {
-    id,
+    id: Number(id),
     status,
-    reviewSubmitted,
-    totalPrice,
-    headCount,
+    reviewSubmitted: Boolean(reviewSubmitted),
+    totalPrice: Number(totalPrice),
+    headCount: Number(headCount),
     date,
     startTime,
     endTime,
-    activity: { id, title, bannerImageUrl },
+    activity: { id: Number(id), title, bannerImageUrl },
   };
 
   return (

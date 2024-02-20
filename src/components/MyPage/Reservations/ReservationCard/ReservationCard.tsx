@@ -43,17 +43,17 @@ function ReservationCard({ data }: ReservationCardProps) {
     },
   });
 
+  const handleCancelReservation = () => {
+    cancelReservationMutation.mutate();
+    setIsAlertModalOpen(false);
+  };
+
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
   };
 
   const handleReviewModalToggle = () => {
     setIsReviewModalOpen((prev) => !prev);
-  };
-
-  const handleCancelReservation = () => {
-    cancelReservationMutation.mutate();
-    setIsAlertModalOpen(false);
   };
 
   return (
