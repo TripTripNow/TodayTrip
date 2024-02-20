@@ -9,7 +9,7 @@ import { priceFormat } from '@/utils/priceFormat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import Image from 'next/image';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import toast from 'react-hot-toast';
 import styles from './ReviewModal.module.css';
 
@@ -27,7 +27,7 @@ type modalData = {
 interface ReviewModalProps {
   data: modalData;
   handleModalClose: () => void;
-  setIsReviewSubmit?: any;
+  setIsReviewSubmit: Dispatch<SetStateAction<boolean>>;
 }
 
 function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalProps) {
