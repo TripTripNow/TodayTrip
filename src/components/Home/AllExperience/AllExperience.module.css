@@ -31,7 +31,7 @@
   @media tablet {
     display: block;
     height: 6rem;
-    width: 6rem;
+    width: 8rem;
   }
 
   @media mobile {
@@ -40,8 +40,7 @@
     height: 5.3rem;
     margin-right: -1.8rem;
   }
-
-  background: linear-gradient(270deg, #fafbfc 0%, #fafbfc 71.87%, rgba(250, 251, 252, 0) 100%);
+  background: linear-gradient(to right, #fafbfc 50%, #fafbfc 80%, transparent);
 }
 
 .categoryLeftShadow {
@@ -64,7 +63,7 @@
     height: 5.3rem;
     margin-right: -1rem;
   }
-  background: linear-gradient(-270deg, #fafbfc 0%, #fafbfc 71.87%, rgba(250, 251, 252, 0) 100%);
+  background: linear-gradient(to left, #fafbfc 50%, #fafbfc 80%, transparent);
 }
 
 .titleWrapper {
