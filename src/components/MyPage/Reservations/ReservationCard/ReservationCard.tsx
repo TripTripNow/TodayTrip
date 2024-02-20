@@ -1,11 +1,4 @@
-import { patchMyReservationsId } from '@/api/myReservations';
-import AlertModal from '@/components/Modal/AlertModal/AlertModal';
-import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
-import Button from '@/components/common/Button/Button';
-import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
-import { Reservation } from '@/types/common/api';
-import { priceFormat } from '@/utils/priceFormat';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
@@ -13,6 +6,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+
+import { patchMyReservationsId } from '@/api/myReservations';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
+import Button from '@/components/common/Button/Button';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
+import { Reservation } from '@/types/common/api';
+import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationCard.module.css';
 
 interface ReservationCardProps {
@@ -23,15 +25,16 @@ function ReservationCard({ data }: ReservationCardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
   const activityId = data.activity.id;
-  console.log(typeof totalPrice);
 
   const cancelReservationMutation = useMutation({
     mutationFn: () => patchMyReservationsId(id),
     onSuccess: () => {
       toast.success('예약이 취소되었습니다.');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
