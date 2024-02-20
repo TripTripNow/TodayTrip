@@ -44,7 +44,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
   useEffect(() => {
-    if (dailyReservationData && dailyReservationData.length > 0)
+    if (dailyReservationData)
       setDropdownItem({
         id: dailyReservationData[0].scheduleId,
         title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
@@ -55,7 +55,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  if (!dailyReservationData || dropdownItem.id === 0 || isPending) return null;
+  if (!dailyReservationData || dailyReservationData.length === 0 || dropdownItem.id === 0 || isPending) return null;
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.container}>
