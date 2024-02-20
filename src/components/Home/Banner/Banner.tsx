@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import clsx from 'clsx';
 
-import StyledButton from '@/components/Home/StyledButton/StyledButton';
 import { useBanner } from '@/hooks/Home/useBanner';
 import MainBanner1 from '#/images/img-mainBanner1.png';
 import MainBanner2 from '#/images/img-mainBanner2.png';
@@ -48,12 +47,11 @@ function Carousel() {
         {BANNER.map((data) => (
           <div key={data.id} className={styles.bannerContainer}>
             <div className={styles.background}></div>
-            <Image src={data.src} alt={String(data.id)} fill priority />
+            <Image src={data.src} alt={String(data.id)} fill sizes="100%" priority />
             <div className={clsx(data.id !== 3 ? styles.textContainer : styles.textLastContainer)}>
               <h1 className={clsx(styles.mainTitle, data.id === 3 && styles.mainLastTitle)}>{data.title}</h1>
               <pre className={styles.text}>{data.description}</pre>
               {data.id === 3 && <LinkButton />}
-              {/* {data.id === 3 && <StyledButton />} */}
             </div>
           </div>
         ))}
