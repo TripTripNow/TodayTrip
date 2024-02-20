@@ -44,7 +44,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
   useEffect(() => {
-    if (dailyReservationData)
+    if (dailyReservationData && dropdownItem.id === 0)
       setDropdownItem({
         id: dailyReservationData[0].scheduleId,
         title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
