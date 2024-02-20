@@ -16,12 +16,6 @@ export const setContext = (_context: GetServerSidePropsContext) => {
   context = _context;
 };
 
-const redirectToLoginPage = () => {
-  //window.location.href = `${process.env.NEXT_PUBLIC_URL}/signin`;
-  //TODO window.location 에러 발생함, 이후 수정 필요
-  console.log('refresh token 만료됨');
-};
-
 const updateSession = async (data: { accessToken: string; refreshToken: string; user: Session['user'] }) => {
   await signIn('signin-credentials', {
     accessToken: data.accessToken,
@@ -86,7 +80,7 @@ instance.interceptors.response.use(
         originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
         return axios(originalRequest);
       } catch (e) {
-        redirectToLoginPage();
+        window.location.replace('/signin');
       }
     }
 
