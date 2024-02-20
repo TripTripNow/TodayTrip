@@ -27,7 +27,6 @@ interface ModalTabProps {
 function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const {
     data: dailyReservationData,
-    refetch: dailyReservationRefetch,
     isError,
     isPending,
   } = useQuery({
@@ -41,10 +40,6 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const handleStatus = (status: keyof DailyReservationStatusCount) => {
     setTabStatus(status);
   };
-
-  useEffect(() => {
-    dailyReservationRefetch();
-  }, [dropdownItem]);
 
   const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
