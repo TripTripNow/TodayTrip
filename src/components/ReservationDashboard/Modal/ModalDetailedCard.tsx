@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 import { CONFIRMED, PENDING } from '@/constants/calendar';
 import Button from '@/components/common/Button/Button';
@@ -29,18 +30,37 @@ function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
     },
   });
   const handleConfirm = async () => {
-    if (confirm('승인하시겠어요?')) {
-      await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
-      toast.success('조습니다.');
-    }
+    Swal.fire({
+      title: '승인하시겠습니까?',
+      showDenyButton: true,
+      confirmButtonColor: 'var(--green0B)',
+      denyButtonColor: 'var(--gray79)',
+      confirmButtonText: '승인',
+      denyButtonText: `취소`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
+        Swal.fire({ title: '승인에 성공하셨습니다!', icon: 'success', confirmButtonColor: 'var(--green0B)' });
+      }
+    });
   };
 
   const handleDecline = async () => {
-    if (confirm('거절하시겠어요?')) {
-      await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
-      toast.success('조습니다.');
-    }
+    Swal.fire({
+      title: '거절하시겠습니까?',
+      showDenyButton: true,
+      confirmButtonColor: '#DC3741',
+      denyButtonColor: 'var(--gray79)',
+      confirmButtonText: '거절',
+      denyButtonText: `취소`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
+        Swal.fire({ title: '거절에 성공하셨습니다!', icon: 'info', confirmButtonColor: 'var(--green0B)' });
+      }
+    });
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.textWrapper}>
