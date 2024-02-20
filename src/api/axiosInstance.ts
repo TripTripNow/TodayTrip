@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import { Session } from 'next-auth';
 import { getSession, signIn } from 'next-auth/react';
 
 const instance = axios.create({
@@ -21,7 +22,7 @@ const redirectToLoginPage = () => {
   console.log('refresh token 만료됨');
 };
 
-const updateSession = async (data: any) => {
+const updateSession = async (data: { accessToken: string; refreshToken: string; user: Session['user'] }) => {
   await signIn('signin-credentials', {
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
