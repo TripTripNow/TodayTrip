@@ -134,7 +134,9 @@ function ReservationCard({ data }: ReservationCardProps) {
           handleActionButtonClick={handleCancelReservation}
         />
       )}
-      {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
+      {isReviewModalOpen && (
+        <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />
+      )}
     </>
   );
 }

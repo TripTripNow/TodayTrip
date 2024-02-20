@@ -27,7 +27,7 @@ type modalData = {
 interface ReviewModalProps {
   data: modalData;
   handleModalClose: () => void;
-  setIsReviewSubmit: Dispatch<SetStateAction<boolean>>;
+  setIsReviewSubmit?: Dispatch<SetStateAction<boolean>>;
 }
 
 function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalProps) {
@@ -48,7 +48,9 @@ function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalP
       handleModalClose();
       toast.success('리뷰 작성이 완료되었습니다!');
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
-      setIsReviewSubmit(true);
+      if(setIsReviewSubmit) {
+        setIsReviewSubmit(true);
+      }
     },
   });
 
