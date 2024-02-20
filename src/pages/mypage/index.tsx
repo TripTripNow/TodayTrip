@@ -22,7 +22,6 @@ interface MyPageProps {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const sessionData = await getSession(context);
-  console.log(sessionData);
   const type = sessionData?.user.type || 'credentials';
   const userData = {
     email: sessionData?.user.email,
