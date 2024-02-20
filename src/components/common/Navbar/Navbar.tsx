@@ -49,12 +49,12 @@ function Navbar() {
   };
 
   const handleBlurDropDown = () => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
     setTimeout(() => {
       setIsDropDownOpen(false);
     }, 250);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 100);
   };
 
   const handleAlarmModalClick = () => {
