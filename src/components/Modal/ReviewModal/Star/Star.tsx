@@ -35,6 +35,7 @@ function Star({
 
   return (
     <button
+      type="button"
       onClick={() => {
         setRatingInputValue(rating);
       }}

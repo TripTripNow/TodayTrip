@@ -7,6 +7,11 @@ import Star from '@/components/Modal/ReviewModal/Star/Star';
 import dayjs from 'dayjs';
 import { Reservation } from '@/types/common/api';
 import { RATINGS } from '@/constants/ratingArray';
+import { priceFormat } from '@/utils/priceFormat';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { postMyReservationReview } from '@/api/myReservations';
+import toast from 'react-hot-toast';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 interface ReviewModalProps {
   data: Reservation;
@@ -22,9 +27,21 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
     setTextInputValue(e.target.value);
   };
 
-  //TODO : api 연결
+  const queryClient = useQueryClient();
+
+  const uploadReviewMutation = useMutation({
+    mutationFn: () =>
+      postMyReservationReview({ reservationId: data.id, rating: ratingInputValue, content: textInputValue }),
+    onSuccess: () => {
+      handleModalClose();
+      toast.success('리뷰 작성이 완료되었습니다!');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
+    },
+  });
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    uploadReviewMutation.mutate();
   };
 
   return (
@@ -54,11 +71,11 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
               <span>{data.headCount}명</span>
             </p>
             <div className={styles.separator}></div>
-            <p className={styles.price}>￦{data.totalPrice.toLocaleString('ko-KR')}</p>
+            <p className={styles.price}>￦{priceFormat(data.totalPrice)}</p>
           </div>
         </div>
         {/* 별점, 리뷰 작성 폼 */}
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.ratingInput}>
             {RATINGS.map((number) => (
               <Star
@@ -78,7 +95,7 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
             className={styles.textarea}
             placeholder="후기를 작성해주세요"
           />
-          <button disabled={!ratingInputValue || !textInputValue} className={styles.button}>
+          <button type="submit" disabled={!ratingInputValue || !textInputValue.trim()} className={styles.button}>
             작성하기
           </button>
         </form>

@@ -4,6 +4,9 @@ const QUERY_KEYS = {
   monthlyReservation: 'monthReservation',
   dailyReservation: 'dailyReservation',
   timeReservation: 'timeReservation',
+  reservations: 'reservations',
+  activity: 'activity',
+  all: '전체',
 } as const;
 
 export default QUERY_KEYS;

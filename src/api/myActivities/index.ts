@@ -11,6 +11,7 @@ import {
   PatchReservationsParam,
   PatchReservationsRes,
 } from '@/types/myActivities';
+import { ActivityId } from '@/types/common/api';
 
 /** 내 체험 리스트 조회 */
 export const getMyActivities = async ({ cursorId, size }: GetMyActivitiesParam): Promise<GetMyActivitiesRes> => {
@@ -63,4 +64,8 @@ export const patchReservationsById = async ({
   status,
 }: PatchReservationsParam): Promise<PatchReservationsRes> => {
   return await instance.patch(`my-activities/${activityId}/reservations/${reservationId}`, { status });
+};
+
+export const deleteMyActivity = async ({ activityId }: ActivityId) => {
+  return await instance.delete(`/my-activities/${activityId}`);
 };
