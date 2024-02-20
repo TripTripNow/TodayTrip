@@ -6,7 +6,7 @@ import { priceFormat } from '@/utils/priceFormat';
 import { useRouter } from 'next/router';
 import { getActivitiesId } from '@/api/activities';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PatchMyActivityReq } from '@/types/myActivities';
 import { patchActivitiesId } from '@/api/myActivities';
 import toast from 'react-hot-toast';
@@ -27,6 +27,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     queryKey: ['activity', activityId],
     queryFn: () => getActivitiesId(activityId),
   });
+
   return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 
@@ -36,21 +37,21 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     queryFn: () => getActivitiesId(activityId),
   });
 
-  const [items, setItems] = useState(activityData!);
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
   const router = useRouter();
-  const id = Number(router.query.id);
+  const queryClient = useQueryClient();
+
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: items.title,
-      price: priceFormat(items.price),
-      address: items.address,
-      description: items.description,
-      category: items.category,
-      bannerImageUrl: items.bannerImageUrl,
-      subImageUrls: items.subImages,
-      schedules: items.schedules,
+      title: activityData?.title || 0,
+      price: priceFormat(activityData!.price) || 0,
+      address: activityData?.address || '',
+      description: activityData?.description || '',
+      category: activityData?.category || '',
+      bannerImageUrl: activityData?.bannerImageUrl || '',
+      subImageUrls: activityData?.subImages || '',
+      schedules: activityData?.schedules || '',
 
       subImageIdsToRemove: [],
       subImageUrlsToAdd: [],
@@ -64,6 +65,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     mutationFn: ({ activityId, data }: activityEditMutationProps) =>
       patchActivitiesId(activityId, data as PatchMyActivityReq),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activity', activityId] });
       router.push('/mypage/activities');
     },
     onError: (error) => {
@@ -81,11 +83,11 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     activityEditMutation.mutate({ activityId, data });
   };
 
-  const getItems = async (id: number) => {
-    const result = await getActivitiesId(id);
-    setItems(result);
-    return result;
-  };
+  // const getItems = async (id: number) => {
+  //   const result = await getActivitiesId(id);
+  //   setItems(result);
+  //   return result;
+  // };
 
   //처음 불러올때 받은 주소 -> 위도 경도로 바꿔주는 함수
   const calculateLatlng = async (addressData: string) => {
@@ -103,8 +105,8 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   };
 
   useEffect(() => {
-    calculateLatlng(items.address);
-    getItems(id);
+    calculateLatlng(activityData!.address);
+    // getItems(id);
   }, []);
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;

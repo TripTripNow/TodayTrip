@@ -38,7 +38,6 @@ function Activities() {
   });
 
   const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
-  console.log(filteredMyActivities);
   useEffect(() => {
     if (isVisible) {
       fetchNextPage();
