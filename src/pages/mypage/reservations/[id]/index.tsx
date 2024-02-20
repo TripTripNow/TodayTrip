@@ -107,6 +107,10 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     setIsAlertModalOpen(false);
   };
 
+  const handleClickNavigate = () => {
+    router.push(`/activities/${activityId}`);
+  };
+
   const modalData = {
     id: Number(id),
     status,
@@ -133,7 +137,9 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
         </div>
         <div className={styles.content}>
           {status && <CheckStatus status={status} />}
-          <h2 className={styles.title}>{title}</h2>
+          <h2 className={styles.title} onClick={handleClickNavigate}>
+            {title}
+          </h2>
           <p className={styles.date}>
             <span>{dayjs(date).format('YYYY.MM.DD')}</span>
             <span> · </span>
