@@ -8,7 +8,7 @@ import ProfileInput from '@/components/MyPage/ProfileInput';
 import Button from '@/components/common/Button/Button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { patchUsersMe } from '@/api/user/user';
+import { patchUsersMe } from '@/api/user';
 import { GetUsersMeRes, PatchUsersMeReq } from '@/types/users';
 import { GetServerSideProps } from 'next';
 import { getSession, useSession } from 'next-auth/react';
