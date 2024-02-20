@@ -7,11 +7,11 @@ import { useRouter } from 'next/router';
 import { getActivitiesId } from '@/api/activities';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
-import { GetActivitiesRes } from '@/types/Activities';
 import { PatchMyActivityReq } from '@/types/myActivities';
 import { patchActivitiesId } from '@/api/myActivities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import { Activity } from '@/types/common/api';
 
 interface activityEditMutationProps {
   activityId: number;
@@ -31,7 +31,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 };
 
 function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: activityData } = useQuery<GetActivitiesRes>({
+  const { data: activityData } = useQuery<Activity>({
     queryKey: ['activity', activityId],
     queryFn: () => getActivitiesId(activityId),
   });
@@ -40,7 +40,6 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
   const router = useRouter();
   const id = Number(router.query.id);
-
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -65,8 +64,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     mutationFn: ({ activityId, data }: activityEditMutationProps) =>
       patchActivitiesId(activityId, data as PatchMyActivityReq),
     onSuccess: () => {
-      // router.push('/mypage/activities');
-      console.log('성공');
+      router.push('/mypage/activities');
     },
     onError: (error) => {
       if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
@@ -75,15 +73,12 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
 
   const handleOnSubmit = async (data: FieldValues) => {
     delete data.subImageUrls;
-    delete data.schedules;
     if (data.price.toString() === '0') return toast('가격을 입력해 주세요.');
-    // if (data.schedules.length === 0) Areturn toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
+    if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
+    delete data.schedules;
     data.price = Number(data.price.replace(/,/g, ''));
-    if (data) console.log(data);
 
     activityEditMutation.mutate({ activityId, data });
-
-    // const result = await patchActivitiesId(activityId, data as PatchMyActivityReq);
   };
 
   const getItems = async (id: number) => {
@@ -110,7 +105,6 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   useEffect(() => {
     calculateLatlng(items.address);
     getItems(id);
-    console.log(items);
   }, []);
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;

@@ -79,3 +79,8 @@ export const TIME_LIST = [
 ];
 
 export const INITIAL_DROPDOWN_ITEM = { id: 0, title: '' };
+
+export const PRICE_MAP = {
+  price_asc: '낮은 순',
+  price_desc: '높은 순',
+} as const;

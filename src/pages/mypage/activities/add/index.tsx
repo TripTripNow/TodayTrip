@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { postActivities } from '@/api/activities';
-import { PostActivitiesReq } from '@/types/Activities';
+import { PostActivitiesReq } from '@/types/activities';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
@@ -39,8 +39,7 @@ function ActivityAdd() {
   const activityAddMutation = useMutation({
     mutationFn: (data: PostActivitiesReq) => postActivities(data),
     onSuccess: () => {
-      // router.push('/mypage/activities');
-      console.log('성공');
+      router.push('/mypage/activities');
     },
     onError: (error) => {
       if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
@@ -55,7 +54,6 @@ function ActivityAdd() {
     if (data.price.toString() === '0') return toast('가격을 입력해 주세요.');
     if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
-
     activityAddMutation.mutate(data as PostActivitiesReq);
   };
 

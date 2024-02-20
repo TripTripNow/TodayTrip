@@ -4,7 +4,7 @@ import ImgCloseIcon from '#/icons/icon-imgClose.svg';
 import { ChangeEvent, useRef, useState } from 'react';
 import PlusIcon from '#/icons/icon-plus.svg';
 import { Control, FieldValues, UseFormGetValues, UseFormSetValue, useController } from 'react-hook-form';
-import instance from '@/api/axiosInstance';
+import { postImageUrl } from '@/api/activities';
 
 interface ImageContainerProps {
   name: string;
@@ -23,13 +23,10 @@ function ImageContainer({ name, control, setValue, getValues }: ImageContainerPr
   const { field } = useController({ name, control });
   const value = field.value;
 
-  // const imageUrlArray = value.map((item: imageUrlArrayType) => item.imageUrl);
-
   const bannerImgRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
   const [bannerImgSrc, setBannerImgSrc] = useState<string | null>(getValues('bannerImageUrl') ?? null);
   const [imgSrc, setImgSrc] = useState<(imageUrlArrayType | string)[]>(value ?? []);
-  // console.log(imgSrc);
   const handleImgClick = (banner: boolean) => {
     if (banner) {
       if (bannerImgRef.current) bannerImgRef.current.click();
@@ -50,22 +47,17 @@ function ImageContainer({ name, control, setValue, getValues }: ImageContainerPr
 
       const formData = new FormData();
       formData.append('image', targetFiles!);
-      const response = await instance.post('/activities/image', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      const imageUrl = response.data.activityImageUrl;
+      const response = await postImageUrl(formData);
 
       // banner 추가하는 부분
       if (banner) {
         setBannerImgSrc(selectedFiles);
-        setValue('bannerImageUrl', imageUrl);
+        setValue('bannerImageUrl', response);
       } else {
         // subImg 추가하는 부분
         setImgSrc((prev) => [...prev, selectedFiles]);
-        field.onChange([...value, imageUrl]);
-        setValue('subImageUrlsToAdd', [...getValues('subImageUrlsToAdd'), imageUrl]);
+        field.onChange([...value, response]);
+        setValue('subImageUrlsToAdd', [...getValues('subImageUrlsToAdd'), response]);
       }
     }
   };
@@ -76,13 +68,13 @@ function ImageContainer({ name, control, setValue, getValues }: ImageContainerPr
       setBannerImgSrc(null);
       setValue('bannerImageUrl', '');
       if (bannerImgRef.current) {
-        bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
+        bannerImgRef.current.value = ''; // banner 삭제 후 input 초기화
       }
     } else {
       // subImg 삭제하는 부분
       setImgSrc(imgSrc.filter((_, index) => index !== currentIndex));
       if (imgRef.current) {
-        imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
+        imgRef.current.value = ''; // subImg 삭제 후 input 초기화
       }
       // edit페이지에서 subImg 삭제하는 부분
       if (typeof item === 'string') {

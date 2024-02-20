@@ -51,14 +51,11 @@
 
 .arrow {
   cursor: pointer;
+  stroke: var(--gray4B);
 }
 
 .arrowEnable {
   stroke: var(--grayA4);
-}
-
-.arrowDisable {
-  stroke: var(--gray4B);
 }
 
 .cardContainer {
@@ -79,4 +76,8 @@
   @media mobile {
     gap: 1.6rem;
   }
+}
+
+.rotateReverse {
+  rotate: 180deg;
 }

@@ -16,10 +16,19 @@ interface ReservationTimeProps {
   getValues: UseFormGetValues<FieldValues>;
 }
 
+interface reservationPlusArrayType {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface reservationArrayType extends reservationPlusArrayType {
+  id: number;
+}
+
 function ReservationTime({ name, control, setValue, getValues }: ReservationTimeProps) {
   const { field } = useController({ name, control });
   const dateValue = field.value;
-  console.log(dateValue);
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
@@ -68,11 +77,22 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
   };
 
   // 삭제하는 부분
-  const handleDeleteButton = (item: string) => {
-    // if (name === 'schedulesToAdd') {
-    //   setValue('scheduleIdsToRemove',[...])
-    // }
-    field.onChange(dateValue.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
+  const handleDeleteButton = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    currentIndex: number,
+    item: reservationArrayType | reservationPlusArrayType,
+  ) => {
+    e.preventDefault();
+    // 기존에 있던 날짜 삭제 부분
+    if ('id' in item) {
+      setValue('scheduleIdsToRemove', [...getValues('scheduleIdsToRemove'), item.id]);
+    } else {
+      // 새롭게 추가한 날짜 삭제 부분
+      const deleteIndex = currentIndex - dateValue.length + getValues('schedulesToAdd').length;
+      const lastToAddSchedule = getValues('schedulesToAdd').filter((_: string, index: number) => index !== deleteIndex);
+      setValue('schedulesToAdd', lastToAddSchedule);
+    }
+    field.onChange(dateValue.filter((_: any, index: number) => index !== currentIndex));
   };
 
   return (
@@ -112,7 +132,7 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
                       <p className={styles.dateWave}>~</p>
                       <div className={styles.addedTime}>{item.endTime}</div>
                     </div>
-                    <button onClick={() => handleDeleteButton(`${item.date}+${item.startTime}+${item.endTime}`)}>
+                    <button onClick={(e) => handleDeleteButton(e, index, item)}>
                       <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" width={56} height={56} />
                     </button>
                   </div>
