@@ -17,8 +17,8 @@ interface CalendarProps {
 const renderCircle = (reservation: MonthlyReservationStatusCount) => {
   const { completed, confirmed, pending } = reservation;
   if (completed + confirmed + pending === 0) return null;
-  else if (pending + confirmed === 0 && completed !== 0) return <p className={styles.grayCircle}></p>;
-  else if (pending + confirmed > 0) return <p className={styles.blueCircle}></p>;
+  else if (pending + confirmed === 0 && completed !== 0) return <div className={styles.grayCircle}></div>;
+  else if (pending + confirmed > 0) return <div className={styles.blueCircle}></div>;
 };
 
 function Calendar({ activityId }: CalendarProps) {
