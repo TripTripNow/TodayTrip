@@ -62,7 +62,7 @@ function Home() {
           <AllExperience
             searchResult={searchResult}
             showCards={activityData.activities}
-            totalCardsNum={activityData.activities.length}
+            totalCardsNum={activityData.totalCount}
             handlePaginationByClick={handlePaginationByClick}
             totalPages={totalPageNumber}
             pageNumber={currentPageNumber}
