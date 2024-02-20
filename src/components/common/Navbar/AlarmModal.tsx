@@ -10,6 +10,7 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { deleteMyNotifications, getMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
 import toast from 'react-hot-toast';
+import { changeDateForm } from '@/utils/chageDateForm';
 
 interface AlarmModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -56,25 +57,6 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   const alarmData = data?.pages.flatMap((page) => page.notifications);
   const totalCount = data?.pages[0].totalCount;
 
-  const renderTime = (date: string) => {
-    const start = new Date(date);
-    const end = new Date();
-
-    const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
-    if (seconds < 60) return '방금 전';
-
-    const minutes = seconds / 60;
-    if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-
-    const hours = minutes / 60;
-    if (hours < 24) return `${Math.floor(hours)}시간 전`;
-
-    const days = hours / 24;
-    if (days < 7) return `${Math.floor(days)}일 전`;
-
-    return `${start.toLocaleDateString()}`;
-  };
-
   useEffect(() => {
     if (isVisible) {
       fetchNextPage();
@@ -110,7 +92,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
                         </button>
                       </div>
                       <p className={styles.alarmModalContent}>{item.content}</p>
-                      <p className={styles.alarmModalContentTime}>{renderTime(item.createdAt)}전</p>
+                      <p className={styles.alarmModalContentTime}>{changeDateForm(item.createdAt)}</p>
                     </div>
                   </div>
                 ))}
