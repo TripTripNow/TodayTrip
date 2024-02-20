@@ -32,11 +32,13 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
   });
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target && e.target.files) {
-      const targetFiles = e.target.files[0];
-      const selectedFiles = URL.createObjectURL(targetFiles);
-      setImageSrc(selectedFiles);
-      handlePostProfile(targetFiles);
+    if (e.target && e.target.files?.length !== 0) {
+      const targetFiles = e.target.files?.[0];
+      if (targetFiles) {
+        const selectedFiles = URL.createObjectURL(targetFiles);
+        setImageSrc(selectedFiles);
+        handlePostProfile(targetFiles);
+      }
     }
   };
 

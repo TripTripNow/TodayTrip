@@ -62,7 +62,6 @@ function Navbar() {
   };
 
   useEffect(() => {
-    console.log(isVisible);
     if (isVisible) {
       fetchNextPage();
     }
