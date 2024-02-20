@@ -1,5 +1,7 @@
 const QUERY_KEYS = {
   usersMe: 'usersMe',
+  allActivities: 'allActivities',
+  popularActivities: 'popularActivities',
   reservations: 'reservations',
   activity: 'activity',
   all: '전체',

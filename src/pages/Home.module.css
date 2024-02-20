@@ -1,6 +1,6 @@
 @values tablet, mobile from '@/styles/breakpoints.css';
 
-.main {
+.container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@
   }
 }
 
-.container {
+.mainWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,21 +26,5 @@
 
   @media mobile {
     width: 100%;
-  }
-}
-
-.searchbarWrapper {
-  width: 100%;
-
-  @media tablet {
-    width: 100%;
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-  }
-
-  @media mobile {
-    width: 100%;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
   }
 }

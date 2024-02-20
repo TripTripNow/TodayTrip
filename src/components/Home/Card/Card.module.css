@@ -35,6 +35,7 @@
 
 .bannerImage {
   transition: 100ms ease-in-out;
+  object-fit: cover;
 }
 
 .textContainer {
