@@ -98,12 +98,9 @@ function ModalTab({ handleStatus, tabStatus, item }: ModalTabProps) {
       {STATUS_ARR.map((status, index) => (
         <div className={styles.tabInnerWrapper} key={index}>
           <div className={styles.tab} onClick={() => handleStatus(status)}>
-            <span className={clsx(status === tabStatus ? styles.tabTextEnabled : styles.tabTextDisabled)}>
-              {CALENDAR_MODAL_MAP[status]}
-            </span>
-            <span className={clsx(status === tabStatus ? styles.tabTextEnabled : styles.tabTextDisabled)}>
-              {tabItem[status]}
-            </span>
+            <button className={clsx(styles.tabButton, status === tabStatus && styles.tabTextEnabled)}>
+              {`${CALENDAR_MODAL_MAP[status]} ${tabItem[status]}`}
+            </button>
             {status === tabStatus && <div className={styles.tabEnabledStroke}></div>}
           </div>
         </div>

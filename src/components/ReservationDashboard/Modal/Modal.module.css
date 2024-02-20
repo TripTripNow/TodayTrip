@@ -44,9 +44,8 @@
   color: var(--gray4B);
 }
 
-.tab > span {
+.tabButton {
   font-size: 2rem;
-  line-height: 2.6rem;
 }
 
 .tabTextEnabled {
