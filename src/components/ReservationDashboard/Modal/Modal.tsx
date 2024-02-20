@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
 import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import { DailyReservationStatusCount } from '@/types/common/api';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
-import { useQuery } from '@tanstack/react-query';
 import { getReservedSchedule } from '@/api/myActivities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import CloseIcon from '#/icons/icon-close.svg';
@@ -79,7 +79,6 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
           date={date}
           tabStatus={tabStatus}
           activityId={activityId}
-          handleModalClose={handleModalClose}
         />
       </div>
     </ModalLayout>

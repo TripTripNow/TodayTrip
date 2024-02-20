@@ -25,13 +25,11 @@ interface ModalContentProps {
   date: string;
   tabStatus: keyof DailyReservationStatusCount;
   activityId: number;
-  handleModalClose: () => void;
 }
 
 interface ReservationDetailsProps {
   items: ScheduledReservation[];
   tabStatus: keyof DailyReservationStatusCount;
-  handleModalClose: () => void;
   targetRef: RefObject<HTMLDivElement>;
 }
 
@@ -44,7 +42,6 @@ function ModalContent({
   date,
   tabStatus,
   activityId,
-  handleModalClose,
 }: ModalContentProps) {
   const { data, fetchNextPage, isError } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
@@ -86,12 +83,7 @@ function ModalContent({
             dropdownItem={dropdownItem}
             date={date}
           />
-          <ReservationDetails
-            items={showItems!}
-            tabStatus={tabStatus}
-            handleModalClose={handleModalClose}
-            targetRef={targetRef}
-          />
+          <ReservationDetails items={showItems!} tabStatus={tabStatus} targetRef={targetRef} />
         </>
       ) : (
         <NoResult text="예약 정보가 없습니다." />
@@ -125,14 +117,14 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   );
 }
 
-function ReservationDetails({ items, tabStatus, handleModalClose, targetRef }: ReservationDetailsProps) {
+function ReservationDetails({ items, tabStatus, targetRef }: ReservationDetailsProps) {
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
       {items.length > 0 ? (
         <div className={styles.cardsWrapper}>
           {items.map((item) => (
-            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} handleModalClose={handleModalClose} />
+            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
           ))}
           <div ref={targetRef}></div>
         </div>

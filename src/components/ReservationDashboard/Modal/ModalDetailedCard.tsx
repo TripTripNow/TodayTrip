@@ -13,10 +13,9 @@ import styles from './ModalDetailedCard.module.css';
 interface ModalDetailedCardProps {
   item: ScheduledReservation;
   tabStatus: keyof DailyReservationStatusCount;
-  handleModalClose: () => void;
 }
 
-function ModalDetailedCard({ item, tabStatus, handleModalClose }: ModalDetailedCardProps) {
+function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
   const queryClient = useQueryClient();
   const confirmMutate = useMutation({
     mutationFn: (res: PatchReservationsParam) => patchReservationsById(res),
@@ -29,14 +28,12 @@ function ModalDetailedCard({ item, tabStatus, handleModalClose }: ModalDetailedC
       toast.error('동작에 실패하였습니다.');
     },
   });
-  const handleConfirm = () => {
-    confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
-    handleModalClose();
+  const handleConfirm = async () => {
+    await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
   };
 
-  const handleDecline = () => {
-    confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
-    handleModalClose();
+  const handleDecline = async () => {
+    await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
   };
   return (
     <div className={styles.container}>
