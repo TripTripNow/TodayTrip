@@ -26,21 +26,17 @@ interface ModalTabProps {
 }
 
 function Modal({ handleModalClose, date, activityId }: ModalProps) {
-  const [year, month, day] = date.split('-').map(Number);
   const {
     data: dailyReservationData,
     refetch: dailyReservationRefetch,
     isError,
+    isPending,
   } = useQuery({
-    queryKey: [QUERY_KEYS.dailyReservation, formatDateStringByDot({ year, month, day, padStart: true })],
-    queryFn: () =>
-      getReservedSchedule({ activityId, date: formatDateStringByDot({ year, month, day, padStart: true }) }),
+    queryKey: [QUERY_KEYS.dailyReservation, date],
+    queryFn: () => getReservedSchedule({ activityId, date }),
   });
-  const INITIAL_DROPDOWN_ITEM = {
-    id: dailyReservationData ? dailyReservationData[0].scheduleId : 0,
-    title: dailyReservationData ? `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}` : '0',
-  };
-  const [dropdownItem, setDropdownItem] = useState(INITIAL_DROPDOWN_ITEM);
+
+  const [dropdownItem, setDropdownItem] = useState<{ id: number; title: string }>({ id: 0, title: '' });
   const [tabStatus, setTabStatus] = useState<keyof DailyReservationStatusCount>('pending');
 
   const handleStatus = (status: keyof DailyReservationStatusCount) => {
@@ -65,8 +61,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  if (!dailyReservationData) return null;
-
+  if (!dailyReservationData || dropdownItem.id === 0 || isPending) return null;
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.container}>

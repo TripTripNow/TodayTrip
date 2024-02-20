@@ -51,7 +51,7 @@ function Calendar({ activityId }: CalendarProps) {
       {modalOpen && (
         <Modal
           handleModalClose={handleModalClose}
-          date={formatDateStringByDot({ year, month, day })}
+          date={formatDateStringByDot({ year, month, day, padStart: true })}
           activityId={activityId}
         />
       )}

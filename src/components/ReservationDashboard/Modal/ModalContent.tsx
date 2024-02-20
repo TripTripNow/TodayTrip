@@ -43,7 +43,7 @@ function ModalContent({
   tabStatus,
   activityId,
 }: ModalContentProps) {
-  const { data, fetchNextPage, isError } = useInfiniteQuery({
+  const { data, fetchNextPage, isError, isPending } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
     queryFn: ({ pageParam }) =>
       getReservationsByTime({
@@ -73,6 +73,7 @@ function ModalContent({
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
+  if (isPending) return null;
   return (
     <div className={styles.mainContainer}>
       {timeItems && data ? (
@@ -106,7 +107,9 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   return (
     <div className={styles.dateContainer}>
       <h2 className={styles.subTitle}>예약 날짜</h2>
-      <p className={styles.date}>{`${showDateArr[0]}년 ${showDateArr[1]}월 ${showDateArr[2]}일`}</p>
+      <p
+        className={styles.date}
+      >{`${Number(showDateArr[0])}년 ${Number(showDateArr[1])}월 ${Number(showDateArr[2])}일`}</p>
       <Dropdown
         type="예약한 시간"
         setDropdownItem={setDropdownItem}
