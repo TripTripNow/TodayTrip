@@ -9,7 +9,7 @@ export const postActivities = async (activityData: PostActivitiesReq) => {
 
 export const getActivitiesId = async (activityId: number) => {
   try {
-    activityId = 62;
+    activityId = 61;
     const res = await instance.get(`/activities/${activityId}`);
     return res.data;
   } catch (error) {

@@ -67,16 +67,10 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
         </div>
 
         {/*예약 날짜 추가 제거 컴포넌트*/}
-        <ReservationTime name={isEdit ? 'schedulesToAdd' : 'schedules'} control={control} setValue={setValue} />
+        <ReservationTime name="schedules" control={control} setValue={setValue} getValues={getValues} />
 
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
-        <ImageContainer
-          control={control}
-          name="subImageUrls"
-          setValue={setValue}
-          getValues={getValues}
-          isEdit={isEdit}
-        />
+        <ImageContainer control={control} name="subImageUrls" setValue={setValue} getValues={getValues} />
         <div className={styles.addButtonWrapper}>
           <button className={styles.addButton} disabled={!isValid}>
             등록하기

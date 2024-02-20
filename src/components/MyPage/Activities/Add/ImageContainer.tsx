@@ -11,7 +11,6 @@ interface ImageContainerProps {
   control: Control<FieldValues, any>;
   setValue: UseFormSetValue<FieldValues>;
   getValues: UseFormGetValues<FieldValues>;
-  isEdit?: boolean;
 }
 
 interface imageUrlArrayType {
@@ -20,7 +19,7 @@ interface imageUrlArrayType {
 }
 [];
 
-function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageContainerProps) {
+function ImageContainer({ name, control, setValue, getValues }: ImageContainerProps) {
   const { field } = useController({ name, control });
   const value = field.value;
 
@@ -58,10 +57,12 @@ function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageCon
       });
       const imageUrl = response.data.activityImageUrl;
 
+      // banner 추가하는 부분
       if (banner) {
         setBannerImgSrc(selectedFiles);
         setValue('bannerImageUrl', imageUrl);
       } else {
+        // subImg 추가하는 부분
         setImgSrc((prev) => [...prev, selectedFiles]);
         field.onChange([...value, imageUrl]);
         setValue('subImageUrlsToAdd', [...getValues('subImageUrlsToAdd'), imageUrl]);
@@ -70,6 +71,7 @@ function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageCon
   };
 
   const handleImgDelete = (currentIndex: number, item: imageUrlArrayType | string, banner: boolean) => {
+    // banner 삭제하는 부분
     if (banner) {
       setBannerImgSrc(null);
       setValue('bannerImageUrl', '');
@@ -77,13 +79,14 @@ function ImageContainer({ name, control, setValue, getValues, isEdit }: ImageCon
         bannerImgRef.current.value = ''; // 배너 이미지 삭제 후 input 초기화
       }
     } else {
+      // subImg 삭제하는 부분
       setImgSrc(imgSrc.filter((_, index) => index !== currentIndex));
       if (imgRef.current) {
         imgRef.current.value = ''; // 소개 이미지 삭제 후 input 초기화
       }
+      // edit페이지에서 subImg 삭제하는 부분
       if (typeof item === 'string') {
         const deleteIndex = currentIndex - imgSrc.length + getValues('subImageUrlsToAdd').length;
-        console.log('deleteIndex', deleteIndex);
         const lastToAddImage = getValues('subImageUrlsToAdd').filter(
           (_: string, index: number) => index !== deleteIndex,
         );

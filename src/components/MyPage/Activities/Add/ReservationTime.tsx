@@ -7,18 +7,19 @@ import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Control, FieldValues, UseFormSetValue, useController } from 'react-hook-form';
+import { Control, FieldValues, UseFormGetValues, UseFormSetValue, useController } from 'react-hook-form';
 
 interface ReservationTimeProps {
   name: string;
   control: Control<FieldValues>;
-  setValue?: UseFormSetValue<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
 }
 
-function ReservationTime({ name, control, setValue }: ReservationTimeProps) {
+function ReservationTime({ name, control, setValue, getValues }: ReservationTimeProps) {
   const { field } = useController({ name, control });
   const dateValue = field.value;
-
+  console.log(dateValue);
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
@@ -47,6 +48,7 @@ function ReservationTime({ name, control, setValue }: ReservationTimeProps) {
       toast.error('동일한 시간이 있습니다.');
       return;
     }
+    // 조건에 맞으면 데이터 추가하는 부분
     field.onChange([
       ...dateValue,
       {
@@ -55,8 +57,17 @@ function ReservationTime({ name, control, setValue }: ReservationTimeProps) {
         endTime: endTimeItem.title,
       },
     ]);
+    setValue('schedulesToAdd', [
+      ...getValues('schedulesToAdd'),
+      {
+        date: isSelectedDate,
+        startTime: startTimeItem.title,
+        endTime: endTimeItem.title,
+      },
+    ]);
   };
 
+  // 삭제하는 부분
   const handleDeleteButton = (item: string) => {
     // if (name === 'schedulesToAdd') {
     //   setValue('scheduleIdsToRemove',[...])

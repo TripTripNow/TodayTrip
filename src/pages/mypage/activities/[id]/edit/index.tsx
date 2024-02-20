@@ -65,7 +65,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     mutationFn: ({ activityId, data }: activityEditMutationProps) =>
       patchActivitiesId(activityId, data as PatchMyActivityReq),
     onSuccess: () => {
-      router.push('/mypage/activities');
+      // router.push('/mypage/activities');
       console.log('성공');
     },
     onError: (error) => {
@@ -110,6 +110,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   useEffect(() => {
     calculateLatlng(items.address);
     getItems(id);
+    console.log(items);
   }, []);
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;
