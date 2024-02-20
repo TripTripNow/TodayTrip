@@ -3,12 +3,13 @@ import CloseIcon from '#/icons/icon-close.svg';
 import LightCloseIcon from '#/icons/icon-lightClose.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
 import BlueEllipse from '#/icons/icon-blueEllipse.svg';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteMyNotifications, getMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
+import toast from 'react-hot-toast';
 
 interface AlarmModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +42,9 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotifications] });
     },
+    onError: () => {
+      toast.error('실패했습니다. 다시 시도해주세요.');
+    },
   });
 
   const handleAlarmDelete = (id: number) => {
@@ -72,7 +76,6 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   };
 
   useEffect(() => {
-    console.log(isVisible);
     if (isVisible) {
       fetchNextPage();
     }
@@ -121,6 +124,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
           )}
         </div>
       )}
+      {!alarmData && <div ref={targetRef} />}
     </ModalLayout>
   );
 }

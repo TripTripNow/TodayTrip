@@ -13,6 +13,7 @@ const useInfiniteScroll = () => {
       // entries는 인스턴스의 배열
       // 얼마만큼의 비율을 가졌을 때 실행시킬지
       // 관찰 대상을 지정하고, 관찰될 때 어떤 작동을 할지
+      console.log(entries);
       const entry = entries[0];
       // isIntersecting은 교차 되고 있는지를 알려주는 boolean 값
       setIsVisible(entry.isIntersecting);
