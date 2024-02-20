@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
@@ -57,14 +57,18 @@ export const useHome = () => {
   const recentSearchKeywords = localStorageGetItem('recentSearchKeywords')?.split(',') ?? []; // 최신 검색어
 
   // 검색 후 submit 함수
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSearchResult(inputSearchText);
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | string) => {
+    if (typeof e !== 'string') {
+      e.preventDefault();
+      setSearchResult(inputSearchText);
+    } else {
+      setSearchResult(e);
+    }
     setPriceFilterValue('가격');
     setSortByPrice('latest');
     setSelectedCategory('');
 
-    const trimmedText = inputSearchText.trim();
+    const trimmedText = typeof e !== 'string' ? inputSearchText.trim() : e.trim();
     if (!trimmedText) return;
 
     const storedText = localStorageGetItem('recentSearchKeywords');
@@ -80,9 +84,11 @@ export const useHome = () => {
   };
 
   // 검색창 input state 실시간 변경 함수
-  const handleSearchText = (e: ChangeEvent<HTMLInputElement> | string) => {
-    if (typeof e === 'string') setInputSearchText(e);
-    else setInputSearchText(e.target.value);
+  const handleSearchText = (e: ChangeEvent<HTMLInputElement>, text?: string) => {
+    if (text) {
+      setInputSearchText(text);
+      handleSearchSubmit(text);
+    } else setInputSearchText(e.target.value);
   };
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)
