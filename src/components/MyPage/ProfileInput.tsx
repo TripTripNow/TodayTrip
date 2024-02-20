@@ -8,16 +8,17 @@ import { useMutation } from '@tanstack/react-query';
 import { postUsersMeImage } from '@/api/user/user';
 import toast from 'react-hot-toast';
 import { getSession } from 'next-auth/react';
+import useDeviceType from '@/hooks/common/useDeviceType';
 interface ProfileInputProps {
   isProfileBox: boolean;
   isEdit: boolean;
-  profileImg?: string;
 }
 
-function ProfileInput({ isProfileBox, isEdit, profileImg }: ProfileInputProps) {
+function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [imageSrc, setImageSrc] = useState<string | null>(profileImg || null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const { setValue } = useFormContext();
+  const deviceType = useDeviceType();
 
   const postImageMutation = useMutation({
     mutationFn: (data: FormData) => postUsersMeImage(data),
@@ -53,8 +54,6 @@ function ProfileInput({ isProfileBox, isEdit, profileImg }: ProfileInputProps) {
   }, []);
 
   useEffect(() => {
-    if (profileImg) return;
-
     async function getSessionData() {
       const data = await getSession();
       if (data && data.user.image) {
@@ -63,7 +62,7 @@ function ProfileInput({ isProfileBox, isEdit, profileImg }: ProfileInputProps) {
     }
 
     getSessionData();
-  }, []);
+  }, [deviceType]);
 
   return (
     <div className={`${styles.profileContainer} ${isProfileBox && styles.display}`}>
