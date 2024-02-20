@@ -27,8 +27,7 @@ function Navbar() {
     queryFn: ({ pageParam }) => getMyNotifications(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      const currentCursorId = lastPage.cursorId;
-      return currentCursorId;
+      return lastPage.cursorId;
     },
   });
 
