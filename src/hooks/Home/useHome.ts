@@ -57,18 +57,20 @@ export const useHome = () => {
   const recentSearchKeywords = localStorageGetItem('recentSearchKeywords')?.split(',') ?? []; // 최신 검색어
 
   // 검색 후 submit 함수
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | string) => {
-    if (typeof e !== 'string') {
-      e.preventDefault();
-      setSearchResult(inputSearchText);
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement>, text?: string) => {
+    e.preventDefault();
+
+    if (text) {
+      setSearchResult(text);
+      setInputSearchText(text);
     } else {
-      setSearchResult(e);
+      setSearchResult(inputSearchText);
     }
     setPriceFilterValue('가격');
     setSortByPrice('latest');
     setSelectedCategory('');
 
-    const trimmedText = typeof e !== 'string' ? inputSearchText.trim() : e.trim();
+    const trimmedText = text ? text.trim() : inputSearchText.trim();
     if (!trimmedText) return;
 
     const storedText = localStorageGetItem('recentSearchKeywords');
@@ -84,11 +86,8 @@ export const useHome = () => {
   };
 
   // 검색창 input state 실시간 변경 함수
-  const handleSearchText = (e: ChangeEvent<HTMLInputElement>, text?: string) => {
-    if (text) {
-      setInputSearchText(text);
-      handleSearchSubmit(text);
-    } else setInputSearchText(e.target.value);
+  const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputSearchText(e.target.value);
   };
 
   // 버튼 클릭을 통한 페이지 증감 함수(pagination)

@@ -7,8 +7,8 @@ import styles from './Searchbar.module.css';
 
 interface SearchbarProps {
   inputSearchText: string;
-  handleSearchText: (e: ChangeEvent<HTMLInputElement> | MouseEvent<HTMLDivElement>, text?: string) => void;
-  handleSearchSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  handleSearchText: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSearchSubmit: (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement>, text?: string) => void;
   recentText: string[];
 }
 
@@ -44,7 +44,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
             <div className={styles.dropdownMenu}>
               <p className={styles.dropdownDescription}>최근 검색어{recentText.length <= 0 && ' 없음'}</p>
               {recentText.map((text, index) => (
-                <div key={index} className={styles.dropdownItem} onMouseDown={(e) => handleSearchText(e, text)}>
+                <div key={index} className={styles.dropdownItem} onMouseDown={(e) => handleSearchSubmit(e, text)}>
                   {text}
                 </div>
               ))}
