@@ -1,5 +1,6 @@
 const QUERY_KEYS = {
   usersMe: 'usersMe',
+  myActivities: 'myActivities',
   allActivities: 'allActivities',
   popularActivities: 'popularActivities',
   reservations: 'reservations',
