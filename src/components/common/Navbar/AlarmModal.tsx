@@ -11,6 +11,7 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import toast from 'react-hot-toast';
 import { changeDateForm } from '@/utils/chageDateForm';
 import { Notifications } from '@/types/myNotifications';
+import NoResult from '@/components/common/NoResult/NoResult';
 
 interface AlarmModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -83,7 +84,7 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
             </>
           ) : (
             <div className={styles.noAlarmWrapper}>
-              <div>알람이 없습니다.</div>
+              <NoResult text="알람이 없습니다." />
             </div>
           )}
         </div>

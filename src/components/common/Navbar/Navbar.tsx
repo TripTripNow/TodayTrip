@@ -77,7 +77,9 @@ function Navbar() {
           <p className={styles.logoTitle}>TodayTrip</p>
         </div>
       </Link>
+
       <div></div>
+
       <div className={styles.wrapper}>
         {userData ? (
           <>
@@ -118,7 +120,7 @@ function Navbar() {
             </Link>
           </>
         )}
-        {!isModalOpen && <div ref={targetRef}></div>}
+        <div>{!isModalOpen && <div ref={targetRef}></div>}</div>
       </div>
     </div>
   );
