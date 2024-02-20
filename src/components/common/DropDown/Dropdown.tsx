@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
@@ -27,7 +27,8 @@ interface DropdownProps {
 function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
-
+  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
+  const isPlaceHolder = value === '카테고리' || value === '00:00';
   const InitialDropdownLength = useRef(dropDownItems.length);
 
   const handleDropdownToggle = () => {
@@ -43,19 +44,12 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
   const handleDropdownClick = (val: DropdownItems) => {
     setValue(val.title);
     setDropdownItem(val);
-    setTimeout(() => {
-      setRerender((prev) => !prev);
-      setIsOpen(false);
-    }, 250);
+    setRerender((prev) => !prev);
   };
 
-  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
-
   useEffect(() => {
-    if (isVisible && fetchNextPage) fetchNextPage!();
+    if (isVisible && fetchNextPage) fetchNextPage();
   }, [isVisible]);
-
-  const isPlaceHolder = value === '카테고리' || value === '00:00';
 
   return (
     <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
