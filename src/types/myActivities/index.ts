@@ -157,11 +157,3 @@ export interface PatchMyActivityReq extends FieldValues {
   scheduleIdsToRemove: number[];
   schedulesToAdd: { date: string; startTime: string; endTime: string }[];
 }
-
-/**
- * 내 체험 수정 Response
- */
-
-export interface PatchMyActivityRes extends Activity {
-  schedules: TimeSlot[];
-}
