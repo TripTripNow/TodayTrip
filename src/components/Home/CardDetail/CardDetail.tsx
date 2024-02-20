@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { intToFloat } from '@/utils/intToFloat';
 import { priceFormat } from '@/utils/priceFormat';
 import StarIcon from '#/icons/icon-star.svg';
+import NoImage from '#/images/img-noImage.png';
 import styles from './CardDetail.module.css';
 import { Activity } from '@/types/common/api';
 
@@ -14,7 +15,14 @@ function CardDetail({ item }: CardDetailProps) {
     <Link href={`/activities/${item.id}`}>
       <div className={styles.container}>
         <div className={styles.imageWrapper}>
-          <Image src={item.bannerImageUrl} className={styles.image} fill sizes="100%" priority alt="체험 배너" />
+          <Image
+            src={item.bannerImageUrl ?? NoImage}
+            className={styles.image}
+            fill
+            sizes="100%"
+            priority
+            alt="체험 배너"
+          />
         </div>
         <div className={styles.descriptionContainer}>
           <div className={styles.descriptionTopWrapper}>

@@ -17,6 +17,6 @@
       "#/*": ["./public/*"],
     },
   },
-  "include": ["src/types/custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mjs", "next.config.js"],
+  "include": ["**/*.ts", "src/types/custom.d.ts", "next-env.d.ts", "**/*.tsx", "**/*.mjs", "next.config.js"],
   "exclude": ["node_modules"],
 }

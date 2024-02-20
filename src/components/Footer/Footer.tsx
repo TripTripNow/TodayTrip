@@ -2,9 +2,9 @@ import styles from './Footer.module.css';
 
 function Footer() {
   return (
-    <div className={styles.container}>
+    <footer className={styles.container}>
       <p className={styles.content}>©TodayTrip-2024</p>
-    </div>
+    </footer>
   );
 }
 

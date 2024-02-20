@@ -3,7 +3,7 @@ export const RESERVE_LIST = ['전체', '예약 신청', '예약 취소', '예약
 export const CATEGORY_LIST = [
   {
     id: 1,
-    title: '문화 예술',
+    title: '문화 · 예술',
   },
   {
     id: 2,
@@ -79,3 +79,8 @@ export const TIME_LIST = [
 ];
 
 export const INITIAL_DROPDOWN_ITEM = { id: 0, title: '' };
+
+export const PRICE_MAP = {
+  price_asc: '낮은 순',
+  price_desc: '높은 순',
+} as const;

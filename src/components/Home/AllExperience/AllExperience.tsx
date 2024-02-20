@@ -1,85 +1,52 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { Dispatch, SetStateAction } from 'react';
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import clsx from 'clsx';
 
 import CardDetail from '@/components/Home/CardDetail/CardDetail';
 import Pagination from '@/components/common/Pagination/Pagination';
 import NoResult from '@/components/common/NoResult/NoResult';
 import Button from '@/components/common/Button/Button';
-
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import { PriceFilterOption } from '@/types/dropdown';
-
+import { Activity, Category } from '@/types/common/api';
 import styles from './AllExperience.module.css';
-import { Activity } from '@/types/common/api';
+import Arrow from '#/icons/icon-pagination-left-arrow.svg';
 
-const CATEGORY = ['문화·예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
+const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
 
 interface AllExperienceProps {
   searchResult: string;
-  handleSortByPrice: (val: string) => void;
-
   showCards: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>[];
   totalCardsNum: number;
   handlePaginationByClick: (val: number) => void;
+  handleClickCategory: (val: Category) => void;
   totalPages: number;
   pageNumber: number;
+  selectedCategory: string;
+  priceFilterValue: PriceFilterOption;
+  setPriceFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
 }
 
 function AllExperience({
   searchResult,
-  handleSortByPrice,
   showCards,
   totalCardsNum,
   handlePaginationByClick,
+  handleClickCategory,
   totalPages,
   pageNumber,
+  selectedCategory,
+  priceFilterValue,
+  setPriceFilterValue,
 }: AllExperienceProps) {
-  const [selectedCategory, setSelectedCategory] = useState(''); // 선택된 카테고리
-  const sortedCards = selectedCategory ? showCards.filter((card) => card.category === selectedCategory) : showCards; // 해당하는 카테고리로 정렬된 카드 데이터
-  const hasCardData = !selectedCategory || sortedCards.length !== 0; // 카드 데이터가 있는지 확인하는 boolean 값
-  const [disableShadow, setDisableShadow] = useState(false);
-  const [disableRightShadow, setDisableRightShadow] = useState(false);
-  const [move, setMove] = useState(0);
-  const [filterValue, setFilterValue] = useState<PriceFilterOption>('가격');
-
-  // 카테고리 버튼 클릭 함수
-  const handleClickCategory = useCallback(
-    (name: string) => {
-      if (selectedCategory === name) setSelectedCategory('');
-      else setSelectedCategory(name);
-    },
-    [selectedCategory],
-  );
-
-  const handleDisableShadow = () => {
-    if (move >= 3) {
-      setDisableRightShadow(false);
-    } else {
-      setDisableRightShadow(true);
-    }
-
-    if (move === 0) {
-      setDisableShadow(false);
-    } else {
-      setDisableShadow(true);
-    }
-  };
-
-  useEffect(() => {
-    handleDisableShadow();
-  }, [move]);
-
-  useEffect(() => {
-    handleSortByPrice(filterValue);
-  }, [filterValue]);
-
   return (
     <section className={styles.container}>
+      {/* 카테고리 버튼 영역 */}
       <div className={styles.categoryWrapper}>
         {!searchResult && (
           <Splide
-            onMoved={(obj: unknown, move: number) => setMove(move)}
+            hasTrack={false}
             options={{
               mediaQuery: 'min',
               fixedWidth: '8.8rem',
@@ -116,34 +83,46 @@ function AllExperience({
                   arrows: true,
                 },
               },
-              arros: true,
               clones: undefined,
             }}
           >
-            {CATEGORY.map((name) => (
-              <SplideSlide key={name}>
-                <Button
-                  key={name}
-                  type="category"
-                  color={selectedCategory === name ? 'lightgreen' : 'lightwhite'}
-                  onClick={() => handleClickCategory(name)}
-                >
-                  {name}
-                </Button>
-              </SplideSlide>
-            ))}
+            <SplideTrack>
+              {CATEGORY.map((name) => (
+                <SplideSlide key={name}>
+                  <Button
+                    key={name}
+                    type="category"
+                    color={selectedCategory === name ? 'lightgreen' : 'lightwhite'}
+                    onClick={() => handleClickCategory(name)}
+                  >
+                    {name}
+                  </Button>
+                </SplideSlide>
+              ))}
+            </SplideTrack>
+
+            <div className="splide__arrows">
+              <div className={clsx(styles.categoryLeftShadow, styles.rotateContrary)}>
+                <button className="splide__arrow splide__arrow--prev">
+                  <Arrow alt="카테고리 왼쪽 이동 버튼" />
+                </button>
+              </div>
+              <div className={clsx(styles.categoryRightShadow, styles.rotateContrary)}>
+                <button className="splide__arrow splide__arrow--next">
+                  <Arrow alt="카테고리 오른쪽 이동 버튼" />
+                </button>
+              </div>
+            </div>
           </Splide>
         )}
-
-        {disableShadow && <div className={styles.categoryLeftShadow}></div>}
-        {disableRightShadow && <div className={styles.categoryRightShadow}></div>}
       </div>
 
+      {/* 체험 Header 영역 */}
       <div className={styles.titleWrapper}>
         {!searchResult ? (
           <div className={styles.header}>
             <h1>{selectedCategory || '🛼 모든 체험'}</h1>
-            <FilterDropDown type="가격" value={filterValue} setValue={setFilterValue} />
+            <FilterDropDown type="가격" value={priceFilterValue} setValue={setPriceFilterValue} />
           </div>
         ) : (
           <div className={styles.searchedHeader}>
@@ -156,13 +135,15 @@ function AllExperience({
         )}
       </div>
 
+      {/* 카드 영역 */}
       <div className={styles.cardWrapper}>
-        {sortedCards.map((card) => (
+        {showCards.map((card) => (
           <CardDetail item={card} key={card.id} />
         ))}
       </div>
 
-      {hasCardData ? (
+      {/* 페이지네이션 영역 */}
+      {showCards.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
             pageNumber={pageNumber}
