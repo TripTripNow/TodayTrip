@@ -37,9 +37,10 @@ function Calendar({ activityId }: CalendarProps) {
   } = useCalendar({ activityId });
 
   const handleOpenModal = (selectedDay: number, monthData: MonthlyReservationStatusCount) => {
+    if (!monthData) return;
+
     const sumOfPossibleData = monthData.confirmed + monthData.pending;
     if (monthData.completed > 0 && sumOfPossibleData === 0) return;
-    if (!monthData) return;
     setDay(selectedDay);
     setModalOpen(true);
   };
