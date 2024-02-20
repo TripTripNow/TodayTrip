@@ -29,11 +29,17 @@ function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
     },
   });
   const handleConfirm = async () => {
-    await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
+    if (confirm('승인하시겠어요?')) {
+      await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
+      toast.success('조습니다.');
+    }
   };
 
   const handleDecline = async () => {
-    await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
+    if (confirm('거절하시겠어요?')) {
+      await confirmMutate.mutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
+      toast.success('조습니다.');
+    }
   };
   return (
     <div className={styles.container}>
