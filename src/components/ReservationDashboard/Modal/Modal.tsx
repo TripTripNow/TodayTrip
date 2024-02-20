@@ -7,7 +7,6 @@ import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
 import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import { DailyReservationStatusCount } from '@/types/common/api';
-import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
 import { getReservedSchedule } from '@/api/myActivities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import CloseIcon from '#/icons/icon-close.svg';
@@ -50,7 +49,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
   useEffect(() => {
-    if (dailyReservationData)
+    if (dailyReservationData && dailyReservationData.length > 0)
       setDropdownItem({
         id: dailyReservationData[0].scheduleId,
         title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
