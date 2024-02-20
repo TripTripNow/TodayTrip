@@ -135,7 +135,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
           <Image className={styles.image} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
-          {currentStatus && <CheckStatus status={currentStatus} />}
+          <CheckStatus status={currentStatus} />
           <h2 className={styles.title} onClick={handleClickNavigate}>
             {title}
           </h2>
