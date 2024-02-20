@@ -60,16 +60,19 @@
 }
 
 .imageWrapper {
+  border: 1px solid #000;
   width: 100%;
+  height: 35rem;
   position: relative;
   border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0.5rem 0.5rem 2rem #f7f7f7;
-  aspect-ratio: 16 / 9;
 }
 
 .image {
-  object-fit: cover;
+  height: fit-content;
+  display: block;
+  overflow: auto;
+  /* object-fit: cover; */
 }
 
 .content {
