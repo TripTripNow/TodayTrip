@@ -12,6 +12,7 @@
   width: 38.4rem;
   height: 43.2rem;
   gap: 2.4rem;
+  height: fit-content;
 
   @media tablet {
     width: 25.1rem;
