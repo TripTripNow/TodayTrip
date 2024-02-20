@@ -3,33 +3,26 @@ import CloseIcon from '#/icons/icon-close.svg';
 import LightCloseIcon from '#/icons/icon-lightClose.svg';
 import RedEllipse from '#/icons/icon-redEllipse.svg';
 import BlueEllipse from '#/icons/icon-blueEllipse.svg';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteMyNotifications, getMyNotifications } from '@/api/myNotifications';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
 import toast from 'react-hot-toast';
 import { changeDateForm } from '@/utils/chageDateForm';
+import { Notifications } from '@/types/myNotifications';
 
 interface AlarmModalProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  targetRef: RefObject<HTMLDivElement>;
+  alarmData: Notifications[];
+  totalCount: number;
 }
 
-function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
+function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmModalProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   const queryClient = useQueryClient();
-
-  const { data, fetchNextPage } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.myNotifications],
-    queryFn: ({ pageParam }) => getMyNotifications(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => {
-      const currentCursorId = lastPage.cursorId;
-      return currentCursorId;
-    },
-  });
 
   const handleModalClose = () => {
     setIsOpen((prev) => !prev);
@@ -52,17 +45,6 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
     deleteNotificationMutation.mutate(id);
   };
 
-  const { isVisible, targetRef } = useInfiniteScroll();
-
-  const alarmData = data?.pages.flatMap((page) => page.notifications);
-  const totalCount = data?.pages[0].totalCount;
-
-  useEffect(() => {
-    if (isVisible) {
-      fetchNextPage();
-    }
-  }, [isVisible]);
-
   return (
     <ModalLayout handleModalClose={handleModalClose} isAlarmModal={true}>
       {alarmData && (
@@ -76,7 +58,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
           {totalCount ? (
             <>
               <div className={styles.alarmModalContentContainer}>
-                {alarmData.map((item, index) => (
+                {alarmData.map((item: Notifications, index: number) => (
                   <div key={index}>
                     <div className={styles.alarmModalContentWrapper}>
                       <div className={styles.alarmModalContentHeader}>
@@ -106,7 +88,6 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
           )}
         </div>
       )}
-      {!alarmData && <div ref={targetRef} />}
     </ModalLayout>
   );
 }

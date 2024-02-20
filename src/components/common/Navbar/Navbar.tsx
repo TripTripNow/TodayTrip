@@ -9,34 +9,11 @@ import ProfileDropDown from '@/components/common/Navbar/ProfileDropDown';
 import LogoImg from '#/images/img-logo.png';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import QUERY_KEYS from '@/constants/queryKeys';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getMyNotifications } from '@/api/myNotifications';
+import QUERY_KEYS from '@/constants/queryKeys';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-
-const alarmData = {
-  notifications: [
-    {
-      id: 0,
-      content: '함께하면 즐거운 댄스(2023-01-14 15:00:~18:00) 예약이 거절되었어요.',
-      status: 'declined',
-      createdAt: '2024-01-26T06:23:36.209Z',
-    },
-    {
-      id: 1,
-      content: '함께하면 슬픈 댄스(2023-01-15 15:00:~18:00) 예약이 승인되었어요.',
-      status: 'approve',
-      createdAt: '2024-01-26T06:23:36.209Z',
-    },
-    {
-      id: 2,
-      content: '함께하는 종민 댄스(2023-01-16 15:00:~18:00) 예약이 거절되었어요.',
-      status: 'declined',
-      createdAt: '2024-01-26T06:23:36.209Z',
-    },
-  ],
-  totalCount: 3,
-};
+import { Notifications } from '@/types/myNotifications';
 
 function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
@@ -44,6 +21,21 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: userData } = useSession();
+
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.myNotifications],
+    queryFn: ({ pageParam }) => getMyNotifications(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      const currentCursorId = lastPage.cursorId;
+      return currentCursorId;
+    },
+  });
+
+  const { isVisible, targetRef } = useInfiniteScroll();
+
+  const alarmData: Notifications[] = data?.pages.flatMap((page) => page.notifications) || [];
+  const totalCount = data?.pages[0].totalCount || 0;
 
   const handleDropDownClick = () => {
     setIsOpen((prev) => !prev);
@@ -69,6 +61,13 @@ function Navbar() {
     setIsModalOpen((prev) => !prev);
   };
 
+  useEffect(() => {
+    console.log(isVisible);
+    if (isVisible) {
+      fetchNextPage();
+    }
+  }, [isVisible]);
+
   return (
     <div className={styles.container}>
       <Link href="/">
@@ -85,13 +84,16 @@ function Navbar() {
           <>
             <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
               <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
-              {alarmData.totalCount ? (
-                <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />
-              ) : (
-                ''
-              )}
+              {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
             </button>
-            {isModalOpen && <AlarmModal setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen && (
+              <AlarmModal
+                setIsModalOpen={setIsModalOpen}
+                targetRef={targetRef}
+                totalCount={totalCount}
+                alarmData={alarmData}
+              />
+            )}
             <div className={styles.border}></div>
             <div onBlur={handleBlurDropDown}>
               <button className={styles.userName} onClick={handleDropDownClick}>
@@ -117,6 +119,7 @@ function Navbar() {
             </Link>
           </>
         )}
+        {!isModalOpen && <div ref={targetRef}></div>}
       </div>
     </div>
   );
