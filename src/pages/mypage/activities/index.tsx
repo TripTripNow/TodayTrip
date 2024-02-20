@@ -2,7 +2,6 @@ import styles from './Activities.module.css';
 import { ReactElement, useEffect } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';
 import Image from 'next/image';
@@ -39,7 +38,7 @@ function Activities() {
   });
 
   const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
-
+  console.log(filteredMyActivities);
   useEffect(() => {
     if (isVisible) {
       fetchNextPage();
@@ -56,7 +55,7 @@ function Activities() {
             </Link>
           </div>
           <div className={styles.activitiesItemContainer}>
-            {myActivitiesMock.totalCount ? (
+            {filteredMyActivities?.length ? (
               filteredMyActivities?.map((item) => (
                 <div key={item.id}>
                   <ActivitiesCard item={item} />
