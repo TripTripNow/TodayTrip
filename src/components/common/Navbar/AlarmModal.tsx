@@ -41,7 +41,7 @@ function AlarmModal({ setIsModalOpen }: AlarmModalProps) {
   const deleteNotificationMutation = useMutation({
     mutationFn: (notificationId: number) => deleteMyNotifications(notificationId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotificationsId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotifications] });
     },
     onError: () => {
       toast.error('실패했습니다. 다시 시도해주세요.');

@@ -89,6 +89,10 @@
   gap: 0.8rem;
   overflow-y: scroll;
   width: fit-content;
+
+  @media mobile {
+    width: 100%;
+  }
 }
 
 .alarmModalContentWrapper {
