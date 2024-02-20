@@ -4,6 +4,8 @@ const QUERY_KEYS = {
   monthlyReservation: 'monthReservation',
   dailyReservation: 'dailyReservation',
   timeReservation: 'timeReservation',
+  allActivities: 'allActivities',
+  popularActivities: 'popularActivities',
   reservations: 'reservations',
   activity: 'activity',
   all: '전체',
