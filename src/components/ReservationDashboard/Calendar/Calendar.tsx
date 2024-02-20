@@ -36,8 +36,10 @@ function Calendar({ activityId }: CalendarProps) {
     allDays,
   } = useCalendar({ activityId });
 
-  const handleOpenModal = (selectedDay: number, hasData: boolean) => {
-    if (!hasData) return;
+  const handleOpenModal = (selectedDay: number, monthData: MonthlyReservationStatusCount) => {
+    const sumOfPossibleData = monthData.confirmed + monthData.pending;
+    if (monthData.completed > 0 && sumOfPossibleData === 0) return;
+    if (!monthData) return;
     setDay(selectedDay);
     setModalOpen(true);
   };
@@ -76,7 +78,11 @@ function Calendar({ activityId }: CalendarProps) {
             {allDays.map((day) => {
               const hasData = !!monthData[day];
               return (
-                <div key={day} className={styles.calendarDayWrapper} onClick={() => handleOpenModal(day, hasData)}>
+                <div
+                  key={day}
+                  className={styles.calendarDayWrapper}
+                  onClick={() => handleOpenModal(day, monthData[day])}
+                >
                   <div className={styles.calendarDayWrapperTop}>
                     <p>{day}</p>
                     {hasData && renderCircle(monthData[day])}
