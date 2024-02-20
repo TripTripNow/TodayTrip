@@ -44,7 +44,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
   const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
   useEffect(() => {
-    if (dailyReservationData && dropdownItem.id === 0)
+    if (dailyReservationData && dailyReservationData.length > 0 && dropdownItem.id === 0)
       setDropdownItem({
         id: dailyReservationData[0].scheduleId,
         title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
@@ -85,12 +85,7 @@ function ModalHeader({ handleModalClose }: Pick<ModalProps, 'handleModalClose'>)
   );
 }
 
-function ModalTab({ handleStatus, tabStatus, item }: ModalTabProps) {
-  const [tabItem, setTabItem] = useState(item);
-
-  useEffect(() => {
-    setTabItem(item);
-  }, [item]);
+function ModalTab({ handleStatus, tabStatus, item: tabItem }: ModalTabProps) {
   if (!tabItem) return null;
   return (
     <div className={styles.tabWrapper}>
