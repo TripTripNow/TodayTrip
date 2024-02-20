@@ -129,7 +129,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
       <div className={styles.main}>
         <h1 className={styles.header}>예약 상세</h1>
         <div className={styles.imageWrapper}>
-          <Image priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
+          <Image className={styles.image} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
           {status && <CheckStatus status={status} />}

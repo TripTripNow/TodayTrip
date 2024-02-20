@@ -68,6 +68,10 @@
   box-shadow: 0.5rem 0.5rem 2rem #f7f7f7;
 }
 
+.image {
+  object-fit: contain;
+}
+
 .content {
   display: flex;
   flex-direction: column;
