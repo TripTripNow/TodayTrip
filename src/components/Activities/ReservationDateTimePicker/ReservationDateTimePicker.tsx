@@ -4,7 +4,7 @@ import Button from '@/components/common/Button/Button';
 import MinusIcon from '#/icons/icon-minus.svg';
 import PlusIcon from '#/icons/icon-smallPlus.svg';
 import dayjs from 'dayjs';
-import Calendar from 'react-calendar';
+import Calendar, { TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
@@ -26,7 +26,7 @@ interface ReservationDateTimePickerProps {
 }
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 캘린더
-  const [dateValue, setDateValue] = useState<Value>(null);
+  const [dateValue, setDateValue] = useState<Value>(new Date());
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
 
   // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
@@ -38,13 +38,12 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
-  const selectedYear = String(dayjs(dateValue as Date).format('YYYY'));
-  const selectedMonth = String(dayjs(dateValue as Date).format('MM'));
+  const selectedYear = dayjs(dateValue as Date).format('YYYY');
+  const selectedMonth = dayjs(dateValue as Date).format('MM');
 
   const { data: monthlyAvailableScheduleData } = useQuery({
     queryKey: [QUERY_KEYS.activity, data.id, selectedYear, selectedMonth],
     queryFn: () => getAvailableSchedule({ activityId: data.id, year: selectedYear, month: selectedMonth }),
-    enabled: !!dateValue,
   });
 
   const router = useRouter();
@@ -73,6 +72,8 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
+
+    // setTileDisabled(true);
   }, [dateValue, monthlyAvailableScheduleData]);
 
   useEffect(() => {
@@ -166,8 +167,20 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             locale="en"
             onChange={handleCalendarDateChange}
             className={styles.customCalendar}
-            onActiveStartDateChange={handleResetFilteredData}
+            onActiveStartDateChange={({ activeStartDate }) => {
+              setClickedTimeButtonId(null);
+              setDateValue(activeStartDate);
+            }}
             value={dateValue}
+            tileDisabled={({ date }) => {
+              // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체가 있는지 확인
+              const isDateAvailable = monthlyAvailableScheduleData?.some(
+                (item) => item.date === dayjs(date).format('YYYY-MM-DD'),
+              );
+
+              // 해당 날짜가 존재하지 않으면 disabled
+              return !isDateAvailable;
+            }}
             minDate={new Date()}
           />
         </div>

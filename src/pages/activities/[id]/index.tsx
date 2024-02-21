@@ -6,7 +6,8 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/common/api';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getActivityById } from '@/api/activities';
+import { getActivityById, getAvailableSchedule } from '@/api/activities';
+import dayjs from 'dayjs';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const activityId = Number(context.query['id']);
@@ -16,6 +17,15 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.activity, activityId],
     queryFn: () => getActivityById({ activityId }),
+  });
+
+  const today = new Date();
+  const currentYear = dayjs(today).format('YYYY');
+  const currentMonth = dayjs(today).format('MM');
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.activity, activityId, currentYear, currentMonth],
+    queryFn: () => getAvailableSchedule({ activityId, year: currentYear, month: currentMonth }),
   });
   return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };

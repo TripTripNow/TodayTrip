@@ -95,7 +95,7 @@ function Header({ data }: { data: Activity }) {
       </header>
       <section className={styles.imageContainer}>
         <div className={styles.bannerImageWrapper}>
-          <Image fill src={data.bannerImageUrl} alt="배너 이미지" />
+          <Image priority fill src={data.bannerImageUrl} alt="배너 이미지" />
         </div>
 
         <div className={data.subImages?.length === 1 ? styles.oneSubImage : styles.subImages}>
@@ -104,7 +104,7 @@ function Header({ data }: { data: Activity }) {
               key={subImage.id}
               className={data.subImages?.length === 1 ? styles.oneSubImageWrapper : styles.subImageWrapper}
             >
-              <Image fill src={subImage.imageUrl} alt="서브 이미지" />
+              <Image priority fill src={subImage.imageUrl} alt="서브 이미지" />
             </div>
           ))}
         </div>
