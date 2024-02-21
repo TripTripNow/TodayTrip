@@ -21,8 +21,19 @@ interface ActivitiesFormProps {
 
 function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesFormProps) {
   const { handleSubmit, control, setValue, register, getValues } = methods;
-  const { isValid } = methods.formState;
   const [category, setCategory] = useState(getValues('category'));
+
+  const [isActive, setIsActive] = useState(false);
+
+  const watchAll = Object.values(methods.watch());
+
+  useEffect(() => {
+    if (watchAll.slice(0, 7).every((el) => el.length > 0 && el !== '0')) {
+      setIsActive(true);
+      return;
+    }
+    setIsActive(false);
+  }, [watchAll]);
 
   //훅폼 이용 숫자(양수)만 입력되게 + number형으로
   control.register('price', {
@@ -72,7 +83,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
         {/*배너, 소개 이미지 추가 제거 컴포넌트*/}
         <ImageContainer control={control} name="subImageUrls" setValue={setValue} getValues={getValues} />
         <div className={styles.addButtonWrapper}>
-          <button className={styles.addButton} disabled={!isValid}>
+          <button className={styles.addButton} disabled={!isActive}>
             등록하기
           </button>
         </div>

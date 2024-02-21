@@ -21,13 +21,14 @@ function ActivityAdd() {
     mode: 'onBlur',
     defaultValues: {
       title: '',
-      price: 0,
+      price: '',
       address: '',
       category: '',
       description: '',
       bannerImageUrl: '',
-      subImageUrls: [],
       schedules: [],
+
+      subImageUrls: [],
       subImageIdsToRemove: [],
       subImageUrlsToAdd: [],
 

@@ -25,7 +25,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['activity', activityId],
+    queryKey: [QUERY_KEYS.activityEnroll, activityId],
     queryFn: () => getActivitiesId(activityId),
   });
 
@@ -45,18 +45,17 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: activityData?.title || 0,
-      price: priceFormat(activityData!.price) || 0,
+      title: activityData?.title || '',
+      price: priceFormat(activityData?.price || 0) || '',
       address: activityData?.address || '',
       description: activityData?.description || '',
       category: activityData?.category || '',
       bannerImageUrl: activityData?.bannerImageUrl || '',
-      subImageUrls: activityData?.subImages || '',
       schedules: activityData?.schedules || '',
 
+      subImageUrls: activityData?.subImages || '',
       subImageIdsToRemove: [],
       subImageUrlsToAdd: [],
-
       scheduleIdsToRemove: [],
       schedulesToAdd: [],
     },
@@ -100,7 +99,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
   };
 
   useEffect(() => {
-    calculateLatlng(activityData!.address);
+    calculateLatlng(activityData?.address || '');
   }, []);
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;
