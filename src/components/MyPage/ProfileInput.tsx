@@ -58,9 +58,12 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
   useEffect(() => {
     async function getSessionData() {
       const data = await getSession();
+
       if (data && data.user.image) {
         setImageSrc(data.user.image);
+        return;
       }
+      setImageSrc('');
     }
 
     getSessionData();
@@ -68,14 +71,24 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
 
   return (
     <div className={`${styles.profileContainer} ${isProfileBox && styles.display}`}>
-      <Image
-        src={imageSrc || LogoImg}
-        className={styles.profileImg}
-        alt="profileImg"
-        width={160}
-        height={160}
-        priority
-      />
+      {imageSrc !== null ? (
+        <Image
+          src={imageSrc === '' ? LogoImg : imageSrc}
+          className={styles.profileImg}
+          alt="profileImg"
+          width={160}
+          height={160}
+          priority
+        />
+      ) : (
+        <div
+          style={{
+            width: '1.6rem',
+            height: '1.6rem',
+          }}
+        ></div>
+      )}
+
       {isEdit && <EditIcon alt="프로필 이미지 수정 아이콘" className={styles.editIcon} onClick={handleUploadImg} />}
       <input
         type="file"
