@@ -84,7 +84,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
         <ImageContainer control={control} name="subImageUrls" setValue={setValue} getValues={getValues} />
         <div className={styles.addButtonWrapper}>
           <button className={styles.addButton} disabled={!isActive}>
-            등록하기
+            {isEdit ? '수정하기' : '등록하기'}
           </button>
         </div>
       </form>

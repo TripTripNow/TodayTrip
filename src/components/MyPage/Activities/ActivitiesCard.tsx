@@ -49,9 +49,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   });
 
   const handleKebabBlur = () => {
-    setTimeout(() => {
-      setIsKebabOpen(false);
-    }, 150);
+    setIsKebabOpen(false);
   };
 
   const handleKebabToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,13 +57,13 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
     setIsKebabOpen((prev) => !prev);
   };
 
-  const handleEditButton = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
-    e.preventDefault();
+  const handleEditButtonClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
+    e.stopPropagation();
     router.push(`/mypage/activities/${id}/edit`);
   };
 
-  const handleDeleteButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleDeleteButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setIsDeleteOpen((prev) => !prev);
   };
 
@@ -73,7 +71,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
     setIsDeleteOpen((prev) => !prev);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDeleteClick = (id: number) => {
     deleteMyActivitiesMutation.mutate(id);
     setIsDeleteOpen(false);
   };
@@ -105,16 +103,19 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
             <p>
               ￦{priceFormat(item.price)} <span className={styles.activitiesItemContentFooterCount}>/인</span>
             </p>
-            <button onClick={(e) => handleKebabToggle(e)}>
+            <button onClick={handleKebabToggle}>
               <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} alt="케밥버튼" />
             </button>
             {isKebabOpen && (
               <div className={styles.activitiesKebabWrapper}>
-                <button className={styles.activitiesKebabContent} onClick={(e) => handleEditButton(e, item.id)}>
+                <button
+                  className={styles.activitiesKebabContent}
+                  onMouseDown={(e) => handleEditButtonClick(e, item.id)}
+                >
                   수정하기
                 </button>
                 <hr className={styles.styleHr} />
-                <button className={styles.activitiesKebabContent} onClick={(e) => handleDeleteButton(e)}>
+                <button className={styles.activitiesKebabContent} onMouseDown={handleDeleteButtonClick}>
                   삭제하기
                 </button>
               </div>
@@ -122,7 +123,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
             {isDeleteOpen && (
               <AlertModal
                 handleModalClose={handleDeleteToggle}
-                handleActionButtonClick={() => handleDelete(item.id)}
+                handleActionButtonClick={() => handleDeleteClick(item.id)}
                 text="체험을 삭제하시겠습니까?"
                 buttonText="삭제하기"
                 prevent={true}

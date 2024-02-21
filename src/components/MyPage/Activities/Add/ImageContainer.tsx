@@ -17,7 +17,6 @@ interface imageUrlArrayType {
   id: number;
   imageUrl: string;
 }
-[];
 
 function ImageContainer({ name, control, setValue, getValues }: ImageContainerProps) {
   const { field } = useController({ name, control });
