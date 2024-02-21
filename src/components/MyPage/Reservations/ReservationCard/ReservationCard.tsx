@@ -27,7 +27,7 @@ function ReservationCard({ data }: ReservationCardProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { activity, status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
   const activityId = data.activity.id;
 
   const cancelReservationMutation = useMutation({
@@ -56,29 +56,28 @@ function ReservationCard({ data }: ReservationCardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
+  const handleClickNavigate = () => {
+    router.push(
+      {
+        pathname: `/mypage/reservations/${id}`,
+        query: {
+          activityId,
+          status,
+          reviewSubmitted,
+          headCount,
+          date,
+          startTime,
+          endTime,
+          totalPrice,
+        },
+      },
+      `/mypage/reservations/${id}`,
+    );
+  };
+
   return (
     <>
-      <div
-        className={styles.cardWrapper}
-        onClick={() =>
-          router.push(
-            {
-              pathname: `/mypage/reservations/${id}`,
-              query: {
-                activityId,
-                status,
-                reviewSubmitted,
-                headCount,
-                date,
-                startTime,
-                endTime,
-                totalPrice,
-              },
-            },
-            `/mypage/reservations/${id}`,
-          )
-        }
-      >
+      <div className={styles.cardWrapper} onClick={handleClickNavigate}>
         <div className={styles.imageWrapper}>
           <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>
@@ -134,9 +133,7 @@ function ReservationCard({ data }: ReservationCardProps) {
           handleActionButtonClick={handleCancelReservation}
         />
       )}
-      {isReviewModalOpen && (
-        <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />
-      )}
+      {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
     </>
   );
 }

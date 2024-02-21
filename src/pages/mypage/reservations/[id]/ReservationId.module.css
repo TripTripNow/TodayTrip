@@ -59,7 +59,7 @@
   }
 }
 
-.imageWrapper {
+.bannerImageWrapper {
   width: 100%;
   height: 35rem;
   position: relative;
@@ -67,43 +67,16 @@
   overflow: hidden;
 }
 
-.image {
+.bannerImage {
   height: fit-content;
   display: block;
   overflow: auto;
-  /* object-fit: cover; */
 }
 
 .content {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-}
-
-.status {
-  display: flex;
-  justify-self: flex-start;
-  align-items: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 2.6rem;
-  gap: 0.5rem;
-}
-
-.active {
-  color: var(--blue2E);
-}
-
-.inactive {
-  color: var(--grayA1);
-}
-
-.canceled {
-  color: var(--gray79);
-}
-
-.declined {
-  color: var(--redFF4);
 }
 
 .title {

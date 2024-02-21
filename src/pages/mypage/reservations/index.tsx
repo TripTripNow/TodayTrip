@@ -27,6 +27,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
+
 function Reservations() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>(ReservationStatus.initial);
   const { isVisible, targetRef } = useInfiniteScroll();

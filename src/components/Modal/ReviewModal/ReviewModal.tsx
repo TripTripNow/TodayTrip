@@ -13,7 +13,7 @@ import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'reac
 import toast from 'react-hot-toast';
 import styles from './ReviewModal.module.css';
 
-type modalData = {
+type ModalData = {
   id: number;
   status: ReservationStatus;
   totalPrice: number;
@@ -25,7 +25,7 @@ type modalData = {
 };
 
 interface ReviewModalProps {
-  data: modalData;
+  data: ModalData;
   handleModalClose: () => void;
   setIsReviewSubmit?: Dispatch<SetStateAction<boolean>>;
 }

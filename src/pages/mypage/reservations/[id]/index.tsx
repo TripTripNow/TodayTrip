@@ -1,7 +1,7 @@
 import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ import { patchMyReservationsId } from '@/api/myReservations';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import CheckStatus from '@/components/MyPage/Reservations/Id/CheckStatus';
+import CheckStatus from '@/components/MyPage/Reservations/Details/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import Map from '@/components/common/Map/Map';
 import { RESERVATION_STATUS } from '@/constants/reservation';
@@ -53,7 +53,7 @@ const containerStyle = {
   height: '28em',
 };
 
-function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function ReservationID(activityId: number) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const router = useRouter();
@@ -65,7 +65,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
   const res = router.query as unknown as ResTypes;
   const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = res;
-  const [isReviewSubmit, setIsReviewSubmit] = useState(reviewSubmitted === 'true' ? true : false);
+  const [isReviewSubmit, setIsReviewSubmit] = useState<boolean>(reviewSubmitted === 'true');
 
   const [currentStatus, setCurrentStatus] = useState(status);
 
@@ -75,7 +75,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     if (!hasResult) {
       router.back();
     }
-  });
+  }, []);
 
   const cancelReservationMutation = useMutation({
     mutationFn: () => patchMyReservationsId(Number(id)),
@@ -131,8 +131,8 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
       <div className={styles.main}>
         <h1 className={styles.header}>예약 상세</h1>
-        <div className={styles.imageWrapper}>
-          <Image className={styles.image} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
+        <div className={styles.bannerImageWrapper}>
+          <Image className={styles.bannerImage} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
           <CheckStatus status={currentStatus} />
