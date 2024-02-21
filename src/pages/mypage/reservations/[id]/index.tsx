@@ -1,7 +1,7 @@
 import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -53,7 +53,7 @@ const containerStyle = {
   height: '28em',
 };
 
-function ReservationID(activityId: number) {
+function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const router = useRouter();
