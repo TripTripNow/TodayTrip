@@ -1,56 +1,23 @@
 import clsx from 'clsx';
-import toast from 'react-hot-toast';
 
 import { CONFIRMED, PENDING } from '@/constants/calendar';
 import Button from '@/components/common/Button/Button';
 import { DailyReservationStatusCount, ScheduledReservation } from '@/types/common/api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { patchReservationsById } from '@/api/myActivities';
-import QUERY_KEYS from '@/constants/queryKeys';
-import { PatchReservationsParam } from '@/types/myActivities';
 import styles from './ModalDetailedCard.module.css';
 import Toast from '@/components/common/Toast/Toast';
-import { useState } from 'react';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import useModalDetailedCard from '@/hooks/ReservationDashboard/useModalDetailedCard';
 
-interface ModalDetailedCardProps {
+export interface ModalDetailedCardProps {
   item: ScheduledReservation;
   tabStatus: keyof DailyReservationStatusCount;
 }
 
 function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
-  const [alertModalState, setAlertModalState] = useState<{ isConfirmModalOpen: boolean; isDeclineModalOpen: boolean }>({
-    isConfirmModalOpen: false,
-    isDeclineModalOpen: false,
+  const { handleConfirm, handleDecline, alertModalState, handleAlertModalToggle } = useModalDetailedCard({
+    item,
+    tabStatus,
   });
-  const queryClient = useQueryClient();
-
-  const { mutate: patchReservationMutate } = useMutation({
-    mutationFn: (res: PatchReservationsParam) => patchReservationsById(res),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.monthlyReservation] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.timeReservation, item.scheduleId, tabStatus] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.dailyReservation, item.date] });
-    },
-    onError: () => {
-      toast.error('동작에 실패하였습니다.');
-    },
-  });
-  const handleConfirm = async () => {
-    toast.success('승인에 성공하셨습니다!');
-    handleAlertModalToggle('isConfirmModalOpen');
-    await patchReservationMutate({ activityId: item.activityId, reservationId: item.id, status: 'confirmed' });
-  };
-
-  const handleDecline = async () => {
-    toast.success('거절에 성공하셨습니다!');
-    handleAlertModalToggle('isDeclineModalOpen');
-    await patchReservationMutate({ activityId: item.activityId, reservationId: item.id, status: 'declined' });
-  };
-
-  const handleAlertModalToggle = (modalState: 'isConfirmModalOpen' | 'isDeclineModalOpen') => {
-    setAlertModalState((prevState) => ({ ...prevState, [modalState]: !prevState[modalState] }));
-  };
 
   return (
     <>

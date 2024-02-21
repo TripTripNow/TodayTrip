@@ -51,14 +51,6 @@ function Calendar({ activityId }: CalendarProps) {
 
   return (
     <>
-      {modalOpen && (
-        <Modal
-          handleModalClose={handleModalClose}
-          date={formatDateStringByDot({ year, month, day, padStart: true })}
-          activityId={activityId}
-        />
-      )}
-
       <div className={styles.container}>
         <CalendarHeader year={year} month={month} onPrevMonth={handlePrevMonth} onNextMonth={handleNextMonth} />
 
@@ -104,6 +96,14 @@ function Calendar({ activityId }: CalendarProps) {
           </div>
         </div>
       </div>
+
+      {modalOpen && (
+        <Modal
+          handleModalClose={handleModalClose}
+          date={formatDateStringByDot({ year, month, day, padStart: true })}
+          activityId={activityId}
+        />
+      )}
     </>
   );
 }
