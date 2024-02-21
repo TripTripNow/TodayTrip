@@ -90,7 +90,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     },
   });
 
-  if (!data) return;
+  if (!data) return null;
   const { bannerImageUrl, title, address } = data;
 
   const handleCancelModalToggle = () => {
