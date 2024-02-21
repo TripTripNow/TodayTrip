@@ -15,9 +15,10 @@ interface DropdownProps {
   dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
+  id?: string;
 }
 
-function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: DropdownProps) {
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, id }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
 
@@ -38,10 +39,14 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder }: Dropdow
     }, 250);
   };
 
-  const isPlaceHolder = value === '카테고리' || value === '00:00';
+  const isPlaceHolder = value === '카테고리' || value === 'HH:MM';
 
   return (
-    <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
+    <div
+      id={id}
+      className={clsx(styles.container, type === '시간' && styles.timeContainer)}
+      onBlur={handleDropdownClose}
+    >
       {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}

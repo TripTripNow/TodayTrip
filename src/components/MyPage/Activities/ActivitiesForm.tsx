@@ -60,14 +60,22 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
         <div className={styles.addHeaderWrapper}>
           <p className={styles.addHeader}>내 체험 {isEdit ? '수정' : '등록'}</p>
         </div>
-        <Input name="title" control={control} placeholder="제목" type="text" />
+        <Input name="title" control={control} label="제목" placeholder="제목" type="text" />
+        <label className={styles.inputLabel} htmlFor="dropdown">
+          카테고리
+        </label>
         <Dropdown
+          id="dropdown"
           type="카테고리"
           setDropdownItem={setCategory}
           dropDownItems={CATEGORY_LIST}
           placeholder={category ? category : '카테고리'}
         />
-        <textarea {...register('description')} className={styles.textarea} placeholder="설명" />
+
+        <label className={styles.inputLabel} htmlFor="description">
+          설명
+        </label>
+        <textarea id="description" {...register('description')} className={styles.textarea} placeholder="설명" />
 
         <Input name="price" control={control} label="가격(원)" type="text" placeholder="가격(원)" />
 

@@ -129,7 +129,7 @@ function ImageContainer({ name, control, setValue, getValues }: ImageContainerPr
       {/* 소개 이미지 */}
       <div className={styles.cotentTitleWrapper}>
         <p className={styles.contentTitle}>소개 이미지</p>
-        <p className={styles.warningMessage}>*이미지는 최대 4개까지 등록 가능합니다.</p>
+        <p className={styles.warningMessage}>(선택) *이미지는 최대 4개까지 등록 가능합니다.</p>
       </div>
       <div className={styles.addImgButtonWrapper}>
         {imgSrc.length < 4 && (

@@ -108,11 +108,11 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
           <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
           <div className={styles.dateDropDownWrapper}>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
+              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="HH:MM" />
             </div>
             <p className={styles.dateWave}>~</p>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
+              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="HH:MM" />
             </div>
           </div>
           <button onClick={(e) => handleAddButton(e, isSelectedDate, startTimeItem.title, endTimeItem.title)}>

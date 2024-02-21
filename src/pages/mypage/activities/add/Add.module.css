@@ -54,6 +54,14 @@
   height: 5.6rem;
 }
 
+.inputLabel {
+  color: var(--black1B);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+  margin-bottom: -0.8rem;
+}
+
 .addInputWrapper {
   width: 100%;
 }
@@ -96,7 +104,8 @@
   line-height: 2.6rem;
   width: 100%;
   outline: none;
-  resize: none;
+  resize: vertical;
+  min-height: 10rem;
   white-space: pre-line;
 }
 

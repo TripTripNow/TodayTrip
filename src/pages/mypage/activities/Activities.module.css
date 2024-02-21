@@ -112,6 +112,9 @@
   font-weight: 700;
   line-height: 2.6rem;
   margin-bottom: 7.2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   @media tablet {
     margin-bottom: 4rem;
     font-size: 1.8rem;
