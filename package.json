@@ -51,7 +51,6 @@
     "postcss": "^8",
     "prettier": "^3.2.4",
     "redux-logger": "^3.0.6",
-    "sweetalert2": "^11.10.5",
     "typescript": "^5"
   },
   "lint-staged": {
