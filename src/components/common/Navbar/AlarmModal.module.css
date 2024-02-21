@@ -129,6 +129,10 @@
   line-height: 2.2rem;
 }
 
+.ellipse {
+  margin-top: 0.4rem;
+}
+
 .approveTrue {
   color: var(--blue00);
 }

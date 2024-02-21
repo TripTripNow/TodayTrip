@@ -63,7 +63,7 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
                   <div key={index}>
                     <div className={styles.alarmModalContentWrapper}>
                       <div className={styles.alarmModalContentHeader}>
-                        <div>
+                        <div className={styles.ellipse}>
                           {item.content.includes('승인') ? (
                             <BlueEllipse alt="예약 승인을 나타내는 아이콘" />
                           ) : (
