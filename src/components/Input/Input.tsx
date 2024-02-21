@@ -101,35 +101,4 @@ const inputObj = [
       minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
     },
   },
-  {
-    type: 'title',
-    rule: {
-      required: ERROR_ACTIVITY_TITLE,
-    },
-  },
-
-  {
-    type: 'address',
-    rule: {
-      required: ERROR_ACTIVITY_ADDRESS,
-    },
-  },
-  {
-    type: 'category',
-    rule: {
-      required: ERROR_ACTIVITY_CATEGORY,
-    },
-  },
-  {
-    type: 'description',
-    rule: {
-      required: ERROR_ACTIVITY_DESCRIPTION,
-    },
-  },
-  {
-    type: 'bannerImageUrl',
-    rule: {
-      required: ERROR_ACTIVITY_BANNER_IMAGE,
-    },
-  },
 ];

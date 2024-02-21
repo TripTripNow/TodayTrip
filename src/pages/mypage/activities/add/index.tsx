@@ -52,8 +52,6 @@ function ActivityAdd() {
     delete data.subImageUrlsToAdd;
     delete data.scheduleIdsToRemove;
     delete data.schedulesToAdd;
-    if (data.price.toString() === '0') return toast('가격을 입력해 주세요.');
-    if (data.schedules.length === 0) return toast('예약 가능한 시간대를 최소 1개 입력해주세요.');
     data.price = Number(data.price.replace(/,/g, ''));
     activityAddMutation.mutate(data as PostActivitiesReq);
   };
