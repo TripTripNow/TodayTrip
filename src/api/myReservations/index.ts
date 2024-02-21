@@ -18,3 +18,7 @@ export const postMyReservationReview = async ({ reservationId, rating, content }
     content,
   });
 };
+
+export const patchMyReservationsId = async (reservationId: number) => {
+  return await instance.patch(`/my-reservations/${reservationId}`, { status: 'canceled' });
+};

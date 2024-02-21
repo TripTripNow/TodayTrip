@@ -1,24 +1,36 @@
-import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import styles from './ReviewModal.module.css';
 import ModalCloseIcon from '#/icons/icon-modalClose.svg';
-import Image from 'next/image';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { postMyReservationReview } from '@/api/myReservations';
+import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import Star from '@/components/Modal/ReviewModal/Star/Star';
-import dayjs from 'dayjs';
-import { Reservation } from '@/types/common/api';
+import QUERY_KEYS from '@/constants/queryKeys';
 import { RATINGS } from '@/constants/ratingArray';
+import { ActivityInfo, ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postMyReservationReview } from '@/api/myReservations';
+import dayjs from 'dayjs';
+import Image from 'next/image';
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import toast from 'react-hot-toast';
-import QUERY_KEYS from '@/constants/queryKeys';
+import styles from './ReviewModal.module.css';
+
+type ModalData = {
+  id: number;
+  status: ReservationStatus;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  activity: ActivityInfo;
+};
 
 interface ReviewModalProps {
-  data: Reservation;
+  data: ModalData;
   handleModalClose: () => void;
+  setIsReviewSubmit?: Dispatch<SetStateAction<boolean>>;
 }
 
-function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
+function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalProps) {
   const [ratingInputValue, setRatingInputValue] = useState(0);
   const [textInputValue, setTextInputValue] = useState('');
   const [hoveredStarCount, setHoveredStarCount] = useState(0);
@@ -36,6 +48,9 @@ function ReviewModal({ data, handleModalClose }: ReviewModalProps) {
       handleModalClose();
       toast.success('리뷰 작성이 완료되었습니다!');
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
+      if(setIsReviewSubmit) {
+        setIsReviewSubmit(true);
+      }
     },
   });
 

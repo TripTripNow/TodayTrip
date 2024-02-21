@@ -1,15 +1,21 @@
-import AlertModal from '@/components/Modal/AlertModal/AlertModal';
-import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
-import Button from '@/components/common/Button/Button';
-import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import styles from './ReservationCard.module.css';
-import { priceFormat } from '@/utils/priceFormat';
-import dayjs from 'dayjs';
+import toast from 'react-hot-toast';
+
+import { patchMyReservationsId } from '@/api/myReservations';
+import AlertModal from '@/components/Modal/AlertModal/AlertModal';
+import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
+import Button from '@/components/common/Button/Button';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import { Reservation } from '@/types/common/api';
+import { priceFormat } from '@/utils/priceFormat';
+import styles from './ReservationCard.module.css';
 
 interface ReservationCardProps {
   data: Reservation;
@@ -18,8 +24,29 @@ interface ReservationCardProps {
 function ReservationCard({ data }: ReservationCardProps) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = data;
+  const activityId = data.activity.id;
+
+  const cancelReservationMutation = useMutation({
+    mutationFn: () => patchMyReservationsId(id),
+    onSuccess: () => {
+      toast.success('예약이 취소되었습니다.');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
+  });
+
+  const handleCancelReservation = () => {
+    cancelReservationMutation.mutate();
+    setIsAlertModalOpen(false);
+  };
 
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
@@ -29,9 +56,28 @@ function ReservationCard({ data }: ReservationCardProps) {
     setIsReviewModalOpen((prev) => !prev);
   };
 
+  const handleClickNavigate = () => {
+    router.push(
+      {
+        pathname: `/mypage/reservations/${id}`,
+        query: {
+          activityId,
+          status,
+          reviewSubmitted,
+          headCount,
+          date,
+          startTime,
+          endTime,
+          totalPrice,
+        },
+      },
+      `/mypage/reservations/${id}`,
+    );
+  };
+
   return (
     <>
-      <div className={styles.cardWrapper} onClick={() => router.push(`/mypage/reservations/${data.id}`)}>
+      <div className={styles.cardWrapper} onClick={handleClickNavigate}>
         <div className={styles.imageWrapper}>
           <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>
@@ -84,7 +130,7 @@ function ReservationCard({ data }: ReservationCardProps) {
           text="예약을 취소하시겠습니까?"
           buttonText="취소하기"
           handleModalClose={handleCancelModalToggle}
-          handleActionButtonClick={handleCancelModalToggle}
+          handleActionButtonClick={handleCancelReservation}
         />
       )}
       {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={data} />}
