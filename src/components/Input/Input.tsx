@@ -10,15 +10,6 @@ import {
   ERROR_PASSWORD_SECOND_EMPTY,
   ERROR_PASSWORD_VALIDATION,
 } from '@/constants/user';
-import {
-  ERROR_ACTIVITY_ADDRESS,
-  ERROR_ACTIVITY_BANNER_IMAGE,
-  ERROR_ACTIVITY_CATEGORY,
-  ERROR_ACTIVITY_DESCRIPTION,
-  ERROR_ACTIVITY_PRICE,
-  ERROR_ACTIVITY_SCHEDULE,
-  ERROR_ACTIVITY_TITLE,
-} from '@/constants/activityEnroll';
 
 interface InputProps {
   label?: string;
