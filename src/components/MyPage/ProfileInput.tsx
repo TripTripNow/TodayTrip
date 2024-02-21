@@ -5,7 +5,7 @@ import EditIcon from '#/icons/icon-edit.svg';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { postUsersMeImage } from '@/api/user/user';
+import { postUsersMeImage } from '@/api/user';
 import toast from 'react-hot-toast';
 import { getSession } from 'next-auth/react';
 import useDeviceType from '@/hooks/common/useDeviceType';

@@ -1,24 +1,47 @@
 import styles from './Activities.module.css';
-import { useState, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { myActivitiesMock } from '@/components/MyPage/Activities/ActivitiesMock';
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
 import NoDataImg from '#/images/img-noData.png';
 import Image from 'next/image';
 import Link from 'next/link';
+import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
+import { getMyActivities } from '@/api/myActivities';
+import { setContext } from '@/api/axiosInstance';
+import { GetServerSidePropsContext } from 'next';
+import QUERY_KEYS from '@/constants/queryKeys';
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const queryClient = new QueryClient();
+
+  setContext(context);
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [QUERY_KEYS.myActivities],
+    queryFn: () => getMyActivities(),
+    initialPageParam: 0,
+  });
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+};
 
 function Activities() {
-  const [visibleMock, setVisibleMock] = useState(6);
   const { isVisible, targetRef } = useInfiniteScroll();
 
-  const filteredMyActivities = [myActivitiesMock.activities.slice(0, visibleMock)][0];
+  const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
+    queryKey: [QUERY_KEYS.myActivities],
+    queryFn: ({ pageParam }) => getMyActivities(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      const currentCursorId = lastPage.cursorId;
+      return currentCursorId;
+    },
+  });
 
-  const handleEnrollButton = () => {};
-
+  const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
+  console.log(filteredMyActivities);
   useEffect(() => {
     if (isVisible) {
-      setVisibleMock((prev) => prev + 6);
+      fetchNextPage();
     }
   }, [isVisible]);
   return (
@@ -32,8 +55,8 @@ function Activities() {
             </Link>
           </div>
           <div className={styles.activitiesItemContainer}>
-            {myActivitiesMock.totalCount ? (
-              filteredMyActivities.map((item) => (
+            {filteredMyActivities?.length ? (
+              filteredMyActivities?.map((item) => (
                 <div key={item.id}>
                   <ActivitiesCard item={item} />
                 </div>

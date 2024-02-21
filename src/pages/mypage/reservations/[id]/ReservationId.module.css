@@ -3,7 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 79.2rem;
+  width: 75rem;
   gap: 2rem;
 
   @media tablet {
@@ -59,12 +59,18 @@
   }
 }
 
-.imageWrapper {
+.bannerImageWrapper {
   width: 100%;
-  height: 26rem;
+  height: 35rem;
   position: relative;
   border-radius: 1.5rem;
   overflow: hidden;
+}
+
+.bannerImage {
+  height: fit-content;
+  display: block;
+  overflow: auto;
 }
 
 .content {
@@ -73,36 +79,11 @@
   gap: 1.2rem;
 }
 
-.status {
-  display: flex;
-  justify-self: flex-start;
-  align-items: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 2.6rem;
-  gap: 0.5rem;
-}
-
-.active {
-  color: var(--blue2E);
-}
-
-.inactive {
-  color: var(--grayA1);
-}
-
-.canceled {
-  color: var(--gray79);
-}
-
-.declined {
-  color: var(--redFF4);
-}
-
 .title {
   font-size: 2.2rem;
   font-weight: 700;
   line-height: 2.8rem;
+  cursor: pointer;
 }
 
 .date {

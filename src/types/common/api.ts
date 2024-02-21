@@ -1,6 +1,6 @@
 import { ReservationStatus } from '@/constants/reservation';
 
-export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
+export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙' | '';
 
 interface SubImageUrl {
   id: number;
@@ -23,7 +23,7 @@ export interface Activity {
   subImages?: SubImageUrl[];
 }
 
-interface ActivityInfo {
+export interface ActivityInfo {
   id: number;
   title: string;
   bannerImageUrl: string;

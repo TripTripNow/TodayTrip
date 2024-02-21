@@ -6,18 +6,25 @@ import { useCallback, useEffect, useState } from 'react';
  */
 
 const useCheckWindowWidthSize = () => {
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth;
+    }
+    return 0;
+  });
 
   const handleResize = useCallback(() => {
     setWidth(window.innerWidth);
   }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
+
   return width;
 };
 
