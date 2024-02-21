@@ -8,7 +8,7 @@ import { postImageUrl } from '@/api/activities';
 
 interface ImageContainerProps {
   name: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   getValues: UseFormGetValues<FieldValues>;
 }
