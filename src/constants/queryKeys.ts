@@ -5,6 +5,7 @@ const QUERY_KEYS = {
   popularActivities: 'popularActivities',
   reservations: 'reservations',
   activity: 'activity',
+  activityEnroll: 'activityEnroll',
   all: '전체',
 } as const;
 

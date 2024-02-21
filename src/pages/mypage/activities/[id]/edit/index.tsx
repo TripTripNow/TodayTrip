@@ -12,6 +12,7 @@ import { patchActivitiesId } from '@/api/myActivities';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { Activity } from '@/types/common/api';
+import QUERY_KEYS from '@/constants/queryKeys';
 
 interface activityEditMutationProps {
   activityId: number;
@@ -33,7 +34,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: activityData } = useQuery<Activity>({
-    queryKey: ['activity', activityId],
+    queryKey: [QUERY_KEYS.activityEnroll, activityId],
     queryFn: () => getActivitiesId(activityId),
   });
 
@@ -65,7 +66,7 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
     mutationFn: ({ activityId, data }: activityEditMutationProps) =>
       patchActivitiesId(activityId, data as PatchMyActivityReq),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['activity', activityId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.activityEnroll, activityId] });
       router.push('/mypage/activities');
     },
     onError: (error) => {
@@ -82,12 +83,6 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
 
     activityEditMutation.mutate({ activityId, data });
   };
-
-  // const getItems = async (id: number) => {
-  //   const result = await getActivitiesId(id);
-  //   setItems(result);
-  //   return result;
-  // };
 
   //처음 불러올때 받은 주소 -> 위도 경도로 바꿔주는 함수
   const calculateLatlng = async (addressData: string) => {
@@ -106,7 +101,6 @@ function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServ
 
   useEffect(() => {
     calculateLatlng(activityData!.address);
-    // getItems(id);
   }, []);
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;
