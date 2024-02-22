@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { Value } from '@/types/Calendar';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { Time } from '@/types/common/api';
+import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 
 interface ReservationModalProps {
   dateValue: Value;
@@ -109,33 +110,7 @@ function ReservationModal({
                 </Button>
               ))}
             </div>
-            <div className={clsx(style.participants, styles.onlyMobile)}>
-              <h2 className={styles.label}>참여 인원 수</h2>
-              <div className={style.stepper}>
-                <button
-                  className={style.minusButton}
-                  disabled={participantsValue <= 1}
-                  onClick={() => setParticipantsValue((prev) => prev - 1)}
-                >
-                  <MinusIcon fill="#4B4B4B" alt="참여 인원 수 줄이기 아이콘" />
-                </button>
-                <input
-                  className={style.participantsInput}
-                  value={participantsValue}
-                  onChange={(e) => setParticipantsValue(+e.target.value)}
-                  min={1}
-                  // 숫자가 아닌 값을 입력할 경우 1로 세팅되게 만듦
-                  onInput={(e: ChangeEvent<HTMLInputElement>) => {
-                    if (isNaN(+e.target.value)) {
-                      e.target.value = String(1);
-                    }
-                  }}
-                />
-                <button onClick={() => setParticipantsValue((prev) => prev + 1)}>
-                  <PlusIcon alt="참여 인원 수 늘리기 아이콘" />
-                </button>
-              </div>
-            </div>
+            <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
           </div>
         </div>
 
