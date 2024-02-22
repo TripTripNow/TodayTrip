@@ -1,40 +1,45 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
+import { GetServerSideProps } from 'next';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 
-import { INITIAL_DROPDOWN_ITEM } from '@/constants/dropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import Dropdown, { DropdownItems } from '@/components/common/DropDown/Dropdown';
+import Dropdown from '@/components/common/DropDown/Dropdown';
 import Calendar from '@/components/ReservationDashboard/Calendar/Calendar';
-import { RESERVATION_DETAILS_MY_ACTIVITIES_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import NoResult from '@/components/common/NoResult/NoResult';
+import { setContext } from '@/api/axiosInstance';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getMyActivities } from '@/api/myActivities';
+import { useReservationDashboard } from '@/hooks/ReservationDashboard/useReservationDashboard';
 import styles from './ReservationDashboard.module.css';
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  setContext(context);
+  const queryClient = new QueryClient();
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [QUERY_KEYS.myActivities],
+    queryFn: ({ pageParam }) => getMyActivities({ size: 5, cursorId: pageParam }),
+    initialPageParam: 0,
+  });
+
+  return {
+    props: { dehydratedState: dehydrate(queryClient) },
+  };
+};
+
 function ReservationDashboard() {
-  const [dropDownItem, setDropdownItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM); // 드랍다운 value 값
-  const experiencesData =
-    RESERVATION_DETAILS_MY_ACTIVITIES_MOCK_DATA?.activities.map((activity) => {
-      return {
-        id: activity.id,
-        title: activity.title,
-      };
-    }) ?? [];
-
-  /** @todo 체험명 변경 시 API 요청 후 받아 온 데이터들을 날짜 데이터에 뿌리기 */
-  const handleExperienceTitle = async () => {};
-
-  useEffect(() => {
-    handleExperienceTitle();
-  }, [dropDownItem]);
+  const { dropdownData, dropDownItem, setDropdownItem, fetchNextPage } = useReservationDashboard();
 
   return (
     <>
       <h1 className={styles.title}>예약 현황</h1>
-      {experiencesData.length > 0 ? (
+      {dropdownData!.length > 0 ? (
         <>
           <Dropdown
             type="체험"
-            dropDownItems={experiencesData}
+            dropDownItems={dropdownData}
             setDropdownItem={setDropdownItem}
-            placeholder={experiencesData[0].title}
+            placeholder={dropdownData[0].title}
+            fetchNextPage={fetchNextPage}
           />
           <Calendar activityId={dropDownItem.id} />
         </>
