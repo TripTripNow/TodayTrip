@@ -4,6 +4,7 @@ import MypageIcon from '#/icons/icon-mypage.svg';
 import ReservationIcon from '#/icons/icon-reservation.svg';
 import ActivitiesIcon from '#/icons/icon-activities.svg';
 import DashboardIcon from '#/icons/icon-dashboard.svg';
+import ActivityAddIcon from '#/icons/icon-activity-add.svg';
 import { useRouter } from 'next/router';
 import ProfileInput from '@/components/MyPage/ProfileInput';
 
@@ -27,6 +28,12 @@ const MENU_LIST = [
     link: '/mypage/activities',
   },
   {
+    title: '내 체험 등록',
+    icon: <ActivityAddIcon fill="#A1A1A1" alt="내 체험 관리 페이지를 나타내는 아이콘" />,
+    activeIcon: <ActivityAddIcon fill="#112211" alt="내 체험 관리 페이지 호버 시 보이는 아이콘" />,
+    link: '/mypage/activities/add',
+  },
+  {
     title: '예약 현황',
     icon: <DashboardIcon fill="#A1A1A1" stroke="#A1A1A1" alt="예액 현황 페이지를 나타내는 아이콘" />,
     activeIcon: <DashboardIcon fill="#112211" stroke="#112211" alt="예약 현황 페이지 호버 시 보이는 아이콘" />,
@@ -40,9 +47,15 @@ function ProfileMenuBox() {
   const [selectedMenu, setSelectedMenu] = useState<string>();
 
   useEffect(() => {
-    setSelectedMenu(
-      pathname === '/mypage/reservations/[id]' ? '예약 내역' : MENU_LIST.find((e) => e.link === pathname)?.title,
-    );
+    if (pathname === '/mypage/reservations/[id]') {
+      setSelectedMenu('예약 내역');
+      return;
+    }
+    if (pathname === '/mypage/activities/[id]/edit') {
+      setSelectedMenu('내 체험 관리');
+      return;
+    }
+    setSelectedMenu(MENU_LIST.find((e) => e.link === pathname)?.title);
   }, [pathname]);
 
   const handleMenuItem = (item: { title: string; link: string }) => {
@@ -51,14 +64,25 @@ function ProfileMenuBox() {
   };
 
   const renderTitle = (title: string) => {
-    if (router.pathname !== '/mypage/reservations/[id]') return title;
+    if (pathname === '/mypage/activities/[id]/edit' && title === '내 체험 관리') {
+      return (
+        <>
+          <div className={styles.title}>{title}</div>
+          <span className={styles.subTitle}>&nbsp;- 내 체험 수정</span>
+        </>
+      );
+    }
 
-    return (
-      <>
-        <div className={styles.title}>{title}</div>
-        <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
-      </>
-    );
+    if (pathname === '/mypage/reservations/[id]' && title === '예약 내역') {
+      return (
+        <>
+          <div className={styles.title}>{title}</div>
+          <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
+        </>
+      );
+    }
+
+    return title;
   };
 
   return (
@@ -74,7 +98,9 @@ function ProfileMenuBox() {
               onClick={() => handleMenuItem(e)}
             >
               {e.title === selectedMenu ? e.activeIcon : e.icon}
-              <div className={styles.menuItemTitle}>{e.title === '예약 내역' ? renderTitle(e.title) : e.title}</div>
+              <div className={styles.menuItemTitle}>
+                {e.title === '예약 내역' || e.title === '내 체험 관리' ? renderTitle(e.title) : e.title}
+              </div>
             </div>
           );
         })}
