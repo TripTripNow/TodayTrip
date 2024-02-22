@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getActivities } from '@/api/activities';
 import QUERY_KEYS from '@/constants/queryKeys';
@@ -30,21 +30,14 @@ export const useHome = () => {
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [priceFilterValue, setPriceFilterValue] = useState<PriceFilterOption>('가격');
+  const queryClient = useQueryClient();
 
   const {
     data: activityData,
     isError,
     isPending,
   } = useQuery({
-    queryKey: [
-      QUERY_KEYS.allActivities,
-      currentPageNumber,
-      sortByPrice,
-      selectedCategory,
-      currentPageNumber,
-      limit,
-      searchResult,
-    ],
+    queryKey: [QUERY_KEYS.allActivities, sortByPrice, selectedCategory, currentPageNumber, limit, searchResult],
     queryFn: () =>
       getActivities({
         method: 'offset',
@@ -61,10 +54,14 @@ export const useHome = () => {
   const recentSearchKeywords = localStorageGetItem('recentSearchKeywords')?.split(',') ?? []; // 최신 검색어
 
   // 검색 후 submit 함수
-  const handleSearchSubmit = (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement>, text?: string) => {
+  const handleSearchSubmit = (
+    e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>,
+    text?: string,
+  ) => {
     e.preventDefault();
 
-    if (text) {
+    console.log(text);
+    if (text !== undefined) {
       setSearchResult(text);
       setInputSearchText(text);
     } else {
@@ -136,6 +133,21 @@ export const useHome = () => {
   useEffect(() => {
     if (isError) toast.error('데이터를 불러오지 못했습니다.');
   }, [isError]);
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.allActivities, sortByPrice, selectedCategory, currentPageNumber + 1, limit, searchResult],
+      queryFn: () =>
+        getActivities({
+          method: 'offset',
+          sort: sortByPrice,
+          category: selectedCategory,
+          page: currentPageNumber + 1,
+          size: limit,
+          keyword: searchResult,
+        }),
+    });
+  }, [currentPageNumber]);
 
   const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
   const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
