@@ -69,10 +69,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
       });
   }, [dailyReservationData]);
 
-  useEffect(() => {
-    if (isError) toast.error('데이터를 불러올 수 없습니다.');
-  }, [isError]);
-  console.log(dailyReservationData);
+  if (!isError) toast.error('데이터를 불러올 수 없습니다.');
 
   if (!selectedReservationData || selectedReservationData.length === 0 || dropdownItem.id === 0 || isPending)
     return null;

@@ -72,9 +72,7 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
     handleMonthData();
   }, [monthlyData]);
 
-  useEffect(() => {
-    if (isError) toast.error('데이터를 불러올 수 없습니다.');
-  }, [isError]);
+  if (isError) toast.error('데이터를 불러올 수 없습니다.');
 
   return {
     year,
