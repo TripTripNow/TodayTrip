@@ -31,10 +31,7 @@ export async function middleware(req: NextRequest) {
   const isWithAuth = pathname.startsWith(withAuthList);
   const isWithOutAuth = withOutAuthList.includes(pathname);
 
-  if (isWithAuth) {
-    return withAuth(req, !!token);
-  }
-  if (isWithOutAuth) {
-    return withOutAuth(req, !!token);
-  }
+  if (isWithAuth) return withAuth(req, !!token);
+
+  if (isWithOutAuth) return withOutAuth(req, !!token);
 }
