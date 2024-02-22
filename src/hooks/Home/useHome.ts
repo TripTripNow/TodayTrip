@@ -31,7 +31,11 @@ export const useHome = () => {
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [priceFilterValue, setPriceFilterValue] = useState<PriceFilterOption>('가격');
 
-  const { data: activityData, isError } = useQuery({
+  const {
+    data: activityData,
+    isError,
+    isPending,
+  } = useQuery({
     queryKey: [
       QUERY_KEYS.allActivities,
       currentPageNumber,
@@ -152,5 +156,6 @@ export const useHome = () => {
     handlePaginationByClick,
     activityData,
     searchedByNoData,
+    isPending,
   };
 };

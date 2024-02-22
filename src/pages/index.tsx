@@ -43,9 +43,9 @@ function Home() {
     handlePaginationByClick,
     activityData,
     searchedByNoData,
+    isPending,
   } = useHome();
 
-  if (!activityData) return null;
   return (
     <main className={styles.container}>
       <Banner />
@@ -58,7 +58,7 @@ function Home() {
         />
         {!searchResult && <PopularExperience deviceType={deviceType} />}
 
-        {!searchedByNoData ? (
+        {!searchedByNoData && activityData ? (
           <AllExperience
             searchResult={searchResult}
             showCards={activityData.activities}
