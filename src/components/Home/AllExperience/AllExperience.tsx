@@ -104,12 +104,12 @@ function AllExperience({
             <div className="splide__arrows">
               <div className={clsx(styles.categoryLeftShadow, styles.rotateContrary)}>
                 <button className="splide__arrow splide__arrow--prev">
-                  <Arrow alt="카테고리 왼쪽 이동 버튼" />
+                  <Arrow alt="카테고리 왼쪽 이동 버튼" width={4} height={7} />
                 </button>
               </div>
               <div className={clsx(styles.categoryRightShadow, styles.rotateContrary)}>
                 <button className="splide__arrow splide__arrow--next">
-                  <Arrow alt="카테고리 오른쪽 이동 버튼" />
+                  <Arrow alt="카테고리 오른쪽 이동 버튼" width={4} height={7} />
                 </button>
               </div>
             </div>
