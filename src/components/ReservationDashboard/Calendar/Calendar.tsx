@@ -5,10 +5,9 @@ import CalendarHeader from '@/components/ReservationDashboard/Calendar/CalendarH
 import Modal from '@/components/ReservationDashboard/Modal/Modal';
 import { COMPLETED, CONFIRMED, PENDING, WEEK } from '@/constants/calendar';
 import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
-import { RESERVATION_DETAILS_MODAL_MOCK_DATA } from '@/components/ReservationDashboard/mock';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
+import { MonthlyReservationStatusCount } from '@/types/common/api';
 import styles from './Calendar.module.css';
-import { MonthlyReservationStatusCount } from '@/types/myActivities';
 
 interface CalendarProps {
   activityId: number;
@@ -18,8 +17,8 @@ interface CalendarProps {
 const renderCircle = (reservation: MonthlyReservationStatusCount) => {
   const { completed, confirmed, pending } = reservation;
   if (completed + confirmed + pending === 0) return null;
-  else if (pending + confirmed === 0 && completed !== 0) return <p className={styles.grayCircle}></p>;
-  else if (pending + confirmed > 0) return <p className={styles.blueCircle}></p>;
+  else if (pending + confirmed === 0 && completed !== 0) return <div className={styles.grayCircle}></div>;
+  else if (pending + confirmed > 0) return <div className={styles.blueCircle}></div>;
 };
 
 function Calendar({ activityId }: CalendarProps) {
@@ -37,10 +36,13 @@ function Calendar({ activityId }: CalendarProps) {
     allDays,
   } = useCalendar({ activityId });
 
-  const handleOpenModal = (selectedDay: number, hasData: boolean) => {
-    if (!hasData) return;
-    setModalOpen(true);
+  const handleOpenModal = (selectedDay: number, monthData: MonthlyReservationStatusCount) => {
+    if (!monthData) return;
+
+    const sumOfPossibleData = monthData.confirmed + monthData.pending;
+    if (monthData.completed > 0 && sumOfPossibleData === 0) return;
     setDay(selectedDay);
+    setModalOpen(true);
   };
 
   const handleModalClose = () => {
@@ -49,15 +51,6 @@ function Calendar({ activityId }: CalendarProps) {
 
   return (
     <>
-      {modalOpen && (
-        <Modal
-          handleModalClose={handleModalClose}
-          date={formatDateStringByDot({ year, month, day })}
-          items={RESERVATION_DETAILS_MODAL_MOCK_DATA}
-          activityId={activityId}
-        />
-      )}
-
       <div className={styles.container}>
         <CalendarHeader year={year} month={month} onPrevMonth={handlePrevMonth} onNextMonth={handleNextMonth} />
 
@@ -78,7 +71,11 @@ function Calendar({ activityId }: CalendarProps) {
             {allDays.map((day) => {
               const hasData = !!monthData[day];
               return (
-                <div key={day} className={styles.calendarDayWrapper} onClick={() => handleOpenModal(day, hasData)}>
+                <div
+                  key={day}
+                  className={styles.calendarDayWrapper}
+                  onClick={() => handleOpenModal(day, monthData[day])}
+                >
                   <div className={styles.calendarDayWrapperTop}>
                     <p>{day}</p>
                     {hasData && renderCircle(monthData[day])}
@@ -99,6 +96,14 @@ function Calendar({ activityId }: CalendarProps) {
           </div>
         </div>
       </div>
+
+      {modalOpen && (
+        <Modal
+          handleModalClose={handleModalClose}
+          date={formatDateStringByDot({ year, month, day, padStart: true })}
+          activityId={activityId}
+        />
+      )}
     </>
   );
 }

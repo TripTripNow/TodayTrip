@@ -72,7 +72,9 @@ function Home() {
             priceFilterValue={priceFilterValue}
           />
         ) : (
-          <NoResult />
+          <div className={styles.noResultContainer}>
+            <NoResult />
+          </div>
         )}
       </div>
     </main>

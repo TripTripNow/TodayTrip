@@ -25,6 +25,7 @@ const useInfiniteScroll = () => {
       observer.disconnect();
     };
   }, [isVisible, reRender]);
+
   return { isVisible, targetRef, setIsVisible, setRerender };
 };
 

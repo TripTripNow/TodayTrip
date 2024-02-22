@@ -48,7 +48,7 @@ function ReviewModal({ data, handleModalClose, setIsReviewSubmit }: ReviewModalP
       handleModalClose();
       toast.success('리뷰 작성이 완료되었습니다!');
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
-      if(setIsReviewSubmit) {
+      if (setIsReviewSubmit) {
         setIsReviewSubmit(true);
       }
     },
