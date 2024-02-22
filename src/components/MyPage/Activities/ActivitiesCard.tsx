@@ -93,7 +93,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
           <div className={styles.activitiesItemContentHeader}>
             <StarIcon alt="별모양아이콘" />
             <p className={styles.activitiesReviewCount}>
-              {item.rating.toFixed(2)} ({item.reviewCount})
+              {item.rating} ({item.reviewCount})
             </p>
           </div>
 

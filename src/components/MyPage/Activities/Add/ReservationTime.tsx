@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Control, FieldValues, UseFormGetValues, UseFormSetValue, useController } from 'react-hook-form';
+import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 
 interface ReservationTimeProps {
   name: string;
@@ -29,6 +30,8 @@ interface reservationArrayType extends reservationPlusArrayType {
 function ReservationTime({ name, control, setValue, getValues }: ReservationTimeProps) {
   const { field } = useController({ name, control });
   const dateValue = field.value;
+  const date = dayjs();
+  const currentTime = date.format('YYYY-MM-DD HH:MM');
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
@@ -48,6 +51,10 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
       toast('시간을 확인해 주세요.');
       return;
     }
+    if (currentTime > isSelectedDate + ' ' + startTime) {
+      toast('현재 시간 이후의 일정을 선택해 주세요.');
+      return;
+    }
     if (
       dateValue.some(
         (e: any) =>
@@ -57,6 +64,7 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
       toast.error('동일한 시간이 있습니다.');
       return;
     }
+
     // 조건에 맞으면 데이터 추가하는 부분
     field.onChange([
       ...dateValue,
@@ -108,11 +116,11 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
           <DatePickerInput setIsSelectedDate={setIsSelectedDate} />
           <div className={styles.dateDropDownWrapper}>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="HH:MM" />
+              <Dropdown type="시간" setDropdownItem={setStartTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
             <p className={styles.dateWave}>~</p>
             <div className={styles.dateDropDown}>
-              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="HH:MM" />
+              <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
           </div>
           <button onClick={(e) => handleAddButton(e, isSelectedDate, startTimeItem.title, endTimeItem.title)}>
@@ -133,7 +141,9 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
                       <div className={styles.addedTime}>{item.endTime}</div>
                     </div>
                     <button onClick={(e) => handleDeleteButton(e, index, item)}>
-                      <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" width={56} height={56} />
+                      {currentTime < item.date + ' ' + item.startTime && (
+                        <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" width={56} height={56} />
+                      )}
                     </button>
                   </div>
                 </div>

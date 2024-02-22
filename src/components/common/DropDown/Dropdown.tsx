@@ -29,7 +29,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
   const { isVisible, targetRef, setRerender } = useInfiniteScroll();
-  const isPlaceHolder = value === '카테고리' || value === 'HH:MM';
+  const isPlaceHolder = value === '카테고리' || value === '0:00';
   const InitialDropdownLength = useRef(dropDownItems.length);
 
   const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
