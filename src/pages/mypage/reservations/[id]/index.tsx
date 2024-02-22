@@ -1,75 +1,97 @@
+import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { ReactElement, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import ArrowIcon from '#/icons/icon-arrowBack.svg';
-import ArrowRightIcon from '#/icons/icon-arrowRight.svg';
+import { getActivityById } from '@/api/activities';
+import { patchMyReservationsId } from '@/api/myReservations';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
+import CheckStatus from '@/components/MyPage/Reservations/Details/CheckStatus';
 import Button from '@/components/common/Button/Button';
-import { RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
+import Map from '@/components/common/Map/Map';
+import { RESERVATION_STATUS } from '@/constants/reservation';
+import { ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
-import dayjs from 'dayjs';
-import { Reservation } from '@/types/common/api';
 
-// @todo id값을 사용해서 해당 카드 데이터 불러오기
-const item: Reservation = {
-  id: 1,
-  teamId: '9',
-  userId: 3,
-  createdAt: '2024-02-11T08:43:26.752Z',
-  updatedAt: '2024-02-11T08:43:26.752Z',
-  activity: {
-    bannerImageUrl: '/images/flower.png',
-    title: '함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스 함께 배우면 즐거운 스트릿 댄스',
-    id: 101,
-  },
-  scheduleId: 201,
-  status: 'completed',
-  reviewSubmitted: false,
-  totalPrice: 10000,
-  headCount: 10,
-  date: '2024-03-10',
-  startTime: '09:00',
-  endTime: '12:00',
-};
-
-// @todo 주소 데이터 불러오기
-const address = '서울특별시 강남구 테헤란로 427';
-
-interface CheckStatusProps {
-  status: keyof typeof ReservationStatus;
+interface ResTypes {
+  status: ReservationStatus;
+  reviewSubmitted: string;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  totalPrice: number;
+  id: number;
 }
 
-const CheckStatus = ({ status }: CheckStatusProps) => {
-  return (
-    <div className={styles.status}>
-      {status === RESERVATION_STATUS.CANCELED || status === RESERVATION_STATUS.DECLINED ? (
-        <div className={styles[status]}>{ReservationStatus[status]}</div>
-      ) : (
-        <>
-          <div className={status === RESERVATION_STATUS.PENDING ? styles.active : styles.inactive}>
-            {ReservationStatus['pending']}
-          </div>
-          <ArrowRightIcon alt="예약 신청에서 예약 승인으로 가는 화살표" />
-          <div className={status === RESERVATION_STATUS.CONFIRMED ? styles.active : styles.inactive}>
-            {ReservationStatus['confirmed']}
-          </div>
-          <ArrowRightIcon alt="예약 승인에서 체험 완료로 가는 화살표" />
-          <div className={status === RESERVATION_STATUS.COMPLETED ? styles.active : styles.inactive}>
-            {ReservationStatus['completed']}
-          </div>
-        </>
-      )}
-    </div>
-  );
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const activityId = Number(context.query.activityId);
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [activityId],
+    queryFn: () => getActivityById({ activityId }),
+  });
+
+  return {
+    props: { activityId, dehydratedState: dehydrate(queryClient) },
+  };
 };
 
-function ReservationID() {
+const containerStyle = {
+  width: '100%',
+  height: '28em',
+};
+
+function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const router = useRouter();
+
+  const { data } = useQuery({
+    queryKey: [activityId],
+    queryFn: () => getActivityById({ activityId }),
+  });
+
+  const res = router.query as unknown as ResTypes;
+  const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = res;
+  const [isReviewSubmit, setIsReviewSubmit] = useState<boolean>(reviewSubmitted === 'true');
+
+  const [currentStatus, setCurrentStatus] = useState(status);
+
+  const hasResult = Object.keys(res).length > 1;
+
+  useEffect(() => {
+    if (!hasResult) {
+      router.back();
+    }
+  }, []);
+
+  const cancelReservationMutation = useMutation({
+    mutationFn: () => patchMyReservationsId(Number(id)),
+    onSuccess: () => {
+      toast.success('예약이 취소되었습니다.');
+      setCurrentStatus('canceled');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    },
+  });
+
+  if (!data) return null;
+  const { bannerImageUrl, title, address } = data;
 
   const handleCancelModalToggle = () => {
     setIsAlertModalOpen((prev) => !prev);
@@ -77,6 +99,27 @@ function ReservationID() {
 
   const handleReviewModalToggle = () => {
     setIsReviewModalOpen((prev) => !prev);
+  };
+
+  const handleCancelReservation = () => {
+    cancelReservationMutation.mutate();
+    setIsAlertModalOpen(false);
+  };
+
+  const handleClickNavigate = () => {
+    router.push(`/activities/${activityId}`);
+  };
+
+  const modalData = {
+    id: Number(id),
+    status,
+    reviewSubmitted: Boolean(reviewSubmitted),
+    totalPrice: Number(totalPrice),
+    headCount: Number(headCount),
+    date,
+    startTime,
+    endTime,
+    activity: { id: Number(id), title, bannerImageUrl },
   };
 
   return (
@@ -88,51 +131,53 @@ function ReservationID() {
 
       <div className={styles.main}>
         <h1 className={styles.header}>예약 상세</h1>
-        <div className={styles.imageWrapper}>
-          <Image priority fill src={item.activity.bannerImageUrl} alt="예약 상세 이미지" />
+        <div className={styles.bannerImageWrapper}>
+          <Image className={styles.bannerImage} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
         </div>
         <div className={styles.content}>
-          <CheckStatus status={item.status} />
-          <h2 className={styles.title}>{item.activity.title}</h2>
+          <CheckStatus status={currentStatus} />
+          <h2 className={styles.title} onClick={handleClickNavigate}>
+            {title}
+          </h2>
           <p className={styles.date}>
-            <span>{dayjs(item.date).format('YYYY.MM.DD')}</span>
+            <span>{dayjs(date).format('YYYY.MM.DD')}</span>
             <span> · </span>
             <span>
-              {item.startTime} - {item.endTime}
+              {startTime} - {endTime}
             </span>
             <span> · </span>
-            <span>{item.headCount}명</span>
+            <span>{headCount}명</span>
           </p>
-          <p className={styles.address}>{address}</p>
         </div>
+        <Map address={address} containerStyle={containerStyle} />
         <div className={styles.bottom}>
-          <div className={styles.price}>￦{priceFormat(item.totalPrice)}</div>
+          <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
 
-          {item.status === RESERVATION_STATUS.PENDING && (
+          {currentStatus === RESERVATION_STATUS.PENDING && (
             <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
               예약 취소
             </Button>
           )}
-          {item.status === RESERVATION_STATUS.COMPLETED && (
-            <Button
-              type="reservation"
-              color="green"
-              isDisabled={item.reviewSubmitted}
-              onClick={handleReviewModalToggle}
-            >
+          {currentStatus === RESERVATION_STATUS.COMPLETED && (
+            <Button type="reservation" color="green" isDisabled={isReviewSubmit} onClick={handleReviewModalToggle}>
               후기 작성
             </Button>
           )}
-
           {isAlertModalOpen && (
             <AlertModal
               text="예약을 취소하시겠습니까?"
               buttonText="취소하기"
               handleModalClose={handleCancelModalToggle}
-              handleActionButtonClick={handleCancelModalToggle}
+              handleActionButtonClick={handleCancelReservation}
             />
           )}
-          {isReviewModalOpen && <ReviewModal handleModalClose={handleReviewModalToggle} data={item} />}
+          {isReviewModalOpen && (
+            <ReviewModal
+              handleModalClose={handleReviewModalToggle}
+              data={modalData}
+              setIsReviewSubmit={setIsReviewSubmit}
+            />
+          )}
         </div>
       </div>
     </div>

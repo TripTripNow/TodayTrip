@@ -1,5 +1,6 @@
 const QUERY_KEYS = {
   usersMe: 'usersMe',
+  myNotifications: 'myNotifications',
   myActivities: 'myActivities',
   monthlyReservation: 'monthReservation',
   dailyReservation: 'dailyReservation',

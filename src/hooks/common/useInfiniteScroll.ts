@@ -4,6 +4,7 @@ const useInfiniteScroll = () => {
   // 보여지고 있는지를 나타내는 state
   const [isVisible, setIsVisible] = useState(false);
   const [reRender, setRerender] = useState(false);
+
   const targetRef = useRef<HTMLDivElement>(null);
 
   // new IntersectionObserver()로 생성한 인스턴스가 observer
@@ -16,12 +17,10 @@ const useInfiniteScroll = () => {
       // isIntersecting은 교차 되고 있는지를 알려주는 boolean 값
       setIsVisible(entry.isIntersecting);
     });
-
     if (targetRef.current) {
       // 관찰할 대상 등록
       observer.observe(targetRef.current);
     }
-
     return () => {
       observer.disconnect();
     };
