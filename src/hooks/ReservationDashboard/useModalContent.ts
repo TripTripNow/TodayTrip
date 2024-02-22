@@ -41,7 +41,9 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem }: UseModalConten
     if (isVisible) fetchNextPage();
   }, [isVisible]);
 
-  if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
 
   return { isPending, targetRef, data, showItems };
 };

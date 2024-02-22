@@ -129,7 +129,9 @@ export const useHome = () => {
     setCurrentPageNumber(1);
   }, [sortByPrice, selectedCategory, searchResult]);
 
-  if (isError) toast.error('데이터를 불러오지 못했습니다.');
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러오지 못했습니다.');
+  }, [isError]);
 
   const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
   const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
