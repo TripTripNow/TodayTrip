@@ -14,6 +14,8 @@
   background: var(--whiteFF);
   box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
 
+  padding-bottom: 2.2rem;
+
   @media tablet {
     margin-top: -2.4rem;
     width: calc(100% - 2.4rem);
@@ -21,6 +23,7 @@
   @media mobile {
     margin-top: -2.4rem;
     width: calc(100% - 1.6rem);
+    padding-bottom: 0.6rem;
   }
 }
 
@@ -46,11 +49,6 @@
   border-radius: 0.4rem;
   background: var(--whiteFF);
   gap: 1.2rem;
-  margin-bottom: 3.2rem;
-
-  @media mobile {
-    margin-bottom: 1.6rem;
-  }
 }
 
 .inputWrapper {
@@ -147,4 +145,24 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.refreshWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 1rem;
+  cursor: text;
+}
+
+.refreshIcon {
+  opacity: 30%;
+  width: 14px;
+  height: 14px;
+}
+.refreshWrapper > p {
+  line-height: 0;
+  color: var(--gray4B);
+  font-size: 1.4rem;
+  font-weight: 500;
 }

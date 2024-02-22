@@ -3,12 +3,16 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Button from '@/components/common/Button/Button';
 import SearchIcon from '#/icons/icon-search.svg';
+import RefreshIcon from '#/icons/icon-refresh.svg';
 import styles from './Searchbar.module.css';
 
 interface SearchbarProps {
   inputSearchText: string;
   handleSearchText: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSearchSubmit: (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement>, text?: string) => void;
+  handleSearchSubmit: (
+    e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>,
+    text?: string,
+  ) => void;
   recentText: string[];
 }
 
@@ -55,6 +59,10 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
           검색하기
         </Button>
       </form>
+      <button className={styles.refreshWrapper} onClick={(e) => handleSearchSubmit(e, '')}>
+        <RefreshIcon className={styles.refreshIcon} width={15} />
+        <p>검색 결과 초기화</p>
+      </button>
     </div>
   );
 }
