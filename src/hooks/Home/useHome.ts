@@ -30,6 +30,8 @@ export const useHome = () => {
   const [limit, setLimit] = useState(calculateLimit(deviceType) ?? 9); // 한 페이지에 보여줄 카드의 개수
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [priceFilterValue, setPriceFilterValue] = useState<PriceFilterOption>('가격');
+  const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]);
+
   const queryClient = useQueryClient();
 
   const {
@@ -51,16 +53,14 @@ export const useHome = () => {
   });
 
   const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
-  const recentSearchKeywords = localStorageGetItem('recentSearchKeywords')?.split(',') ?? []; // 최신 검색어
 
-  // 검색 후 submit 함수
+  /** Searchbar 검색 후 submit 함수 */
   const handleSearchSubmit = (
     e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>,
     text?: string,
   ) => {
     e.preventDefault();
 
-    console.log(text);
     if (text !== undefined) {
       setSearchResult(text);
       setInputSearchText(text);
@@ -81,22 +81,33 @@ export const useHome = () => {
       const keywordArray = storedText!.split(',');
       if (!keywordArray.includes(trimmedText)) {
         const updatedKeywords = [trimmedText, ...keywordArray.slice(0, 9)];
+        setRecentSearchKeywords(updatedKeywords);
         localStorageSetItem('recentSearchKeywords', updatedKeywords.join(','));
       }
     }
   };
 
-  // 검색창 input state 실시간 변경 함수
+  /** 최신 검색어 삭제 함수 */
+  const handleDeleteRecentSearch = (e: MouseEvent<HTMLOrSVGScriptElement>, deletingText: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const filteredRecentSearchKeywords = recentSearchKeywords.filter((keyword) => keyword !== deletingText);
+    setRecentSearchKeywords(filteredRecentSearchKeywords);
+    localStorageSetItem('recentSearchKeywords', filteredRecentSearchKeywords.join(','));
+  };
+
+  /** 검색창 input state 실시간 변경 함수 */
   const handleSearchText = (e: ChangeEvent<HTMLInputElement>) => {
     setInputSearchText(e.target.value);
   };
 
-  // 버튼 클릭을 통한 페이지 증감 함수(pagination)
+  /** 버튼 클릭을 통한 페이지 증감 함수(pagination) */
   const handlePaginationByClick = (num: number) => {
     setCurrentPageNumber(num);
   };
 
-  // 카테고리 버튼 클릭 함수
+  /** 카테고리 버튼 클릭 함수 */
   const handleClickCategory = (name: Category) => {
     setSelectedCategory((prev) => (prev === name ? '' : name));
   };
@@ -106,6 +117,11 @@ export const useHome = () => {
     const newSortByPrice = val === '낮은 순' ? 'price_asc' : 'price_desc';
     setSortByPrice(newSortByPrice);
   };
+
+  // 첫 렌더링
+  useEffect(() => {
+    setRecentSearchKeywords(localStorageGetItem('recentSearchKeywords')?.split(',') ?? []);
+  }, []);
 
   useEffect(() => {
     const handleCardLimitByWindowWidth = () => {
@@ -158,7 +174,6 @@ export const useHome = () => {
     inputSearchText,
     recentSearchKeywords,
     searchResult,
-    deviceType,
     priceFilterValue,
     setPriceFilterValue,
     selectedCategory,
@@ -169,5 +184,6 @@ export const useHome = () => {
     activityData,
     searchedByNoData,
     isPending,
+    handleDeleteRecentSearch,
   };
 };

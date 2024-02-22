@@ -4,6 +4,7 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import Button from '@/components/common/Button/Button';
 import SearchIcon from '#/icons/icon-search.svg';
 import RefreshIcon from '#/icons/icon-refresh.svg';
+import DeleteIcon from '#/icons/icon-close.svg';
 import styles from './Searchbar.module.css';
 
 interface SearchbarProps {
@@ -14,9 +15,16 @@ interface SearchbarProps {
     text?: string,
   ) => void;
   recentText: string[];
+  handleDeleteRecentSearch: (e: MouseEvent<HTMLOrSVGScriptElement>, text: string) => void;
 }
 
-function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, recentText }: SearchbarProps) {
+function Searchbar({
+  inputSearchText,
+  handleSearchText,
+  handleSearchSubmit,
+  recentText,
+  handleDeleteRecentSearch,
+}: SearchbarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드랍다운 상태 추가
 
   const handleEnterClick = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -49,7 +57,11 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
               <p className={styles.dropdownDescription}>최근 검색어{recentText.length <= 0 && ' 없음'}</p>
               {recentText.map((text, index) => (
                 <div key={index} className={styles.dropdownItem} onMouseDown={(e) => handleSearchSubmit(e, text)}>
-                  {text}
+                  <p>{text}</p>
+                  <DeleteIcon
+                    className={styles.dropdownItemDeleteIcon}
+                    onMouseDown={(e: MouseEvent<HTMLOrSVGScriptElement>) => handleDeleteRecentSearch(e, text)}
+                  />
                 </div>
               ))}
             </div>
@@ -61,7 +73,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
       </form>
       <button className={styles.refreshWrapper} onClick={(e) => handleSearchSubmit(e, '')}>
         <RefreshIcon className={styles.refreshIcon} width={15} />
-        <p>검색 결과 초기화</p>
+        검색 결과 초기화
       </button>
     </div>
   );

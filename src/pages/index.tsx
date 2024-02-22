@@ -33,7 +33,6 @@ function Home() {
     inputSearchText,
     recentSearchKeywords,
     searchResult,
-    deviceType,
     priceFilterValue,
     setPriceFilterValue,
     selectedCategory,
@@ -44,6 +43,7 @@ function Home() {
     activityData,
     searchedByNoData,
     isPending,
+    handleDeleteRecentSearch,
   } = useHome();
 
   return (
@@ -55,8 +55,9 @@ function Home() {
           handleSearchText={handleSearchText}
           inputSearchText={inputSearchText}
           recentText={recentSearchKeywords}
+          handleDeleteRecentSearch={handleDeleteRecentSearch}
         />
-        {!searchResult && <PopularExperience deviceType={deviceType} />}
+        {!searchResult && <PopularExperience />}
 
         {!searchedByNoData && activityData ? (
           <AllExperience
