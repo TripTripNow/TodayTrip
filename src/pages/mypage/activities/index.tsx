@@ -18,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   setContext(context);
   await queryClient.prefetchInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: () => getMyActivities(),
+    queryFn: () => getMyActivities({}),
     initialPageParam: 0,
   });
   return { props: { dehydratedState: dehydrate(queryClient) } };
@@ -29,7 +29,7 @@ function Activities() {
 
   const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: ({ pageParam }) => getMyActivities(pageParam),
+    queryFn: ({ pageParam }) => getMyActivities({ cursorId: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       const currentCursorId = lastPage.cursorId;

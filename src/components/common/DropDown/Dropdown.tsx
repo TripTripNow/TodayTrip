@@ -1,9 +1,13 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
 import styles from './Dropdown.module.css';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
+import { FetchNextPageOptions, InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { Activity } from '@/types/common/api';
 
 export interface DropdownItems {
   id: number;
@@ -16,30 +20,38 @@ interface DropdownProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
   id?: string;
+  fetchNextPage?: (
+    options?: FetchNextPageOptions | undefined,
+  ) => Promise<InfiniteQueryObserverResult<Activity[], Error>>;
 }
 
-function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, id }: DropdownProps) {
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage, id }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
+  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
+  const isPlaceHolder = value === '카테고리' || value === 'HH:MM';
+  const InitialDropdownLength = useRef(dropDownItems.length);
 
   const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setRerender((prev) => !prev);
     setIsOpen((prev) => !prev);
   };
 
   const handleDropdownClose = () => {
+    setRerender((prev) => !prev);
     setIsOpen(false);
   };
 
   const handleDropdownClick = (val: DropdownItems) => {
     setValue(val.title);
     setDropdownItem(val);
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 250);
+    setRerender((prev) => !prev);
   };
 
-  const isPlaceHolder = value === '카테고리' || value === 'HH:MM';
+  useEffect(() => {
+    if (isVisible && fetchNextPage) fetchNextPage();
+  }, [isVisible]);
 
   return (
     <div
@@ -57,7 +69,13 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, id }: Dro
         {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
       </button>
       {isOpen && (
-        <div className={clsx(styles.menu, type === '시간' && styles.timeMenu)}>
+        <div
+          className={clsx(
+            styles.menu,
+            type === '시간' && styles.timeMenu,
+            type === '체험' && InitialDropdownLength.current > 4 && styles.activityMenu,
+          )}
+        >
           {dropDownItems.map((itemValue) => (
             <div
               key={itemValue.id}
@@ -68,6 +86,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, id }: Dro
               {itemValue.title}
             </div>
           ))}
+          <div ref={targetRef}></div>
         </div>
       )}
     </div>

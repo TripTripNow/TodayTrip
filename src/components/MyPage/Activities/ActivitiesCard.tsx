@@ -36,7 +36,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   const queryClient = useQueryClient();
 
   const deleteMyActivitiesMutation = useMutation({
-    mutationFn: (id: number) => deleteMyActivity(id),
+    mutationFn: (id: number) => deleteMyActivity({ activityId: id }),
     onSuccess: () => {
       toast.success('체험이 성공적으로 삭제되었습니다.');
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myActivities] });

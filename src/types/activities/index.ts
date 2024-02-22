@@ -7,7 +7,6 @@ interface UserInfo {
   nickname: string;
   profileImageUrl: string;
 }
-
 interface Review {
   id: number;
   user: UserInfo;
@@ -52,19 +51,16 @@ export interface GetReviewsParams {
   page: number;
   size: 3;
 }
-
 export interface GetAvailableScheduleParams {
   activityId: number;
   year: string;
   month: string;
 }
-
 export interface PostReservationReq {
   activityId: number;
   scheduleId: number;
   headCount: number;
 }
-
 export interface PostReservationRes extends ReservationBase {
   activityId: number;
 }
