@@ -148,6 +148,10 @@
   background-color: #cedbd5;
 }
 
+.react-datepicker-custom :global .react-datepicker__day--disabled {
+  color: #cccccc;
+}
+
 .react-datepicker-custom :global .react-datepicker__day--selected,
 .react-datepicker-custom :global .react-datepicker__day--keyboard-selected {
   background-color: var(--green0B);
