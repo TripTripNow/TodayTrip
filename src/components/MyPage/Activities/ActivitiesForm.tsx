@@ -58,7 +58,7 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
     <div className={styles.addContainer}>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
         <div className={styles.addHeaderWrapper}>
-          <p className={styles.addHeader}>내 체험 {isEdit ? '수정' : '등록'}</p>
+          <h1 className={styles.addHeader}>내 체험 {isEdit ? '수정' : '등록'}</h1>
         </div>
         <Input name="title" control={control} label="제목" placeholder="제목" type="text" />
         <label className={styles.inputLabel} htmlFor="dropdown">

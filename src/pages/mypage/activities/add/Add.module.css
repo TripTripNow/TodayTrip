@@ -265,6 +265,7 @@
 }
 
 .dateWave {
+  font-size: 2rem;
   @media tablet, mobile {
     display: none;
   }

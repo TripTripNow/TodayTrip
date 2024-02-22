@@ -10,8 +10,6 @@
   width: 80rem;
   display: flex;
   justify-content: space-between;
-  font-size: 3.2rem;
-  font-weight: 700;
   margin-bottom: 2.4rem;
   @media tablet {
     width: 42.9rem;
@@ -20,6 +18,11 @@
     width: 34.4rem;
     margin-bottom: 1.6rem;
   }
+}
+
+.activitiesContentTitle {
+  font-size: 3.2rem;
+  font-weight: 700;
 }
 
 .activitiesButton {
