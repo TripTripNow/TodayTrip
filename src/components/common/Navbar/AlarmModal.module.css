@@ -51,12 +51,17 @@
   height: auto;
   padding: 2.4rem 2rem;
   animation: slideinpc 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  height: 40rem;
+  box-sizing: border-box;
 
   @media mobile {
     top: 0;
     left: 0;
     width: 100vw;
     height: 80vh;
+    max-height: 64.5rem;
     border-radius: 0 0 0.8rem 0.8rem;
     animation: slidein 0.3s ease-out;
   }
@@ -83,6 +88,22 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  overflow-y: scroll;
+  width: fit-content;
+
+  @media mobile {
+    width: 100%;
+  }
+}
+
+.alarmModalContentContainer::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.alarmModalContentContainer::-webkit-scrollbar-thumb {
+  height: 30%;
+  background-color: var(--gray96);
+  border-radius: 10px;
 }
 
 .alarmModalContentWrapper {
@@ -108,6 +129,10 @@
   line-height: 2.2rem;
 }
 
+.ellipse {
+  margin-top: 0.4rem;
+}
+
 .approveTrue {
   color: var(--blue00);
 }
@@ -129,4 +154,9 @@
   align-items: center;
   padding: 0.6rem 0;
   font-size: 1.6rem;
+  height: 100%;
+
+  @media mobile {
+    font-size: 2.5rem;
+  }
 }

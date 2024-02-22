@@ -94,7 +94,7 @@ function MyPage({ userData, type }: MyPageProps) {
           </Button>
         </div>
 
-        <ProfileInput isProfileBox={false} isEdit={true} profileImage={userData.profileImageUrl} />
+        <ProfileInput isProfileBox={false} isEdit={true} />
       </div>
 
       <div className={styles.formContainer}>

@@ -31,7 +31,7 @@ export interface Activity {
   subImages?: SubImageUrl[];
 }
 
-interface ActivityInfo {
+export interface ActivityInfo {
   id: number;
   title: string;
   bannerImageUrl: string;
