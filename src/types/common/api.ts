@@ -7,7 +7,7 @@ interface SubImageUrl {
   imageUrl: string;
 }
 
-interface Schdules {
+export interface Schdules {
   id: number;
   date: string;
   startTime: string;

@@ -1,4 +1,4 @@
-import { Activity, Category } from '@/types/common/api';
+import { Activity, Category, Schedules } from '@/types/common/api';
 import { ReservationBase } from '@/types/common/api';
 import { FieldValues } from 'react-hook-form';
 
@@ -39,7 +39,7 @@ export interface GetActivitiesRes {
 export interface GetActivityRes {
   cursorId: number;
   totalCount: number;
-  activitis: Activity;
+  activities: Activity;
 }
 
 export type GetReviewsRes = {
@@ -75,11 +75,7 @@ export interface PostActivitiesReq extends FieldValues {
   description: string;
   address: string;
   price: number;
-  schedules: {
-    date: string;
-    startTime: string;
-    endTime: string;
-  }[];
+  schedules: Omit<Schedules, 'id'>[];
   bannerImageUrl: string;
   subImageUrls: string[];
 }
