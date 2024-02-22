@@ -1,4 +1,4 @@
-@values tablet, mobile from '@/styles/breakpoints.css';
+@values tablet, mobile, desktop from '@/styles/breakpoints.css';
 
 .container {
   display: flex;
@@ -51,9 +51,95 @@
 }
 
 .react-datepicker-custom :global(.react-datepicker__triangle) {
-  left: -3rem !important;
+  left: -9rem !important;
+
+  @media desktop {
+    left: -2rem !important;
+  }
 }
 
 .react-datepicker-custom :global(.DatePicker_input__OFkDp) span {
   color: var(--grayA1) !important;
+}
+
+.react-datepicker-custom :global .react-datepicker__month-container {
+
+  @media desktop {
+    width: 35rem;
+    height: 35rem;
+  }
+}
+
+.react-datepicker-custom :global .react-datepicker {
+  border: 0.1rem solid var(--grayDD);
+  font-family: 'open sans';
+  position: absolute;
+  font-size: 1.3rem;
+  
+  @media desktop {
+    left: 2rem;
+    font-size: 1.6rem;
+  }
+}
+.react-datepicker-custom :global .react-datepicker__triangle {
+  border: 0.1rem solid var(--grayDD) !important;
+}
+
+.react-datepicker-custom :global .react-datepicker__month {
+
+  @media desktop {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.react-datepicker-custom :global .react-datepicker__header {
+  border: none;
+}
+
+.react-datepicker-custom :global .react-datepicker__current-month {
+  display: flex;
+  justify-content: center;
+  color: var(--black1B);
+  font-size: 1.6rem;
+  
+  @media desktop {
+    font-size: 2rem;
+  }
+}
+.react-datepicker-custom :global .react-datepicker__day-names {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.4rem;
+  padding: 0.5rem;
+
+  @media desktop {
+    font-size: 1.8rem;
+    padding-top: 1.3rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.react-datepicker-custom :global .react-datepicker__day-name {
+  color: var(--gray4B);
+}
+
+.react-datepicker-custom :global .react-datepicker__week {
+  @media desktop {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.react-datepicker-custom :global .react-datepicker__day {
+  width: 3.5rem;
+  line-height: 3.2rem;
+  border-radius: 0.8rem;
+  color: var(--gray4B);
+
+  @media tablet {
+    width: 3rem;
+    line-height: 2.8rem;
+  }
 }
