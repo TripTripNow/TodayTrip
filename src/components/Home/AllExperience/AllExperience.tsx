@@ -145,7 +145,7 @@ function AllExperience({
       </div>
 
       {/* 페이지네이션 영역 */}
-      {showCards!.length > 0 ? (
+      {!isPending && showCards && showCards!.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
             pageNumber={pageNumber}
