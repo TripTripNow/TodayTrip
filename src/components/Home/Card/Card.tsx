@@ -6,6 +6,7 @@ import { Activity } from '@/types/common/api';
 import ImageFallback from '@/components/common/ImageFallback/ImageFallback';
 import StarIcon from '#/icons/icon-star.svg';
 import styles from './Card.module.css';
+import clsx from 'clsx';
 
 type CardProps = {
   item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>;
@@ -14,7 +15,7 @@ type CardProps = {
 function Card({ item }: CardProps) {
   return (
     <Link href={`activities/${item.id}`}>
-      <div className={styles.container}>
+      <div className={clsx(styles.container, styles.cardAnimation)}>
         <div className={styles.background}></div>
         <ImageFallback
           src={item.bannerImageUrl}
