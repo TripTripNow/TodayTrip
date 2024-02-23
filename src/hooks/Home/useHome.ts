@@ -79,13 +79,11 @@ export const useHome = () => {
     const trimmedText = text ? text.trim() : inputSearchText.trim();
     if (!trimmedText) return;
 
-    const storedText = localStorageGetItem('recentSearchKeywords');
-    if (!storedText) {
+    if (recentSearchKeywords.length === 0) {
       localStorageSetItem('recentSearchKeywords', trimmedText);
     } else {
-      const keywordArray = storedText!.split(',');
-      if (!keywordArray.includes(trimmedText)) {
-        const updatedKeywords = [trimmedText, ...keywordArray.slice(0, 9)];
+      if (!recentSearchKeywords.includes(trimmedText)) {
+        const updatedKeywords = [trimmedText, ...recentSearchKeywords.slice(0, 9)];
         setRecentSearchKeywords(updatedKeywords);
         localStorageSetItem('recentSearchKeywords', updatedKeywords.join(','));
       }
@@ -167,6 +165,8 @@ export const useHome = () => {
 
   const showCards = searchResult === '' ? activityData?.activities : searchData?.activities;
   const totalCardsNum = searchResult === '' ? activityData?.totalCount : searchData?.totalCount;
+
+  console.log(recentSearchKeywords);
 
   return {
     handleSearchSubmit,
