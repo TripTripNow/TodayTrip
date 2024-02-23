@@ -19,8 +19,8 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { useSession } from 'next-auth/react';
 import { priceFormat } from '@/utils/priceFormat';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
-
 dayjs.extend(customParseFormat);
+
 interface ReservationDateTimePickerProps {
   data: Activity;
 }
@@ -53,6 +53,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   const formattedYear = dayjs(dateValue as Date).format('YYYY');
   const formattedMonth = dayjs(dateValue as Date).format('MM');
+  const formattedDate = dayjs(dateValue as Date).format('YYYY-MM-DD');
 
   const { data: monthlyAvailableScheduleData } = useQuery({
     queryKey: [QUERY_KEYS.activity, data.id, formattedYear, formattedMonth],
@@ -70,8 +71,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       return;
     }
 
-    const formattedValue = dayjs(dateValue as Date).format('YYYY-MM-DD');
-    const todayAvailableScheduleData = monthlyAvailableScheduleData.find((slot) => slot.date === formattedValue);
+    const todayAvailableScheduleData = monthlyAvailableScheduleData.find((slot) => slot.date === formattedDate);
 
     const currentTime = dayjs();
 
@@ -81,11 +81,17 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       /* 오늘 날짜의 경우 현재 시간이 시작 시간 이전인 것만 보여줘야함 
     만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링*/
 
-      return dayjs().isSame(formattedValue, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
+      return dayjs().isSame(formattedDate, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
     });
 
     setFilteredTimes(filteredTimes);
   }, [dateValue, monthlyAvailableScheduleData]);
+
+  useEffect(() => {
+    if (clickedTimeButtonId) {
+      handleDateButtonText(clickedTimeButtonId);
+    }
+  }, [clickedTimeButtonId]);
 
   const handleDateButtonText = (clickedTimeButtonId: number | null) => {
     setDateButtonText(`
@@ -97,12 +103,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const handleTimeButtonClick = (id: number | null) => {
     setClickedTimeButtonId(id);
   };
-
-  useEffect(() => {
-    if (clickedTimeButtonId) {
-      handleDateButtonText(clickedTimeButtonId);
-    }
-  }, [clickedTimeButtonId]);
 
   const handleCalendarDateChange = (value: Value) => {
     setDateValue(value);
@@ -228,6 +228,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         </div>
       </div>
 
+      {/* 모바일에서만 보이는 selectbar */}
       <div className={styles.mobileSelectBar}>
         <div>
           <p className={styles.pricePerPersonWrapper}>
@@ -249,15 +250,15 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       {isReserveModalOpen && (
         <ReservationModal
           handleDateButtonText={handleDateButtonText}
+          clickedTimeButtonId={clickedTimeButtonId}
+          handleTimeButtonClick={handleTimeButtonClick}
           filteredTimes={filteredTimes}
           handleModalToggle={handleReserveModalToggle}
           dateValue={dateValue}
-          setDateValue={setDateValue}
-          handleTimeButtonClick={handleTimeButtonClick}
+          handleCalendarDateChange={handleCalendarDateChange}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
           handleOnActiveStartDateChange={handleOnActiveStartDateChange}
-          clickedTimeButtonId={clickedTimeButtonId}
           handleTileDisabled={handleTileDisabled}
         />
       )}

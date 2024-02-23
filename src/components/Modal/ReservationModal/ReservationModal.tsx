@@ -13,7 +13,6 @@ import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicke
 
 interface ReservationModalProps {
   dateValue: Value;
-  setDateValue: Dispatch<SetStateAction<Value>>;
   filteredTimes: Time[] | undefined;
   handleTimeButtonClick: (id: number | null) => void;
   handleDateButtonText: (clickedPossibleTimeIdInModal: number | null) => void;
@@ -23,11 +22,11 @@ interface ReservationModalProps {
   handleOnActiveStartDateChange: ({ activeStartDate }: OnArgs) => void;
   clickedTimeButtonId: number | null;
   handleTileDisabled: ({ date }: TileArgs) => boolean;
+  handleCalendarDateChange: (value: Value) => void;
 }
 
 function ReservationModal({
   dateValue,
-  setDateValue,
   filteredTimes,
   handleTimeButtonClick,
   handleDateButtonText,
@@ -37,25 +36,12 @@ function ReservationModal({
   handleOnActiveStartDateChange,
   clickedTimeButtonId,
   handleTileDisabled,
+  handleCalendarDateChange,
 }: ReservationModalProps) {
-  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(clickedTimeButtonId);
-
   const handleSelectButtonClick = () => {
     handleModalToggle();
-    handleDateButtonText(clickedPossibleTimeIdInModal);
-    handleTimeButtonClick(clickedPossibleTimeIdInModal);
-  };
-
-  const handleCalendarDateChange = (value: Value) => {
-    setDateValue(value);
-    if (clickedPossibleTimeIdInModal) {
-      setClickedPossibleTimeIdInModal(null);
-    }
-  };
-
-  const handleCalendarMonthChangeInModal = (activeStartDate: OnArgs) => {
-    handleOnActiveStartDateChange(activeStartDate);
-    setClickedPossibleTimeIdInModal(null);
+    handleDateButtonText(clickedTimeButtonId);
+    handleTimeButtonClick(clickedTimeButtonId);
   };
 
   return (
@@ -75,7 +61,7 @@ function ReservationModal({
             calendarType="gregory"
             locale="en"
             onChange={handleCalendarDateChange}
-            onActiveStartDateChange={(activeStartDate) => handleCalendarMonthChangeInModal(activeStartDate)}
+            onActiveStartDateChange={(activeStartDate) => handleOnActiveStartDateChange(activeStartDate)}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}
@@ -88,18 +74,16 @@ function ReservationModal({
                 <Button
                   key={time.id}
                   type="time"
-                  color={
-                    time.id === clickedTimeButtonId || time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'
-                  }
+                  color={time.id === clickedTimeButtonId ? 'green' : 'white'}
                   onClick={() => {
                     if (clickedTimeButtonId) {
                       handleTimeButtonClick(null);
                     }
-                    if (clickedPossibleTimeIdInModal === time.id || clickedTimeButtonId === time.id) {
-                      setClickedPossibleTimeIdInModal(null);
+                    if (clickedTimeButtonId === time.id) {
+                      handleTimeButtonClick(null);
                       return;
                     }
-                    setClickedPossibleTimeIdInModal(time.id);
+                    handleTimeButtonClick(time.id);
                   }}
                 >
                   {time.startTime}~{time.endTime}
@@ -110,12 +94,7 @@ function ReservationModal({
           </div>
         </div>
 
-        <Button
-          onClick={handleSelectButtonClick}
-          isDisabled={!clickedPossibleTimeIdInModal}
-          color="green"
-          type="modalSingle"
-        >
+        <Button onClick={handleSelectButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
           선택하기
         </Button>
       </div>
