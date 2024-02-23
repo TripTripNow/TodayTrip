@@ -1,5 +1,13 @@
 @values desktop, tablet, mobile from "@/styles/breakpoints.css";
 
+.label {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.6rem;
+  font-size: 1.8rem;
+  color: var(--nomad_black);
+}
+
 .container {
   display: flex;
   top: 0;
@@ -18,6 +26,30 @@
   }
 
   @media mobile {
+    display: none;
+  }
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.calendar > h2 {
+  align-self: self-start;
+}
+
+.selectButton {
+  display: flex;
+  color: var(--nomad_black);
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration-line: underline;
+  align-self: flex-start;
+
+  @media desktop {
     display: none;
   }
 }
@@ -95,6 +127,80 @@
   background-color: var(--whiteFF);
 }
 
+/* 
+.customCalendar:global.react-calendar {
+  width: 30rem;
+  border: 1px solid var(--grayEE);
+  font-family: Pretandard;
+  border-radius: 0.8rem;
+
+  @media tablet {
+    display: none;
+  }
+}
+
+.customCalendar :global(.react-calendar__month-view__weekdays) abbr {
+  color: var(--gray4B);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.customCalendar :global .react-calendar__navigation button {
+  color: var(--black1B);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.customCalendar :global .react-calendar__tile {
+  display: flex;
+  height: 4.268rem;
+  padding: 1rem;
+  color: var(--gray4B);
+  font-weight: 600;
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.8rem;
+}
+
+.customCalendar :global .react-calendar__month-view__days__day--neighboringMonth,
+.customCalendar :global .react-calendar__decade-view__years__year--neighboringDecade,
+.customCalendar :global .react-calendar__century-view__decades__decade--neighboringCentury {
+  color: #757575;
+}
+
+.customCalendar :global .react-calendar__tile--hover,
+.customCalendar :global .react-calendar__tile:enabled:hover,
+.customCalendar :global .react-calendar__tile:focus {
+  color: var(--green0B);
+  background-color: var(--greenCE);
+}
+
+.customCalendar :global .react-calendar__tile--now {
+  background: white;
+  color: var(--gray4B);
+}
+
+.customCalendar :global .react-calendar__tile:enabled:focus,
+.customCalendar :global .react-calendar__tile--active {
+  background: var(--green0B);
+  color: white;
+}
+
+.customCalendar :global(.react-calendar__navigation button.react-calendar__navigation__prev-button) {
+  font-size: 3rem;
+}
+
+.customCalendar :global(.react-calendar__navigation button.react-calendar__navigation__next-button) {
+  font-size: 3rem;
+}
+
+.customCalendar :global .react-calendar__navigation button:disabled,
+.customCalendar :global .react-calendar__tile:disabled {
+  color: #cdcdcd;
+  background-color: var(--whiteFF);
+} */
+
 .priceInPerson {
   display: flex;
   font-weight: 700;
@@ -116,7 +222,7 @@
     font-size: 1.6rem;
   }
 }
-
+/* 
 .calendar {
   display: flex;
   flex-direction: column;
@@ -126,7 +232,7 @@
 
 .calendar > h2 {
   align-self: self-start;
-}
+} */
 
 .selectButton {
   display: flex;

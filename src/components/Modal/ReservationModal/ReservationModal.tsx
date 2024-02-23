@@ -10,6 +10,7 @@ import { Value } from '@/types/Calendar';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Time } from '@/types/common/api';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
+import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
 
 interface ReservationModalProps {
   dateValue: Value;
@@ -68,28 +69,11 @@ function ReservationModal({
             tileDisabled={handleTileDisabled}
           />
           <div className={style.possibleTime} style={{ display: 'flex' }}>
-            <h2 className={styles.label}>예약 가능한 시간</h2>
-            <div className={style.timeButtonContainer}>
-              {filteredTimes?.map((time) => (
-                <Button
-                  key={time.id}
-                  type="time"
-                  color={time.id === clickedTimeButtonId ? 'green' : 'white'}
-                  onClick={() => {
-                    if (clickedTimeButtonId) {
-                      handleTimeButtonClick(null);
-                    }
-                    if (clickedTimeButtonId === time.id) {
-                      handleTimeButtonClick(null);
-                      return;
-                    }
-                    handleTimeButtonClick(time.id);
-                  }}
-                >
-                  {time.startTime}~{time.endTime}
-                </Button>
-              ))}
-            </div>
+            <AvailableSchedules
+              handleTimeButtonClick={handleTimeButtonClick}
+              clickedTimeButtonId={clickedTimeButtonId}
+              filteredTimes={filteredTimes}
+            />
             <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
           </div>
         </div>

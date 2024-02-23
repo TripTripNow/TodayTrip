@@ -19,6 +19,8 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { useSession } from 'next-auth/react';
 import { priceFormat } from '@/utils/priceFormat';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
+import ReservationCalendar from '@/components/Activities/ReservationDateTimePicker/ReservationCalendar/ReservationCalendar';
+import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
 dayjs.extend(customParseFormat);
 
 interface ReservationDateTimePickerProps {
@@ -173,7 +175,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <button className={styles.selectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
-
           <Calendar
             prev2Label={null}
             next2Label={null}
@@ -186,28 +187,22 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             tileDisabled={handleTileDisabled}
             minDate={new Date()}
           />
+          {/* <ReservationCalendar
+          dateValue={dateValue}
+          dateButtonText={dateButtonText}
+          handleReserveModalToggle={handleReserveModalToggle}
+          handleCalendarDateChange={handleCalendarDateChange}
+          handleOnActiveStartDateChange={handleOnActiveStartDateChange}
+          handleTileDisabled={handleTileDisabled}
+        /> */}
         </div>
-        <div className={styles.possibleTime}>
-          <h2 className={style.label}>예약 가능한 시간</h2>
 
-          <div className={styles.timeButtonContainer}>
-            {filteredTimes?.map((time) => (
-              <Button
-                key={time.id}
-                type="time"
-                color={time.id === clickedTimeButtonId ? 'green' : 'white'}
-                onClick={() => {
-                  if (clickedTimeButtonId === time.id) {
-                    handleTimeButtonClick(null);
-                    return;
-                  }
-                  handleTimeButtonClick(time.id);
-                }}
-              >
-                {time.startTime}~{time.endTime}
-              </Button>
-            ))}
-          </div>
+        <div className={styles.possibleTime}>
+          <AvailableSchedules
+            handleTimeButtonClick={handleTimeButtonClick}
+            clickedTimeButtonId={clickedTimeButtonId}
+            filteredTimes={filteredTimes}
+          />
         </div>
         <hr className={style.hr} />
         <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />

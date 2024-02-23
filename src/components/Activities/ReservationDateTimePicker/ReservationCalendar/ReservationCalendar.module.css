@@ -1,3 +1,29 @@
+@values desktop, tablet, mobile from "@/styles/breakpoints.css";
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.calendar > h2 {
+  align-self: self-start;
+}
+
+.selectButton {
+  display: flex;
+  color: var(--nomad_black);
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration-line: underline;
+  align-self: flex-start;
+
+  @media desktop {
+    display: none;
+  }
+}
+
 .customCalendar:global.react-calendar {
   width: 30rem;
   border: 1px solid var(--grayEE);
