@@ -40,10 +40,11 @@ function Home() {
     currentPageNumber,
     totalPageNumber,
     handlePaginationByClick,
-    activityData,
+    showCards,
     searchedByNoData,
-    isFetching,
     handleDeleteRecentSearch,
+    totalCardsNum,
+    isPending,
   } = useHome();
 
   return (
@@ -59,11 +60,12 @@ function Home() {
         />
         {!searchResult && <PopularExperience />}
 
-        {!searchedByNoData && activityData && (
+        {!searchedByNoData && (
           <AllExperience
+            isPending={isPending}
             searchResult={searchResult}
-            showCards={activityData.activities}
-            totalCardsNum={activityData.totalCount}
+            showCards={showCards}
+            totalCardsNum={totalCardsNum}
             handlePaginationByClick={handlePaginationByClick}
             totalPages={totalPageNumber}
             pageNumber={currentPageNumber}
@@ -73,7 +75,9 @@ function Home() {
             priceFilterValue={priceFilterValue}
           />
         )}
-        {searchedByNoData && (
+        {isPending && <div className={styles.loadingContainer}></div>}
+
+        {!isPending && searchedByNoData && (
           <div className={styles.noResultContainer}>
             <NoResult />
           </div>

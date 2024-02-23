@@ -35,12 +35,8 @@ export const useHome = () => {
 
   const queryClient = useQueryClient();
 
-  const {
-    data: activityData,
-    isError,
-    isFetching,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.allActivities, sortByPrice, selectedCategory, currentPageNumber, limit, searchResult],
+  const { data: activityData, isError } = useQuery({
+    queryKey: [QUERY_KEYS.allActivities, limit, sortByPrice, selectedCategory, currentPageNumber],
     queryFn: () =>
       getActivities({
         method: 'offset',
@@ -48,9 +44,19 @@ export const useHome = () => {
         category: selectedCategory,
         page: currentPageNumber,
         size: limit,
-        keyword: searchResult,
       }),
     placeholderData: keepPreviousData,
+  });
+
+  const { data: searchData, isPending } = useQuery({
+    queryKey: [QUERY_KEYS.allActivities, limit, searchResult],
+    queryFn: () =>
+      getActivities({
+        method: 'offset',
+        page: 1,
+        size: limit,
+        keyword: searchResult,
+      }),
   });
 
   /** Searchbar 검색 후 submit 함수 */
@@ -142,7 +148,7 @@ export const useHome = () => {
 
   useEffect(() => {
     queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.allActivities, sortByPrice, selectedCategory, currentPageNumber + 1, limit, searchResult],
+      queryKey: [QUERY_KEYS.allActivities, limit, sortByPrice, selectedCategory, currentPageNumber + 1],
       queryFn: () =>
         getActivities({
           method: 'offset',
@@ -150,13 +156,17 @@ export const useHome = () => {
           category: selectedCategory,
           page: currentPageNumber + 1,
           size: limit,
-          keyword: searchResult,
         }),
     });
   }, [currentPageNumber]);
 
-  const searchedByNoData = !!searchResult && activityData?.activities.length === 0; // 검색 시 데이터가 없는 경우
-  const totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
+  const searchedByNoData = !!searchResult && searchData?.activities.length === 0; // 검색 시 데이터가 없는 경우
+  let totalPageNumber;
+  if (searchResult) totalPageNumber = Math.ceil((searchData?.totalCount ?? 0) / limit!);
+  else totalPageNumber = Math.ceil((activityData?.totalCount ?? 0) / limit!);
+
+  const showCards = searchResult === '' ? activityData?.activities : searchData?.activities;
+  const totalCardsNum = searchResult === '' ? activityData?.totalCount : searchData?.totalCount;
 
   return {
     handleSearchSubmit,
@@ -171,9 +181,10 @@ export const useHome = () => {
     currentPageNumber,
     totalPageNumber,
     handlePaginationByClick,
-    activityData,
+    showCards,
+    totalCardsNum,
     searchedByNoData,
-    isFetching,
     handleDeleteRecentSearch,
+    isPending,
   };
 };
