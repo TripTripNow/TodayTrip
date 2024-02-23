@@ -34,6 +34,7 @@ function PopularExperience() {
 
       <Splide
         ref={splideRef}
+        role="section"
         onMoved={(object: unknown, newIndex: number) => {
           setSlideIndex(newIndex);
         }}
@@ -63,7 +64,7 @@ function PopularExperience() {
         }}
       >
         {cardData.map((card) => (
-          <SplideSlide tag="div" key={card.id}>
+          <SplideSlide key={card.id}>
             <Card item={card} />
           </SplideSlide>
         ))}

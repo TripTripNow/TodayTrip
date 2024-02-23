@@ -32,7 +32,7 @@ function CardDetail({ item }: CardDetailProps) {
                 <span> ({item.reviewCount})</span>
               </p>
             </div>
-            <h3>{item.title}</h3>
+            <h1 className={styles.title}>{item.title}</h1>
           </div>
           <div className={styles.descriptionBottomWrapper}>
             <em>￦ {priceFormat(item.price)}</em>

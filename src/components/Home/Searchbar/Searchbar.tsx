@@ -33,7 +33,7 @@ function Searchbar({
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>무엇을 체험하고 싶으신가요?</h3>
+      <h1 className={styles.title}>무엇을 체험하고 싶으신가요?</h1>
 
       <form onSubmit={handleSearchSubmit} className={styles.inputForm}>
         <div className={styles.inputWrapper}>

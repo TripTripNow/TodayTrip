@@ -6,9 +6,6 @@
   position: relative;
   height: 55rem;
   overflow: hidden;
-  @media mobile {
-    height: 24rem;
-  }
 }
 
 .slider {
@@ -24,6 +21,7 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  height: 55rem;
 }
 
 .leftArrow,
@@ -31,7 +29,6 @@
   display: block;
   position: absolute;
   top: 0;
-
   color: var(--whiteFF);
   background-color: transparent;
   font-size: 2rem;
@@ -60,15 +57,6 @@
   position: relative;
   z-index: 2;
   margin-top: 15.9rem;
-
-  @media tablet {
-    margin-left: 3.2rem;
-  }
-
-  @media mobile {
-    margin-top: 7.4rem;
-    margin-left: 2.4rem;
-  }
 }
 
 .textLastContainer {
@@ -79,11 +67,6 @@
   position: relative;
   z-index: 2;
   margin-top: 15.9rem;
-
-  @media mobile {
-    margin-top: 7.4rem;
-    margin-left: 2.4rem;
-  }
 }
 
 .mainTitle {
@@ -95,16 +78,6 @@
   font-weight: 700;
   line-height: normal;
   margin-bottom: 2rem;
-
-  @media tablet {
-    font-size: 5.4rem;
-    margin-bottom: 0.8rem;
-  }
-
-  @media mobile {
-    font-size: 2.4rem;
-    margin-bottom: 0.8rem;
-  }
 }
 
 .mainLastTitle {
@@ -120,14 +93,53 @@
   font-weight: 700;
   line-height: normal;
   margin-bottom: 2rem;
+}
 
-  @media tablet {
+@media tablet {
+  .bannerContainer {
+    height: 55rem;
+  }
+
+  .textContainer {
+    margin-left: 3.2rem;
+  }
+  .text {
     font-size: 2rem;
   }
 
-  @media mobile {
+  .mainTitle {
+    font-size: 5.4rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+@media mobile {
+  .bannerContainer {
+    height: 24rem;
+  }
+
+  .container {
+    height: 24rem;
+  }
+
+  .textContainer {
+    margin-top: 7.4rem;
+    margin-left: 2.4rem;
+  }
+
+  .text {
     margin-bottom: 1.2rem;
     font-size: 1.4rem;
+  }
+
+  .textLastContainer {
+    margin-top: 7.4rem;
+    margin-left: 2.4rem;
+  }
+
+  .mainTitle {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
   }
 }
 

@@ -2,12 +2,12 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 import { useBanner } from '@/hooks/Home/useBanner';
+import LinkButton from '@/components/Home/LinkButton/LinkButton';
 import MainBanner1 from '#/images/img-mainBanner1.png';
 import MainBanner2 from '#/images/img-mainBanner2.png';
 import MainBanner3 from '#/images/img-mainBanner3.png';
 import LeftArrow from '#/icons/icon-left-arrow.svg';
 import styles from './Banner.module.css';
-import LinkButton from '@/components/Home/LinkButton/LinkButton';
 
 /** 배너에 관련된 정보입니다. */
 export const BANNER = [
@@ -44,10 +44,18 @@ function Carousel() {
       onMouseLeave={() => handleMouseOnSlider(false)}
     >
       <div className={styles.slider} ref={slideRef}>
-        {BANNER.map((data) => (
+        {BANNER.map((data, index) => (
           <div key={data.id} className={styles.bannerContainer}>
             <div className={styles.background}></div>
-            <Image src={data.src} alt={String(data.id)} fill sizes="100%" priority />
+            <Image
+              src={data.src}
+              alt={String(data.id)}
+              fill
+              sizes="100%"
+              priority={index === 0}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              fetchPriority={index === 0 ? 'high' : 'auto'}
+            />
             <div className={clsx(data.id !== 3 ? styles.textContainer : styles.textLastContainer)}>
               <h1 className={clsx(styles.mainTitle, data.id === 3 && styles.mainLastTitle)}>{data.title}</h1>
               <pre className={styles.text}>{data.description}</pre>
@@ -62,6 +70,7 @@ function Carousel() {
         onClick={() => handleSlide(-1)}
         onMouseEnter={() => handleArrowHover('left', true)}
         onMouseLeave={() => handleArrowHover('left', false)}
+        aria-label="배너 왼쪽 화살표"
       >
         <LeftArrow
           alt="왼쪽 화살표"
@@ -74,6 +83,7 @@ function Carousel() {
         onClick={() => handleSlide(1)}
         onMouseEnter={() => handleArrowHover('right', true)}
         onMouseLeave={() => handleArrowHover('right', false)}
+        aria-label="배너 오른쪽 화살표"
       >
         <LeftArrow
           alt="오른쪽 화살표"

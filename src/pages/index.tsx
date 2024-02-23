@@ -42,7 +42,7 @@ function Home() {
     handlePaginationByClick,
     activityData,
     searchedByNoData,
-    isPending,
+    isFetching,
     handleDeleteRecentSearch,
   } = useHome();
 
@@ -59,7 +59,7 @@ function Home() {
         />
         {!searchResult && <PopularExperience />}
 
-        {!searchedByNoData && activityData ? (
+        {!searchedByNoData && activityData && (
           <AllExperience
             searchResult={searchResult}
             showCards={activityData.activities}
@@ -72,7 +72,8 @@ function Home() {
             setPriceFilterValue={setPriceFilterValue}
             priceFilterValue={priceFilterValue}
           />
-        ) : (
+        )}
+        {searchedByNoData && (
           <div className={styles.noResultContainer}>
             <NoResult />
           </div>

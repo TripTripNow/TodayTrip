@@ -30,7 +30,7 @@ function Card({ item }: CardProps) {
             <p className={styles.reviewCountText}>{intToFloat(item.rating, 1)}</p>
             <p className={styles.reviewCountText}>{`(${item.reviewCount})`}</p>
           </div>
-          <h3 className={styles.title}>{item.title}</h3>
+          <h1 className={styles.title}>{item.title}</h1>
           <div className={styles.priceWrapper}>
             <em>￦ {priceFormat(item.price)}</em>
             <p>/인</p>

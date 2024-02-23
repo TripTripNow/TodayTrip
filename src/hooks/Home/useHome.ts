@@ -31,13 +31,14 @@ export const useHome = () => {
   const [searchResult, setSearchResult] = useState(''); // 검색한 결과
   const [priceFilterValue, setPriceFilterValue] = useState<PriceFilterOption>('가격');
   const [recentSearchKeywords, setRecentSearchKeywords] = useState<string[]>([]);
+  const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
 
   const queryClient = useQueryClient();
 
   const {
     data: activityData,
     isError,
-    isPending,
+    isFetching,
   } = useQuery({
     queryKey: [QUERY_KEYS.allActivities, sortByPrice, selectedCategory, currentPageNumber, limit, searchResult],
     queryFn: () =>
@@ -51,8 +52,6 @@ export const useHome = () => {
       }),
     placeholderData: keepPreviousData,
   });
-
-  const [inputSearchText, setInputSearchText] = useState(''); // searchbar의 value state
 
   /** Searchbar 검색 후 submit 함수 */
   const handleSearchSubmit = (
@@ -112,6 +111,7 @@ export const useHome = () => {
     setSelectedCategory((prev) => (prev === name ? '' : name));
   };
 
+  /** 정렬 기준 변경 함수 */
   const handleSortByPrice = (val: PriceFilterOption) => {
     if (val === '가격') return;
     const newSortByPrice = val === '낮은 순' ? 'price_asc' : 'price_desc';
@@ -124,18 +124,8 @@ export const useHome = () => {
   }, []);
 
   useEffect(() => {
-    const handleCardLimitByWindowWidth = () => {
-      const changedLimit = calculateLimit(deviceType);
-
-      // 페이지 1일 때는 window resize에 대해서 currentPageNumber에 변화가 있으면 안된다
-      if (currentPageNumber !== 1) {
-        const calc = Math.ceil(((currentPageNumber - 1) * limit! + 1) / changedLimit!);
-        setCurrentPageNumber(calc > 0 ? calc : 1);
-      }
-      setLimit(changedLimit!);
-    };
-
-    handleCardLimitByWindowWidth();
+    setCurrentPageNumber(1);
+    setLimit(calculateLimit(deviceType)!);
   }, [deviceType]);
 
   useEffect(() => {
@@ -183,7 +173,7 @@ export const useHome = () => {
     handlePaginationByClick,
     activityData,
     searchedByNoData,
-    isPending,
+    isFetching,
     handleDeleteRecentSearch,
   };
 };
