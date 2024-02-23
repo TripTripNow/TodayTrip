@@ -33,7 +33,6 @@ function Home() {
     inputSearchText,
     recentSearchKeywords,
     searchResult,
-    deviceType,
     priceFilterValue,
     setPriceFilterValue,
     selectedCategory,
@@ -41,11 +40,13 @@ function Home() {
     currentPageNumber,
     totalPageNumber,
     handlePaginationByClick,
-    activityData,
+    showCards,
     searchedByNoData,
+    handleDeleteRecentSearch,
+    totalCardsNum,
+    isPending,
   } = useHome();
 
-  if (!activityData) return null;
   return (
     <main className={styles.container}>
       <Banner />
@@ -55,14 +56,16 @@ function Home() {
           handleSearchText={handleSearchText}
           inputSearchText={inputSearchText}
           recentText={recentSearchKeywords}
+          handleDeleteRecentSearch={handleDeleteRecentSearch}
         />
-        {!searchResult && <PopularExperience deviceType={deviceType} />}
+        {!searchResult && <PopularExperience />}
 
-        {!searchedByNoData ? (
+        {!searchedByNoData && (
           <AllExperience
+            isPending={isPending}
             searchResult={searchResult}
-            showCards={activityData.activities}
-            totalCardsNum={activityData.totalCount}
+            showCards={showCards}
+            totalCardsNum={totalCardsNum}
             handlePaginationByClick={handlePaginationByClick}
             totalPages={totalPageNumber}
             pageNumber={currentPageNumber}
@@ -71,7 +74,10 @@ function Home() {
             setPriceFilterValue={setPriceFilterValue}
             priceFilterValue={priceFilterValue}
           />
-        ) : (
+        )}
+        {isPending && <div className={styles.loadingContainer}></div>}
+
+        {!isPending && searchedByNoData && (
           <div className={styles.noResultContainer}>
             <NoResult />
           </div>

@@ -6,6 +6,7 @@ import { Activity } from '@/types/common/api';
 import ImageFallback from '@/components/common/ImageFallback/ImageFallback';
 import StarIcon from '#/icons/icon-star.svg';
 import styles from './Card.module.css';
+import clsx from 'clsx';
 
 type CardProps = {
   item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>;
@@ -14,7 +15,7 @@ type CardProps = {
 function Card({ item }: CardProps) {
   return (
     <Link href={`activities/${item.id}`}>
-      <div className={styles.container}>
+      <div className={clsx(styles.container, styles.cardAnimation)}>
         <div className={styles.background}></div>
         <ImageFallback
           src={item.bannerImageUrl}
@@ -30,7 +31,7 @@ function Card({ item }: CardProps) {
             <p className={styles.reviewCountText}>{intToFloat(item.rating, 1)}</p>
             <p className={styles.reviewCountText}>{`(${item.reviewCount})`}</p>
           </div>
-          <h3 className={styles.title}>{item.title}</h3>
+          <h1 className={styles.title}>{item.title}</h1>
           <div className={styles.priceWrapper}>
             <em>￦ {priceFormat(item.price)}</em>
             <p>/인</p>

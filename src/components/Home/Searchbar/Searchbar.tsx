@@ -3,16 +3,28 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Button from '@/components/common/Button/Button';
 import SearchIcon from '#/icons/icon-search.svg';
+import RefreshIcon from '#/icons/icon-refresh.svg';
+import DeleteIcon from '#/icons/icon-close.svg';
 import styles from './Searchbar.module.css';
 
 interface SearchbarProps {
   inputSearchText: string;
   handleSearchText: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSearchSubmit: (e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement>, text?: string) => void;
+  handleSearchSubmit: (
+    e: FormEvent<HTMLFormElement> | MouseEvent<HTMLDivElement> | MouseEvent<HTMLButtonElement>,
+    text?: string,
+  ) => void;
   recentText: string[];
+  handleDeleteRecentSearch: (e: MouseEvent<HTMLOrSVGScriptElement>, text: string) => void;
 }
 
-function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, recentText }: SearchbarProps) {
+function Searchbar({
+  inputSearchText,
+  handleSearchText,
+  handleSearchSubmit,
+  recentText,
+  handleDeleteRecentSearch,
+}: SearchbarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드랍다운 상태 추가
 
   const handleEnterClick = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -21,7 +33,7 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>무엇을 체험하고 싶으신가요?</h3>
+      <h1 className={styles.title}>무엇을 체험하고 싶으신가요?</h1>
 
       <form onSubmit={handleSearchSubmit} className={styles.inputForm}>
         <div className={styles.inputWrapper}>
@@ -45,7 +57,11 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
               <p className={styles.dropdownDescription}>최근 검색어{recentText.length <= 0 && ' 없음'}</p>
               {recentText.map((text, index) => (
                 <div key={index} className={styles.dropdownItem} onMouseDown={(e) => handleSearchSubmit(e, text)}>
-                  {text}
+                  <p>{text}</p>
+                  <DeleteIcon
+                    className={styles.dropdownItemDeleteIcon}
+                    onMouseDown={(e: MouseEvent<HTMLOrSVGScriptElement>) => handleDeleteRecentSearch(e, text)}
+                  />
                 </div>
               ))}
             </div>
@@ -55,6 +71,10 @@ function Searchbar({ inputSearchText, handleSearchText, handleSearchSubmit, rece
           검색하기
         </Button>
       </form>
+      <button className={styles.refreshWrapper} onClick={(e) => handleSearchSubmit(e, '')}>
+        <RefreshIcon className={styles.refreshIcon} width={15} />
+        검색 결과 초기화
+      </button>
     </div>
   );
 }
