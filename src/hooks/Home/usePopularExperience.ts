@@ -26,7 +26,9 @@ export const usePopularExperience = () => {
   };
 
   /** 에러 관련 useEffect */
-  if (isError) toast.error('데이터를 불러오지 못했습니다.');
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러오지 못했습니다.');
+  }, [isError]);
 
   return { slideIndex, handleSlideByBtn, setSlideIndex, splideRef, cardData };
 };
