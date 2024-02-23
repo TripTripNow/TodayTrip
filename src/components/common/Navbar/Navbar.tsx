@@ -29,6 +29,7 @@ function Navbar() {
     getNextPageParam: (lastPage) => {
       return lastPage.cursorId;
     },
+    enabled: !!userData,
   });
 
   const { isVisible, targetRef } = useInfiniteScroll();
@@ -61,10 +62,10 @@ function Navbar() {
   };
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && userData) {
       fetchNextPage();
     }
-  }, [isVisible]);
+  }, [isVisible, userData]);
 
   return (
     <div className={styles.container}>

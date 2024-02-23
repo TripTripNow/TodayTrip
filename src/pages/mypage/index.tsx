@@ -67,7 +67,7 @@ function MyPage({ userData, type }: MyPageProps) {
   });
 
   const handleOnSubmit = (data: FieldValues) => {
-    const isValidPwCheck = passwordCheck(data.mypagePasswordCheck, data.mypagePassword, setError);
+    const isValidPwCheck = passwordCheck('mypage', data.mypagePasswordCheck, data.mypagePassword, setError);
     if (!isValidPwCheck) return;
 
     const patchUsersMeReq: PatchUsersMeReq = {
