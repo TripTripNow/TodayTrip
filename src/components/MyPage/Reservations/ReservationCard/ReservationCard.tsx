@@ -77,7 +77,7 @@ function ReservationCard({ data }: ReservationCardProps) {
 
   return (
     <>
-      <div className={styles.cardWrapper} onClick={handleClickNavigate}>
+      <div className={clsx(styles.cardWrapper, styles.cardAnimation)} onClick={handleClickNavigate}>
         <div className={styles.imageWrapper}>
           <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
         </div>

@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { priceFormat } from '@/utils/priceFormat';
+import clsx from 'clsx';
 
 interface ActivitiesCardProps {
   item: {
@@ -71,7 +72,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   };
 
   return (
-    <div className={styles.activitiesItemWrapper}>
+    <div className={clsx(styles.activitiesItemWrapper, styles.cardAnimation)}>
       <div className={styles.activitiesItemImgDiv}>
         <Image
           className={styles.activitiesImg}
