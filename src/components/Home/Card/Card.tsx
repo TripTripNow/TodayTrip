@@ -22,7 +22,7 @@ function Card({ item }: CardProps) {
           alt={item.title}
           className={styles.bannerImage}
           fill
-          sizes="100%"
+          sizes="(min-width: 76.8rem) 38.4rem, (max-width: 76.7rem) 18.6rem"
           priority
         />
         <div className={styles.textContainer}>
