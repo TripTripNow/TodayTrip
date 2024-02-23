@@ -68,6 +68,7 @@
   border-radius: 0.8rem;
   font-size: 1.4rem;
   animation: slideinpc 0.3s ease-out;
+  padding-bottom: 0.5rem;
 
   @media mobile {
     top: 7rem;

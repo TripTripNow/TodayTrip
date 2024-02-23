@@ -16,7 +16,7 @@ import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { Notifications } from '@/types/myNotifications';
 
 function Navbar() {
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
