@@ -1,0 +1,150 @@
+@values tablet, mobile from '@/styles/breakpoints.css';
+
+.container {
+  position: relative;
+  margin-top: -4rem;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  padding: 3.2rem 2.4rem 0;
+  flex-direction: column;
+  justify-content: center;
+
+  border-radius: 1.6rem;
+  background: var(--whiteFF);
+  box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
+
+  @media tablet {
+    margin-top: -2.4rem;
+    width: calc(100% - 2.4rem);
+  }
+  @media mobile {
+    margin-top: -2.4rem;
+    width: calc(100% - 1.6rem);
+  }
+}
+
+.title {
+  align-self: stretch;
+  color: var(--black1B);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2.6rem;
+  margin-bottom: 3.2rem;
+
+  @media mobile {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.inputForm {
+  display: flex;
+  width: 100%;
+  height: 5.6rem;
+  border-radius: 0.4rem;
+  background: var(--whiteFF);
+  gap: 1.2rem;
+  margin-bottom: 3.2rem;
+
+  @media mobile {
+    margin-bottom: 1.6rem;
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 0.1rem solid var(--gray79);
+  height: 100%;
+  border-radius: 0.4rem;
+
+  gap: 1.2rem;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  color: #000;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  flex: 1 0 0;
+}
+
+.searchText {
+  width: 100%;
+  margin: 1rem 0;
+  color: #000;
+  font-family: Inter;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.searchPlaceholder {
+  position: absolute;
+  display: inline-block;
+  padding: 0 0.4rem;
+  top: -1.4rem;
+  left: 4.8rem;
+  background-color: white;
+  color: var(--grayA4);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.6rem;
+
+  @media mobile {
+    left: 2.4rem;
+    font-size: 1.4rem;
+  }
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 0.1rem solid #ccc;
+  border-top: none;
+  border: 0.1rem solid var(--gray79);
+  border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  margin-top: 0.8rem;
+  z-index: 10;
+}
+
+.dropdownItem {
+  padding: 1rem;
+  cursor: pointer;
+  color: #000;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.dropdownItem:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdownDescription {
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: var(--gray79);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
