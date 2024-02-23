@@ -67,7 +67,7 @@
   border: 0.1rem solid var(--grayDD);
   border-radius: 0.8rem;
   font-size: 1.4rem;
-  animation: slideinpc 0.3s ease-out;
+  animation: slideinpc 0.35s ease-out;
 
   @media mobile {
     top: 7rem;
@@ -77,16 +77,16 @@
     border-radius: 0 0 0.8rem 0.8rem;
     border-top: none;
     box-shadow: 0 0.5rem 0.5rem 0 var(--grayDD);
-    animation: slidein 0.3s ease-out;
+    animation: slidein 0.35s ease-out;
   }
 }
 
 .profileDropDownCloseContainer {
   composes: profileDropDownContainer;
-  animation: slideoutpc 0.3s ease-out;
+  animation: slideoutpc 0.35s ease-out;
 
   @media mobile {
-    animation: slideout 0.3s ease-out;
+    animation: slideout 0.35s ease-out;
   }
 }
 
