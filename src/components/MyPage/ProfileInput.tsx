@@ -81,12 +81,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
           priority
         />
       ) : (
-        <div
-          style={{
-            width: '1.6rem',
-            height: '1.6rem',
-          }}
-        ></div>
+        <div className={styles.profileImgBox}></div>
       )}
 
       {isEdit && <EditIcon alt="프로필 이미지 수정 아이콘" className={styles.editIcon} onClick={handleUploadImg} />}

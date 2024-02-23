@@ -41,6 +41,28 @@ const MENU_LIST = [
   },
 ];
 
+const renderTitle = (pathname: string, title: string) => {
+  if (pathname === '/mypage/activities/[id]/edit' && title === '내 체험 관리') {
+    return (
+      <>
+        <div className={styles.title}>{title}</div>
+        <span className={styles.subTitle}>&nbsp;- 내 체험 수정</span>
+      </>
+    );
+  }
+
+  if (pathname === '/mypage/reservations/[id]' && title === '예약 내역') {
+    return (
+      <>
+        <div className={styles.title}>{title}</div>
+        <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
+      </>
+    );
+  }
+
+  return title;
+};
+
 function ProfileMenuBox() {
   const router = useRouter();
   const { pathname } = router;
@@ -63,43 +85,23 @@ function ProfileMenuBox() {
     router.push(item.link);
   };
 
-  const renderTitle = (title: string) => {
-    if (pathname === '/mypage/activities/[id]/edit' && title === '내 체험 관리') {
-      return (
-        <>
-          <div className={styles.title}>{title}</div>
-          <span className={styles.subTitle}>&nbsp;- 내 체험 수정</span>
-        </>
-      );
-    }
-
-    if (pathname === '/mypage/reservations/[id]' && title === '예약 내역') {
-      return (
-        <>
-          <div className={styles.title}>{title}</div>
-          <span className={styles.subTitle}>&nbsp;- 예약 상세</span>
-        </>
-      );
-    }
-
-    return title;
-  };
-
   return (
     <div className={styles.profileBoxContainer}>
       <ProfileInput isProfileBox={true} isEdit={router.pathname === '/mypage'} />
 
       <div className={styles.memuContainer}>
-        {MENU_LIST.map((e, index) => {
+        {MENU_LIST.map((menuItem, index) => {
           return (
             <div
-              className={`${styles.menuItem} ${e.title === selectedMenu && styles.active}`}
+              className={`${styles.menuItem} ${menuItem.title === selectedMenu && styles.active}`}
               key={index}
-              onClick={() => handleMenuItem(e)}
+              onClick={() => handleMenuItem(menuItem)}
             >
-              {e.title === selectedMenu ? e.activeIcon : e.icon}
+              {menuItem.title === selectedMenu ? menuItem.activeIcon : menuItem.icon}
               <div className={styles.menuItemTitle}>
-                {e.title === '예약 내역' || e.title === '내 체험 관리' ? renderTitle(e.title) : e.title}
+                {menuItem.title === '예약 내역' || menuItem.title === '내 체험 관리'
+                  ? renderTitle(pathname, menuItem.title)
+                  : menuItem.title}
               </div>
             </div>
           );
