@@ -1,5 +1,6 @@
 import instance from '@/api/axiosInstance';
 import {
+  PostActivitiesReq,
   GetActivitiesParam,
   GetActivitiesRes,
   GetReviewsParams,
@@ -56,4 +57,21 @@ export const postReservation = async ({
     scheduleId,
     headCount,
   });
+};
+
+export const postActivities = async (activityData: PostActivitiesReq) => {
+  return await instance.post('/activities', activityData);
+};
+
+export const getActivitiesId = async (activityId: number): Promise<Activity> => {
+  return await instance.get(`/activities/${activityId}`);
+};
+
+export const postImageUrl = async (formData: FormData) => {
+  const res: { activityImageUrl: string } = await instance.post('/activities/image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return res.activityImageUrl;
 };

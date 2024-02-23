@@ -1,8 +1,13 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement } from 'react';
-
 import { FieldValues, useForm } from 'react-hook-form';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
+import { postActivities } from '@/api/activities';
+import { PostActivitiesReq } from '@/types/activities';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 export interface IsDateTime {
   date: string;
@@ -11,6 +16,7 @@ export interface IsDateTime {
 }
 
 function ActivityAdd() {
+  const router = useRouter();
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -19,16 +25,35 @@ function ActivityAdd() {
       address: '',
       category: '',
       description: '',
-      images: {
-        bannerImg: '',
-        subImgs: [],
-      },
+      bannerImageUrl: '',
       schedules: [],
+
+      subImageUrls: [],
+      subImageIdsToRemove: [],
+      subImageUrlsToAdd: [],
+
+      scheduleIdsToRemove: [],
+      schedulesToAdd: [],
     },
   });
 
-  const handleOnSubmit = (data: FieldValues) => {
-    if (data) console.log(data);
+  const activityAddMutation = useMutation({
+    mutationFn: (data: PostActivitiesReq) => postActivities(data),
+    onSuccess: () => {
+      router.push('/mypage/activities');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
+    },
+  });
+
+  const handleOnSubmit = async (data: FieldValues) => {
+    delete data.subImageIdsToRemove;
+    delete data.subImageUrlsToAdd;
+    delete data.scheduleIdsToRemove;
+    delete data.schedulesToAdd;
+    data.price = Number(data.price.replace(/,/g, ''));
+    activityAddMutation.mutate(data as PostActivitiesReq);
   };
 
   return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;

@@ -1,5 +1,6 @@
 import instance from '@/api/axiosInstance';
 import {
+  PatchMyActivityReq,
   GetMyActivitiesParam,
   GetMyActivitiesRes,
   GetReservationDashboardParam,
@@ -12,6 +13,10 @@ import {
   PatchReservationsRes,
 } from '@/types/myActivities';
 import { ActivityId } from '@/types/common/api';
+
+export const patchActivitiesId = async (activityId: number, activityData: PatchMyActivityReq) => {
+  return await instance.patch(`/my-activities/${activityId}`, activityData);
+};
 
 /** 내 체험 리스트 조회 */
 export const getMyActivities = async ({ cursorId, size = 6 }: GetMyActivitiesParam): Promise<GetMyActivitiesRes> => {
