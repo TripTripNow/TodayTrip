@@ -7,28 +7,52 @@ import MinusButtonIcon from '#/icons/icon-minusButton.svg';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Control, FieldValues, useController } from 'react-hook-form';
+import { Control, FieldValues, UseFormGetValues, UseFormSetValue, useController } from 'react-hook-form';
+import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 
 interface ReservationTimeProps {
   name: string;
   control: Control<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
 }
 
-function ReservationTime({ name, control }: ReservationTimeProps) {
+interface reservationPlusArrayType {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface reservationArrayType extends reservationPlusArrayType {
+  id: number;
+}
+
+function ReservationTime({ name, control, setValue, getValues }: ReservationTimeProps) {
   const { field } = useController({ name, control });
   const dateValue = field.value;
-
+  const date = dayjs();
+  const currentTime = date.format('YYYY-MM-DD HH:MM');
   const [isSelectedDate, setIsSelectedDate] = useState('');
   const [startTimeItem, setStartTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
   const [endTimeItem, setEndTimeItem] = useState<DropdownItems>(INITIAL_DROPDOWN_ITEM);
 
-  const handleAddButton = (isSelectedDate: string, startTime: string, endTime: string) => {
+  const handleAddButton = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    isSelectedDate: string,
+    startTime: string,
+    endTime: string,
+  ) => {
+    e.preventDefault();
     if (!startTime || !endTime || !isSelectedDate) {
       toast('날짜, 시간을 선택해 주세요.');
       return;
     }
     if (startTime >= endTime) {
       toast('시간을 확인해 주세요.');
+      return;
+    }
+    if (currentTime > isSelectedDate + ' ' + startTime) {
+      toast('현재 시간 이후의 일정을 선택해 주세요.');
       return;
     }
     if (
@@ -40,6 +64,8 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
       toast.error('동일한 시간이 있습니다.');
       return;
     }
+
+    // 조건에 맞으면 데이터 추가하는 부분
     field.onChange([
       ...dateValue,
       {
@@ -48,10 +74,33 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
         endTime: endTimeItem.title,
       },
     ]);
+    setValue('schedulesToAdd', [
+      ...getValues('schedulesToAdd'),
+      {
+        date: isSelectedDate,
+        startTime: startTimeItem.title,
+        endTime: endTimeItem.title,
+      },
+    ]);
   };
 
-  const handleDeleteButton = (item: string) => {
-    field.onChange(dateValue.filter((e: any) => `${e.date}+${e.startTime}+${e.endTime}` !== item));
+  // 삭제하는 부분
+  const handleDeleteButton = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    currentIndex: number,
+    item: reservationArrayType | reservationPlusArrayType,
+  ) => {
+    e.preventDefault();
+    // 기존에 있던 날짜 삭제 부분
+    if ('id' in item) {
+      setValue('scheduleIdsToRemove', [...getValues('scheduleIdsToRemove'), item.id]);
+    } else {
+      // 새롭게 추가한 날짜 삭제 부분
+      const deleteIndex = currentIndex - dateValue.length + getValues('schedulesToAdd').length;
+      const lastToAddSchedule = getValues('schedulesToAdd').filter((_: string, index: number) => index !== deleteIndex);
+      setValue('schedulesToAdd', lastToAddSchedule);
+    }
+    field.onChange(dateValue.filter((_: any, index: number) => index !== currentIndex));
   };
 
   return (
@@ -74,7 +123,7 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
               <Dropdown type="시간" setDropdownItem={setEndTimeItem} dropDownItems={TIME_LIST} placeholder="0:00" />
             </div>
           </div>
-          <button onClick={() => handleAddButton(isSelectedDate, startTimeItem.title, endTimeItem.title)}>
+          <button onClick={(e) => handleAddButton(e, isSelectedDate, startTimeItem.title, endTimeItem.title)}>
             <PlusButtonIcon className={styles.datePlusButton} alt="플러스 버튼" width={56} height={56} />
           </button>
         </div>
@@ -91,8 +140,10 @@ function ReservationTime({ name, control }: ReservationTimeProps) {
                       <p className={styles.dateWave}>~</p>
                       <div className={styles.addedTime}>{item.endTime}</div>
                     </div>
-                    <button onClick={() => handleDeleteButton(`${item.date}+${item.startTime}+${item.endTime}`)}>
-                      <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" width={56} height={56} />
+                    <button onClick={(e) => handleDeleteButton(e, index, item)}>
+                      {currentTime < item.date + ' ' + item.startTime && (
+                        <MinusButtonIcon className={styles.datePlusButton} alt="마이너스 버튼" width={56} height={56} />
+                      )}
                     </button>
                   </div>
                 </div>

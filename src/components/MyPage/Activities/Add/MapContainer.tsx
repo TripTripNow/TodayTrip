@@ -28,7 +28,7 @@ class LoadScriptOnlyIfNeeded extends LoadScript {
 interface MapContainerProps {
   latlng?: { lat: number; lng: number } | null;
   name: string;
-  control: Control<FieldValues, any>;
+  control: Control<FieldValues>;
 }
 
 const libraries = ['places'];

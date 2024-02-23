@@ -7,6 +7,7 @@ import {
   ScheduledReservation,
   TimeSlot,
 } from '@/types/common/api';
+import { FieldValues } from 'react-hook-form';
 
 /**
  * 내 체험 리스트 조회 Parameter
@@ -136,23 +137,15 @@ export interface PatchMyActivityParam {
  * 내 체험 수정 Request
  */
 
-export interface PatchMyActivityReq {
+export interface PatchMyActivityReq extends FieldValues {
   title: string;
   category: Category;
   description: string;
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageIdsToRemove: unknown[];
-  subImageUrlsToAdd: unknown[];
-  scheduleIdsToRemove: unknown[];
-  schedulesToAdd: unknown[];
-}
-
-/**
- * 내 체험 수정 Response
- */
-
-export interface PatchMyActivityRes extends Activity {
-  schedules: TimeSlot[];
+  subImageIdsToRemove: number[];
+  subImageUrlsToAdd: string[];
+  scheduleIdsToRemove: number[];
+  schedulesToAdd: { date: string; startTime: string; endTime: string }[];
 }
