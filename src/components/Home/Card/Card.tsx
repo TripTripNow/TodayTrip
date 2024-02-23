@@ -1,12 +1,11 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { priceFormat } from '@/utils/priceFormat';
 import { intToFloat } from '@/utils/intToFloat';
-
+import { Activity } from '@/types/common/api';
+import ImageFallback from '@/components/common/ImageFallback/ImageFallback';
 import StarIcon from '#/icons/icon-star.svg';
 import styles from './Card.module.css';
-import { Activity } from '@/types/common/api';
 
 type CardProps = {
   item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>;
@@ -17,7 +16,14 @@ function Card({ item }: CardProps) {
     <Link href={`activities/${item.id}`}>
       <div className={styles.container}>
         <div className={styles.background}></div>
-        <Image className={styles.bannerImage} src={item.bannerImageUrl} alt={item.title} fill sizes="100%" priority />
+        <ImageFallback
+          src={item.bannerImageUrl}
+          alt={item.title}
+          className={styles.bannerImage}
+          fill
+          sizes="100%"
+          priority
+        />
         <div className={styles.textContainer}>
           <div className={styles.rateWrapper}>
             <StarIcon alt="별 아이콘" />

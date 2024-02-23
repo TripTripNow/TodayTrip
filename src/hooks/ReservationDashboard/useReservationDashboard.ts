@@ -25,7 +25,9 @@ export const useReservationDashboard = () => {
     }) ?? [];
   const [dropDownItem, setDropdownItem] = useState<DropdownItems>(dropdownData[0] ?? INITIAL_DROPDOWN_ITEM); // 드랍다운 value 값
 
-  if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
 
   return { dropdownData, dropDownItem, setDropdownItem, fetchNextPage };
 };
