@@ -19,7 +19,6 @@ import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import { useSession } from 'next-auth/react';
 import { priceFormat } from '@/utils/priceFormat';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
-import ReservationCalendar from '@/components/Activities/ReservationDateTimePicker/ReservationCalendar/ReservationCalendar';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
 dayjs.extend(customParseFormat);
 
@@ -53,17 +52,17 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setIsAlertModalOpen((prev) => !prev);
   };
 
+  const router = useRouter();
+  const userData = useSession();
+
+  const formattedDate = dayjs(dateValue as Date).format('YYYY-MM-DD');
   const formattedYear = dayjs(dateValue as Date).format('YYYY');
   const formattedMonth = dayjs(dateValue as Date).format('MM');
-  const formattedDate = dayjs(dateValue as Date).format('YYYY-MM-DD');
 
   const { data: monthlyAvailableScheduleData } = useQuery({
     queryKey: [QUERY_KEYS.activity, data.id, formattedYear, formattedMonth],
     queryFn: () => getAvailableSchedule({ activityId: data.id, year: formattedYear, month: formattedMonth }),
   });
-
-  const router = useRouter();
-  const userData = useSession();
 
   useEffect(() => {
     if (!dateValue) {
@@ -87,13 +86,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
-  }, [dateValue, monthlyAvailableScheduleData]);
-
-  useEffect(() => {
-    if (clickedTimeButtonId) {
-      handleDateButtonText(clickedTimeButtonId);
-    }
-  }, [clickedTimeButtonId]);
+  }, [dateValue, formattedDate, monthlyAvailableScheduleData]);
 
   const handleDateButtonText = (clickedTimeButtonId: number | null) => {
     setDateButtonText(`
@@ -102,6 +95,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
+  useEffect(() => {
+    if (clickedTimeButtonId) {
+      handleDateButtonText(clickedTimeButtonId);
+    }
+  }, [clickedTimeButtonId]);
+
+  // 캘린더 관련 함수들
   const handleTimeButtonClick = (id: number | null) => {
     setClickedTimeButtonId(id);
   };
@@ -187,14 +187,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             tileDisabled={handleTileDisabled}
             minDate={new Date()}
           />
-          {/* <ReservationCalendar
-          dateValue={dateValue}
-          dateButtonText={dateButtonText}
-          handleReserveModalToggle={handleReserveModalToggle}
-          handleCalendarDateChange={handleCalendarDateChange}
-          handleOnActiveStartDateChange={handleOnActiveStartDateChange}
-          handleTileDisabled={handleTileDisabled}
-        /> */}
         </div>
 
         <div className={styles.possibleTime}>

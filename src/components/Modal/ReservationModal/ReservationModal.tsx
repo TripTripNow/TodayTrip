@@ -7,7 +7,7 @@ import style from '@/components/Activities/ReservationDateTimePicker/Reservation
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from '@/types/Calendar';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Time } from '@/types/common/api';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
