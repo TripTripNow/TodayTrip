@@ -43,7 +43,6 @@ function ReservationModal({
   const handleSelectButtonClick = () => {
     handleModalToggle();
     handleDateButtonText(clickedPossibleTimeIdInModal);
-
     handleTimeButtonClick(clickedPossibleTimeIdInModal);
   };
 

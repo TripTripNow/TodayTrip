@@ -38,12 +38,25 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
-  const selectedYear = dayjs(dateValue as Date).format('YYYY');
-  const selectedMonth = dayjs(dateValue as Date).format('MM');
+  // 참여 인원수 인풋과 연결될 value State
+  const [participantsValue, setParticipantsValue] = useState(1);
+
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+
+  const handleReserveModalToggle = () => {
+    setIsReserveModalOpen((prev) => !prev);
+  };
+
+  const handleAlertModalToggle = () => {
+    setIsAlertModalOpen((prev) => !prev);
+  };
+
+  const formattedYear = dayjs(dateValue as Date).format('YYYY');
+  const formattedMonth = dayjs(dateValue as Date).format('MM');
 
   const { data: monthlyAvailableScheduleData } = useQuery({
-    queryKey: [QUERY_KEYS.activity, data.id, selectedYear, selectedMonth],
-    queryFn: () => getAvailableSchedule({ activityId: data.id, year: selectedYear, month: selectedMonth }),
+    queryKey: [QUERY_KEYS.activity, data.id, formattedYear, formattedMonth],
+    queryFn: () => getAvailableSchedule({ activityId: data.id, year: formattedYear, month: formattedMonth }),
   });
 
   const router = useRouter();
@@ -72,8 +85,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
-
-    // setTileDisabled(true);
   }, [dateValue, monthlyAvailableScheduleData]);
 
   const handleDateButtonText = (clickedTimeButtonId: number | null) => {
@@ -120,19 +131,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     return !isDateAvailable;
   };
 
-  // 참여 인원수 인풋과 연결될 value State
-  const [participantsValue, setParticipantsValue] = useState(1);
-
-  const handleReserveModalToggle = () => {
-    setIsReserveModalOpen((prev) => !prev);
-  };
-
-  const [isAlertReserveModalOpen, setIsAlertReserveModalOpen] = useState(false);
-
-  const handleAlertModalToggle = () => {
-    setIsAlertReserveModalOpen((prev) => !prev);
-  };
-
+  // 예약하기 mutation
   const reserveMutation = useMutation({
     mutationFn: () =>
       postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
@@ -152,9 +151,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     },
   });
 
+  // 예약하기 버튼 클릭 시
   const handleReserveButtonClick = () => {
     if (userData.status === 'unauthenticated') {
-      setIsAlertReserveModalOpen(true);
+      setIsAlertModalOpen(true);
       return;
     }
     reserveMutation.mutate();
@@ -173,7 +173,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <button className={styles.selectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
-          {/* <ReservationCalendar dateValue={dateValue} setDateValue={setDateValue} /> */}
+
           <Calendar
             prev2Label={null}
             next2Label={null}
@@ -261,7 +261,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           handleTileDisabled={handleTileDisabled}
         />
       )}
-      {isAlertReserveModalOpen && (
+      {isAlertModalOpen && (
         <AlertModal
           text={'로그인 하시겠습니까?'}
           handleModalClose={handleAlertModalToggle}
