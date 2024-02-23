@@ -42,7 +42,7 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
   });
 
   const handleAlarmDelete = (id: number) => {
-    deleteNotificationMutation.mutate(id);
+    if (!deleteNotificationMutation.isPending) deleteNotificationMutation.mutate(id);
   };
 
   return (
