@@ -51,7 +51,7 @@ function Carousel() {
               src={data.src}
               alt={data.title}
               fill
-              sizes="100%"
+              sizes="100vw"
               objectFit="cover"
               priority={index === 0}
               loading={index === 0 ? 'eager' : 'lazy'}

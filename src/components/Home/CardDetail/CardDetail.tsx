@@ -19,7 +19,7 @@ function CardDetail({ item }: CardDetailProps) {
             alt="체험 배너"
             className={styles.image}
             fill
-            sizes="(min-width: 76.8rem) 28.3rem, (max-width: 119.9rem and min-width: 76.8rem) 37.2rem, (max-width) 36.4rem"
+            sizes="(min-width: 120rem) 28.3rem, (max-width: 119.9rem and min-width: 76.8rem) 38rem, (max-width: 76.7rem) 36.4rem"
             priority
           />
         </div>
