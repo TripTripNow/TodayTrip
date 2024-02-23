@@ -52,6 +52,7 @@ function Carousel() {
               alt={data.title}
               fill
               sizes="100%"
+              objectFit="cover"
               priority={index === 0}
               loading={index === 0 ? 'eager' : 'lazy'}
               fetchPriority={index === 0 ? 'high' : 'auto'}
