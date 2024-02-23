@@ -1,50 +1,84 @@
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement, useEffect, useState } from 'react';
-
 import { FieldValues, useForm } from 'react-hook-form';
-
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { priceFormat } from '@/utils/priceFormat';
+import { useRouter } from 'next/router';
+import { getActivitiesId } from '@/api/activities';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { PatchMyActivityReq } from '@/types/myActivities';
+import { patchActivitiesId } from '@/api/myActivities';
+import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
+import { Activity } from '@/types/common/api';
+import QUERY_KEYS from '@/constants/queryKeys';
 
-const ACTIVITY_ITEM = {
-  title: '함께 배우면 즐거운 스트릿댄스',
-  category: '투어',
-  description: '둠칫 둠칫 두둠칫',
-  address: '대한민국 서울특별시 중구 을지로 위워크',
-  price: 10000,
-  schedules: [
-    {
-      date: '2023-12-01',
-      startTime: '12:00',
-      endTime: '13:00',
-    },
-  ],
-  bannerImageUrl: 'https://i.ibb.co/dWT3JmW/image.png',
-  subImageUrls: ['https://i.ibb.co/dWT3JmW/image.png'],
+interface activityEditMutationProps {
+  activityId: number;
+  data: FieldValues;
+}
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const activityId = Number(context.query['id']);
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.activityEnroll, activityId],
+    queryFn: () => getActivitiesId(activityId),
+  });
+
+  return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 
-function ActivityEdit() {
-  const [items, setItems] = useState(ACTIVITY_ITEM);
+function ActivityEdit({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data: activityData } = useQuery<Activity>({
+    queryKey: [QUERY_KEYS.activityEnroll, activityId],
+    queryFn: () => getActivitiesId(activityId),
+  });
+
   const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const methods = useForm<FieldValues>({
     mode: 'onBlur',
     defaultValues: {
-      title: items.title,
-      price: priceFormat(items.price),
-      address: items.address,
-      description: items.description,
-      category: items.category,
-      images: {
-        bannerImg: items.bannerImageUrl,
-        subImgs: items.subImageUrls,
-      },
-      schedules: items.schedules,
+      title: activityData?.title || '',
+      price: priceFormat(activityData?.price || 0) || '',
+      address: activityData?.address || '',
+      description: activityData?.description || '',
+      category: activityData?.category || '',
+      bannerImageUrl: activityData?.bannerImageUrl || '',
+      schedules: activityData?.schedules || '',
+
+      subImageUrls: activityData?.subImages || '',
+      subImageIdsToRemove: [],
+      subImageUrlsToAdd: [],
+      scheduleIdsToRemove: [],
+      schedulesToAdd: [],
     },
   });
 
-  const handleOnSubmit = (data: FieldValues) => {
-    if (data) console.log(data);
+  const activityEditMutation = useMutation({
+    mutationFn: ({ activityId, data }: activityEditMutationProps) =>
+      patchActivitiesId(activityId, data as PatchMyActivityReq),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.activityEnroll, activityId] });
+      router.push('/mypage/activities');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
+    },
+  });
+
+  const handleOnSubmit = async (data: FieldValues) => {
+    delete data.subImageUrls;
+    delete data.schedules;
+    data.price = Number(data.price.replace(/,/g, ''));
+
+    activityEditMutation.mutate({ activityId, data });
   };
 
   //처음 불러올때 받은 주소 -> 위도 경도로 바꿔주는 함수
@@ -63,10 +97,10 @@ function ActivityEdit() {
   };
 
   useEffect(() => {
-    calculateLatlng(items.address);
+    calculateLatlng(activityData?.address || '');
   }, []);
 
-  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} />;
+  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} latlng={latlng} isEdit={true} />;
 }
 
 export default ActivityEdit;

@@ -42,7 +42,7 @@ function Navbar() {
     if (isOpen) {
       setTimeout(() => {
         setIsDropDownOpen((prev) => !prev);
-      }, 250);
+      }, 300);
     } else {
       setIsDropDownOpen((prev) => !prev);
     }
@@ -51,10 +51,10 @@ function Navbar() {
   const handleBlurDropDown = () => {
     setTimeout(() => {
       setIsDropDownOpen(false);
-    }, 250);
+    }, 300);
     setTimeout(() => {
       setIsOpen(false);
-    }, 100);
+    }, 300);
   };
 
   const handleAlarmModalClick = () => {

@@ -19,6 +19,13 @@ interface SubImageUrl {
   imageUrl: string;
 }
 
+export interface Schedules {
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
 export interface Activity {
   id: number;
   userId: number;
@@ -32,6 +39,7 @@ export interface Activity {
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
+  schedules: Schedules[];
   subImages?: SubImageUrl[];
 }
 
