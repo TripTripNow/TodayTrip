@@ -49,7 +49,7 @@ function Carousel() {
             <div className={styles.background}></div>
             <Image
               src={data.src}
-              alt={String(data.id)}
+              alt={data.title}
               fill
               sizes="100%"
               priority={index === 0}
