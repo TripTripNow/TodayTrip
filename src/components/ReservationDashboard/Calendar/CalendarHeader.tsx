@@ -11,13 +11,13 @@ interface CalendarHeaderProps {
 function CalendarHeader({ year, month, onPrevMonth, onNextMonth }: CalendarHeaderProps) {
   return (
     <div className={styles.container}>
-      <button onClick={onPrevMonth}>
+      <button onClick={onPrevMonth} aria-label="이전 달로 이동">
         <CalendarArrow className={styles.rotate} alt="이전 달로 이동" />
       </button>
       <em>
         {year}년 {month}월
       </em>
-      <button onClick={onNextMonth}>
+      <button onClick={onNextMonth} aria-label="다음 달로 이동">
         <CalendarArrow alt="다음 달로 이동" />
       </button>
     </div>
