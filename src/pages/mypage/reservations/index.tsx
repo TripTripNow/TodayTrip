@@ -7,10 +7,11 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { BACKEND_RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { ReserveFilterOption } from '@/types/dropdown';
-import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { GetServerSidePropsContext } from 'next';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
+import NoResult from '@/components/common/NoResult/NoResult';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ function Reservations() {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.cursorId,
     select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
@@ -59,7 +61,11 @@ function Reservations() {
         <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
       </div>
 
-      {reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
+      {reservationData?.length ? (
+        reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)
+      ) : (
+        <NoResult text="예약 내역이 없습니다." />
+      )}
 
       {/* 무한 스크롤을 위한 target */}
       <div ref={targetRef}></div>

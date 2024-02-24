@@ -1,18 +1,26 @@
-.container {
+.defaultContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  padding-top: 4rem;
   width: 26.8rem;
   height: 29.4rem;
   flex-shrink: 0;
 }
 
-.container > p {
-  margin-top: 5.5rem;
+.defaultContainer > p {
+  margin-top: 3rem;
+  color: var(--gray79);
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.small {
+  margin-top: 5rem;
   color: var(--gray79);
   font-size: 2.4rem;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
+  margin-top: 2.5rem;
+  font-size: 1.8rem;
 }

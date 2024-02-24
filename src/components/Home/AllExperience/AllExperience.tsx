@@ -152,7 +152,7 @@ function AllExperience({
           />
         </div>
       ) : (
-        <NoResult />
+        <NoResult text="'검색 결과가 없습니다." />
       )}
     </section>
   );

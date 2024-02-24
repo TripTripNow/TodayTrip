@@ -11,6 +11,7 @@ import { getMyActivities } from '@/api/myActivities';
 import { setContext } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
 import QUERY_KEYS from '@/constants/queryKeys';
+import NoResult from '@/components/common/NoResult/NoResult';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -61,12 +62,7 @@ function Activities() {
                 </div>
               ))
             ) : (
-              <div className={styles.noDataImgContainer}>
-                <div className={styles.noDataImgWrapper}>
-                  <Image src={NoDataImg} alt="등록한 체험이 없는 경우 뜨는 이미지" className={styles.noDataImg} />
-                </div>
-                <p className={styles.noDataImgContent}>아직 등록한 체험이 없어요</p>
-              </div>
+              <NoResult text="아직 등록한 체험이 없어요" />
             )}
           </div>
         </div>

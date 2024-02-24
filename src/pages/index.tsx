@@ -73,7 +73,7 @@ function Home() {
           />
         ) : (
           <div className={styles.noResultContainer}>
-            <NoResult />
+            <NoResult text="검색 결과가 없습니다." />
           </div>
         )}
       </div>
