@@ -23,7 +23,7 @@
 
 .textWrapper {
   display: flex;
-  width: 9.6534rem;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.6rem;

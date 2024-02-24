@@ -1,12 +1,12 @@
-import { Activity, Category } from '@/types/common/api';
+import { Activity, Category, Schedules } from '@/types/common/api';
 import { ReservationBase } from '@/types/common/api';
+import { FieldValues } from 'react-hook-form';
 
 interface UserInfo {
   id: number;
   nickname: string;
   profileImageUrl: string;
 }
-
 interface Review {
   id: number;
   user: UserInfo;
@@ -35,6 +35,12 @@ export interface GetActivitiesRes {
   activities: Omit<Activity, 'subImageUrls'>[];
 }
 
+export interface GetActivityRes {
+  cursorId: number;
+  totalCount: number;
+  activities: Activity;
+}
+
 export type GetReviewsRes = {
   reviews: Review[];
   totalCount: number;
@@ -45,19 +51,27 @@ export interface GetReviewsParams {
   page: number;
   size: 3;
 }
-
 export interface GetAvailableScheduleParams {
   activityId: number;
   year: string;
   month: string;
 }
-
 export interface PostReservationReq {
   activityId: number;
   scheduleId: number;
   headCount: number;
 }
-
 export interface PostReservationRes extends ReservationBase {
   activityId: number;
+}
+
+export interface PostActivitiesReq extends FieldValues {
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  price: number;
+  schedules: Omit<Schedules, 'id'>[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
 }

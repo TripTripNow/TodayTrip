@@ -1,12 +1,11 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { intToFloat } from '@/utils/intToFloat';
 import { priceFormat } from '@/utils/priceFormat';
 import StarIcon from '#/icons/icon-star.svg';
-import NoImage from '#/images/img-noImage.png';
 import styles from './CardDetail.module.css';
 import { Activity } from '@/types/common/api';
+import ImageFallback from '@/components/common/ImageFallback/ImageFallback';
 
 type CardDetailProps = { item: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>> };
 
@@ -15,13 +14,13 @@ function CardDetail({ item }: CardDetailProps) {
     <Link href={`/activities/${item.id}`}>
       <div className={styles.container}>
         <div className={styles.imageWrapper}>
-          <Image
-            src={item.bannerImageUrl ?? NoImage}
+          <ImageFallback
+            src={item.bannerImageUrl}
+            alt="체험 배너"
             className={styles.image}
             fill
             sizes="100%"
             priority
-            alt="체험 배너"
           />
         </div>
         <div className={styles.descriptionContainer}>

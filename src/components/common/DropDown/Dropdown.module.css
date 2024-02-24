@@ -41,6 +41,13 @@
   font-size: 1.6rem;
   line-height: 2.6rem;
   text-align: start;
+  @media tablet {
+    font-size: 1.5rem;
+  }
+  @media mobile {
+    font-size: 1.4rem;
+    padding: 0.4rem 0.8rem;
+  }
 }
 
 .menu {
@@ -64,9 +71,14 @@
 .timeMenu {
   composes: menu;
   height: 40rem;
-  overflow: scroll;
+  overflow-y: scroll;
   position: relative;
   z-index: 3;
+}
+
+.activityMenu {
+  composes: timeMenu;
+  height: 18rem;
 }
 
 .placeholder {

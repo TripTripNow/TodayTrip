@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { GetServerSidePropsContext } from 'next';
-import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+import { getSession, signIn } from 'next-auth/react';
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -15,10 +16,17 @@ export const setContext = (_context: GetServerSidePropsContext) => {
   context = _context;
 };
 
-const redirectToLoginPage = () => {
-  //window.location.href = `${process.env.NEXT_PUBLIC_URL}/signin`;
-  //TODO window.location 에러 발생함, 이후 수정 필요
-  console.log('refresh token 만료됨');
+const updateSession = async (data: { accessToken: string; refreshToken: string; user: Session['user'] }) => {
+  await signIn('signin-credentials', {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+    type: data.user.type,
+    id: data.user.id,
+    image: data.user.image,
+    name: data.user.name,
+    email: data.user.email,
+    redirect: false,
+  });
 };
 
 instance.interceptors.request.use(
@@ -62,12 +70,17 @@ instance.interceptors.response.use(
             },
           },
         );
-        session.user.accessToken = data.accessToken;
+
+        updateSession({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          user: session.user,
+        });
 
         originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
         return axios(originalRequest);
       } catch (e) {
-        redirectToLoginPage();
+        window.location.replace('/signin');
       }
     }
 

@@ -1,16 +1,16 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { setContext } from '@/api/axiosInstance';
+import { getMyReservations } from '@/api/myReservations';
 import FilterDropDown from '@/components/FilterDropdown/FilterDropdown';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
-import { BACKEND_RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
-import { ReserveFilterOption } from '@/types/dropdown';
-import styles from './Reservations.module.css';
-import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
-import QUERY_KEYS from '@/constants/queryKeys';
-import { getMyReservations } from '@/api/myReservations';
 import ReservationCard from '@/components/MyPage/Reservations/ReservationCard/ReservationCard';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { BACKEND_RESERVATION_STATUS, ReservationStatus } from '@/constants/reservation';
+import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
+import { ReserveFilterOption } from '@/types/dropdown';
+import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
 import { GetServerSidePropsContext } from 'next';
-import { setContext } from '@/api/axiosInstance';
+import { ReactElement, useEffect, useState } from 'react';
+import styles from './Reservations.module.css';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -27,6 +27,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
+
 function Reservations() {
   const [selectedStatus, setSelectedStatus] = useState<ReserveFilterOption>(ReservationStatus.initial);
   const { isVisible, targetRef } = useInfiniteScroll();

@@ -37,7 +37,7 @@ function Header({ data }: { data: Activity }) {
   };
 
   const deleteActivityMutation = useMutation({
-    mutationFn: () => deleteMyActivity(data.id),
+    mutationFn: () => deleteMyActivity({ activityId: data.id }),
     onSuccess: () => {
       toast.success('체험이 성공적으로 삭제되었습니다.');
       router.push('/');

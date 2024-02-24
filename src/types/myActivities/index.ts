@@ -1,23 +1,19 @@
-import { Activity, Category, ReservationStatus, ScheduledReservation, TimeSlot } from '@/types/common/api';
-
-export interface MonthlyReservationStatusCount {
-  completed: number;
-  confirmed: number;
-  pending: number;
-}
-
-export interface DailyReservationStatusCount {
-  declined: number;
-  confirmed: number;
-  pending: number;
-}
+import {
+  Activity,
+  Category,
+  DailyReservationStatusCount,
+  MonthlyReservationStatusCount,
+  ReservationStatus,
+  ScheduledReservation,
+  TimeSlot,
+} from '@/types/common/api';
+import { FieldValues } from 'react-hook-form';
 
 /**
  * 내 체험 리스트 조회 Parameter
  */
 
 export interface GetMyActivitiesParam {
-  teamId: string;
   cursorId?: number;
   size?: number;
 }
@@ -37,7 +33,6 @@ export interface GetMyActivitiesRes {
  */
 
 export interface GetReservationDashboardParam {
-  teamId: string;
   activityId: number;
   year: string;
   month: string;
@@ -57,7 +52,6 @@ export interface GetReservationDashboardRes {
  */
 
 export interface GetReservedScheduleParam {
-  teamId: string;
   activityId: number;
   date: string;
 }
@@ -78,9 +72,8 @@ export interface GetReservedScheduleRes {
  */
 
 export interface GetReservationsParam {
-  teamId: string;
   activityId: number;
-  cursorId?: number;
+  cursorId?: number | null;
   size?: number;
   scheduleId: number;
   status: keyof DailyReservationStatusCount;
@@ -103,9 +96,9 @@ export interface GetReservationsRes {
  */
 
 export interface PatchReservationsParam {
-  teamId: string;
   activityId: number;
   reservationId: number;
+  status: 'confirmed' | 'declined';
 }
 
 /**
@@ -144,23 +137,15 @@ export interface PatchMyActivityParam {
  * 내 체험 수정 Request
  */
 
-export interface PatchMyActivityReq {
+export interface PatchMyActivityReq extends FieldValues {
   title: string;
   category: Category;
   description: string;
   price: number;
   address: string;
   bannerImageUrl: string;
-  subImageIdsToRemove: unknown[];
-  subImageUrlsToAdd: unknown[];
-  scheduleIdsToRemove: unknown[];
-  schedulesToAdd: unknown[];
-}
-
-/**
- * 내 체험 수정 Response
- */
-
-export interface PatchMyActivityRes extends Activity {
-  schedules: TimeSlot[];
+  subImageIdsToRemove: number[];
+  subImageUrlsToAdd: string[];
+  scheduleIdsToRemove: number[];
+  schedulesToAdd: { date: string; startTime: string; endTime: string }[];
 }

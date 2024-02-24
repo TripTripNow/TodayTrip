@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { DAYS_IN_LONG_MONTH, DAYS_IN_SHORT_MONTH } from '@/constants/calendar';
 import { calculateDaysInMonth } from '@/utils/ReservationDashboard/calculateDaysInMonth';
 import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
-import { GetReservationDashboardRes } from '@/types/myActivities';
-import { RESERVATION_DETAILS_MONTH_MOCK_DATA } from '@/components/ReservationDashboard/mock';
+import QUERY_KEYS from '@/constants/queryKeys';
+import { getReservationDashboard } from '@/api/myActivities';
 
 export type DateObj = Record<string, { pending: number; confirmed: number; completed: number }>;
 
@@ -13,7 +15,6 @@ interface useCalendarProps {
 }
 
 export const useCalendar = ({ activityId }: useCalendarProps) => {
-  const dateItems: GetReservationDashboardRes[] = RESERVATION_DETAILS_MONTH_MOCK_DATA;
   const { curYear, curMonth } = showTodayDate();
   const [monthData, setMonthData] = useState<DateObj>({});
 
@@ -31,6 +32,16 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
       : DAYS_IN_LONG_MONTH - allDays.length - dayOfWeek;
   const emptyLastCards = Array.from({ length: lengthCondition }, (_, v) => v + 1);
 
+  const { data: monthlyData, isError } = useQuery({
+    queryKey: [QUERY_KEYS.monthlyReservation, activityId, year, month],
+    queryFn: () =>
+      getReservationDashboard({
+        activityId,
+        year: String(year).padStart(2, '0'),
+        month: String(month).padStart(2, '0'),
+      }),
+  });
+
   const handlePrevMonth = () => {
     setYear((prev) => prev - (month === 1 ? 1 : 0));
     setMonth((prev) => (prev === 1 ? 12 : prev - 1));
@@ -44,10 +55,10 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
     setMonth((prev) => (prev === 12 ? 1 : prev + 1));
   };
 
-  /** @todo 내 체험 월별 예약 현황 조회 API 요청 with activityId */
   const handleMonthData = () => {
+    if (!monthlyData) return;
     const dateObj: DateObj = {};
-    dateItems.forEach((item) => {
+    monthlyData.forEach((item) => {
       const [y, m, d] = item.date.split('-').map(Number);
       if (y === year && m === month) {
         dateObj[String(d)] = item.reservations;
@@ -59,7 +70,11 @@ export const useCalendar = ({ activityId }: useCalendarProps) => {
 
   useEffect(() => {
     handleMonthData();
-  }, [month, dateItems, year, activityId]);
+  }, [monthlyData]);
+
+  useEffect(() => {
+    if (isError) toast.error('데이터를 불러올 수 없습니다.');
+  }, [isError]);
 
   return {
     year,

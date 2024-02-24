@@ -108,8 +108,25 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { type: 'email' },
         password: { type: 'password' },
+        accessToken: {},
+        refreshToken: {},
+        type: {},
+        id: {},
+        image: {},
+        name: {},
       },
       async authorize(credentials): Promise<any> {
+        if (credentials?.accessToken) {
+          return {
+            accessToken: credentials.accessToken,
+            refreshToken: credentials.refreshToken,
+            type: credentials.type,
+            id: credentials.id,
+            image: credentials.image,
+            name: credentials.name,
+            email: credentials.email,
+          };
+        }
         try {
           const req = {
             email: credentials?.email || '',

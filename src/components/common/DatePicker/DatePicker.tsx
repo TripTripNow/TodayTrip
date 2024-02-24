@@ -16,7 +16,14 @@ interface DatePickerInputProps {
 
 const CustomInput = forwardRef<HTMLButtonElement, Props>(({ value, onClick }, ref) => (
   <label className={styles.container}>
-    <button ref={ref} className={styles.input} onClick={onClick}>
+    <button
+      ref={ref}
+      className={styles.input}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.();
+      }}
+    >
       {value ? <>{value}</> : <span>{'YY/MM/DD'}</span>}
     </button>
     <CalendarIcon className={styles.icon} alt="달력 모양 아이콘" />
@@ -36,6 +43,7 @@ function DatePickerInput({ setIsSelectedDate }: DatePickerInputProps) {
           setSelectedDate(date);
           setIsSelectedDate(dayjs(date).format('YYYY-MM-DD'));
         }}
+        minDate={new Date()}
         dateFormat={'yy/MM/dd'}
         customInput={<CustomInput value={selectedDate ? String(selectedDate) : ''} />}
         dayClassName={(d) => (d.getDate() === selectedDate?.getDate() ? styles.selectedDay : styles.unselectedDay)}

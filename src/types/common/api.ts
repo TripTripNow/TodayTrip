@@ -2,9 +2,28 @@ import { ReservationStatus } from '@/constants/reservation';
 
 export type Category = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙' | '';
 
+export interface MonthlyReservationStatusCount {
+  completed: number;
+  confirmed: number;
+  pending: number;
+}
+
+export interface DailyReservationStatusCount {
+  declined: number;
+  confirmed: number;
+  pending: number;
+}
+
 interface SubImageUrl {
   id: number;
   imageUrl: string;
+}
+
+export interface Schedules {
+  id: number;
+  date: string;
+  startTime: string;
+  endTime: string;
 }
 
 export interface Activity {
@@ -20,10 +39,11 @@ export interface Activity {
   reviewCount: number;
   createdAt: string;
   updatedAt: string;
+  schedules: Schedules[];
   subImages?: SubImageUrl[];
 }
 
-interface ActivityInfo {
+export interface ActivityInfo {
   id: number;
   title: string;
   bannerImageUrl: string;

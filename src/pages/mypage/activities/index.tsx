@@ -18,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   setContext(context);
   await queryClient.prefetchInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: () => getMyActivities(),
+    queryFn: () => getMyActivities({}),
     initialPageParam: 0,
   });
   return { props: { dehydratedState: dehydrate(queryClient) } };
@@ -29,7 +29,7 @@ function Activities() {
 
   const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myActivities],
-    queryFn: ({ pageParam }) => getMyActivities(pageParam),
+    queryFn: ({ pageParam }) => getMyActivities({ cursorId: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       const currentCursorId = lastPage.cursorId;
@@ -38,7 +38,6 @@ function Activities() {
   });
 
   const filteredMyActivities = myActivityItems?.pages.flatMap((page) => page.activities);
-  console.log(filteredMyActivities);
   useEffect(() => {
     if (isVisible) {
       fetchNextPage();
@@ -49,7 +48,7 @@ function Activities() {
       <div className={styles.activitiesContainer}>
         <div className={styles.activitiesContent}>
           <div className={styles.activitiesContentHeader}>
-            <p>내 체험 관리</p>
+            <h1 className={styles.activitiesContentTitle}>내 체험 관리</h1>
             <Link className={styles.activitiesButton} href={'/mypage/activities/add'}>
               체험 등록하기
             </Link>

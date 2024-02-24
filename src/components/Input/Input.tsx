@@ -48,6 +48,7 @@ function Input({ label, placeholder, control, name, type, state = 'default', isD
         name={field.name}
         value={field.value}
         onChange={field.onChange}
+        onBlur={field.onBlur}
         disabled={isDisabled}
       />
       {error && <p className={styles.errorMessage}>{error.message}</p>}
