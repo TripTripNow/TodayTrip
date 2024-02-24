@@ -80,6 +80,7 @@ export const useHome = () => {
     if (!trimmedText) return;
 
     if (recentSearchKeywords.length === 0) {
+      setRecentSearchKeywords([trimmedText]);
       localStorageSetItem('recentSearchKeywords', trimmedText);
     } else {
       if (!recentSearchKeywords.includes(trimmedText)) {
