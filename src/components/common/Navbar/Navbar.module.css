@@ -8,6 +8,11 @@
   justify-content: space-around;
   align-items: center;
   padding: 1.9rem 0;
+
+  @media mobile {
+    padding: 1.9rem;
+    justify-content: space-between;
+  }
 }
 
 .logoWrapper {
@@ -18,6 +23,11 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+
+  @media mobile {
+    width: fit-content;
+    height: fit-content;
+  }
 }
 
 .logoImg {
@@ -43,6 +53,7 @@
   @media mobile {
     position: unset;
     min-width: none;
+    gap: 1.5rem;
   }
 }
 
