@@ -88,7 +88,7 @@ function MyPage({ userData, type }: MyPageProps) {
 
   return (
     <>
-      <HeadMeta title={META_TAG.mypage['title']} description={META_TAG.mypage['description']} />
+      <HeadMeta title={META_TAG.mypage['title']} />
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.myPageContainer}>
         <div className={styles.topContainer}>
           <div className={styles.titleContainer}>
