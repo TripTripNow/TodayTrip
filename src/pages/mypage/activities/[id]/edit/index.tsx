@@ -5,7 +5,7 @@ import { getActivitiesId } from '@/api/activities';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import QUERY_KEYS from '@/constants/queryKeys';
-import useMyActivitiesEdit from '@/hooks/Mypage/Activities/Edit/useEdit';
+import useMyActivitiesEdit from '@/hooks/Mypage/Activities/Edit/useMyActivitiesEdit';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const activityId = Number(context.query['id']);

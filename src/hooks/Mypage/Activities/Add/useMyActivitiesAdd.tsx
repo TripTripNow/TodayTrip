@@ -32,6 +32,7 @@ function useMyActivitiesAdd() {
     mutationFn: (data: PostActivitiesReq) => postActivities(data),
     onSuccess: () => {
       router.push('/mypage/activities');
+      toast('체험 등록 완료되었습니다.');
     },
     onError: (error) => {
       if (error instanceof AxiosError) toast(`${error.response?.data.message}`);

@@ -51,6 +51,7 @@ function useMyActivitiesEdit(activityId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.activityEnroll, activityId] });
       router.push('/mypage/activities');
+      toast('체험 수정 완료되었습니다.');
     },
     onError: (error) => {
       if (error instanceof AxiosError) toast(`${error.response?.data.message}`);
