@@ -79,6 +79,7 @@ function ProfileInput({ isProfileBox, isEdit }: ProfileInputProps) {
           width={160}
           height={160}
           priority
+          fetchPriority="high"
         />
       ) : (
         <div className={styles.profileImgBox}></div>
