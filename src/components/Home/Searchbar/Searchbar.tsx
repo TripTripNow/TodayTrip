@@ -54,6 +54,8 @@ function Searchbar({
                 className={styles.deleteSearchResult}
                 aria-label="검색결과 초기화 버튼"
                 onMouseDown={(e) => handleSearchSubmit(e, '')}
+                title="검색결과 초기화"
+                data-tooltip="검색결과 초기화"
               >
                 <DeleteIcon />
               </button>
