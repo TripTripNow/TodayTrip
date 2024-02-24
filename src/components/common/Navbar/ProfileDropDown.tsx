@@ -6,6 +6,7 @@ const DropDown_ARR = [
   { link: '/mypage', title: '내 정보' },
   { link: '/mypage/reservations', title: '예약 내역' },
   { link: '/mypage/activities', title: '내 체험 관리' },
+  { link: '/mypage/activities/add', title: '내 체험 등록' },
   { link: '/mypage/activities/reservation-dashboard', title: '예약 현황' },
 ];
 

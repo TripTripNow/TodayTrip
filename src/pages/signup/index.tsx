@@ -62,7 +62,7 @@ function SignUp() {
   const { handleSubmit, control, setError } = methods;
 
   const handleOnSubmit = async (data: FieldValues) => {
-    const isValidPwCheck = passwordCheck(data.passwordCheck, data.password, setError);
+    const isValidPwCheck = passwordCheck('user', data.passwordCheck, data.password, setError);
     if (!isValidPwCheck) return;
 
     const userData: PostSignupReq = {

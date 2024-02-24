@@ -46,8 +46,20 @@
   }
 }
 
+.addButton:disabled {
+  background: var(--grayA4);
+}
+
 .formContainer input {
   height: 5.6rem;
+}
+
+.inputLabel {
+  color: var(--black1B);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 2.6rem;
+  margin-bottom: -0.8rem;
 }
 
 .addInputWrapper {
@@ -92,7 +104,9 @@
   line-height: 2.6rem;
   width: 100%;
   outline: none;
-  resize: none;
+  resize: vertical;
+  min-height: 10rem;
+  white-space: pre-line;
 }
 
 .addressContainer {
@@ -245,9 +259,13 @@
   padding: 0.8rem 1.6rem;
   font-size: 1.6rem;
   line-height: 2.6rem;
+  @media mobile {
+    padding: 0.8rem 1.2rem;
+  }
 }
 
 .dateWave {
+  font-size: 2rem;
   @media tablet, mobile {
     display: none;
   }

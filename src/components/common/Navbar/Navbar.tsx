@@ -29,6 +29,7 @@ function Navbar() {
     getNextPageParam: (lastPage) => {
       return lastPage.cursorId;
     },
+    enabled: !!userData,
   });
 
   const { isVisible, targetRef } = useInfiniteScroll();
@@ -41,7 +42,7 @@ function Navbar() {
     if (isOpen) {
       setTimeout(() => {
         setIsDropDownOpen((prev) => !prev);
-      }, 250);
+      }, 300);
     } else {
       setIsDropDownOpen((prev) => !prev);
     }
@@ -50,10 +51,10 @@ function Navbar() {
   const handleBlurDropDown = () => {
     setTimeout(() => {
       setIsDropDownOpen(false);
-    }, 250);
+    }, 300);
     setTimeout(() => {
       setIsOpen(false);
-    }, 100);
+    }, 300);
   };
 
   const handleAlarmModalClick = () => {
@@ -61,10 +62,10 @@ function Navbar() {
   };
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && userData) {
       fetchNextPage();
     }
-  }, [isVisible]);
+  }, [isVisible, userData]);
 
   return (
     <div className={styles.container}>
