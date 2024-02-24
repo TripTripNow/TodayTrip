@@ -5,7 +5,7 @@ import RedEllipse from '#/icons/icon-redEllipse.svg';
 import BlueEllipse from '#/icons/icon-blueEllipse.svg';
 import { Dispatch, RefObject, SetStateAction, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
 import toast from 'react-hot-toast';
