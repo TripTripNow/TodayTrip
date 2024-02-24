@@ -18,13 +18,6 @@ function AvailableSchedules({ handleTimeButtonClick, clickedTimeButtonId, filter
             type="time"
             color={time.id === clickedTimeButtonId ? 'green' : 'white'}
             onClick={() => {
-              if (clickedTimeButtonId) {
-                handleTimeButtonClick(null);
-              }
-              if (clickedTimeButtonId === time.id) {
-                handleTimeButtonClick(null);
-                return;
-              }
               handleTimeButtonClick(time.id);
             }}
           >

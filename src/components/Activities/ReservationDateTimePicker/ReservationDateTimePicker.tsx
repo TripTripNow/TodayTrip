@@ -72,21 +72,52 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       return;
     }
 
-    const todayAvailableScheduleData = monthlyAvailableScheduleData.find((slot) => slot.date === formattedDate);
+    const availableDate = monthlyAvailableScheduleData.find((slot) => slot.date === formattedDate);
 
     const currentTime = dayjs();
 
-    const filteredTimes = todayAvailableScheduleData?.times.filter((time) => {
+    const filteredTimes = availableDate?.times.filter((time) => {
       const startTime = time.startTime;
 
       /* 오늘 날짜의 경우 현재 시간이 시작 시간 이전인 것만 보여줘야함 
-    만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링*/
-
-      return dayjs().isSame(formattedDate, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
+    만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링 */
+      return currentTime.isSame(formattedDate, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
     });
 
     setFilteredTimes(filteredTimes);
   }, [dateValue, formattedDate, monthlyAvailableScheduleData]);
+
+  const handleTileDisabled = ({ date, view }: TileArgs) => {
+    if (view === 'year') {
+      return false;
+    }
+    // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체가 있는지 확인
+    const isDateAvailable = monthlyAvailableScheduleData?.some(
+      (item) => item.date === dayjs(date).format('YYYY-MM-DD'),
+    );
+
+    // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체를 찾습니다.
+    const availableDate = monthlyAvailableScheduleData?.find((item) => item.date === dayjs(date).format('YYYY-MM-DD'));
+
+    const currentTime = dayjs();
+
+    let filteredTimes: Time[] | undefined = [];
+    if (currentTime.isSame(date, 'date')) {
+      filteredTimes =
+        availableDate?.times.filter((time) => {
+          const startTime = time.startTime;
+          return currentTime.isBefore(dayjs(startTime, 'HH:mm'));
+        }) ?? [];
+    } else {
+      filteredTimes = availableDate?.times;
+    }
+
+    if (isDateAvailable && filteredTimes?.length === 0) {
+      return true;
+    }
+    // 해당 날짜가 존재하지 않으면 disabled
+    return !isDateAvailable;
+  };
 
   const handleDateButtonText = (clickedTimeButtonId: number | null) => {
     setDateButtonText(`
@@ -101,11 +132,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     }
   }, [clickedTimeButtonId]);
 
-  // 캘린더 관련 함수들
-  const handleTimeButtonClick = (id: number | null) => {
-    setClickedTimeButtonId(id);
-  };
-
   const handleCalendarDateChange = (value: Value) => {
     setDateValue(value);
     if (clickedTimeButtonId) {
@@ -119,21 +145,9 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setDateValue(null);
   };
 
-  const handleOnActiveStartDateChange = ({ activeStartDate, value }: OnArgs) => {
+  const handleOnActiveStartDateChange = ({ activeStartDate }: OnArgs) => {
     setClickedTimeButtonId(null);
     setDateValue(activeStartDate);
-  };
-
-  const handleTileDisabled = ({ date, view }: TileArgs) => {
-    if (view === 'year') {
-      return false;
-    }
-    // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체가 있는지 확인
-    const isDateAvailable = monthlyAvailableScheduleData?.some(
-      (item) => item.date === dayjs(date).format('YYYY-MM-DD'),
-    );
-    // 해당 날짜가 존재하지 않으면 disabled
-    return !isDateAvailable;
   };
 
   // 예약하기 mutation
@@ -163,6 +177,14 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       return;
     }
     reserveMutation.mutate();
+  };
+
+  const handleTimeButtonClick = (id: number | null) => {
+    if (clickedTimeButtonId === id) {
+      setClickedTimeButtonId(null);
+      return;
+    }
+    setClickedTimeButtonId(id);
   };
 
   return (
@@ -199,15 +221,25 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             clickedTimeButtonId={clickedTimeButtonId}
             filteredTimes={filteredTimes}
           />
+          {/* <h2 className={style.label}>예약 가능한 시간</h2>
+          <div className={styles.timeButtonContainer}>
+            {filteredTimes?.map((time) => (
+              <Button
+                key={time.id}
+                type="time"
+                color={time.id === clickedTimeButtonId ? 'green' : 'white'}
+                onClick={() => {
+                  handleTimeButtonClick(time.id);
+                }}
+              >
+                {time.startTime}~{time.endTime}
+              </Button>
+            ))}
+          </div> */}
         </div>
         <hr className={style.hr} />
         <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
-        <Button
-          onClick={handleReserveButtonClick}
-          isDisabled={!clickedTimeButtonId || participantsValue === 0}
-          color="green"
-          type="modalSingle"
-        >
+        <Button onClick={handleReserveButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
           예약하기
         </Button>
         <hr className={style.hr} style={{ marginTop: '0.8rem' }} />
@@ -242,15 +274,14 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <ReservationModal
           handleDateButtonText={handleDateButtonText}
           clickedTimeButtonId={clickedTimeButtonId}
-          handleTimeButtonClick={handleTimeButtonClick}
+          setClickedTimeButtonId={setClickedTimeButtonId}
           filteredTimes={filteredTimes}
           handleModalToggle={handleReserveModalToggle}
           dateValue={dateValue}
-          handleCalendarDateChange={handleCalendarDateChange}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
-          handleOnActiveStartDateChange={handleOnActiveStartDateChange}
           handleTileDisabled={handleTileDisabled}
+          setDateValue={setDateValue}
         />
       )}
       {isAlertModalOpen && (

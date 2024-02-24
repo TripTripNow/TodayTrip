@@ -7,7 +7,7 @@ import style from '@/components/Activities/ReservationDateTimePicker/Reservation
 import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from '@/types/Calendar';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Time } from '@/types/common/api';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
@@ -15,34 +15,58 @@ import AvailableSchedules from '@/components/Activities/ReservationDateTimePicke
 interface ReservationModalProps {
   dateValue: Value;
   filteredTimes: Time[] | undefined;
-  handleTimeButtonClick: (id: number | null) => void;
   handleDateButtonText: (clickedPossibleTimeIdInModal: number | null) => void;
   handleModalToggle: () => void;
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
-  handleOnActiveStartDateChange: ({ activeStartDate }: OnArgs) => void;
   clickedTimeButtonId: number | null;
   handleTileDisabled: ({ date }: TileArgs) => boolean;
-  handleCalendarDateChange: (value: Value) => void;
+  setDateValue: Dispatch<SetStateAction<Value>>;
+  setClickedTimeButtonId: Dispatch<SetStateAction<number | null>>;
 }
 
 function ReservationModal({
   dateValue,
   filteredTimes,
-  handleTimeButtonClick,
+  setClickedTimeButtonId,
   handleDateButtonText,
   handleModalToggle,
   participantsValue,
   setParticipantsValue,
-  handleOnActiveStartDateChange,
   clickedTimeButtonId,
   handleTileDisabled,
-  handleCalendarDateChange,
+  setDateValue,
 }: ReservationModalProps) {
+  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(clickedTimeButtonId);
+
   const handleSelectButtonClick = () => {
     handleModalToggle();
-    handleDateButtonText(clickedTimeButtonId);
-    handleTimeButtonClick(clickedTimeButtonId);
+    handleDateButtonText(clickedPossibleTimeIdInModal);
+    setClickedTimeButtonId(clickedPossibleTimeIdInModal);
+  };
+
+  const handleCalendarDateChangeInModal = (value: Value) => {
+    setDateValue(value);
+    if (clickedPossibleTimeIdInModal) {
+      setClickedPossibleTimeIdInModal(null);
+    }
+  };
+
+  const handleCalendarMonthChangeInModal = ({ activeStartDate }: OnArgs) => {
+    setDateValue(activeStartDate);
+    setClickedPossibleTimeIdInModal(null);
+  };
+
+  const handleTimeButtonClick = (id: number | null) => {
+    if (clickedTimeButtonId || clickedPossibleTimeIdInModal) {
+      setClickedPossibleTimeIdInModal(null);
+    }
+    if (clickedPossibleTimeIdInModal === id || clickedTimeButtonId === id) {
+      setClickedPossibleTimeIdInModal(null);
+      setClickedTimeButtonId(null);
+      return;
+    }
+    setClickedPossibleTimeIdInModal(id);
   };
 
   return (
@@ -61,24 +85,45 @@ function ReservationModal({
             next2Label={null}
             calendarType="gregory"
             locale="en"
-            onChange={handleCalendarDateChange}
-            onActiveStartDateChange={(activeStartDate) => handleOnActiveStartDateChange(activeStartDate)}
+            onChange={handleCalendarDateChangeInModal}
+            onActiveStartDateChange={(activeStartDate) => handleCalendarMonthChangeInModal(activeStartDate)}
             className={clsx(style.customCalendar, styles.visible)}
             value={dateValue}
             minDate={new Date()}
             tileDisabled={handleTileDisabled}
           />
+
           <div className={style.possibleTime} style={{ display: 'flex' }}>
             <AvailableSchedules
               handleTimeButtonClick={handleTimeButtonClick}
-              clickedTimeButtonId={clickedTimeButtonId}
+              clickedTimeButtonId={clickedPossibleTimeIdInModal}
               filteredTimes={filteredTimes}
             />
+            {/* <h2 className={styles.label}>예약 가능한 시간</h2>
+            <div className={style.timeButtonContainer}>
+              {filteredTimes?.map((time) => (
+                <Button
+                  key={time.id}
+                  type="time"
+                  color={time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'}
+                  onClick={() => {
+                    handleTimeButtonClick(time.id);
+                  }}
+                >
+                  {time.startTime}~{time.endTime}
+                </Button>
+              ))}
+            </div> */}
             <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
           </div>
         </div>
 
-        <Button onClick={handleSelectButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
+        <Button
+          onClick={handleSelectButtonClick}
+          isDisabled={!clickedPossibleTimeIdInModal}
+          color="green"
+          type="modalSingle"
+        >
           선택하기
         </Button>
       </div>
