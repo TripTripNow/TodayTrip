@@ -19,19 +19,21 @@ interface DropdownProps {
   dropDownItems: DropdownItems[];
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
   placeholder: string | null;
+  id?: string;
   fetchNextPage?: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<InfiniteQueryObserverResult<Activity[], Error>>;
 }
 
-function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage }: DropdownProps) {
+function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNextPage, id }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(placeholder ?? dropDownItems[0].title);
   const { isVisible, targetRef, setRerender } = useInfiniteScroll();
-  const isPlaceHolder = value === '카테고리' || value === '00:00';
+  const isPlaceHolder = value === '카테고리' || value === '0:00';
   const InitialDropdownLength = useRef(dropDownItems.length);
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setRerender((prev) => !prev);
     setIsOpen((prev) => !prev);
   };
@@ -52,7 +54,11 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
   }, [isVisible]);
 
   return (
-    <div className={clsx(styles.container, type === '시간' && styles.timeContainer)} onBlur={handleDropdownClose}>
+    <div
+      id={id}
+      className={clsx(styles.container, type === '시간' && styles.timeContainer)}
+      onBlur={handleDropdownClose}
+    >
       {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}

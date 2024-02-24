@@ -8,8 +8,14 @@ interface AlertModalProps {
   handleActionButtonClick: () => void;
   text: string;
   buttonText: string;
+  prevent?: boolean;
 }
-function AlertModal({ handleModalClose, handleActionButtonClick, text, buttonText }: AlertModalProps) {
+function AlertModal({ handleModalClose, handleActionButtonClick, text, buttonText, prevent }: AlertModalProps) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    handleActionButtonClick();
+  };
+
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.wrapper}>
@@ -19,7 +25,10 @@ function AlertModal({ handleModalClose, handleActionButtonClick, text, buttonTex
           <button className={clsx(styles.button, styles.white)} onClick={handleModalClose}>
             닫기
           </button>
-          <button className={clsx(styles.button, styles.primary)} onClick={handleActionButtonClick}>
+          <button
+            className={clsx(styles.button, styles.primary)}
+            onClick={prevent ? handleClick : handleActionButtonClick}
+          >
             {buttonText}
           </button>
         </div>
