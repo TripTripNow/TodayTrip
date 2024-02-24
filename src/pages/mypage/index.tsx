@@ -88,7 +88,7 @@ function MyPage({ userData, type }: MyPageProps) {
     <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.myPageContainer}>
       <div className={styles.topContainer}>
         <div className={styles.titleContainer}>
-          <div className={styles.title}>내 정보</div>
+          <h1 className={styles.title}>내 정보</h1>
           <Button type="default" isDisabled={!isValid} color="green">
             저장하기
           </Button>
