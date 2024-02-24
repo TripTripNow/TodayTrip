@@ -221,25 +221,15 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             clickedTimeButtonId={clickedTimeButtonId}
             filteredTimes={filteredTimes}
           />
-          {/* <h2 className={style.label}>예약 가능한 시간</h2>
-          <div className={styles.timeButtonContainer}>
-            {filteredTimes?.map((time) => (
-              <Button
-                key={time.id}
-                type="time"
-                color={time.id === clickedTimeButtonId ? 'green' : 'white'}
-                onClick={() => {
-                  handleTimeButtonClick(time.id);
-                }}
-              >
-                {time.startTime}~{time.endTime}
-              </Button>
-            ))}
-          </div> */}
         </div>
         <hr className={style.hr} />
         <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
-        <Button onClick={handleReserveButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
+        <Button
+          onClick={handleReserveButtonClick}
+          isDisabled={!clickedTimeButtonId || participantsValue <= 0}
+          color="green"
+          type="modalSingle"
+        >
           예약하기
         </Button>
         <hr className={style.hr} style={{ marginTop: '0.8rem' }} />

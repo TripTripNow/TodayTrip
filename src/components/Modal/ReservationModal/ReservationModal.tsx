@@ -14,15 +14,15 @@ import AvailableSchedules from '@/components/Activities/ReservationDateTimePicke
 
 interface ReservationModalProps {
   dateValue: Value;
+  setDateValue: Dispatch<SetStateAction<Value>>;
   filteredTimes: Time[] | undefined;
   handleDateButtonText: (clickedPossibleTimeIdInModal: number | null) => void;
   handleModalToggle: () => void;
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
   clickedTimeButtonId: number | null;
-  handleTileDisabled: ({ date }: TileArgs) => boolean;
-  setDateValue: Dispatch<SetStateAction<Value>>;
   setClickedTimeButtonId: Dispatch<SetStateAction<number | null>>;
+  handleTileDisabled: ({ date }: TileArgs) => boolean;
 }
 
 function ReservationModal({
@@ -99,21 +99,7 @@ function ReservationModal({
               clickedTimeButtonId={clickedPossibleTimeIdInModal}
               filteredTimes={filteredTimes}
             />
-            {/* <h2 className={styles.label}>예약 가능한 시간</h2>
-            <div className={style.timeButtonContainer}>
-              {filteredTimes?.map((time) => (
-                <Button
-                  key={time.id}
-                  type="time"
-                  color={time.id === clickedPossibleTimeIdInModal ? 'green' : 'white'}
-                  onClick={() => {
-                    handleTimeButtonClick(time.id);
-                  }}
-                >
-                  {time.startTime}~{time.endTime}
-                </Button>
-              ))}
-            </div> */}
+
             <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
           </div>
         </div>
