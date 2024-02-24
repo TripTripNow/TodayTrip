@@ -5,7 +5,7 @@ import RedEllipse from '#/icons/icon-redEllipse.svg';
 import BlueEllipse from '#/icons/icon-blueEllipse.svg';
 import { Dispatch, RefObject, SetStateAction, useState } from 'react';
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useIsMutating, useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteMyNotifications } from '@/api/myNotifications';
 import QUERY_KEYS from '@/constants/queryKeys';
 import toast from 'react-hot-toast';
@@ -42,7 +42,12 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
   });
 
   const handleAlarmDelete = (id: number) => {
-    if (!deleteNotificationMutation.isPending) deleteNotificationMutation.mutate(id);
+    if (
+      !deleteNotificationMutation.isPending &&
+      queryClient.getQueryState([QUERY_KEYS.myNotifications])?.fetchStatus !== 'fetching'
+    ) {
+      deleteNotificationMutation.mutate(id);
+    }
   };
 
   return (
