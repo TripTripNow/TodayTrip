@@ -81,43 +81,47 @@ function Navbar() {
       <div></div>
 
       <div className={styles.wrapper}>
-        {userData ? (
+        {userData !== undefined && (
           <>
-            <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
-              <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
-              {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
-            </button>
-            {isModalOpen && (
-              <AlarmModal
-                setIsModalOpen={setIsModalOpen}
-                targetRef={targetRef}
-                totalCount={totalCount}
-                alarmData={alarmData}
-              />
+            {userData ? (
+              <>
+                <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
+                  <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
+                  {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
+                </button>
+                {isModalOpen && (
+                  <AlarmModal
+                    setIsModalOpen={setIsModalOpen}
+                    targetRef={targetRef}
+                    totalCount={totalCount}
+                    alarmData={alarmData}
+                  />
+                )}
+                <div className={styles.border}></div>
+                <div onBlur={handleBlurDropDown}>
+                  <button className={styles.userName} onClick={handleDropDownClick}>
+                    <Image
+                      className={styles.userProfile}
+                      src={userData.user.image || LogoImg}
+                      alt="프로필 이미지"
+                      width={32}
+                      height={32}
+                    />
+                    <p>{userData.user.name}</p>
+                  </button>
+                </div>
+                <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
+              </>
+            ) : (
+              <>
+                <Link className={styles.loginContent} href="/signin">
+                  로그인
+                </Link>
+                <Link className={styles.loginContent} href="/signup">
+                  회원가입
+                </Link>
+              </>
             )}
-            <div className={styles.border}></div>
-            <div onBlur={handleBlurDropDown}>
-              <button className={styles.userName} onClick={handleDropDownClick}>
-                <Image
-                  className={styles.userProfile}
-                  src={userData.user.image || LogoImg}
-                  alt="프로필 이미지"
-                  width={32}
-                  height={32}
-                />
-                <p>{userData.user.name}</p>
-              </button>
-            </div>
-            <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
-          </>
-        ) : (
-          <>
-            <Link className={styles.loginContent} href="/signin">
-              로그인
-            </Link>
-            <Link className={styles.loginContent} href="/signup">
-              회원가입
-            </Link>
           </>
         )}
         <div>{!isModalOpen && <div ref={targetRef}></div>}</div>
