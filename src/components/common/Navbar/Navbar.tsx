@@ -110,7 +110,7 @@ function Navbar() {
                     <p>{userData.user.name}</p>
                   </button>
                 </div>
-                <div>{isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}</div>
+                {isDropDownOpen && <ProfileDropDown isOpen={isOpen} />}
               </>
             ) : (
               <>

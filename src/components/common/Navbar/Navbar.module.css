@@ -11,8 +11,9 @@
 }
 
 .logoWrapper {
-  width: 17rem;
-  height: 5rem;
+  width: fit-content;
+  height: fit-content;
+  margin-left: 2.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,9 +37,12 @@
   gap: 2.5rem;
   font-size: 1.4rem;
   position: relative;
+  min-width: 28.4rem;
+  justify-content: flex-end;
 
   @media mobile {
     position: unset;
+    min-width: none;
   }
 }
 
