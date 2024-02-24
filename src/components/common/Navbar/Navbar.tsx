@@ -85,7 +85,7 @@ function Navbar() {
           <>
             {userData ? (
               <>
-                <button onClick={handleAlarmModalClick} className={styles.alarmButton}>
+                <button onClick={handleAlarmModalClick} className={styles.alarmButton} aria-label="알림 버튼">
                   <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
                   {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
                 </button>
