@@ -11,6 +11,8 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import { getMyActivities } from '@/api/myActivities';
 import { useReservationDashboard } from '@/hooks/ReservationDashboard/useReservationDashboard';
 import styles from './ReservationDashboard.module.css';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
@@ -31,6 +33,10 @@ function ReservationDashboard() {
 
   return (
     <>
+      <HeadMeta
+        title={META_TAG.reservationDashboard['title']}
+        description={META_TAG.reservationDashboard['description']}
+      />
       <h1 className={styles.title}>예약 현황</h1>
       {dropdownData!.length > 0 ? (
         <>

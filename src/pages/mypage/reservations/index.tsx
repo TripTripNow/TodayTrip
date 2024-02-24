@@ -11,6 +11,8 @@ import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query'
 import { GetServerSidePropsContext } from 'next';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -52,18 +54,18 @@ function Reservations() {
   }, [isVisible]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.label}>예약 내역</h2>
-
-        <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
+    <>
+      <HeadMeta title={META_TAG.reseravationsList['title']} description={META_TAG.reseravationsList['description']} />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2 className={styles.label}>예약 내역</h2>
+          <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
+        </div>
+        {reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
+        {/* 무한 스크롤을 위한 target */}
+        <div ref={targetRef}></div>
       </div>
-
-      {reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
-
-      {/* 무한 스크롤을 위한 target */}
-      <div ref={targetRef}></div>
-    </div>
+    </>
   );
 }
 

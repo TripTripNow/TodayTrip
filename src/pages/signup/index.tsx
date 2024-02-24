@@ -12,6 +12,8 @@ import { postSignup } from '@/api/user';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { PostSignupReq } from '@/types/users';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 function SignUp() {
   const router = useRouter();
@@ -79,46 +81,47 @@ function SignUp() {
   const isPasswordVisible = methods.watch('checkbox');
 
   return (
-    <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
-      <Input
-        state={'user'}
-        name={'email'}
-        control={control}
-        label={'이메일'}
-        placeholder={'이메일을 입력해 주세요'}
-        type={'email'}
-      />
-      <Input
-        state={'user'}
-        name={'nickName'}
-        control={control}
-        label={'닉네임'}
-        placeholder={'닉네임을 입력해 주세요'}
-        type={'text'}
-      />
-      <Input
-        state={'user'}
-        name={'password'}
-        control={control}
-        label={'비밀번호'}
-        placeholder={'비밀번호를 입력해주세요'}
-        type={isPasswordVisible ? 'text' : 'password'}
-      />
-      <Input
-        state={'user'}
-        name={'passwordCheck'}
-        control={control}
-        label={'비밀번호 확인'}
-        placeholder={'비밀번호를 한번 더 입력해 주세요'}
-        type={isPasswordVisible ? 'text' : 'password'}
-      />
-
-      <CheckboxInput control={control} name="checkbox" />
-
-      <button className={styles.button} type="submit" disabled={!isValid}>
-        회원가입하기
-      </button>
-    </form>
+    <>
+      <HeadMeta title={META_TAG.signup['title']} description={META_TAG.signup['description']} />
+      <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.form}>
+        <Input
+          state={'user'}
+          name={'email'}
+          control={control}
+          label={'이메일'}
+          placeholder={'이메일을 입력해 주세요'}
+          type={'email'}
+        />
+        <Input
+          state={'user'}
+          name={'nickName'}
+          control={control}
+          label={'닉네임'}
+          placeholder={'닉네임을 입력해 주세요'}
+          type={'text'}
+        />
+        <Input
+          state={'user'}
+          name={'password'}
+          control={control}
+          label={'비밀번호'}
+          placeholder={'비밀번호를 입력해주세요'}
+          type={isPasswordVisible ? 'text' : 'password'}
+        />
+        <Input
+          state={'user'}
+          name={'passwordCheck'}
+          control={control}
+          label={'비밀번호 확인'}
+          placeholder={'비밀번호를 한번 더 입력해 주세요'}
+          type={isPasswordVisible ? 'text' : 'password'}
+        />
+        <CheckboxInput control={control} name="checkbox" />
+        <button className={styles.button} type="submit" disabled={!isValid}>
+          회원가입하기
+        </button>
+      </form>
+    </>
   );
 }
 

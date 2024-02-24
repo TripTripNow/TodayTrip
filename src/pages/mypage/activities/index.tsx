@@ -11,6 +11,8 @@ import { getMyActivities } from '@/api/myActivities';
 import { setContext } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
 import QUERY_KEYS from '@/constants/queryKeys';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -45,6 +47,7 @@ function Activities() {
   }, [isVisible]);
   return (
     <>
+      <HeadMeta title={META_TAG.activityManage['title']} description={META_TAG.activityManage['description']} />
       <div className={styles.activitiesContainer}>
         <div className={styles.activitiesContent}>
           <div className={styles.activitiesContentHeader}>

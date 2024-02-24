@@ -1,13 +1,15 @@
-import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import { ReactElement } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
-import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import { postActivities } from '@/api/activities';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
+import MyPageLayout from '@/components/MyPage/MyPageLayout';
+import { META_TAG } from '@/constants/metaTag';
 import { PostActivitiesReq } from '@/types/activities';
-import { useRouter } from 'next/router';
-import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
+import { ReactElement } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 export interface IsDateTime {
   date: string;
@@ -56,7 +58,12 @@ function ActivityAdd() {
     activityAddMutation.mutate(data as PostActivitiesReq);
   };
 
-  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;
+  return (
+    <>
+      <HeadMeta title={META_TAG.activitiesAdd['title']} description={META_TAG.activitiesAdd['description']} />
+      <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />
+    </>
+  );
 }
 
 export default ActivityAdd;
