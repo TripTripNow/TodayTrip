@@ -167,8 +167,6 @@ export const useHome = () => {
   const showCards = searchResult === '' ? activityData?.activities : searchData?.activities;
   const totalCardsNum = searchResult === '' ? activityData?.totalCount : searchData?.totalCount;
 
-  console.log(recentSearchKeywords);
-
   return {
     handleSearchSubmit,
     handleSearchText,

@@ -3,7 +3,6 @@ import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 
 import Button from '@/components/common/Button/Button';
 import SearchIcon from '#/icons/icon-search.svg';
-import RefreshIcon from '#/icons/icon-refresh.svg';
 import DeleteIcon from '#/icons/icon-close.svg';
 import styles from './Searchbar.module.css';
 
@@ -37,7 +36,7 @@ function Searchbar({
 
       <form onSubmit={handleSearchSubmit} className={styles.inputForm}>
         <div className={styles.inputWrapper}>
-          <SearchIcon alt="검색창 아이콘" style={{ marginLeft: '10px' }} />
+          <SearchIcon alt="검색창 아이콘" />
           <input
             className={styles.input}
             type="text"
@@ -49,14 +48,32 @@ function Searchbar({
             onClick={() => setIsDropdownOpen(true)}
             onKeyDown={handleEnterClick}
           />
-          {inputSearchText && <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>}
+          {inputSearchText && (
+            <>
+              <button
+                className={styles.deleteSearchResult}
+                aria-label="검색결과 초기화 버튼"
+                onMouseDown={(e) => handleSearchSubmit(e, '')}
+              >
+                <DeleteIcon />
+              </button>
+              <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>
+            </>
+          )}
 
           {/* 드랍다운 내용 */}
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
               <p className={styles.dropdownDescription}>최근 검색어{recentText.length <= 0 && ' 없음'}</p>
               {recentText.map((text, index) => (
-                <div key={index} className={styles.dropdownItem} onMouseDown={(e) => handleSearchSubmit(e, text)}>
+                <div
+                  key={index}
+                  className={styles.dropdownItem}
+                  onMouseDown={(e) => {
+                    handleSearchSubmit(e, text);
+                    setIsDropdownOpen(false);
+                  }}
+                >
                   <p>{text}</p>
                   <DeleteIcon
                     className={styles.dropdownItemDeleteIcon}
@@ -71,10 +88,6 @@ function Searchbar({
           검색하기
         </Button>
       </form>
-      <button className={styles.refreshWrapper} onClick={(e) => handleSearchSubmit(e, '')}>
-        <RefreshIcon className={styles.refreshIcon} width={15} />
-        검색 결과 초기화
-      </button>
     </div>
   );
 }
