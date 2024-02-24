@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
@@ -58,6 +58,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const formattedDate = dayjs(dateValue as Date).format('YYYY-MM-DD');
   const formattedYear = dayjs(dateValue as Date).format('YYYY');
   const formattedMonth = dayjs(dateValue as Date).format('MM');
+  const currentTime = dayjs();
 
   const { data: monthlyAvailableScheduleData } = useQuery({
     queryKey: [QUERY_KEYS.activity, data.id, formattedYear, formattedMonth],
@@ -74,8 +75,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
     const availableDate = monthlyAvailableScheduleData.find((slot) => slot.date === formattedDate);
 
-    const currentTime = dayjs();
-
     const filteredTimes = availableDate?.times.filter((time) => {
       const startTime = time.startTime;
 
@@ -89,34 +88,28 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   const handleTileDisabled = ({ date, view }: TileArgs) => {
     if (view === 'year') {
-      return false;
+      return false; // 연도 뷰에서는 비활성화하지 않음
     }
-    // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체가 있는지 확인
-    const isDateAvailable = monthlyAvailableScheduleData?.some(
-      (item) => item.date === dayjs(date).format('YYYY-MM-DD'),
-    );
 
-    // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체를 찾습니다.
-    const availableDate = monthlyAvailableScheduleData?.find((item) => item.date === dayjs(date).format('YYYY-MM-DD'));
+    const formattedDate = dayjs(date).format('YYYY-MM-DD');
+    const availableDate = monthlyAvailableScheduleData?.find((item) => item.date === formattedDate);
 
-    const currentTime = dayjs();
+    if (!availableDate) {
+      return true; // 해당 날짜에 사용 가능한 일정이 없으면 비활성화
+    }
 
-    let filteredTimes: Time[] | undefined = [];
+    // 오늘이지만, 이미 시간이 지나버린 데이터만 존재한다면 거르기
+    let filteredTimes;
     if (currentTime.isSame(date, 'date')) {
-      filteredTimes =
-        availableDate?.times.filter((time) => {
-          const startTime = time.startTime;
-          return currentTime.isBefore(dayjs(startTime, 'HH:mm'));
-        }) ?? [];
+      filteredTimes = availableDate.times.filter((time) => {
+        const startTime = time.startTime;
+        return currentTime.isBefore(dayjs(startTime, 'HH:mm'));
+      });
     } else {
-      filteredTimes = availableDate?.times;
+      filteredTimes = availableDate.times;
     }
 
-    if (isDateAvailable && filteredTimes?.length === 0) {
-      return true;
-    }
-    // 해당 날짜가 존재하지 않으면 disabled
-    return !isDateAvailable;
+    return filteredTimes.length === 0;
   };
 
   const handleDateButtonText = (clickedTimeButtonId: number | null) => {
