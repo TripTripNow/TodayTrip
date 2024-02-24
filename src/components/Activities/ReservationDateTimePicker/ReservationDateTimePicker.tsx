@@ -119,12 +119,15 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setDateValue(null);
   };
 
-  const handleOnActiveStartDateChange = ({ activeStartDate }: OnArgs) => {
+  const handleOnActiveStartDateChange = ({ activeStartDate, value }: OnArgs) => {
     setClickedTimeButtonId(null);
     setDateValue(activeStartDate);
   };
 
-  const handleTileDisabled = ({ date }: TileArgs) => {
+  const handleTileDisabled = ({ date, view }: TileArgs) => {
+    if (view === 'year') {
+      return false;
+    }
     // monthlyAvailableScheduleData 배열에서 해당 날짜와 동일한 날짜를 가진 객체가 있는지 확인
     const isDateAvailable = monthlyAvailableScheduleData?.some(
       (item) => item.date === dayjs(date).format('YYYY-MM-DD'),
@@ -186,6 +189,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             value={dateValue}
             tileDisabled={handleTileDisabled}
             minDate={new Date()}
+            minDetail="year"
           />
         </div>
 

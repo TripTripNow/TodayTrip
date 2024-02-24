@@ -130,6 +130,14 @@
   }
 }
 
+.onlyBannerImageWrapper {
+  composes: bannerImageWrapper;
+}
+
+.imageContainer .onlyBannerImageWrapper img {
+  border-radius: 1.2rem;
+}
+
 .bannerImageWrapper img {
   border-radius: 1.2rem 0rem 0rem 1.2rem;
 
