@@ -80,8 +80,7 @@ instance.interceptors.response.use(
         originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
         return axios(originalRequest);
       } catch (e) {
-        console.log('aa');
-        //window.location.replace('/signin');
+        window.location.replace('/signin');
       }
     }
 
