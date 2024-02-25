@@ -37,7 +37,7 @@ instance.interceptors.request.use(
       return config;
     }
 
-    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+    config.headers.Authorization = `Bearer ${session.user.accessToken}1`;
 
     return config;
   },

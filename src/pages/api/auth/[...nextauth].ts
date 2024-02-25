@@ -122,7 +122,7 @@ export const authOptions: NextAuthOptions = {
             refreshToken: credentials.refreshToken,
             type: credentials.type,
             id: credentials.id,
-            image: credentials.image,
+            image: credentials.image === 'null' ? null : credentials.image,
             name: credentials.name,
             email: credentials.email,
           };
