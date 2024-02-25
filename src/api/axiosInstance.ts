@@ -37,7 +37,7 @@ instance.interceptors.request.use(
       return config;
     }
 
-    config.headers.Authorization = `Bearer ${session.user.accessToken}1`;
+    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
 
     return config;
   },
@@ -80,7 +80,8 @@ instance.interceptors.response.use(
         originalRequest.headers.authorization = `Bearer ${data.accessToken}`;
         return axios(originalRequest);
       } catch (e) {
-        window.location.replace('/signin');
+        console.log('aa');
+        //window.location.replace('/signin');
       }
     }
 
