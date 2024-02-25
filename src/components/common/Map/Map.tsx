@@ -44,7 +44,7 @@ function Map({ address, containerStyle }: MapProps) {
             position={{ lat: location.lat, lng: location.lng }}
             zIndex={1}
           >
-            <div>{address}</div>
+            <p>{address}</p>
           </InfoWindowF>
         </GoogleMap>
       )}

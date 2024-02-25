@@ -79,7 +79,13 @@ function ReservationCard({ data }: ReservationCardProps) {
     <>
       <div className={styles.cardWrapper} onClick={handleClickNavigate}>
         <div className={styles.imageWrapper}>
-          <Image fill src={data.activity.bannerImageUrl} alt="체험 이미지" />
+          <Image
+            priority
+            sizes="(min-width: 1200px) 20.4rem (max-width: 1199px) 15.6rem (max-width: 767px) 12.8rem"
+            fill
+            src={data.activity.bannerImageUrl}
+            alt="체험 이미지"
+          />
         </div>
         <div className={styles.detailContainer}>
           <p className={clsx(styles.status, styles[data.status])}>{ReservationStatus[data.status]}</p>

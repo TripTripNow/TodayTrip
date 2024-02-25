@@ -7,12 +7,7 @@ import { GetReservedScheduleRes } from '@/types/myActivities';
 import { DailyReservationStatusCount, ScheduledReservation } from '@/types/common/api';
 import styles from './ModalContent.module.css';
 import useModalContent from '@/hooks/ReservationDashboard/useModalContent';
-
-const NO_DATA_IN_RESERVATION_MODAL = {
-  confirmed: '승인 내역이 없습니다.',
-  declined: '거절 내역이 없습니다.',
-  pending: '신청 내역이 없습니다.',
-};
+import { NO_DATA_RESERVATION } from '@/constants/reservation';
 
 interface ModalContentProps {
   setDropdownItem: Dispatch<SetStateAction<DropdownItems>>;
@@ -100,7 +95,7 @@ function ReservationDetails({ items, tabStatus, targetRef }: ReservationDetailsP
           <div ref={targetRef}></div>
         </div>
       ) : (
-        <NoResult text={NO_DATA_IN_RESERVATION_MODAL[tabStatus]} />
+        <NoResult text={NO_DATA_RESERVATION[tabStatus]} />
       )}
     </div>
   );

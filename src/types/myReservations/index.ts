@@ -3,7 +3,7 @@ import { Reservation, ReservationStatus } from '@/types/common/api';
 export interface GetMyReservationsParam {
   cursorId?: number;
   size?: number;
-  status: ReservationStatus | undefined;
+  status: ReservationStatus | null;
 }
 
 export interface GetMyReservationsRes {
