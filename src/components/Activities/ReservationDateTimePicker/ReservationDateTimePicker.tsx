@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
@@ -150,17 +150,16 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     onSuccess: () => {
       toast.success('예약이 완료되었습니다.');
       router.push('/mypage/reservations');
+      handleResetFilteredData();
+      setParticipantsValue(1);
+      setDateButtonText('날짜 선택하기');
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message);
       }
     },
-    onSettled: () => {
-      handleResetFilteredData();
-      setParticipantsValue(1);
-      setDateButtonText('날짜 선택하기');
-    },
+    onSettled: () => {},
   });
 
   // 예약하기 버튼 클릭 시

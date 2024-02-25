@@ -3,8 +3,6 @@ import { ReactElement, useEffect } from 'react';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import ActivitiesCard from '@/components/MyPage/Activities/ActivitiesCard';
-import NoDataImg from '#/images/img-noData.png';
-import Image from 'next/image';
 import Link from 'next/link';
 import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
 import { getMyActivities } from '@/api/myActivities';

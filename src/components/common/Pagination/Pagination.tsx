@@ -4,7 +4,6 @@ import PaginationLeftArrow from '#/icons/icon-pagination-left-arrow.svg';
 import PaginationRightArrow from '#/icons/icon-pagination-right-arrow.svg';
 
 import styles from './Pagination.module.css';
-import { useRouter } from 'next/router';
 
 interface PaginationProps {
   pageNumber: number;

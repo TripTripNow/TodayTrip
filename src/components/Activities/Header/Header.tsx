@@ -75,7 +75,7 @@ function Header({ data }: { data: Activity }) {
         <div>
           {userData?.user.id === data.userId && (
             <>
-              <button onClick={handleKebabToggle}>
+              <button aria-label="수정/삭제하기 케밥 버튼" onClick={handleKebabToggle}>
                 <KebabIcon className={styles.kebabButton} width={40} height={40} alt="케밥 버튼" />
               </button>
               {isKebabOpen && (

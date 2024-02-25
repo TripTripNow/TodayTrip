@@ -5,7 +5,6 @@ import {
   MonthlyReservationStatusCount,
   ReservationStatus,
   ScheduledReservation,
-  TimeSlot,
 } from '@/types/common/api';
 import { FieldValues } from 'react-hook-form';
 

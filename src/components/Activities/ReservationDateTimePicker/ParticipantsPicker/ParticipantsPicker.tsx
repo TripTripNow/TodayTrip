@@ -16,8 +16,9 @@ function ParticipantsPicker({ participantsValue, setParticipantsValue }: Partici
   return (
     <div className={clsx(styles.participants, styles.onlyMobile)}>
       <h2 className={styles.label}>참여 인원 수</h2>
-      <div className={styles.stepper}>
+      <div id="participants" className={styles.stepper}>
         <button
+          aria-label="인원 감소 버튼"
           className={styles.minusButton}
           disabled={participantsValue <= 1}
           onClick={() => setParticipantsValue((prev) => prev - 1)}
@@ -25,6 +26,7 @@ function ParticipantsPicker({ participantsValue, setParticipantsValue }: Partici
           <MinusIcon fill="#4B4B4B" alt="참여 인원 수 줄이기 아이콘" />
         </button>
         <input
+          aria-labelledby="participants"
           className={styles.participantsInput}
           value={participantsValue}
           onChange={handleParticipantsValueChange}
@@ -37,7 +39,7 @@ function ParticipantsPicker({ participantsValue, setParticipantsValue }: Partici
           }}
         />
         <button onClick={() => setParticipantsValue((prev) => prev + 1)}>
-          <PlusIcon alt="참여 인원 수 늘리기 아이콘" />
+          <PlusIcon aria-label="인원 추가 버튼" alt="참여 인원 수 늘리기 아이콘" />
         </button>
       </div>
     </div>
