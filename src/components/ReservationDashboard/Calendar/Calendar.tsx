@@ -8,13 +8,15 @@ import { useCalendar } from '@/hooks/ReservationDashboard/useCalendar';
 import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
 import { MonthlyReservationStatusCount } from '@/types/common/api';
 import styles from './Calendar.module.css';
+import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 
 interface CalendarProps {
   activityId: number;
 }
 
 const isPassedDate = (year: number, month: number, day: number) => {
-  return new Date() >= new Date(`${year}-${month}-${day}`);
+  const { curYear, curMonth, curDay } = showTodayDate();
+  return new Date(`${curYear}-${curMonth}-${curDay}`) > new Date(`${year}-${month}-${day}`);
 };
 
 /** 예약 승인 완료 상태를 검사 후 날짜 옆의 동그라미 띄우는 함수 */

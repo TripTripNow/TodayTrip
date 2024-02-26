@@ -11,8 +11,6 @@ import { getReservedSchedule } from '@/api/myActivities';
 import QUERY_KEYS from '@/constants/queryKeys';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
-import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
-import { formatDateStringByDot } from '@/utils/ReservationDashboard/formatDateStringByDot';
 
 interface ModalProps {
   handleModalClose: () => void;
@@ -36,22 +34,6 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
     queryFn: () => getReservedSchedule({ activityId, date }),
   });
 
-  let selectedReservationData = dailyReservationData;
-
-  const { curDay, curMonth, curYear, curHour, curMinute } = showTodayDate();
-
-  if (
-    dailyReservationData &&
-    dailyReservationData.length > 0 &&
-    date === formatDateStringByDot({ year: curYear, month: curMonth, day: curDay, padStart: true })
-  ) {
-    const overTime = curHour * 60 + curMinute;
-    selectedReservationData = dailyReservationData?.filter((data) => {
-      const [h, m] = data.endTime.split(':').map(Number);
-      if (h * 60 + m >= overTime) return data;
-    });
-  }
-
   const [dropdownItem, setDropdownItem] = useState<{ id: number; title: string }>({ id: 0, title: '' });
   const [tabStatus, setTabStatus] = useState<keyof DailyReservationStatusCount>('pending');
 
@@ -59,13 +41,13 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
     setTabStatus(status);
   };
 
-  const tabCount = selectedReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
+  const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
 
   useEffect(() => {
-    if (selectedReservationData && selectedReservationData.length > 0 && dropdownItem.id === 0)
+    if (dailyReservationData && dailyReservationData.length > 0 && dropdownItem.id === 0)
       setDropdownItem({
-        id: selectedReservationData[0].scheduleId,
-        title: `${selectedReservationData[0].startTime} ~ ${selectedReservationData[0].endTime}`,
+        id: dailyReservationData[0].scheduleId,
+        title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
       });
   }, [dailyReservationData]);
 
@@ -73,8 +55,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  if (!selectedReservationData || selectedReservationData.length === 0 || dropdownItem.id === 0 || isPending)
-    return null;
+  if (!dailyReservationData || dailyReservationData.length === 0 || dropdownItem.id === 0 || isPending) return null;
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.container}>
@@ -82,7 +63,7 @@ function Modal({ handleModalClose, date, activityId }: ModalProps) {
         <ModalTab handleStatus={handleStatus} tabStatus={tabStatus} item={tabCount} />
         <ModalContent
           setDropdownItem={setDropdownItem}
-          items={selectedReservationData}
+          items={dailyReservationData}
           dropdownItem={dropdownItem}
           date={date}
           tabStatus={tabStatus}

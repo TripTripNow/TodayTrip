@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-const useModalDetailedCard = ({ item, tabStatus }: ModalDetailedCardProps) => {
+const useModalDetailedCard = ({ item, tabStatus }: Omit<ModalDetailedCardProps, 'isPassedTime'>) => {
   const [alertModalState, setAlertModalState] = useState<{ isConfirmModalOpen: boolean; isDeclineModalOpen: boolean }>({
     isConfirmModalOpen: false,
     isDeclineModalOpen: false,
