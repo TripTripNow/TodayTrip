@@ -75,7 +75,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
   useEffect(() => {
     if (!hasResult) {
-      router.back();
+      router.push('/mypage/reservations');
     }
   }, []);
 
