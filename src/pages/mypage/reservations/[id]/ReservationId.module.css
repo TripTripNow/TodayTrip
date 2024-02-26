@@ -37,12 +37,12 @@
 .main {
   width: 100%;
   height: auto;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
   padding: 3.5rem;
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
   border-radius: 4rem;
+  box-shadow: 0 0.4rem 0.4rem 0.4rem rgba(0, 0, 0, 0.1);
 }
 
 .header {
@@ -80,10 +80,15 @@
 }
 
 .title {
+  width: fit-content;
   font-size: 2.2rem;
   font-weight: 700;
   line-height: 2.8rem;
   cursor: pointer;
+}
+
+.title:hover {
+  text-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.15);
 }
 
 .date {
