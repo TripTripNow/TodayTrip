@@ -141,11 +141,11 @@ function AllExperience({
 
       {/* 카드 영역 */}
       <div className={styles.cardWrapper}>
-        {!isPending && showCards && showCards.map((card) => <CardDetail item={card} key={card.id} />)}
+        {showCards && showCards.map((card) => <CardDetail item={card} key={card.id} />)}
       </div>
 
       {/* 페이지네이션 영역 */}
-      {!isPending && showCards && showCards!.length > 0 ? (
+      {showCards && showCards!.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
             pageNumber={pageNumber}
