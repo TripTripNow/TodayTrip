@@ -7,14 +7,16 @@ import QUERY_KEYS from '@/constants/queryKeys';
 import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { DropdownItems } from '@/components/common/DropDown/Dropdown';
 import { DailyReservationStatusCount } from '@/types/common/api';
+import { showTodayDate } from '@/utils/ReservationDashboard/showTodayDate';
 
 interface UseModalContentProps {
   tabStatus: keyof DailyReservationStatusCount;
   activityId: number;
   dropdownItem: DropdownItems;
+  date: string;
 }
 
-const useModalContent = ({ tabStatus, activityId, dropdownItem }: UseModalContentProps) => {
+const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModalContentProps) => {
   const { data, fetchNextPage, isError, isPending } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
     queryFn: ({ pageParam }) =>
@@ -30,7 +32,16 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem }: UseModalConten
     select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
     placeholderData: keepPreviousData,
   });
+
   const showItems = data?.filter((item) => item.status === tabStatus);
+
+  const { curYear, curMonth, curDay, curHour, curMinute } = showTodayDate();
+  let isPassedTime = false;
+  if (new Date(`${curYear}-${curMonth}-${curDay}`) <= new Date(date)) {
+    const splitedTime = dropdownItem.title.split(' ~ ')[0].split(':');
+
+    if (curHour * 60 + curMinute >= Number(splitedTime[0]) * 60 + Number(splitedTime[1])) isPassedTime = true;
+  }
 
   useEffect(() => {
     setRerender((prev) => !prev);
@@ -45,7 +56,7 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem }: UseModalConten
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  return { isPending, targetRef, data, showItems };
+  return { isPending, targetRef, data, showItems, isPassedTime };
 };
 
 export default useModalContent;

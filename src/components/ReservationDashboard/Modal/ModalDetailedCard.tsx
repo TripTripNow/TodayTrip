@@ -11,9 +11,10 @@ import useModalDetailedCard from '@/hooks/ReservationDashboard/useModalDetailedC
 export interface ModalDetailedCardProps {
   item: ScheduledReservation;
   tabStatus: keyof DailyReservationStatusCount;
+  isPassedTime: boolean;
 }
 
-function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
+function ModalDetailedCard({ item, tabStatus, isPassedTime }: ModalDetailedCardProps) {
   const { handleConfirm, handleDecline, alertModalState, handleAlertModalToggle } = useModalDetailedCard({
     item,
     tabStatus,
@@ -33,8 +34,7 @@ function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
             <span className={styles.subText}>{item.headCount}명</span>
           </p>
         </div>
-
-        {tabStatus === PENDING ? (
+        {tabStatus === PENDING && !isPassedTime && (
           <div className={styles.btnWrapper}>
             <Button type="modalDouble" color="green" onClick={() => handleAlertModalToggle('isConfirmModalOpen')}>
               승인하기
@@ -43,11 +43,20 @@ function ModalDetailedCard({ item, tabStatus }: ModalDetailedCardProps) {
               거절하기
             </Button>
           </div>
-        ) : tabStatus === CONFIRMED ? (
+        )}
+        {tabStatus === PENDING && isPassedTime && (
+          <div className={clsx(styles.statusWrapper, styles.statusExpired)}>
+            <p>만료된 예약</p>
+          </div>
+        )}
+
+        {tabStatus === CONFIRMED && (
           <div className={clsx(styles.statusWrapper, styles.statusConfirmed)}>
             <p>예약 승인</p>
           </div>
-        ) : (
+        )}
+
+        {tabStatus !== PENDING && tabStatus !== CONFIRMED && (
           <div className={clsx(styles.statusWrapper, styles.statusDeclined)}>
             <p>예약 거절</p>
           </div>
