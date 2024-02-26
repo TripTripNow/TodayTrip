@@ -57,7 +57,7 @@ function Searchbar({
                 title="검색결과 초기화"
                 data-tooltip="검색결과 초기화"
               >
-                <DeleteIcon />
+                <DeleteIcon width={20} height={20} />
               </button>
               <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>
             </>
@@ -78,6 +78,8 @@ function Searchbar({
                 >
                   <p>{text}</p>
                   <DeleteIcon
+                    width={20}
+                    height={20}
                     className={styles.dropdownItemDeleteIcon}
                     onMouseDown={(e: MouseEvent<HTMLOrSVGScriptElement>) => handleDeleteRecentSearch(e, text)}
                   />
