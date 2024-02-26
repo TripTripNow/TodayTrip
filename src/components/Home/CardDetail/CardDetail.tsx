@@ -19,7 +19,7 @@ function CardDetail({ item }: CardDetailProps) {
             alt="체험 배너"
             className={styles.image}
             fill
-            sizes="100%"
+            sizes="(min-width: 120rem) 28.3rem, (max-width: 119.9rem and min-width: 76.8rem) 38rem, (max-width: 76.7rem) 36.4rem"
             priority
           />
         </div>
@@ -32,7 +32,7 @@ function CardDetail({ item }: CardDetailProps) {
                 <span> ({item.reviewCount})</span>
               </p>
             </div>
-            <h3>{item.title}</h3>
+            <h1 className={styles.title}>{item.title}</h1>
           </div>
           <div className={styles.descriptionBottomWrapper}>
             <em>￦ {priceFormat(item.price)}</em>

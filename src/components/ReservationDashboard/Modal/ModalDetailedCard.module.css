@@ -81,6 +81,12 @@
   line-height: normal;
 }
 
+.statusExpired {
+  background: var(--grayCB);
+  color: var(--whiteFF);
+  width: 11rem;
+}
+
 .statusConfirmed {
   background: var(--orangeFFF);
   color: var(--orangeFF7);
