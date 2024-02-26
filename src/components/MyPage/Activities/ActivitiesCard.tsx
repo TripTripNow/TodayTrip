@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { priceFormat } from '@/utils/priceFormat';
+import clsx from 'clsx';
 import Link from 'next/link';
 
 interface ActivitiesCardProps {
@@ -78,7 +79,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
 
   return (
     <Link href={`/activities/${item.id}`}>
-      <div className={styles.activitiesItemWrapper}>
+      <div className={clsx(styles.activitiesItemWrapper, styles.cardAnimation)}>
         <div className={styles.activitiesItemImgDiv}>
           <Image
             className={styles.activitiesImg}
