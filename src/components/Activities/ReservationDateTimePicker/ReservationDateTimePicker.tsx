@@ -161,7 +161,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         toast.error(error.response?.data.message);
       }
     },
-    onSettled: () => {},
   });
 
   // 예약하기 버튼 클릭 시

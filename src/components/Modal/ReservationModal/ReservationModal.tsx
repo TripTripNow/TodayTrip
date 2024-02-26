@@ -61,11 +61,7 @@ function ReservationModal({
     if (clickedTimeButtonId || clickedPossibleTimeIdInModal) {
       setClickedPossibleTimeIdInModal(null);
     }
-    if (clickedPossibleTimeIdInModal === id || clickedTimeButtonId === id) {
-      setClickedPossibleTimeIdInModal(null);
-      setClickedTimeButtonId(null);
-      return;
-    }
+
     setClickedPossibleTimeIdInModal(id);
   };
 
