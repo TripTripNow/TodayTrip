@@ -12,6 +12,8 @@ import { GetServerSidePropsContext } from 'next';
 import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
 import NoResult from '@/components/common/NoResult/NoResult';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 const RESERVE_LIST: ReserveFilterOption[] = ['전체', '예약 신청', '예약 취소', '예약 승인', '예약 거절', '체험 완료'];
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
@@ -58,22 +60,25 @@ function Reservations() {
   }, [isVisible]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.label}>예약 내역</h2>
+    <>
+      <HeadMeta title={META_TAG.reseravationsList['title']} description={META_TAG.reseravationsList['description']} />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h2 className={styles.label}>예약 내역</h2>
 
-        <FilterDropDown list={RESERVE_LIST} value={selectedStatus} setValue={setSelectedStatus} />
+          <FilterDropDown list={RESERVE_LIST} value={selectedStatus} setValue={setSelectedStatus} />
+        </div>
+
+        {reservationData?.length ? (
+          reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)
+        ) : (
+          <NoResult text={NO_DATA_RESERVATION[BACKEND_RESERVATION_STATUS[selectedStatus]]} />
+        )}
+
+        {/* 무한 스크롤을 위한 target */}
+        <div ref={targetRef}></div>
       </div>
-
-      {reservationData?.length ? (
-        reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)
-      ) : (
-        <NoResult text={NO_DATA_RESERVATION[BACKEND_RESERVATION_STATUS[selectedStatus]]} />
-      )}
-
-      {/* 무한 스크롤을 위한 target */}
-      <div ref={targetRef}></div>
-    </div>
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ import {
   ERROR_PASSWORD_EMPTY,
   ERROR_PASSWORD_SECOND_EMPTY,
   ERROR_PASSWORD_VALIDATION,
+  ERROR_PRICE_CHECK,
 } from '@/constants/user';
 
 interface InputProps {
@@ -91,6 +92,12 @@ const inputObj = [
     type: 'mypagePassword',
     rule: {
       minLength: { value: 8, message: ERROR_PASSWORD_VALIDATION },
+    },
+  },
+  {
+    type: 'price',
+    rule: {
+      maxLength: { value: 11, message: ERROR_PRICE_CHECK },
     },
   },
 ];

@@ -9,13 +9,21 @@ import NoResult from '@/components/common/NoResult/NoResult';
 import { getActivities } from '@/api/activities';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
-import styles from './Home.module.css';
 import { useHome } from '@/hooks/Home/useHome';
+import styles from './Home.module.css';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
-  const queryClient = new QueryClient();
 
+  if (context.resolvedUrl !== '/') {
+    return {
+      notFound: true,
+    };
+  }
+
+  const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.popularActivities],
     queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 10 }),
@@ -33,7 +41,6 @@ function Home() {
     inputSearchText,
     recentSearchKeywords,
     searchResult,
-    deviceType,
     priceFilterValue,
     setPriceFilterValue,
     selectedCategory,
@@ -41,43 +48,53 @@ function Home() {
     currentPageNumber,
     totalPageNumber,
     handlePaginationByClick,
-    activityData,
+    showCards,
     searchedByNoData,
+    handleDeleteRecentSearch,
+    totalCardsNum,
+    isPending,
   } = useHome();
 
-  if (!activityData) return null;
   return (
-    <main className={styles.container}>
-      <Banner />
-      <div className={styles.mainWrapper}>
-        <Searchbar
-          handleSearchSubmit={handleSearchSubmit}
-          handleSearchText={handleSearchText}
-          inputSearchText={inputSearchText}
-          recentText={recentSearchKeywords}
-        />
-        {!searchResult && <PopularExperience deviceType={deviceType} />}
-
-        {!searchedByNoData ? (
-          <AllExperience
-            searchResult={searchResult}
-            showCards={activityData.activities}
-            totalCardsNum={activityData.totalCount}
-            handlePaginationByClick={handlePaginationByClick}
-            totalPages={totalPageNumber}
-            pageNumber={currentPageNumber}
-            handleClickCategory={handleClickCategory}
-            selectedCategory={selectedCategory}
-            setPriceFilterValue={setPriceFilterValue}
-            priceFilterValue={priceFilterValue}
+    <>
+      <HeadMeta title={META_TAG.home['title']} />
+      <main className={styles.container}>
+        <Banner />
+        <div className={styles.mainWrapper}>
+          <Searchbar
+            handleSearchSubmit={handleSearchSubmit}
+            handleSearchText={handleSearchText}
+            inputSearchText={inputSearchText}
+            recentText={recentSearchKeywords}
+            handleDeleteRecentSearch={handleDeleteRecentSearch}
           />
-        ) : (
-          <div className={styles.noResultContainer}>
-            <NoResult text="검색 결과가 없습니다." />
-          </div>
-        )}
-      </div>
-    </main>
+          {!searchResult && <PopularExperience />}
+
+          {!searchedByNoData && (
+            <AllExperience
+              isPending={isPending}
+              searchResult={searchResult}
+              showCards={showCards}
+              totalCardsNum={totalCardsNum}
+              handlePaginationByClick={handlePaginationByClick}
+              totalPages={totalPageNumber}
+              pageNumber={currentPageNumber}
+              handleClickCategory={handleClickCategory}
+              selectedCategory={selectedCategory}
+              setPriceFilterValue={setPriceFilterValue}
+              priceFilterValue={priceFilterValue}
+            />
+          )}
+          {isPending && <div className={styles.loadingContainer}></div>}
+
+          {!isPending && searchedByNoData && (
+            <div className={styles.noResultContainer}>
+              <NoResult text="검색 결과가 없습니다." />
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 

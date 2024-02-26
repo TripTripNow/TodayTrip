@@ -17,8 +17,8 @@ const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관�
 const PRICE_LIST: PriceFilterOption[] = ['낮은 순', '높은 순'];
 interface AllExperienceProps {
   searchResult: string;
-  showCards: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>[];
-  totalCardsNum: number;
+  showCards: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>[] | undefined;
+  totalCardsNum: number | undefined;
   handlePaginationByClick: (val: number) => void;
   handleClickCategory: (val: Category) => void;
   totalPages: number;
@@ -26,6 +26,7 @@ interface AllExperienceProps {
   selectedCategory: string;
   priceFilterValue: PriceFilterOption;
   setPriceFilterValue: Dispatch<SetStateAction<PriceFilterOption>>;
+  isPending: boolean;
 }
 
 function AllExperience({
@@ -39,7 +40,10 @@ function AllExperience({
   selectedCategory,
   priceFilterValue,
   setPriceFilterValue,
+  isPending,
 }: AllExperienceProps) {
+  if (isPending) return null;
+
   return (
     <section className={styles.container}>
       {/* 카테고리 버튼 영역 */}
@@ -137,13 +141,11 @@ function AllExperience({
 
       {/* 카드 영역 */}
       <div className={styles.cardWrapper}>
-        {showCards.map((card) => (
-          <CardDetail item={card} key={card.id} />
-        ))}
+        {showCards && showCards.map((card) => <CardDetail item={card} key={card.id} />)}
       </div>
 
       {/* 페이지네이션 영역 */}
-      {showCards.length > 0 ? (
+      {showCards && showCards!.length > 0 ? (
         <div className={styles.paginationWrapper}>
           <Pagination
             pageNumber={pageNumber}
