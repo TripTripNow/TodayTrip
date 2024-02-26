@@ -9,7 +9,7 @@ function ActivityAdd() {
   const { methods, handleOnSubmit } = useMyActivitiesAdd();
   return (
     <>
-      <HeadMeta title={META_TAG.activitiesAdd['title']} description={META_TAG.activitiesAdd['description']} />
+      <HeadMeta title={META_TAG.activitiesEdit['title']} description={META_TAG.activitiesEdit['description']} />
       <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />
     </>
   );
