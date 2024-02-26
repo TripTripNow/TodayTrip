@@ -18,7 +18,7 @@ function HeadMeta({ title, description }: HeadMetaProps) {
       />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://today-trip.vercel.app/" />
-      <meta property="og:image" content="#/images/TodayTripLogo.png" />
+      <meta property="og:image" content="/images/img-TodayTripLogo.png" />
       <meta property="og:article:author" content="TripTripNow" />
     </Head>
   );
