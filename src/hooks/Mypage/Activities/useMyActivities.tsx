@@ -4,7 +4,7 @@ import useInfiniteScroll from '@/hooks/common/useInfiniteScroll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-function useMActivities() {
+function useMyActivities() {
   const { isVisible, targetRef } = useInfiniteScroll();
 
   const { data: myActivityItems, fetchNextPage } = useInfiniteQuery({
@@ -27,4 +27,4 @@ function useMActivities() {
   return { filteredMyActivities, targetRef };
 }
 
-export default useMActivities;
+export default useMyActivities;

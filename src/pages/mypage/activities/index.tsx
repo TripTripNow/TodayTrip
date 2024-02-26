@@ -10,7 +10,7 @@ import { getMyActivities } from '@/api/myActivities';
 import { setContext } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
 import QUERY_KEYS from '@/constants/queryKeys';
-import useMActivities from '@/hooks/Mypage/Activities/useMyActivities';
+import useMyActivities from '@/hooks/Mypage/Activities/useMyActivities';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -25,7 +25,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 };
 
 function Activities() {
-  const { filteredMyActivities, targetRef } = useMActivities();
+  const { filteredMyActivities, targetRef } = useMyActivities();
   return (
     <>
       <div className={styles.activitiesContainer}>

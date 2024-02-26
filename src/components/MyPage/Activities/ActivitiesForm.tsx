@@ -31,7 +31,6 @@ function ActivitiesForm({ handleOnSubmit, methods, latlng, isEdit }: ActivitiesF
     isActive,
     isValid,
   } = useMyActivitiesForm(methods);
-  console.log(isValid);
   return (
     <div className={styles.addContainer}>
       <form onSubmit={handleSubmit(handleOnSubmit)} className={styles.formContainer} onKeyDown={handleFormKeyDown}>
