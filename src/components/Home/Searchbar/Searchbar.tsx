@@ -57,7 +57,7 @@ function Searchbar({
                 title="검색결과 초기화"
                 data-tooltip="검색결과 초기화"
               >
-                <DeleteIcon width={20} height={20} />
+                <DeleteIcon />
               </button>
               <p className={styles.searchPlaceholder}>내가 원하는 체험은</p>
             </>
