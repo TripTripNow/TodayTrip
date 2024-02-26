@@ -122,7 +122,7 @@ export const authOptions: NextAuthOptions = {
             refreshToken: credentials.refreshToken,
             type: credentials.type,
             id: credentials.id,
-            image: credentials.image,
+            image: credentials.image === 'null' ? null : credentials.image,
             name: credentials.name,
             email: credentials.email,
           };
@@ -163,7 +163,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, trigger, session }) {
-      if (trigger === 'update' && session.image && session.name) {
+      if (trigger === 'update' && (session.image || session.name)) {
         token.picture = session.image;
         token.name = session.name;
       }

@@ -2,10 +2,17 @@ import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { ReactElement } from 'react';
 import ActivitiesForm from '@/components/MyPage/Activities/ActivitiesForm';
 import useMyActivitiesAdd from '@/hooks/Mypage/Activities/Add/useMyActivitiesAdd';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 function ActivityAdd() {
   const { methods, handleOnSubmit } = useMyActivitiesAdd();
-  return <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />;
+  return (
+    <>
+      <HeadMeta title={META_TAG.activitiesAdd['title']} description={META_TAG.activitiesAdd['description']} />
+      <ActivitiesForm methods={methods} handleOnSubmit={handleOnSubmit} />
+    </>
+  );
 }
 
 export default ActivityAdd;

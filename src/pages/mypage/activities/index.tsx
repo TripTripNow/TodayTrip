@@ -11,6 +11,8 @@ import { setContext } from '@/api/axiosInstance';
 import { GetServerSidePropsContext } from 'next';
 import QUERY_KEYS from '@/constants/queryKeys';
 import useMyActivities from '@/hooks/Mypage/Activities/useMyActivities';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
@@ -28,6 +30,7 @@ function Activities() {
   const { filteredMyActivities, targetRef } = useMyActivities();
   return (
     <>
+      <HeadMeta title={META_TAG.activityManage['title']} description={META_TAG.activityManage['description']} />
       <div className={styles.activitiesContainer}>
         <div className={styles.activitiesContent}>
           <div className={styles.activitiesContentHeader}>

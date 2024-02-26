@@ -11,6 +11,8 @@ import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import styles from './Home.module.css';
 import { useHome } from '@/hooks/Home/useHome';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
@@ -47,37 +49,39 @@ function Home() {
 
   if (!activityData) return null;
   return (
-    <main className={styles.container}>
-      <Banner />
-      <div className={styles.mainWrapper}>
-        <Searchbar
-          handleSearchSubmit={handleSearchSubmit}
-          handleSearchText={handleSearchText}
-          inputSearchText={inputSearchText}
-          recentText={recentSearchKeywords}
-        />
-        {!searchResult && <PopularExperience deviceType={deviceType} />}
-
-        {!searchedByNoData ? (
-          <AllExperience
-            searchResult={searchResult}
-            showCards={activityData.activities}
-            totalCardsNum={activityData.totalCount}
-            handlePaginationByClick={handlePaginationByClick}
-            totalPages={totalPageNumber}
-            pageNumber={currentPageNumber}
-            handleClickCategory={handleClickCategory}
-            selectedCategory={selectedCategory}
-            setPriceFilterValue={setPriceFilterValue}
-            priceFilterValue={priceFilterValue}
+    <>
+      <HeadMeta title={META_TAG.home['title']} />
+      <main className={styles.container}>
+        <Banner />
+        <div className={styles.mainWrapper}>
+          <Searchbar
+            handleSearchSubmit={handleSearchSubmit}
+            handleSearchText={handleSearchText}
+            inputSearchText={inputSearchText}
+            recentText={recentSearchKeywords}
           />
-        ) : (
-          <div className={styles.noResultContainer}>
-            <NoResult />
-          </div>
-        )}
-      </div>
-    </main>
+          {!searchResult && <PopularExperience deviceType={deviceType} />}
+          {!searchedByNoData ? (
+            <AllExperience
+              searchResult={searchResult}
+              showCards={activityData.activities}
+              totalCardsNum={activityData.totalCount}
+              handlePaginationByClick={handlePaginationByClick}
+              totalPages={totalPageNumber}
+              pageNumber={currentPageNumber}
+              handleClickCategory={handleClickCategory}
+              selectedCategory={selectedCategory}
+              setPriceFilterValue={setPriceFilterValue}
+              priceFilterValue={priceFilterValue}
+            />
+          ) : (
+            <div className={styles.noResultContainer}>
+              <NoResult />
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 
