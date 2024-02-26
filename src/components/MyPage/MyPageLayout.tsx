@@ -11,11 +11,13 @@ function MyPageLayout({ children }: MyPageLayoutProps) {
   const methods = useForm();
 
   return (
-    <div className={styles.layoutContainer}>
-      <FormProvider {...methods}>
-        <ProfileMenuBox />
-        <div className={styles.contentContainer}>{children}</div>
-      </FormProvider>
+    <div className={styles.mainContainer}>
+      <div className={styles.layoutContainer}>
+        <FormProvider {...methods}>
+          <ProfileMenuBox />
+          <div className={styles.contentContainer}>{children}</div>
+        </FormProvider>
+      </div>
     </div>
   );
 }

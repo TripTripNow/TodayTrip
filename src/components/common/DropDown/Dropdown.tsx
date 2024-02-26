@@ -65,8 +65,12 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
         className={clsx(styles.wrapper, isPlaceHolder && styles.placeholder)}
         onClick={handleDropdownToggle}
       >
-        {value}
-        {isOpen ? <ArrowUpIcon alt="드랍다운 열림" /> : <ArrowDownIcon alt="드랍다운 닫힘" />}
+        <span className={styles.dropdownText}>{value}</span>
+        {isOpen ? (
+          <ArrowUpIcon className={styles.dropdownArrow} alt="드랍다운 열림" />
+        ) : (
+          <ArrowDownIcon className={styles.dropdownArrow} alt="드랍다운 닫힘" />
+        )}
       </button>
       {isOpen && (
         <div
@@ -83,7 +87,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
               onMouseDown={() => handleDropdownClick(itemValue)}
             >
               {type !== '시간' && <CheckIcon alt="체크 아이콘" className={styles.icon} />}
-              {itemValue.title}
+              <span className={styles.dropdownText}>{itemValue.title}</span>
             </div>
           ))}
           <div ref={targetRef}></div>
