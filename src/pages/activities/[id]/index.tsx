@@ -7,6 +7,8 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/common/api';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { getActivityById } from '@/api/activities';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const activityId = Number(context.query['id']);
@@ -29,15 +31,18 @@ function ActivityID({ activityId }: InferGetServerSidePropsType<typeof getServer
   if (!activityData) return;
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.mainContainer}>
-        <Header data={activityData} />
-        <main className={styles.contentContainer}>
-          <MainContent data={activityData} />
-          <ReservationDateTimePicker data={activityData} />
-        </main>
+    <>
+      <HeadMeta title={META_TAG.activityDetail['title']} description={META_TAG.activityDetail['description']} />
+      <div className={styles.wrapper}>
+        <div className={styles.mainContainer}>
+          <Header data={activityData} />
+          <main className={styles.contentContainer}>
+            <MainContent data={activityData} />
+            <ReservationDateTimePicker data={activityData} />
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

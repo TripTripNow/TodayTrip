@@ -21,6 +21,8 @@ import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 interface ResTypes {
   status: ReservationStatus;
@@ -123,64 +125,65 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   };
 
   return (
-    <div className={styles.container}>
-      <Link href="/mypage/reservations" className={styles.link}>
-        <ArrowIcon className={styles.iconBack} alt="뒤로 가기 아이콘" />
-        <div className={styles.back}>뒤로 가기</div>
-      </Link>
-
-      <div className={styles.main}>
-        <h1 className={styles.header}>예약 상세</h1>
-        <div className={styles.bannerImageWrapper}>
-          <Image className={styles.bannerImage} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
-        </div>
-        <div className={styles.content}>
-          <CheckStatus status={currentStatus} />
-          <h2 className={styles.title} onClick={handleClickNavigate}>
-            {title}
-          </h2>
-          <p className={styles.date}>
-            <span>{dayjs(date).format('YYYY.MM.DD')}</span>
-            <span> · </span>
-            <span>
-              {startTime} - {endTime}
-            </span>
-            <span> · </span>
-            <span>{headCount}명</span>
-          </p>
-        </div>
-        <Map address={address} containerStyle={containerStyle} />
-        <div className={styles.bottom}>
-          <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
-
-          {currentStatus === RESERVATION_STATUS.PENDING && (
-            <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
-              예약 취소
-            </Button>
-          )}
-          {currentStatus === RESERVATION_STATUS.COMPLETED && (
-            <Button type="reservation" color="green" isDisabled={isReviewSubmit} onClick={handleReviewModalToggle}>
-              후기 작성
-            </Button>
-          )}
-          {isAlertModalOpen && (
-            <AlertModal
-              text="예약을 취소하시겠습니까?"
-              buttonText="취소하기"
-              handleModalClose={handleCancelModalToggle}
-              handleActionButtonClick={handleCancelReservation}
-            />
-          )}
-          {isReviewModalOpen && (
-            <ReviewModal
-              handleModalClose={handleReviewModalToggle}
-              data={modalData}
-              setIsReviewSubmit={setIsReviewSubmit}
-            />
-          )}
+    <>
+      <HeadMeta title={META_TAG.reservationDetail['title']} description={META_TAG.reservationDetail['description']} />
+      <div className={styles.container}>
+        <Link href="/mypage/reservations" className={styles.link}>
+          <ArrowIcon className={styles.iconBack} alt="뒤로 가기 아이콘" />
+          <div className={styles.back}>뒤로 가기</div>
+        </Link>
+        <div className={styles.main}>
+          <h1 className={styles.header}>예약 상세</h1>
+          <div className={styles.bannerImageWrapper}>
+            <Image className={styles.bannerImage} priority fill src={bannerImageUrl} alt="예약 상세 이미지" />
+          </div>
+          <div className={styles.content}>
+            <CheckStatus status={currentStatus} />
+            <h2 className={styles.title} onClick={handleClickNavigate}>
+              {title}
+            </h2>
+            <p className={styles.date}>
+              <span>{dayjs(date).format('YYYY.MM.DD')}</span>
+              <span> · </span>
+              <span>
+                {startTime} - {endTime}
+              </span>
+              <span> · </span>
+              <span>{headCount}명</span>
+            </p>
+          </div>
+          <Map address={address} containerStyle={containerStyle} />
+          <div className={styles.bottom}>
+            <div className={styles.price}>￦{priceFormat(Number(totalPrice))}</div>
+            {currentStatus === RESERVATION_STATUS.PENDING && (
+              <Button type="reservation" color="white" onClick={handleCancelModalToggle}>
+                예약 취소
+              </Button>
+            )}
+            {currentStatus === RESERVATION_STATUS.COMPLETED && (
+              <Button type="reservation" color="green" isDisabled={isReviewSubmit} onClick={handleReviewModalToggle}>
+                후기 작성
+              </Button>
+            )}
+            {isAlertModalOpen && (
+              <AlertModal
+                text="예약을 취소하시겠습니까?"
+                buttonText="취소하기"
+                handleModalClose={handleCancelModalToggle}
+                handleActionButtonClick={handleCancelReservation}
+              />
+            )}
+            {isReviewModalOpen && (
+              <ReviewModal
+                handleModalClose={handleReviewModalToggle}
+                data={modalData}
+                setIsReviewSubmit={setIsReviewSubmit}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

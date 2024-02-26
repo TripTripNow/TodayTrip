@@ -11,6 +11,8 @@ import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { useHome } from '@/hooks/Home/useHome';
 import styles from './Home.module.css';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import { META_TAG } from '@/constants/metaTag';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
@@ -54,42 +56,45 @@ function Home() {
   } = useHome();
 
   return (
-    <main className={styles.container}>
-      <Banner />
-      <div className={styles.mainWrapper}>
-        <Searchbar
-          handleSearchSubmit={handleSearchSubmit}
-          handleSearchText={handleSearchText}
-          inputSearchText={inputSearchText}
-          recentText={recentSearchKeywords}
-          handleDeleteRecentSearch={handleDeleteRecentSearch}
-        />
-        {!searchResult && <PopularExperience />}
-
-        {!searchedByNoData && (
-          <AllExperience
-            isPending={isPending}
-            searchResult={searchResult}
-            showCards={showCards}
-            totalCardsNum={totalCardsNum}
-            handlePaginationByClick={handlePaginationByClick}
-            totalPages={totalPageNumber}
-            pageNumber={currentPageNumber}
-            handleClickCategory={handleClickCategory}
-            selectedCategory={selectedCategory}
-            setPriceFilterValue={setPriceFilterValue}
-            priceFilterValue={priceFilterValue}
+    <>
+      <HeadMeta title={META_TAG.home['title']} />
+      <main className={styles.container}>
+        <Banner />
+        <div className={styles.mainWrapper}>
+          <Searchbar
+            handleSearchSubmit={handleSearchSubmit}
+            handleSearchText={handleSearchText}
+            inputSearchText={inputSearchText}
+            recentText={recentSearchKeywords}
+            handleDeleteRecentSearch={handleDeleteRecentSearch}
           />
-        )}
-        {isPending && <div className={styles.loadingContainer}></div>}
+          {!searchResult && <PopularExperience />}
 
-        {!isPending && searchedByNoData && (
-          <div className={styles.noResultContainer}>
-            <NoResult />
-          </div>
-        )}
-      </div>
-    </main>
+          {!searchedByNoData && (
+            <AllExperience
+              isPending={isPending}
+              searchResult={searchResult}
+              showCards={showCards}
+              totalCardsNum={totalCardsNum}
+              handlePaginationByClick={handlePaginationByClick}
+              totalPages={totalPageNumber}
+              pageNumber={currentPageNumber}
+              handleClickCategory={handleClickCategory}
+              selectedCategory={selectedCategory}
+              setPriceFilterValue={setPriceFilterValue}
+              priceFilterValue={priceFilterValue}
+            />
+          )}
+          {isPending && <div className={styles.loadingContainer}></div>}
+
+          {!isPending && searchedByNoData && (
+            <div className={styles.noResultContainer}>
+              <NoResult />
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 
