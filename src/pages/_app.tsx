@@ -38,6 +38,12 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLa
   const router = useRouter();
   const getLayout = Component.getLayout ?? ((page) => page);
 
+  const hasNoNavbarAndFooter =
+    router.pathname === '/signin' ||
+    router.pathname === '/signup' ||
+    router.pathname === '/404' ||
+    router.pathname === '/500';
+
   return (
     <>
       <Head>
@@ -49,9 +55,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLa
         <HydrationBoundary state={pageProps.dehydratedState}>
           <SessionProvider session={session}>
             <div className="root">
-              {!router.pathname.includes('sign') && <Navbar />}
+              {!hasNoNavbarAndFooter && <Navbar />}
               <div className="content">{getLayout(<Component {...pageProps} />)}</div>
-              {!router.pathname.includes('sign') && <Footer />}
+              {!hasNoNavbarAndFooter && <Footer />}
             </div>
           </SessionProvider>
         </HydrationBoundary>
