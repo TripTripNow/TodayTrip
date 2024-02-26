@@ -13,12 +13,20 @@ interface CalendarProps {
   activityId: number;
 }
 
+const isPassedDate = (year: number, month: number, day: number) => {
+  return new Date() >= new Date(`${year}-${month}-${day}`);
+};
+
 /** 예약 승인 완료 상태를 검사 후 날짜 옆의 동그라미 띄우는 함수 */
-const renderCircle = (reservation: MonthlyReservationStatusCount) => {
+const renderCircle = (reservation: MonthlyReservationStatusCount, isPassedDate: boolean) => {
   const { completed, confirmed, pending } = reservation;
   if (completed + confirmed + pending === 0) return null;
-  else if (pending + confirmed === 0 && completed !== 0) return <div className={styles.grayCircle}></div>;
-  else if (pending + confirmed > 0) return <div className={styles.blueCircle}></div>;
+  else if (isPassedDate && completed !== 0) {
+    return <div className={styles.grayCircle}></div>;
+  } else if (pending + confirmed > 0) {
+    if (isPassedDate) return;
+    return <div className={styles.blueCircle}></div>;
+  }
 };
 
 function Calendar({ activityId }: CalendarProps) {
@@ -37,6 +45,7 @@ function Calendar({ activityId }: CalendarProps) {
   } = useCalendar({ activityId });
 
   const handleOpenModal = (selectedDay: number, monthData: MonthlyReservationStatusCount) => {
+    if (isPassedDate(year, month, selectedDay)) return;
     if (!monthData) return;
 
     const sumOfPossibleData = monthData.confirmed + monthData.pending;
@@ -78,11 +87,13 @@ function Calendar({ activityId }: CalendarProps) {
                 >
                   <div className={styles.calendarDayWrapperTop}>
                     <p>{day}</p>
-                    {hasData && renderCircle(monthData[day])}
+                    {hasData && renderCircle(monthData[day], isPassedDate(year, month, day))}
                   </div>
                   {hasData && (
                     <div className={styles.chipWrapper}>
-                      {!!monthData[day][PENDING] && <Chips status={PENDING} number={monthData[day][PENDING]} />}
+                      {!!monthData[day][PENDING] && !isPassedDate(year, month, day) && (
+                        <Chips status={PENDING} number={monthData[day][PENDING]} />
+                      )}
                       {!!monthData[day][CONFIRMED] && <Chips status={CONFIRMED} number={monthData[day][CONFIRMED]} />}
                       {!!monthData[day][COMPLETED] && <Chips status={COMPLETED} number={monthData[day][COMPLETED]} />}
                     </div>
