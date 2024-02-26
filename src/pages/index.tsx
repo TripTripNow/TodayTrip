@@ -9,13 +9,19 @@ import NoResult from '@/components/common/NoResult/NoResult';
 import { getActivities } from '@/api/activities';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
-import styles from './Home.module.css';
 import { useHome } from '@/hooks/Home/useHome';
+import styles from './Home.module.css';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
-  const queryClient = new QueryClient();
 
+  if (context.resolvedUrl !== '/') {
+    return {
+      notFound: true,
+    };
+  }
+
+  const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.popularActivities],
     queryFn: () => getActivities({ method: 'cursor', sort: 'most_reviewed', size: 10 }),
