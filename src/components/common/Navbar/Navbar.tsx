@@ -54,7 +54,7 @@ function Navbar() {
     }, 300);
     setTimeout(() => {
       setIsOpen(false);
-    }, 300);
+    }, 150);
   };
 
   const handleAlarmModalClick = () => {
