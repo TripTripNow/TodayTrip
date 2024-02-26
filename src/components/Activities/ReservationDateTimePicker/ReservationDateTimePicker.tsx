@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
 import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
@@ -143,6 +143,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     setDateValue(activeStartDate);
   };
 
+  const queryClient = useQueryClient();
   // 예약하기 mutation
   const reserveMutation = useMutation({
     mutationFn: () =>
@@ -153,6 +154,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
       handleResetFilteredData();
       setParticipantsValue(1);
       setDateButtonText('날짜 선택하기');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations, QUERY_KEYS.all] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

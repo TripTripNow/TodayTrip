@@ -1,30 +1,18 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-
-import { PRICE_LIST, RESERVE_LIST } from '@/constants/dropdown';
-import { PriceFilterOption, ReserveFilterOption } from '@/types/dropdown';
 import ArrowDownIcon from '#/icons/icon-arrowDown-solid.svg';
 import styles from './FilterDropdown.module.css';
+import { PriceFilterOption, ReserveFilterOption } from '@/types/dropdown';
 
-export type EntireOptions = PriceFilterOption | ReserveFilterOption;
+type FilterOption = PriceFilterOption | ReserveFilterOption;
 
-interface PriceDropdownProps {
-  type: '가격';
-  value: PriceFilterOption;
-  setValue: Dispatch<SetStateAction<PriceFilterOption>>;
+interface FilterDropdownProps<T> {
+  list: T[];
+  value: T;
+  setValue: Dispatch<SetStateAction<T>>;
 }
 
-interface ReserveDropdownProps {
-  type: '예약 상태';
-  value: ReserveFilterOption;
-  setValue: Dispatch<SetStateAction<ReserveFilterOption>>;
-}
-
-type FilterDropdownProps = PriceDropdownProps | ReserveDropdownProps;
-
-function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
+function FilterDropDown<T extends FilterOption>({ value, setValue, list }: FilterDropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const lists = type === '가격' ? PRICE_LIST : RESERVE_LIST;
 
   const handleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -36,16 +24,12 @@ function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
     }, 150);
   };
 
-  const handleDropdownClick = (val: EntireOptions) => {
-    if (type === '가격') {
-      setValue(val as PriceFilterOption);
-    } else {
-      setValue(val as ReserveFilterOption);
-    }
+  const handleDropdownClick = (val: T) => {
+    setValue(val);
   };
 
   return (
-    <div onBlur={handleClickOutside} className={type === '가격' ? styles.price : styles.reserve}>
+    <div onBlur={handleClickOutside} className={list[0] === '가격' ? styles.price : styles.reserve}>
       <button onClick={handleDropdown} className={styles.wrapper}>
         {value}
         {isOpen ? (
@@ -56,7 +40,7 @@ function FilterDropDown({ type, value, setValue }: FilterDropdownProps) {
       </button>
       {isOpen && (
         <div className={styles.option}>
-          {lists.map((item, idx) => (
+          {list?.map((item, idx) => (
             <button className={styles.list} key={idx} onMouseDown={() => handleDropdownClick(item)}>
               {item}
             </button>

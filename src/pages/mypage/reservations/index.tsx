@@ -13,6 +13,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import styles from './Reservations.module.css';
 import NoResult from '@/components/common/NoResult/NoResult';
 
+const RESERVE_LIST: ReserveFilterOption[] = ['전체', '예약 신청', '예약 취소', '예약 승인', '예약 거절', '체험 완료'];
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const queryClient = new QueryClient();
   setContext(context);
@@ -61,7 +62,7 @@ function Reservations() {
       <div className={styles.header}>
         <h2 className={styles.label}>예약 내역</h2>
 
-        <FilterDropDown type="예약 상태" value={selectedStatus} setValue={setSelectedStatus} />
+        <FilterDropDown list={RESERVE_LIST} value={selectedStatus} setValue={setSelectedStatus} />
       </div>
 
       {reservationData?.length ? (

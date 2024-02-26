@@ -91,6 +91,7 @@ function ReservationModal({
             value={dateValue}
             minDate={new Date()}
             tileDisabled={handleTileDisabled}
+            minDetail="year"
           />
 
           <div className={style.possibleTime} style={{ display: 'flex' }}>
