@@ -97,7 +97,11 @@ function ReservationModal({
               filteredTimes={filteredTimes}
             />
 
-            <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
+            <ParticipantsPicker
+              isInModal={true}
+              participantsValue={participantsValue}
+              setParticipantsValue={setParticipantsValue}
+            />
           </div>
         </div>
 

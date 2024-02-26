@@ -11,9 +11,11 @@
 
   @media tablet {
     height: 15.6rem;
+    border-radius: 1rem;
   }
   @media mobile {
     height: 12.8rem;
+    border-radius: 1rem;
   }
 }
 

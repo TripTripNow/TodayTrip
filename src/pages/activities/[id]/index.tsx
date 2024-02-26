@@ -6,7 +6,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/common/api';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getActivityById, getAvailableSchedule } from '@/api/activities';
+import { getActivityById, getAvailableSchedule, getReviews } from '@/api/activities';
 import dayjs from 'dayjs';
 import HeadMeta from '@/components/HeadMeta/HeadMeta';
 import { META_TAG } from '@/constants/metaTag';
@@ -29,6 +29,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     queryKey: [QUERY_KEYS.activity, activityId, currentYear, currentMonth],
     queryFn: () => getAvailableSchedule({ activityId, year: currentYear, month: currentMonth }),
   });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['reviews', activityId, 1],
+    queryFn: () => getReviews({ activityId, page: 1, size: 3 }),
+  });
+
   return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
 };
 

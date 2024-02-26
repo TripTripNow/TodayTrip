@@ -111,7 +111,7 @@ function Header({ data }: { data: Activity }) {
               className={data.subImages?.length === 1 ? styles.oneSubImageWrapper : styles.subImageWrapper}
             >
               <Image
-                sizes="(min-width: 1200px) 29.35rem, (max-width: 1199px) 17.05rem"
+                sizes="(min-width: 1200px) 20vw, (max-width: 767px) 0vw"
                 priority
                 fill
                 src={subImage.imageUrl}

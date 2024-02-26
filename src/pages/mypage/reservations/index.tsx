@@ -38,7 +38,11 @@ function Reservations() {
 
   const queryKey = selectedStatus === ReservationStatus.initial ? ReservationStatus.all : selectedStatus;
 
-  const { data: reservationData, fetchNextPage } = useInfiniteQuery({
+  const {
+    isLoading,
+    data: reservationData,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations, queryKey],
     queryFn: ({ pageParam }) => {
       const status =
@@ -68,8 +72,7 @@ function Reservations() {
 
           <FilterDropDown list={RESERVE_LIST} value={selectedStatus} setValue={setSelectedStatus} />
         </div>
-
-        {reservationData?.length ? (
+        {isLoading ? null : reservationData?.length ? (
           reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)
         ) : (
           <NoResult text={NO_DATA_RESERVATION[BACKEND_RESERVATION_STATUS[selectedStatus]]} />

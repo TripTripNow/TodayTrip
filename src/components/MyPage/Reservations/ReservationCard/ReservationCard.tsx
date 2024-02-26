@@ -81,7 +81,7 @@ function ReservationCard({ data }: ReservationCardProps) {
         <div className={styles.imageWrapper}>
           <Image
             priority
-            sizes="(min-width: 1200px) 20.4rem (max-width: 1199px) 15.6rem (max-width: 767px) 12.8rem"
+            sizes="(min-width: 1200px) 25vw (max-width: 1199px) 20vw (max-width: 767px) 15vw"
             fill
             src={data.activity.bannerImageUrl}
             alt="체험 이미지"

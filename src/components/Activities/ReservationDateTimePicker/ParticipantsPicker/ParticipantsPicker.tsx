@@ -7,14 +7,15 @@ import clsx from 'clsx';
 interface ParticipantsPickerProp {
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
+  isInModal?: boolean;
 }
-function ParticipantsPicker({ participantsValue, setParticipantsValue }: ParticipantsPickerProp) {
+function ParticipantsPicker({ participantsValue, setParticipantsValue, isInModal }: ParticipantsPickerProp) {
   const handleParticipantsValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setParticipantsValue(Number(e.target.value));
   };
 
   return (
-    <div className={clsx(styles.participants, styles.onlyMobile)}>
+    <div className={clsx(isInModal ? styles.inModal : styles.participants)}>
       <h2 className={styles.label}>참여 인원 수</h2>
       <div id="participants" className={styles.stepper}>
         <button
