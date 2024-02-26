@@ -114,6 +114,7 @@ export const useHome = () => {
   /** 카테고리 버튼 클릭 함수 */
   const handleClickCategory = (name: Category) => {
     setSelectedCategory((prev) => (prev === name ? '' : name));
+    setPriceFilterValue('가격');
   };
 
   /** 정렬 기준 변경 함수 */
