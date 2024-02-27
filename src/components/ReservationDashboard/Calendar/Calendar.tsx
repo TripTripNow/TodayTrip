@@ -87,9 +87,9 @@ function Calendar({ activityId }: CalendarProps) {
                   className={styles.calendarDayWrapper}
                   onClick={() => handleOpenModal(day, monthData[day])}
                 >
+                  {hasData && renderCircle(monthData[day], isPassedDate(year, month, day))}
                   <div className={styles.calendarDayWrapperTop}>
                     <p>{day}</p>
-                    {hasData && renderCircle(monthData[day], isPassedDate(year, month, day))}
                   </div>
                   {hasData && (
                     <div className={styles.chipWrapper}>
