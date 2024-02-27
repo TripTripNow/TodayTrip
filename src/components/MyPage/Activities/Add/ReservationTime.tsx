@@ -81,6 +81,7 @@ function ReservationTime({ name, control, setValue, getValues }: ReservationTime
         endTime: endTimeItem.title,
       },
     ]);
+    toast.success('체험시간이 추가되었습니다.');
   };
 
   // 삭제하는 부분
