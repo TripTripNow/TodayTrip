@@ -15,11 +15,17 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.activity, activityId],
-    queryFn: () => getActivityById({ activityId }),
-  });
-  return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
+  try {
+    await queryClient.fetchQuery({
+      queryKey: [QUERY_KEYS.activity, activityId],
+      queryFn: () => getActivityById({ activityId }),
+    });
+    return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
+  } catch {
+    return { notFound: true };
+  } finally {
+    queryClient.clear();
+  }
 };
 
 function ActivityID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {
