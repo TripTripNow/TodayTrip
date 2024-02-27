@@ -26,7 +26,8 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
 
   const handleModalClose = () => {
     setIsOpen((prev) => !prev);
-    queryClient.removeQueries({ queryKey: [QUERY_KEYS.myNotifications] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotifications] });
+    // queryClient.removeQueries({ queryKey: [QUERY_KEYS.myNotifications] });
     setTimeout(() => {
       setIsModalOpen(false);
     }, 250);
