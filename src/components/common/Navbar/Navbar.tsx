@@ -22,7 +22,7 @@ function Navbar() {
 
   const { data: userData } = useSession();
 
-  const { data, fetchNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myNotifications],
     queryFn: ({ pageParam }) => getMyNotifications(pageParam),
     initialPageParam: 0,
@@ -93,7 +93,7 @@ function Navbar() {
                   <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
                   {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
                 </button>
-                {isModalOpen && (
+                {isModalOpen && !isFetching && (
                   <AlarmModal
                     setIsModalOpen={setIsModalOpen}
                     targetRef={targetRef}
