@@ -78,62 +78,64 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
   };
 
   return (
-    <Link href={`/activities/${item.id}`}>
-      <div className={clsx(styles.activitiesItemWrapper, styles.cardAnimation)}>
-        <div className={styles.activitiesItemImgDiv}>
-          <Image
-            className={styles.activitiesImg}
-            src={item.bannerImageUrl}
-            alt="체험이미지"
-            priority
-            width={204}
-            height={204}
-          />
-        </div>
-        <div className={styles.activitiesItemContent}>
-          <div className={styles.activitiesItemContentHeader}>
-            <StarIcon alt="별모양아이콘" />
-            <p className={styles.activitiesReviewCount}>
-              {item.rating} ({item.reviewCount})
-            </p>
+    <>
+      <Link href={`/activities/${item.id}`}>
+        <div className={clsx(styles.activitiesItemWrapper, styles.cardAnimation)}>
+          <div className={styles.activitiesItemImgDiv}>
+            <Image
+              className={styles.activitiesImg}
+              src={item.bannerImageUrl}
+              alt="체험이미지"
+              priority
+              width={204}
+              height={204}
+            />
           </div>
+          <div className={styles.activitiesItemContent}>
+            <div className={styles.activitiesItemContentHeader}>
+              <StarIcon alt="별모양아이콘" />
+              <p className={styles.activitiesReviewCount}>
+                {item.rating} ({item.reviewCount})
+              </p>
+            </div>
 
-          <p className={styles.activitiesItemContentTitle}>{item.title}</p>
+            <p className={styles.activitiesItemContentTitle}>{item.title}</p>
 
-          <div className={styles.activitiesItemContentFooter} onBlur={handleKebabBlur}>
-            <p>
-              ￦{priceFormat(item.price)} <span className={styles.activitiesItemContentFooterCount}>/인</span>
-            </p>
-            <button onClick={handleKebabToggle}>
-              <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} alt="케밥버튼" />
-            </button>
-            {isKebabOpen && (
-              <div className={styles.activitiesKebabWrapper}>
-                <button
-                  className={styles.activitiesKebabContent}
-                  onMouseDown={(e) => handleEditButtonClick(e, item.id)}
-                >
-                  수정하기
-                </button>
-                <hr className={styles.styleHr} />
-                <button className={styles.activitiesKebabContent} onMouseDown={handleDeleteButtonClick}>
-                  삭제하기
-                </button>
-              </div>
-            )}
-            {isDeleteOpen && (
-              <AlertModal
-                handleModalClose={handleDeleteToggle}
-                handleActionButtonClick={() => handleDeleteClick(item.id)}
-                text="체험을 삭제하시겠습니까?"
-                buttonText="삭제하기"
-                prevent={true}
-              />
-            )}
+            <div className={styles.activitiesItemContentFooter} onBlur={handleKebabBlur}>
+              <p>
+                ￦{priceFormat(item.price)} <span className={styles.activitiesItemContentFooterCount}>/인</span>
+              </p>
+              <button onClick={handleKebabToggle}>
+                <KebabIcon className={styles.kebabImgWrapper} width={40} height={40} alt="케밥버튼" />
+              </button>
+              {isKebabOpen && (
+                <div className={styles.activitiesKebabWrapper}>
+                  <button
+                    className={styles.activitiesKebabContent}
+                    onMouseDown={(e) => handleEditButtonClick(e, item.id)}
+                  >
+                    수정하기
+                  </button>
+                  <hr className={styles.styleHr} />
+                  <button className={styles.activitiesKebabContent} onMouseDown={handleDeleteButtonClick}>
+                    삭제하기
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      {isDeleteOpen && (
+        <AlertModal
+          handleModalClose={handleDeleteToggle}
+          handleActionButtonClick={() => handleDeleteClick(item.id)}
+          text="체험을 삭제하시겠습니까?"
+          buttonText="삭제하기"
+          prevent={true}
+        />
+      )}
+    </>
   );
 }
 

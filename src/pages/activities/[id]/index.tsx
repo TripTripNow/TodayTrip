@@ -16,26 +16,32 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.activity, activityId],
-    queryFn: () => getActivityById({ activityId }),
-  });
+  try {
+    await queryClient.fetchQuery({
+      queryKey: [QUERY_KEYS.activity, activityId],
+      queryFn: () => getActivityById({ activityId }),
+    });
 
-  const today = new Date();
-  const currentYear = dayjs(today).format('YYYY');
-  const currentMonth = dayjs(today).format('MM');
+    const today = new Date();
+    const currentYear = dayjs(today).format('YYYY');
+    const currentMonth = dayjs(today).format('MM');
 
-  await queryClient.prefetchQuery({
-    queryKey: [QUERY_KEYS.activity, activityId, currentYear, currentMonth],
-    queryFn: () => getAvailableSchedule({ activityId, year: currentYear, month: currentMonth }),
-  });
+    await queryClient.fetchQuery({
+      queryKey: [QUERY_KEYS.activity, activityId, currentYear, currentMonth],
+      queryFn: () => getAvailableSchedule({ activityId, year: currentYear, month: currentMonth }),
+    });
 
-  await queryClient.prefetchQuery({
-    queryKey: ['reviews', activityId, 1],
-    queryFn: () => getReviews({ activityId, page: 1, size: 3 }),
-  });
+    await queryClient.fetchQuery({
+      queryKey: ['reviews', activityId, 1],
+      queryFn: () => getReviews({ activityId, page: 1, size: 3 }),
+    });
 
-  return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
+    return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
+  } catch {
+    return { notFound: true };
+  } finally {
+    queryClient.clear();
+  }
 };
 
 function ActivityID({ activityId }: InferGetServerSidePropsType<typeof getServerSideProps>) {

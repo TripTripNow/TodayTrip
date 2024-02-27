@@ -14,7 +14,7 @@ export const ERROR_NICKNAME_EMPTY = '닉네임을 입력해 주세요.';
 export const ERROR_PRICE_CHECK = '가격은 9자 이하로 작성해주세요.';
 
 //이메일 형식
-export const EMAIL_STANDARD = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const EMAIL_STANDARD = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 
 //비밀번호 형식: 영문, 숫자, 특수기호 포함 8자 이상
 export const PASSWORD_STANDARD = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
