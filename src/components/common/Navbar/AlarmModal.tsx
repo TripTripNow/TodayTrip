@@ -26,6 +26,8 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
 
   const handleModalClose = () => {
     setIsOpen((prev) => !prev);
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.myNotifications] });
+    // queryClient.removeQueries({ queryKey: [QUERY_KEYS.myNotifications] });
     setTimeout(() => {
       setIsModalOpen(false);
     }, 250);
@@ -49,7 +51,6 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
       deleteNotificationMutation.mutate(id);
     }
   };
-
   return (
     <ModalLayout handleModalClose={handleModalClose} isAlarmModal={true}>
       {alarmData && (
@@ -83,7 +84,9 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
                     </div>
                   </div>
                 ))}
-                <div ref={targetRef}></div>
+                <div ref={targetRef} className={styles.refContainer}>
+                  <div></div>
+                </div>
               </div>
             </>
           ) : (

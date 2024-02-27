@@ -10,7 +10,7 @@ import determineSatisfaction from '@/utils/determineSatisfaction';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import LogoIcon from '#/icons/icon-logoMark.png';
 import { getReviews } from '@/api/activities';
-import NoResultIcon from '#/icons/icon-no-result.svg';
+import NoResult from '@/components/common/NoResult/NoResult';
 
 const RATINGS = [1, 2, 3, 4, 5];
 
@@ -22,7 +22,7 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
   };
 
   const { data: reviewData } = useQuery({
-    queryKey: ['reviews', currentPageNumber],
+    queryKey: ['reviews', activityId, currentPageNumber],
     queryFn: () => getReviews({ activityId, page: currentPageNumber, size: 3 }),
     placeholderData: keepPreviousData,
   });
@@ -95,12 +95,7 @@ function ReviewList({ totalRating, activityId }: { totalRating: number; activity
           />
         </>
       )}
-      {totalCount === 0 && (
-        <div className={styles.noReview}>
-          <NoResultIcon alt="후기 없는 경우의 이미지" />
-          <p>아직 후기가 없습니다.</p>
-        </div>
-      )}
+      {totalCount === 0 && <NoResult text="아직 후기가 없습니다." />}
     </section>
   );
 }

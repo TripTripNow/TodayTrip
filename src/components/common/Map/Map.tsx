@@ -8,6 +8,7 @@ interface MapProps {
   address: string;
   containerStyle: { width: string; height: string };
 }
+
 function Map({ address, containerStyle }: MapProps) {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -19,13 +20,10 @@ function Map({ address, containerStyle }: MapProps) {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        const response = await axios.get('/api/geocode', {
-          params: {
-            address: address,
-          },
-        });
-
-        const { lat, lng } = response.data;
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(String(address))}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}&language=ko`;
+        const { data } = await axios.get(url);
+        const response = data?.results[0]?.geometry?.location;
+        const { lat, lng } = response;
         setLocation({ lng, lat });
       } catch (error) {
         console.error('Error fetching location:', error);
@@ -46,7 +44,7 @@ function Map({ address, containerStyle }: MapProps) {
             position={{ lat: location.lat, lng: location.lng }}
             zIndex={1}
           >
-            <div>{address}</div>
+            <p>{address}</p>
           </InfoWindowF>
         </GoogleMap>
       )}

@@ -130,7 +130,16 @@
   }
 }
 
+.onlyBannerImageWrapper {
+  composes: bannerImageWrapper;
+}
+
+.imageContainer .onlyBannerImageWrapper img {
+  border-radius: 1.2rem;
+}
+
 .bannerImageWrapper img {
+  object-fit: cover;
   border-radius: 1.2rem 0rem 0rem 1.2rem;
 
   @media mobile {
@@ -164,6 +173,9 @@
   }
 }
 
+.subImageWrapper img {
+  object-fit: cover;
+}
 .subImageWrapper:nth-child(2) img {
   border-radius: 0rem 1.2rem 0rem 0rem;
 }

@@ -6,13 +6,16 @@
   height: 20.4rem;
   border-radius: 2.4rem;
   background: var(--whiteFF);
+  box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
   display: flex;
 
   @media tablet {
     height: 15.6rem;
+    border-radius: 1rem;
   }
   @media mobile {
     height: 12.8rem;
+    border-radius: 1rem;
   }
 }
 
@@ -147,19 +150,39 @@
 }
 
 .cardWrapper:hover {
-  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.19), 0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
-  -moz-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.19), 0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
-  -ms-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.19), 0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
-  -o-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.19), 0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.19), 0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
+  -webkit-box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.19),
+    0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
+  -moz-box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.19),
+    0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
+  -ms-box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.19),
+    0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
+  -o-box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.19),
+    0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
+  box-shadow:
+    0 1rem 2rem rgba(0, 0, 0, 0.19),
+    0 0.6rem 0.6rem rgba(0, 0, 0, 0.23);
 }
 
 .cardAnimation {
-  -webkit-box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
-  -moz-box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
-  -ms-box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
-  -o-box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
-  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12), 0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  -webkit-box-shadow:
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  -moz-box-shadow:
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  -ms-box-shadow:
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  -o-box-shadow:
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+  box-shadow:
+    0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+    0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
   -webkit-transition: all 0.25s ease-in-out;
   -moz-transition: all 0.25s ease-in-out;
   -ms-transition: all 0.25s ease-in-out;

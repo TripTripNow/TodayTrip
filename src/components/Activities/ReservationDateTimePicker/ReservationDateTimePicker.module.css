@@ -2,7 +2,6 @@
 
 .container {
   display: flex;
-  /* position: sticky; */
   top: 0;
   width: 38.4rem;
   height: fit-content;
@@ -19,6 +18,42 @@
   }
 
   @media mobile {
+    display: none;
+  }
+}
+
+.priceInPerson {
+  display: flex;
+  font-weight: 700;
+  font-size: 2.8rem;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media tablet {
+    font-size: 2.4rem;
+  }
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: center;
+}
+
+.calendar > h2 {
+  align-self: self-start;
+}
+
+.selectButton {
+  display: flex;
+  color: var(--nomad_black);
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration-line: underline;
+  align-self: flex-start;
+
+  @media desktop {
     display: none;
   }
 }
@@ -96,18 +131,6 @@
   background-color: var(--whiteFF);
 }
 
-.priceInPerson {
-  display: flex;
-  font-weight: 700;
-  font-size: 2.8rem;
-  align-items: center;
-  gap: 0.5rem;
-
-  @media tablet {
-    font-size: 2.4rem;
-  }
-}
-
 .span {
   color: var(--gray4B);
   font-weight: 400;
@@ -116,17 +139,6 @@
   @media tablet {
     font-size: 1.6rem;
   }
-}
-
-.calendar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-  align-items: center;
-}
-
-.calendar > h2 {
-  align-self: self-start;
 }
 
 .selectButton {
@@ -150,51 +162,6 @@
   @media tablet {
     display: none;
   }
-}
-
-.timeButtonContainer {
-  display: flex;
-  width: 32.8rem;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.2rem;
-}
-
-.participants {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.participantsInput {
-  text-align: center;
-}
-
-.stepper {
-  display: flex;
-  width: 12rem;
-  height: 4rem;
-  padding: 1rem;
-  border: 0.1rem solid var(--grayCB);
-  background: var(--whiteFF);
-  color: var(--gray4B);
-  font-size: 1.4rem;
-  text-align: center;
-  border-radius: 0.6rem;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.8rem;
-}
-
-.stepper input {
-  width: 3rem;
-}
-.minusButton svg {
-  color: var(--gray4B);
-}
-
-.minusButton:disabled svg {
-  color: #cdcdcd;
 }
 
 .totalPrice {

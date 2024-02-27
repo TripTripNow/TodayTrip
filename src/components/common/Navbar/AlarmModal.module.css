@@ -45,7 +45,7 @@
   border: 0.1rem solid var(--grayDD);
   border-radius: 1rem;
   top: 6rem;
-  right: 17rem;
+  right: 10vw;
   background-color: var(--greenCE);
   width: 36.8rem;
   height: auto;
@@ -159,4 +159,12 @@
   @media mobile {
     font-size: 2.5rem;
   }
+}
+
+.refContainer {
+  margin-top: -0.8rem;
+}
+
+.refContainer > div {
+  height: 0.5rem;
 }

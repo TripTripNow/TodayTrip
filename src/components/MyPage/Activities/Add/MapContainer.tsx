@@ -95,12 +95,16 @@ function MapContainer({ latlng, control, name }: MapContainerProps) {
           setInputValue(clickedAddress);
         }
       }
-      //  else {
-      //   setAddressData('');
-      // }
     });
     // 클릭한 곳 마커
     setMarkerPosition(clickedPosition);
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      field.onChange('');
+    }
+    setInputValue(e.target.value);
   };
 
   // latlng이 변경될 때 실행되는 효과
@@ -140,7 +144,7 @@ function MapContainer({ latlng, control, name }: MapContainerProps) {
             className={styles.mapInput}
             ref={inputRef}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleSearch}
           />
         </Autocomplete>
       </div>

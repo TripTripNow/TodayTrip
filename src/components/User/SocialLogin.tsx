@@ -8,11 +8,16 @@ import toast from 'react-hot-toast';
 
 function SocialLogin() {
   const handleSocialLogin = async (type: 'kakao' | 'naver' | 'google') => {
-    await signIn(type, {
+    const promise = signIn(type, {
       redirect: false,
       callbackUrl: '/',
     });
-    toast.success('로그인이 완료되었습니다.');
+    toast.promise(promise, {
+      loading: '잠시만 기다려주세요.',
+      success: <b>로그인 중입니다.</b>,
+      error: <b>로그인이 실패하였습니다.</b>,
+    });
+    await promise;
   };
   return (
     <div className={styles.socialLoginBtnContainer}>
