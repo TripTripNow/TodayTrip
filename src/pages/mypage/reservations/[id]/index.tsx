@@ -37,8 +37,11 @@ interface ResTypes {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const activityId = Number(context.query.activityId);
-
   const queryClient = new QueryClient();
+
+  if (isNaN(activityId)) {
+    return { notFound: true };
+  }
 
   await queryClient.prefetchQuery({
     queryKey: [activityId],
