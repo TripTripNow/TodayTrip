@@ -40,7 +40,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   if (isNaN(activityId)) {
-    return { notFound: true };
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/mypage/reservations',
+      },
+    };
   }
 
   await queryClient.prefetchQuery({
