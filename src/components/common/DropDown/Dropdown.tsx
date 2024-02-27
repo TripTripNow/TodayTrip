@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-
 import ArrowDownIcon from '#/icons/icon-arrowdown.svg';
 import ArrowUpIcon from '#/icons/icon-arrowup.svg';
 import CheckIcon from '#/icons/icon-checkmark.svg';
@@ -62,7 +61,11 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
       {type === '체험' && <p className={styles.subTitle}>체험명</p>}
       <button
         value={value}
-        className={clsx(styles.wrapper, isPlaceHolder && styles.placeholder)}
+        className={clsx(
+          styles.wrapper,
+          type === '카테고리' && styles.categoryWrapper,
+          isPlaceHolder && styles.placeholder,
+        )}
         onClick={handleDropdownToggle}
       >
         <span className={styles.dropdownText}>{value}</span>
