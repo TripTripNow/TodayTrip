@@ -7,7 +7,6 @@ import MapContainer from '@/components/MyPage/Activities/Add/MapContainer';
 import ReservationTime from '@/components/MyPage/Activities/Add/ReservationTime';
 import ImageContainer from '@/components/MyPage/Activities/Add/ImageContainer';
 import useMyActivitiesForm from '@/hooks/Mypage/Activities/useMyActivitiesForm';
-import { useState } from 'react';
 
 interface ActivitiesFormProps {
   handleOnSubmit: (data: FieldValues) => void;

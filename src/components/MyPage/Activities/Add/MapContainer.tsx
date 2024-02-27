@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoogleMap, LoadScript, Autocomplete, Marker } from '@react-google-maps/api';
 import styles from './MapContainer.module.css';
 import { Control, FieldValues, useController } from 'react-hook-form';
-import Input from '@/components/Input/Input';
 
 // LoadScript 초기화 시키는 class
 class LoadScriptOnlyIfNeeded extends LoadScript {
