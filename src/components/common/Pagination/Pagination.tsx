@@ -2,9 +2,8 @@ import clsx from 'clsx';
 
 import PaginationLeftArrow from '#/icons/icon-pagination-left-arrow.svg';
 import PaginationRightArrow from '#/icons/icon-pagination-right-arrow.svg';
-
 import styles from './Pagination.module.css';
-import { useRouter } from 'next/router';
+import { memo } from 'react';
 
 interface PaginationProps {
   pageNumber: number;
@@ -29,6 +28,7 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
         className={clsx(styles.paginationNumberWrapper)}
         onClick={() => handlePaginationByClick(pageNumber - 1)}
         disabled={pageNumber === 1}
+        aria-label="페이지네이션 왼쪽 화살표"
       >
         <PaginationLeftArrow alt="왼쪽 화살표" width="21" height="21" />
       </button>
@@ -48,6 +48,7 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
         className={clsx(styles.paginationNumberWrapper)}
         onClick={() => handlePaginationByClick(pageNumber + 1)}
         disabled={pageNumber === totalPages}
+        aria-label="페이지네이션 오른쪽 화살표"
       >
         <PaginationRightArrow alt="오른쪽 화살표" width="21" height="21" />
       </button>
@@ -55,4 +56,4 @@ function Pagination({ pageNumber, totalPages, handlePaginationByClick }: Paginat
   );
 }
 
-export default Pagination;
+export default memo(Pagination);

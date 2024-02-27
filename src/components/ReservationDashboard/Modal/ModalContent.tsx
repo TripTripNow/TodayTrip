@@ -27,6 +27,7 @@ interface ReservationDetailsProps {
   items: ScheduledReservation[];
   tabStatus: keyof DailyReservationStatusCount;
   targetRef: RefObject<HTMLDivElement>;
+  isPassedTime: boolean;
 }
 
 type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
@@ -39,7 +40,12 @@ function ModalContent({
   tabStatus,
   activityId,
 }: ModalContentProps) {
-  const { targetRef, isPending, data, showItems } = useModalContent({ tabStatus, dropdownItem, activityId });
+  const { targetRef, isPending, data, showItems, isPassedTime } = useModalContent({
+    tabStatus,
+    dropdownItem,
+    activityId,
+    date,
+  });
 
   if (isPending) return null;
   return (
@@ -52,7 +58,12 @@ function ModalContent({
             dropdownItem={dropdownItem}
             date={date}
           />
-          <ReservationDetails items={showItems!} tabStatus={tabStatus} targetRef={targetRef} />
+          <ReservationDetails
+            items={showItems!}
+            tabStatus={tabStatus}
+            targetRef={targetRef}
+            isPassedTime={isPassedTime}
+          />
         </>
       ) : (
         <NoResult text="예약 정보가 없습니다." />
@@ -88,14 +99,14 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   );
 }
 
-function ReservationDetails({ items, tabStatus, targetRef }: ReservationDetailsProps) {
+function ReservationDetails({ items, tabStatus, targetRef, isPassedTime }: ReservationDetailsProps) {
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
       {items.length > 0 ? (
         <div className={styles.cardsWrapper}>
           {items.map((item) => (
-            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} />
+            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} isPassedTime={isPassedTime} />
           ))}
           <div ref={targetRef}></div>
         </div>
