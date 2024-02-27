@@ -37,9 +37,11 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModal
 
   const { curYear, curMonth, curDay, curHour, curMinute } = showTodayDate();
   let isPassedTime = false;
-  if (new Date(`${curYear}-${curMonth}-${curDay}`) <= new Date(date)) {
-    const splitedTime = dropdownItem.title.split(' ~ ')[0].split(':');
 
+  if (
+    new Date(`${curYear}-${String(curMonth).padStart(2, '0')}-${String(curDay).padStart(2, '0')}`) >= new Date(date)
+  ) {
+    const splitedTime = dropdownItem.title.split(' ~ ')[0].split(':');
     if (curHour * 60 + curMinute >= Number(splitedTime[0]) * 60 + Number(splitedTime[1])) isPassedTime = true;
   }
 
