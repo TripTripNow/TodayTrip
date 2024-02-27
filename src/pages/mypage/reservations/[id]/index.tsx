@@ -11,18 +11,18 @@ import toast from 'react-hot-toast';
 import ArrowIcon from '#/icons/icon-arrowBack.svg';
 import { getActivityById } from '@/api/activities';
 import { patchMyReservationsId } from '@/api/myReservations';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
 import ReviewModal from '@/components/Modal/ReviewModal/ReviewModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import CheckStatus from '@/components/MyPage/Reservations/Details/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import Map from '@/components/common/Map/Map';
+import { META_TAG } from '@/constants/metaTag';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
 import styles from './ReservationId.module.css';
-import HeadMeta from '@/components/HeadMeta/HeadMeta';
-import { META_TAG } from '@/constants/metaTag';
 
 interface ResTypes {
   status: ReservationStatus;
@@ -78,7 +78,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
 
   useEffect(() => {
     if (!hasResult) {
-      router.back();
+      router.push('/mypage/reservations');
     }
   }, []);
 
