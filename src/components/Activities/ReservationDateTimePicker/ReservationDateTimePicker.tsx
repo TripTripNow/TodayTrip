@@ -28,6 +28,9 @@ interface ReservationDateTimePickerProps {
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 캘린더
   const [dateValue, setDateValue] = useState<Value>(new Date());
+  // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
+  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
 
   // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
@@ -35,9 +38,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
   // 날짜 및 시간 선택하는 모달
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
-
-  // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
-  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
 
   // 참여 인원수 인풋과 연결될 value State
   const [participantsValue, setParticipantsValue] = useState(1);

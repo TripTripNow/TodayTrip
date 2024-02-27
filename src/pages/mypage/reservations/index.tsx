@@ -38,11 +38,7 @@ function Reservations() {
 
   const queryKey = selectedStatus === ReservationStatus.initial ? ReservationStatus.all : selectedStatus;
 
-  const {
-    isLoading,
-    data: reservationData,
-    fetchNextPage,
-  } = useInfiniteQuery({
+  const { isFetching, data, fetchNextPage } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.reservations, queryKey],
     queryFn: ({ pageParam }) => {
       const status =
@@ -53,9 +49,9 @@ function Reservations() {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.cursorId,
-    select: (data) => (data.pages ?? []).flatMap((page) => page.reservations),
     placeholderData: keepPreviousData,
   });
+  const reservationData = data?.pages.flatMap((page) => page.reservations) || [];
 
   useEffect(() => {
     if (isVisible) {
@@ -72,9 +68,11 @@ function Reservations() {
 
           <FilterDropDown list={RESERVE_LIST} value={selectedStatus} setValue={setSelectedStatus} />
         </div>
-        {isLoading ? null : reservationData?.length ? (
-          reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)
-        ) : (
+
+        {reservationData?.length > 0 &&
+          reservationData?.map((reservation) => <ReservationCard key={reservation.id} data={reservation} />)}
+
+        {!isFetching && reservationData.length <= 0 && (
           <NoResult text={NO_DATA_RESERVATION[BACKEND_RESERVATION_STATUS[selectedStatus]]} />
         )}
 
