@@ -6,7 +6,7 @@ import Calendar, { OnArgs, TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useEffect, useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
-import { Activity, Time } from '@/types/common/api';
+import { Activity, Time, TimeSlot } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -27,9 +27,9 @@ interface ReservationDateTimePickerProps {
 }
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   // 캘린더
-  const [dateValue, setDateValue] = useState<Value>(new Date());
+  const [selectedDateValue, setSelectedDateValue] = useState<Value>(new Date());
   // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
-  const [clickedTimeButtonId, setClickedTimeButtonId] = useState<number | null>(null);
+  const [selectedTimeButtonId, setSelectedTimeButtonId] = useState<number | null>(null);
 
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
 
@@ -55,9 +55,9 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const router = useRouter();
   const userData = useSession();
 
-  const formattedDate = dayjs(dateValue as Date).format('YYYY-MM-DD');
-  const formattedYear = dayjs(dateValue as Date).format('YYYY');
-  const formattedMonth = dayjs(dateValue as Date).format('MM');
+  const formattedDate = dayjs(selectedDateValue as Date).format('YYYY-MM-DD');
+  const formattedYear = dayjs(selectedDateValue as Date).format('YYYY');
+  const formattedMonth = dayjs(selectedDateValue as Date).format('MM');
   const currentTime = dayjs();
 
   const { data: monthlyAvailableScheduleData } = useQuery({
@@ -66,7 +66,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   });
 
   useEffect(() => {
-    if (!dateValue) {
+    if (!selectedDateValue) {
       return;
     }
     if (!monthlyAvailableScheduleData) {
@@ -84,9 +84,9 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     });
 
     setFilteredTimes(filteredTimes);
-  }, [dateValue, formattedDate, monthlyAvailableScheduleData]);
+  }, [selectedDateValue, formattedDate, monthlyAvailableScheduleData]);
 
-  const handleTileDisabled = ({ date, view }: TileArgs) => {
+  const handleTileDisabled = ({ date, view }: TileArgs, monthlyAvailableScheduleData: TimeSlot[] | undefined) => {
     if (view === 'year') {
       return false; // 연도 뷰에서는 비활성화하지 않음
     }
@@ -112,42 +112,36 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     return filteredTimes.length === 0;
   };
 
-  const handleDateButtonText = (clickedTimeButtonId: number | null) => {
+  const handleDateButtonText = (filteredTimes: Time[] | undefined, date: Value, clickedTimeButtonId: number | null) => {
     setDateButtonText(`
-    ${dayjs(dateValue as Date).format('YYYY/MM/DD')}
+    ${dayjs(date as Date).format('YYYY/MM/DD')}
     ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.startTime} ~
     ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
-  useEffect(() => {
-    if (clickedTimeButtonId) {
-      handleDateButtonText(clickedTimeButtonId);
-    }
-  }, [clickedTimeButtonId]);
-
   const handleCalendarDateChange = (value: Value) => {
-    setDateValue(value);
-    if (clickedTimeButtonId) {
-      setClickedTimeButtonId(null);
+    setSelectedDateValue(value);
+    if (selectedTimeButtonId) {
+      setSelectedTimeButtonId(null);
     }
   };
 
   const handleResetFilteredData = () => {
-    setClickedTimeButtonId(null);
+    setSelectedTimeButtonId(null);
     setFilteredTimes([]);
-    setDateValue(null);
+    setSelectedDateValue(null);
   };
 
   const handleOnActiveStartDateChange = ({ activeStartDate }: OnArgs) => {
-    setClickedTimeButtonId(null);
-    setDateValue(activeStartDate);
+    setSelectedTimeButtonId(null);
+    setSelectedDateValue(activeStartDate);
   };
 
   const queryClient = useQueryClient();
   // 예약하기 mutation
   const reserveMutation = useMutation({
     mutationFn: () =>
-      postReservation({ activityId: data.id, scheduleId: Number(clickedTimeButtonId), headCount: participantsValue }),
+      postReservation({ activityId: data.id, scheduleId: Number(selectedTimeButtonId), headCount: participantsValue }),
     onSuccess: () => {
       toast.success('예약이 완료되었습니다.');
       router.push('/mypage/reservations');
@@ -173,11 +167,12 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   };
 
   const handleTimeButtonClick = (id: number | null) => {
-    if (clickedTimeButtonId === id) {
-      setClickedTimeButtonId(null);
+    if (selectedTimeButtonId === id) {
+      setSelectedTimeButtonId(null);
       return;
     }
-    setClickedTimeButtonId(id);
+    setSelectedTimeButtonId(id);
+    handleDateButtonText(filteredTimes, selectedDateValue, id);
   };
 
   return (
@@ -201,8 +196,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             onChange={handleCalendarDateChange}
             className={styles.customCalendar}
             onActiveStartDateChange={handleOnActiveStartDateChange}
-            value={dateValue}
-            tileDisabled={handleTileDisabled}
+            value={selectedDateValue}
+            tileDisabled={({ date, view, activeStartDate }) =>
+              handleTileDisabled({ date, view, activeStartDate }, monthlyAvailableScheduleData)
+            }
             minDate={new Date()}
             minDetail="year"
           />
@@ -211,7 +208,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <div className={styles.possibleTime}>
           <AvailableSchedules
             handleTimeButtonClick={handleTimeButtonClick}
-            clickedTimeButtonId={clickedTimeButtonId}
+            clickedTimeButtonId={selectedTimeButtonId}
             filteredTimes={filteredTimes}
           />
         </div>
@@ -219,7 +216,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <ParticipantsPicker participantsValue={participantsValue} setParticipantsValue={setParticipantsValue} />
         <Button
           onClick={handleReserveButtonClick}
-          isDisabled={!clickedTimeButtonId || participantsValue <= 0}
+          isDisabled={!selectedTimeButtonId || participantsValue <= 0}
           color="green"
           type="modalSingle"
         >
@@ -247,7 +244,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
         <button
           onClick={handleReserveButtonClick}
           className={styles.mobileReserveButton}
-          disabled={!clickedTimeButtonId || participantsValue === 0}
+          disabled={!selectedTimeButtonId || participantsValue === 0}
         >
           예약하기
         </button>
@@ -255,16 +252,17 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
       {isReserveModalOpen && (
         <ReservationModal
-          handleDateButtonText={handleDateButtonText}
-          clickedTimeButtonId={clickedTimeButtonId}
-          setClickedTimeButtonId={setClickedTimeButtonId}
-          filteredTimes={filteredTimes}
+          selectedTimeButtonId={selectedTimeButtonId}
+          setSelectedTimeButtonId={setSelectedTimeButtonId}
+          setDateButtonText={setDateButtonText}
           handleModalToggle={handleReserveModalToggle}
-          dateValue={dateValue}
+          selectedDateValue={selectedDateValue}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
           handleTileDisabled={handleTileDisabled}
-          setDateValue={setDateValue}
+          // handleTileDisabled={handleTileDisabled}
+          setSelectedDateValue={setSelectedDateValue}
+          handleDateButtonText={handleDateButtonText}
         />
       )}
       {isAlertModalOpen && (
