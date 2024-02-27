@@ -14,14 +14,11 @@
   @media mobile {
     width: max(16.8rem, 100%);
   }
-  cursor: pointer;
 }
 
-.container:hover {
-  .image {
-    transform: scale(1.1);
-    transition: 0.1s ease-in-out;
-  }
+.container:hover .image {
+  transform: scale(1.1);
+  transition: 0.3s ease-in-out;
 }
 
 .imageWrapper {
@@ -41,7 +38,7 @@
 }
 
 .image {
-  transition: 0.1s ease-in-out;
+  transition: 0.3s ease-in-out;
   object-fit: cover;
 }
 
@@ -61,7 +58,7 @@
   gap: 1rem;
 }
 
-.descriptionTopWrapper > h3 {
+.descriptionTopWrapper > h1 {
   color: var(--black1B);
   font-size: 2.4rem;
   font-style: normal;
@@ -130,4 +127,13 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+.title {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }

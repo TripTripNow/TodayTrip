@@ -19,7 +19,7 @@ export const useBanner = () => {
     if (!mouseOnSlider) {
       slideTimer = setTimeout(() => {
         handleSlide(1);
-      }, 5000);
+      }, 4000);
     } else {
       clearTimeout(slideTimer);
     }

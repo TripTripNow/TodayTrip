@@ -21,6 +21,10 @@ export const META_TAG = {
     title: '체험 등록',
     description: '나만의 특별한 체험을 등록하고 사람들과 공유하세요.',
   },
+  activitiesEdit: {
+    title: '체험 수정',
+    description: '나만의 특별한 체험을 등록하고 사람들과 공유하세요.',
+  },
   reservationDashboard: {
     title: '예약 현황',
     description: '내 예약 현황을 한눈에 확인해 보세요.',
