@@ -51,7 +51,6 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
       deleteNotificationMutation.mutate(id);
     }
   };
-
   return (
     <ModalLayout handleModalClose={handleModalClose} isAlarmModal={true}>
       {alarmData && (

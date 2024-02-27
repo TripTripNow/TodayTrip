@@ -10,6 +10,8 @@ module.exports = {
   },
   images: {
     formats: ['image/avif', 'image/webp'],
+    deviceSizes: [768, 1200, 1920],
+    imageSizes: [32, 48, 64, 150, 350, 500],
     remotePatterns: [
       {
         protocol: 'https',

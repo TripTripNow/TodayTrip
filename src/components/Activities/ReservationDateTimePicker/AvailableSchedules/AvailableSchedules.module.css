@@ -1,0 +1,14 @@
+.timeButtonContainer {
+  display: flex;
+  width: 32.8rem;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.2rem;
+}
+
+.label {
+  font-weight: 700;
+  line-height: 2.6rem;
+  font-size: 1.8rem;
+  color: var(--nomad_black);
+}

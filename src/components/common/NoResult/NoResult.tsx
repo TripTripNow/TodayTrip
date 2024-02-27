@@ -2,14 +2,14 @@ import NoResultIcon from '#/icons/icon-no-result.svg';
 import styles from './NoResult.module.css';
 
 interface NoResultProps {
-  text?: string;
+  text: string;
 }
 
 function NoResult({ text }: NoResultProps) {
   return (
-    <div className={styles.container}>
+    <div className={styles.defaultContainer}>
       <NoResultIcon alt="검색 결과 없음" />
-      <p>{text ?? '검색 결과가 없습니다.'}</p>
+      <p className={styles.default}>{text}</p>
     </div>
   );
 }

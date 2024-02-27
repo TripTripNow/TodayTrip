@@ -11,8 +11,8 @@ import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { priceFormat } from '@/utils/priceFormat';
-import clsx from 'clsx';
 import Link from 'next/link';
+import clsx from 'clsx';
 
 interface ActivitiesCardProps {
   item: {

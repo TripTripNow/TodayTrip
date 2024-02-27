@@ -50,6 +50,7 @@
 .activitiesItemWrapper {
   border-radius: 2.4rem;
   background: var(--whiteFF);
+  box-shadow: 0 0.4rem 1.6rem 0 rgba(17, 34, 17, 0.05);
   display: flex;
   gap: 2.4rem;
   height: 20.4rem;
@@ -202,40 +203,6 @@
 
 .activitiesKebabContent:hover {
   background-color: var(--greenCE);
-}
-
-.noDataImgContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-
-  margin-top: 8rem;
-  @media tablet {
-    margin-top: 6.4rem;
-    gap: 1.2rem;
-  }
-}
-
-.noDataImgWrapper {
-  padding: 3.1rem 5.4rem;
-}
-
-.noDataImg {
-  width: 13rem;
-  height: 17.8rem;
-  @media tablet {
-    width: 10.9rem;
-    height: 14.9rem;
-  }
-}
-
-.noDataImgContent {
-  color: var(--gray79);
-  font-size: 2.4rem;
-  font-weight: 500;
 }
 
 .activitiesItemWrapper:hover {

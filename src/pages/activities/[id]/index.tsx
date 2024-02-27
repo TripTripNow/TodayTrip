@@ -6,7 +6,8 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/common/api';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getActivityById } from '@/api/activities';
+import { getActivityById, getAvailableSchedule, getReviews } from '@/api/activities';
+import dayjs from 'dayjs';
 import HeadMeta from '@/components/HeadMeta/HeadMeta';
 import { META_TAG } from '@/constants/metaTag';
 
@@ -20,6 +21,21 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       queryKey: [QUERY_KEYS.activity, activityId],
       queryFn: () => getActivityById({ activityId }),
     });
+
+    const today = new Date();
+    const currentYear = dayjs(today).format('YYYY');
+    const currentMonth = dayjs(today).format('MM');
+
+    await queryClient.fetchQuery({
+      queryKey: [QUERY_KEYS.activity, activityId, currentYear, currentMonth],
+      queryFn: () => getAvailableSchedule({ activityId, year: currentYear, month: currentMonth }),
+    });
+
+    await queryClient.fetchQuery({
+      queryKey: ['reviews', activityId, 1],
+      queryFn: () => getReviews({ activityId, page: 1, size: 3 }),
+    });
+
     return { props: { activityId, dehydratedState: dehydrate(queryClient) } };
   } catch {
     return { notFound: true };

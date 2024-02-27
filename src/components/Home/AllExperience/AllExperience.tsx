@@ -14,7 +14,7 @@ import styles from './AllExperience.module.css';
 import Arrow from '#/icons/icon-pagination-left-arrow.svg';
 
 const CATEGORY = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'] as const;
-
+const PRICE_LIST: PriceFilterOption[] = ['낮은 순', '높은 순'];
 interface AllExperienceProps {
   searchResult: string;
   showCards: Pick<Activity, Exclude<keyof Activity, 'address' | 'createdAt' | 'updatedAt'>>[] | undefined;
@@ -126,7 +126,7 @@ function AllExperience({
         {!searchResult ? (
           <div className={styles.header}>
             <h1>{selectedCategory || '🛼 모든 체험'}</h1>
-            <FilterDropDown type="가격" value={priceFilterValue} setValue={setPriceFilterValue} />
+            <FilterDropDown list={PRICE_LIST} value={priceFilterValue} setValue={setPriceFilterValue} />
           </div>
         ) : (
           <div className={styles.searchedHeader}>
@@ -154,7 +154,7 @@ function AllExperience({
           />
         </div>
       ) : (
-        <NoResult />
+        <NoResult text="'검색 결과가 없습니다." />
       )}
     </section>
   );

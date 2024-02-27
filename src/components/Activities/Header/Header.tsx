@@ -75,7 +75,7 @@ function Header({ data }: { data: Activity }) {
         <div>
           {userData?.user.id === data.userId && (
             <>
-              <button onClick={handleKebabToggle}>
+              <button aria-label="수정/삭제하기 케밥 버튼" onClick={handleKebabToggle}>
                 <KebabIcon className={styles.kebabButton} width={40} height={40} alt="케밥 버튼" />
               </button>
               {isKebabOpen && (
@@ -95,7 +95,13 @@ function Header({ data }: { data: Activity }) {
       </header>
       <section className={styles.imageContainer}>
         <div className={styles.bannerImageWrapper}>
-          <Image fill src={data.bannerImageUrl} alt="배너 이미지" />
+          <Image
+            sizes="(min-width: 1200px) 50vw, (max-width: 1199px) 40vw, (max-width: 767px) 70vw"
+            priority
+            fill
+            src={data.bannerImageUrl}
+            alt="배너 이미지"
+          />
         </div>
 
         <div className={data.subImages?.length === 1 ? styles.oneSubImage : styles.subImages}>
@@ -104,7 +110,13 @@ function Header({ data }: { data: Activity }) {
               key={subImage.id}
               className={data.subImages?.length === 1 ? styles.oneSubImageWrapper : styles.subImageWrapper}
             >
-              <Image fill src={subImage.imageUrl} alt="서브 이미지" />
+              <Image
+                sizes="(min-width: 1200px) 20vw, (max-width: 767px) 0vw"
+                priority
+                fill
+                src={subImage.imageUrl}
+                alt="서브 이미지"
+              />
             </div>
           ))}
         </div>
