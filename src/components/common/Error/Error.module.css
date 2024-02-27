@@ -1,0 +1,88 @@
+.container {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: var(--grayFA);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.text {
+  color: var(--green0B);
+  text-align: center;
+  font-size: 3.2rem;
+}
+
+.buttonWrapper {
+  margin-top: 2rem;
+}
+
+.mainTitle {
+  font-size: 20rem;
+}
+
+.movingImage img {
+  position: absolute;
+  top: 55%;
+  animation: airplaneFly 4s infinite linear;
+}
+
+@keyframes airplaneFly {
+  0% {
+    top: 50%;
+    left: -10rem;
+    transform: rotate(-40deg);
+  }
+
+  5% {
+    top: 40%;
+  }
+
+  10% {
+    top: 35%;
+    transform: rotate(-35deg);
+  }
+
+  20% {
+    top: 30%;
+    transform: rotate(-30deg);
+  }
+
+  30% {
+    top: 30%;
+    transform: rotate(-25deg);
+  }
+
+  40% {
+    top: 30%;
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    top: 30%;
+    transform: rotate(10deg);
+  }
+
+  60% {
+    transform: rotate(20deg);
+  }
+
+  70% {
+  }
+
+  80% {
+  }
+
+  90% {
+  }
+
+  100% {
+    left: 110%;
+    top: 80%;
+    transform: rotate(-10deg);
+  }
+}

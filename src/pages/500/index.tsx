@@ -1,13 +1,7 @@
-import styles from '../404/404.module.css';
+import ErrorPage from '@/components/common/Error/Error';
 
 function ServerError() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.fof}>
-        <h1>Error 500</h1>
-      </div>
-    </div>
-  );
+  return <ErrorPage errorStatus={500} />;
 }
 
 export default ServerError;
