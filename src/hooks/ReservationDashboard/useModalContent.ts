@@ -17,7 +17,12 @@ interface UseModalContentProps {
 }
 
 const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModalContentProps) => {
-  const { data, fetchNextPage, isError, isPending } = useInfiniteQuery({
+  const {
+    data,
+    fetchNextPage,
+    isError,
+    isFetching: isFetchingGetReservationByTime,
+  } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
     queryFn: ({ pageParam }) =>
       getReservationsByTime({
@@ -58,7 +63,7 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModal
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  return { isPending, targetRef, data, showItems, isPassedTime };
+  return { isFetchingGetReservationByTime, targetRef, data, showItems, isPassedTime };
 };
 
 export default useModalContent;
