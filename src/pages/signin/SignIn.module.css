@@ -9,6 +9,7 @@
 
   @media mobile {
     width: 35rem;
+    gap: 1.8rem;
   }
 }
 

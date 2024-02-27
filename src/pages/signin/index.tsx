@@ -1,6 +1,6 @@
 import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from './SignIn.module.css';
 import CheckboxInput from '@/components/Input/CheckboxInput';
@@ -21,7 +21,7 @@ function SignIn() {
     },
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, reset } = methods;
 
   const { isValid } = methods.formState;
 
@@ -29,7 +29,10 @@ function SignIn() {
 
   const router = useRouter();
 
+  const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+
   const handleOnSubmit = async (data: FieldValues) => {
+    setIsBtnDisabled(true);
     const { email, password } = data;
 
     const result = await signIn('signin-credentials', {
@@ -40,6 +43,8 @@ function SignIn() {
 
     if (result?.error) {
       toast.error('로그인이 실패하였습니다.');
+      reset();
+      setIsBtnDisabled(false);
       return;
     }
 
@@ -68,7 +73,7 @@ function SignIn() {
           type={isPasswordVisible ? 'text' : 'password'}
         />
         <CheckboxInput control={control} name="checkbox" />
-        <button className={styles.button} type="submit" disabled={!isValid}>
+        <button className={styles.button} type="submit" disabled={!isValid || isBtnDisabled}>
           로그인 하기
         </button>
       </form>

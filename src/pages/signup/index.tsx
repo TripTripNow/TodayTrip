@@ -1,6 +1,6 @@
 import Input from '@/components/Input/Input';
 import UserLayout from '@/components/User/UserLayout';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import styles from '@/pages/signin/SignIn.module.css';
 import { useRouter } from 'next/router';
@@ -29,6 +29,8 @@ function SignUp() {
     },
   });
 
+  const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+
   // 회원가입
   const signupMutation = useMutation({
     mutationFn: (data: PostSignupReq) => postSignup(data),
@@ -44,11 +46,12 @@ function SignUp() {
         router.push('/');
         return;
       }
-      alert('문제가 발생했습니다.');
+      throw new Error();
     },
     onError: (e) => {
       if (e instanceof AxiosError) {
         // 중복된 이메일인 경우
+        setIsBtnDisabled(false);
         if (e.response?.status === 409) {
           setError('email', {
             type: 'validate',
@@ -63,9 +66,17 @@ function SignUp() {
 
   const { handleSubmit, control, setError } = methods;
 
+  const { isValid } = methods.formState;
+
+  const isPasswordVisible = methods.watch('checkbox');
+
   const handleOnSubmit = async (data: FieldValues) => {
+    setIsBtnDisabled(true);
     const isValidPwCheck = passwordCheck('user', data.passwordCheck, data.password, setError);
-    if (!isValidPwCheck) return;
+    if (!isValidPwCheck) {
+      setIsBtnDisabled(false);
+      return;
+    }
 
     const userData: PostSignupReq = {
       email: data.email,
@@ -75,10 +86,6 @@ function SignUp() {
 
     signupMutation.mutate(userData);
   };
-
-  const { isValid } = methods.formState;
-
-  const isPasswordVisible = methods.watch('checkbox');
 
   return (
     <>
@@ -117,7 +124,7 @@ function SignUp() {
           type={isPasswordVisible ? 'text' : 'password'}
         />
         <CheckboxInput control={control} name="checkbox" />
-        <button className={styles.button} type="submit" disabled={!isValid}>
+        <button className={styles.button} type="submit" disabled={!isValid || isBtnDisabled}>
           회원가입하기
         </button>
       </form>

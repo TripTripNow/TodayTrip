@@ -32,7 +32,7 @@ function Navbar() {
     enabled: !!userData,
   });
 
-  const { isVisible, targetRef } = useInfiniteScroll();
+  const { isVisible, targetRef, setRerender } = useInfiniteScroll();
 
   const alarmData: Notifications[] = data?.pages.flatMap((page) => page.notifications) || [];
   const totalCount = data?.pages[0].totalCount || 0;
@@ -66,6 +66,10 @@ function Navbar() {
       fetchNextPage();
     }
   }, [isVisible, userData]);
+
+  useEffect(() => {
+    setRerender((prev) => !prev);
+  }, [isModalOpen]);
 
   return (
     <div className={styles.container}>

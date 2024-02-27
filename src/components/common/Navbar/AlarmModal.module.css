@@ -160,3 +160,11 @@
     font-size: 2.5rem;
   }
 }
+
+.refContainer {
+  margin-top: -0.8rem;
+}
+
+.refContainer > div {
+  height: 0.5rem;
+}
