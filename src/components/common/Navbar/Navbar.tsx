@@ -128,7 +128,7 @@ function Navbar() {
             )}
           </>
         )}
-        <div>{!isModalOpen && <div ref={targetRef} className="ref"></div>}</div>
+        <div>{!isModalOpen && <div ref={targetRef}></div>}</div>
       </div>
     </div>
   );

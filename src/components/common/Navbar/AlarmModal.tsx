@@ -63,7 +63,7 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
           </div>
           {totalCount ? (
             <>
-              <div className={styles.alarmModalContentContainer} id="parent">
+              <div className={styles.alarmModalContentContainer}>
                 {alarmData.map((item: Notifications, index: number) => (
                   <div key={index}>
                     <div className={styles.alarmModalContentWrapper}>
