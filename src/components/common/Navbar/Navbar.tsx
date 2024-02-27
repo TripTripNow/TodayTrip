@@ -58,7 +58,7 @@ function Navbar() {
   };
 
   const handleAlarmModalClick = () => {
-    setIsModalOpen((prev) => !prev);
+    if (!isFetching) setIsModalOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ function Navbar() {
                   <AlarmIcon alt="알람 아이콘" className={styles.alarmIcon} />
                   {totalCount > 0 && <RedEllipse alt="알람이 존재함을 알려주는 아이콘" className={styles.isEllipse} />}
                 </button>
-                {isModalOpen && !isFetching && (
+                {isModalOpen && (
                   <AlarmModal
                     setIsModalOpen={setIsModalOpen}
                     targetRef={targetRef}
