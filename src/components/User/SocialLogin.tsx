@@ -14,7 +14,7 @@ function SocialLogin() {
     });
     toast.promise(promise, {
       loading: '잠시만 기다려주세요.',
-      success: <b>로그인 진행 중입니다.</b>,
+      success: <b>로그인 중입니다.</b>,
       error: <b>로그인이 실패하였습니다.</b>,
     });
     await promise;
