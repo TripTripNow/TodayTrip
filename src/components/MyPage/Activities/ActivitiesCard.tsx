@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { priceFormat } from '@/utils/priceFormat';
 import Link from 'next/link';
+import clsx from 'clsx';
 
 interface ActivitiesCardProps {
   item: {
@@ -78,7 +79,7 @@ function ActivitiesCard({ item }: ActivitiesCardProps) {
 
   return (
     <Link href={`/activities/${item.id}`}>
-      <div className={styles.activitiesItemWrapper}>
+      <div className={clsx(styles.activitiesItemWrapper, styles.cardAnimation)}>
         <div className={styles.activitiesItemImgDiv}>
           <Image
             className={styles.activitiesImg}

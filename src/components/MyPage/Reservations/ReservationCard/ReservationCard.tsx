@@ -77,7 +77,7 @@ function ReservationCard({ data }: ReservationCardProps) {
 
   return (
     <>
-      <div className={styles.cardWrapper} onClick={handleClickNavigate}>
+      <div className={clsx(styles.cardWrapper, styles.cardAnimation)} onClick={handleClickNavigate}>
         <div className={styles.imageWrapper}>
           <Image
             priority

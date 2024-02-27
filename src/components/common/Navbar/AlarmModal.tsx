@@ -42,9 +42,13 @@ function AlarmModal({ setIsModalOpen, targetRef, alarmData, totalCount }: AlarmM
   });
 
   const handleAlarmDelete = (id: number) => {
-    if (!deleteNotificationMutation.isPending) deleteNotificationMutation.mutate(id);
+    if (
+      !deleteNotificationMutation.isPending &&
+      queryClient.getQueryState([QUERY_KEYS.myNotifications])?.fetchStatus !== 'fetching'
+    ) {
+      deleteNotificationMutation.mutate(id);
+    }
   };
-
   return (
     <ModalLayout handleModalClose={handleModalClose} isAlarmModal={true}>
       {alarmData && (
