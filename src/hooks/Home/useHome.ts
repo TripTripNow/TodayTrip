@@ -77,7 +77,7 @@ export const useHome = () => {
     setSelectedCategory('');
 
     const trimmedText = text ? text.trim() : inputSearchText.trim();
-    if (!trimmedText) return;
+    if (!trimmedText || trimmedText === '') return;
 
     if (recentSearchKeywords.length === 0) {
       setRecentSearchKeywords([trimmedText]);
@@ -172,7 +172,7 @@ export const useHome = () => {
     handleSearchSubmit,
     handleSearchText,
     inputSearchText,
-    recentSearchKeywords,
+    recentSearchKeywords: recentSearchKeywords.filter((keyword) => keyword !== ''),
     searchResult,
     priceFilterValue,
     setPriceFilterValue,
