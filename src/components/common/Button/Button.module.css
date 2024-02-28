@@ -157,7 +157,7 @@
   }
 }
 
-.button:hover:not(.white) {
+.button:hover:not(.white):enabled {
   background: var(--nomad_black);
   color: var(--whiteFF);
 }
