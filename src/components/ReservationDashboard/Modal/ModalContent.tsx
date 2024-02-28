@@ -24,6 +24,7 @@ interface ReservationDetailsProps {
   targetRef: RefObject<HTMLDivElement>;
   isPassedTime: boolean;
   isFetchingGetReservationByTime: boolean;
+  activityId: number;
 }
 
 type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
@@ -54,6 +55,7 @@ function ModalContent({
             date={date}
           />
           <ReservationDetails
+            activityId={activityId}
             items={showItems!}
             tabStatus={tabStatus}
             targetRef={targetRef}
@@ -100,6 +102,7 @@ function ReservationDetails({
   targetRef,
   isPassedTime,
   isFetchingGetReservationByTime,
+  activityId,
 }: ReservationDetailsProps) {
   return (
     <div>
@@ -107,7 +110,13 @@ function ReservationDetails({
       {items.length > 0 && (
         <div className={styles.cardsWrapper}>
           {items.map((item) => (
-            <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} isPassedTime={isPassedTime} />
+            <ModalDetailedCard
+              item={item}
+              key={item.id}
+              tabStatus={tabStatus}
+              isPassedTime={isPassedTime}
+              activityId={activityId}
+            />
           ))}
           <div ref={targetRef}></div>
         </div>
