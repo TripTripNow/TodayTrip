@@ -24,7 +24,7 @@ function ErrorPage({ errorStatus }: ErrorPageProps) {
       </div>
 
       <div className={styles.movingImage}>
-        <Image src={NotFoundImage} alt="우주인" width={100} height={100} className={styles.src} />
+        <Image src={NotFoundImage} alt="비행기" width={100} height={100} className={styles.src} />
       </div>
     </div>
   );
