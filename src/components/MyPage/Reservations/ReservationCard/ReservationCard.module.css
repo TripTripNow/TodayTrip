@@ -34,6 +34,13 @@
 
 .imageWrapper img {
   border-radius: 2.4rem 0 0 2.4rem;
+
+  @media tablet {
+    border-radius: 1rem 0 0 1rem;
+  }
+  @media mobile {
+    border-radius: 1rem 0 0 1rem;
+  }
 }
 
 .detailContainer {

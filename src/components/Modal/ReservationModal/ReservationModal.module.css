@@ -35,6 +35,7 @@
   composes: bigLabel;
   font-size: 1.8rem;
 }
+
 .visible {
   @media tablet {
     display: block !important;
