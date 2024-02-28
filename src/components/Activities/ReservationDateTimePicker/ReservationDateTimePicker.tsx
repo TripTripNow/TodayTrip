@@ -80,13 +80,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const reserveMutation = useMutation({
     mutationFn: () =>
       postReservation({ activityId: data.id, scheduleId: Number(selectedTimeButtonId), headCount: participantsValue }),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('예약이 완료되었습니다.');
+      await queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations, QUERY_KEYS.all] });
       router.push('/mypage/reservations');
       handleResetFilteredData();
       setParticipantsValue(1);
       setDateButtonText('날짜 선택하기');
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations, QUERY_KEYS.all] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
