@@ -17,6 +17,7 @@ interface ReservationCalendarProps {
   setTimeButtonId: Dispatch<SetStateAction<number | null>>;
   monthlyAvailableScheduleData: TimeSlot[] | undefined;
   usage?: 'outer';
+  handleResetDateButtonText?: () => void;
 }
 function ReservationCalendar({
   dateValue,
@@ -25,17 +26,25 @@ function ReservationCalendar({
   setTimeButtonId,
   monthlyAvailableScheduleData,
   usage,
+  handleResetDateButtonText,
 }: ReservationCalendarProps) {
   const handleCalendarDateChange = (value: Value) => {
     setDateValue(value);
     if (timeButtonId) {
       setTimeButtonId(null);
     }
+    if (handleResetDateButtonText) {
+      handleResetDateButtonText();
+    }
   };
 
   const handleOnActiveStartDateChange = ({ activeStartDate }: OnArgs) => {
     setTimeButtonId(null);
     setDateValue(activeStartDate);
+
+    if (handleResetDateButtonText) {
+      handleResetDateButtonText();
+    }
   };
 
   const currentTime = dayjs();

@@ -65,6 +65,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
+  const handleResetDateButtonText = () => {
+    setDateButtonText('날짜 선택하기');
+  };
+
   const handleResetFilteredData = () => {
     setSelectedTimeButtonId(null);
     setFilteredTimes([]);
@@ -128,6 +132,7 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
             timeButtonId={selectedTimeButtonId}
             setTimeButtonId={setSelectedTimeButtonId}
             monthlyAvailableScheduleData={monthlyAvailableScheduleData}
+            handleResetDateButtonText={handleResetDateButtonText}
             usage="outer"
           />
         </div>
