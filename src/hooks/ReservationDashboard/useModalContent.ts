@@ -51,8 +51,10 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModal
   }
 
   useEffect(() => {
-    setRerender((prev) => !prev);
-  }, [tabStatus, data, isFetchingGetReservationByTime]);
+    if (showItems) {
+      setRerender((prev) => !prev);
+    }
+  }, [tabStatus, data]);
 
   const { isVisible, targetRef, setRerender } = useInfiniteScroll();
   useEffect(() => {

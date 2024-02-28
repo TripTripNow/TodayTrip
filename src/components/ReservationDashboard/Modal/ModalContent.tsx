@@ -118,7 +118,7 @@ function ReservationDetails({
               activityId={activityId}
             />
           ))}
-          <div ref={targetRef}></div>
+          <div ref={targetRef} style={{ position: 'absolute', bottom: '50px' }}></div>
         </div>
       )}
       {!isFetchingGetReservationByTime && items.length <= 0 && <NoResult text={NO_DATA_RESERVATION[tabStatus]} />}
