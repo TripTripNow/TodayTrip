@@ -94,7 +94,7 @@ function Header({ data }: { data: Activity }) {
         </div>
       </header>
       <section className={styles.imageContainer}>
-        <div className={styles.bannerImageWrapper}>
+        <div className={data.subImages?.length === 0 ? styles.onlyBannerImageWrapper : styles.bannerImageWrapper}>
           <Image
             sizes="(min-width: 1200px) 50vw, (max-width: 1199px) 40vw, (max-width: 767px) 70vw"
             priority

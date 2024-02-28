@@ -29,7 +29,7 @@ function FilterDropDown<T extends FilterOption>({ value, setValue, list }: Filte
   };
 
   return (
-    <div onBlur={handleClickOutside} className={list[0] === '가격' ? styles.price : styles.reserve}>
+    <div onBlur={handleClickOutside} className={list[0] === '낮은 순' ? styles.price : styles.reserve}>
       <button onClick={handleDropdown} className={styles.wrapper}>
         {value}
         {isOpen ? (

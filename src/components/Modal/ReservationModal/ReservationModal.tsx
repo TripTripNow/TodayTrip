@@ -1,69 +1,63 @@
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import styles from './ReservationModal.module.css';
 import CloseIcon from '#/icons/icon-modalClose.svg';
-import Calendar, { OnArgs, TileArgs } from 'react-calendar';
 import Button from '@/components/common/Button/Button';
 import style from '@/components/Activities/ReservationDateTimePicker/ReservationDateTimePicker.module.css';
-import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from '@/types/Calendar';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Time } from '@/types/common/api';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
+import ReservationCalendar from '@/components/Activities/ReservationDateTimePicker/ReservationCalendar/ReservationCalendar';
+import useFilteredTimes from '@/hooks/Activities/useAvailableScheduleFilter';
 
 interface ReservationModalProps {
-  dateValue: Value;
-  setDateValue: Dispatch<SetStateAction<Value>>;
-  filteredTimes: Time[] | undefined;
-  handleDateButtonText: (clickedPossibleTimeIdInModal: number | null) => void;
+  activityId: number;
   handleModalToggle: () => void;
+  selectedDateValue: Value;
+  setSelectedDateValue: Dispatch<SetStateAction<Value>>;
+  selectedTimeButtonId: number | null;
+  setSelectedTimeButtonId: Dispatch<SetStateAction<number | null>>;
   participantsValue: number;
   setParticipantsValue: Dispatch<SetStateAction<number>>;
-  clickedTimeButtonId: number | null;
-  setClickedTimeButtonId: Dispatch<SetStateAction<number | null>>;
-  handleTileDisabled: ({ date }: TileArgs) => boolean;
+  handleDateButtonText: (
+    filteredTimes: Time[] | undefined,
+    date: Value,
+    clickedPossibleTimeIdInModal: number | null,
+  ) => void;
 }
 
 function ReservationModal({
-  dateValue,
-  filteredTimes,
-  setClickedTimeButtonId,
-  handleDateButtonText,
+  activityId,
   handleModalToggle,
+  selectedDateValue,
+  setSelectedDateValue,
+  selectedTimeButtonId,
+  setSelectedTimeButtonId,
   participantsValue,
   setParticipantsValue,
-  clickedTimeButtonId,
-  handleTileDisabled,
-  setDateValue,
+  handleDateButtonText,
 }: ReservationModalProps) {
-  const [clickedPossibleTimeIdInModal, setClickedPossibleTimeIdInModal] = useState<number | null>(clickedTimeButtonId);
+  const [clickedTimeButtonId, setClickedTimeButtonId] = useState(selectedTimeButtonId);
+  const [clickedDateValue, setClickedDateValue] = useState<Value>(selectedDateValue);
 
   const handleSelectButtonClick = () => {
     handleModalToggle();
-    handleDateButtonText(clickedPossibleTimeIdInModal);
-    setClickedTimeButtonId(clickedPossibleTimeIdInModal);
-  };
-
-  const handleCalendarDateChangeInModal = (value: Value) => {
-    setDateValue(value);
-    if (clickedPossibleTimeIdInModal) {
-      setClickedPossibleTimeIdInModal(null);
-    }
-  };
-
-  const handleCalendarMonthChangeInModal = ({ activeStartDate }: OnArgs) => {
-    setDateValue(activeStartDate);
-    setClickedPossibleTimeIdInModal(null);
+    setSelectedTimeButtonId(clickedTimeButtonId);
+    handleDateButtonText(filteredTimes, clickedDateValue, clickedTimeButtonId);
+    setSelectedDateValue(clickedDateValue);
   };
 
   const handleTimeButtonClick = (id: number | null) => {
-    if (clickedTimeButtonId || clickedPossibleTimeIdInModal) {
-      setClickedPossibleTimeIdInModal(null);
+    if (selectedTimeButtonId || clickedTimeButtonId) {
+      setClickedTimeButtonId(null);
     }
 
-    setClickedPossibleTimeIdInModal(id);
+    setClickedTimeButtonId(id);
   };
+
+  const { filteredTimes, monthlyAvailableScheduleData } = useFilteredTimes({ dateValue: clickedDateValue, activityId });
 
   return (
     <ModalLayout handleModalClose={handleModalToggle}>
@@ -76,24 +70,18 @@ function ReservationModal({
         </div>
 
         <div className={styles.content}>
-          <Calendar
-            prev2Label={null}
-            next2Label={null}
-            calendarType="gregory"
-            locale="en"
-            onChange={handleCalendarDateChangeInModal}
-            onActiveStartDateChange={(activeStartDate) => handleCalendarMonthChangeInModal(activeStartDate)}
-            className={clsx(style.customCalendar, styles.visible)}
-            value={dateValue}
-            minDate={new Date()}
-            tileDisabled={handleTileDisabled}
-            minDetail="year"
+          <ReservationCalendar
+            dateValue={clickedDateValue}
+            setDateValue={setClickedDateValue}
+            timeButtonId={clickedTimeButtonId}
+            setTimeButtonId={setClickedTimeButtonId}
+            monthlyAvailableScheduleData={monthlyAvailableScheduleData}
           />
 
           <div className={style.possibleTime} style={{ display: 'flex' }}>
             <AvailableSchedules
               handleTimeButtonClick={handleTimeButtonClick}
-              clickedTimeButtonId={clickedPossibleTimeIdInModal}
+              clickedTimeButtonId={clickedTimeButtonId}
               filteredTimes={filteredTimes}
             />
 
@@ -105,12 +93,7 @@ function ReservationModal({
           </div>
         </div>
 
-        <Button
-          onClick={handleSelectButtonClick}
-          isDisabled={!clickedPossibleTimeIdInModal}
-          color="green"
-          type="modalSingle"
-        >
+        <Button onClick={handleSelectButtonClick} isDisabled={!clickedTimeButtonId} color="green" type="modalSingle">
           선택하기
         </Button>
       </div>
