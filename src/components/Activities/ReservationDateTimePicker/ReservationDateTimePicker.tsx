@@ -252,16 +252,15 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
 
       {isReserveModalOpen && (
         <ReservationModal
-          selectedTimeButtonId={selectedTimeButtonId}
-          setSelectedTimeButtonId={setSelectedTimeButtonId}
-          setDateButtonText={setDateButtonText}
+          activityId={data.id}
           handleModalToggle={handleReserveModalToggle}
           selectedDateValue={selectedDateValue}
+          setSelectedDateValue={setSelectedDateValue}
+          selectedTimeButtonId={selectedTimeButtonId}
+          setSelectedTimeButtonId={setSelectedTimeButtonId}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
           handleTileDisabled={handleTileDisabled}
-          // handleTileDisabled={handleTileDisabled}
-          setSelectedDateValue={setSelectedDateValue}
           handleDateButtonText={handleDateButtonText}
         />
       )}

@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import 'react-calendar/dist/Calendar.css';
 import { Value } from '@/types/Calendar';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Time } from '@/types/common/api';
+import { Time, TimeSlot } from '@/types/common/api';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
 import { useQuery } from '@tanstack/react-query';
@@ -17,61 +17,37 @@ import { getAvailableSchedule } from '@/api/activities';
 import dayjs from 'dayjs';
 
 interface ReservationModalProps {
+  activityId: number;
+  handleModalToggle: () => void;
   selectedDateValue: Value;
+  setSelectedDateValue: Dispatch<SetStateAction<Value>>;
+  selectedTimeButtonId: number | null;
+  setSelectedTimeButtonId: Dispatch<SetStateAction<number | null>>;
+  participantsValue: number;
+  setParticipantsValue: Dispatch<SetStateAction<number>>;
+  handleTileDisabled: ({ date, view }: TileArgs, monthlyAvailableScheduleData: TimeSlot[] | undefined) => boolean;
   handleDateButtonText: (
     filteredTimes: Time[] | undefined,
     date: Value,
     clickedPossibleTimeIdInModal: number | null,
   ) => void;
-  handleModalToggle: () => void;
-  participantsValue: number;
-  setParticipantsValue: Dispatch<SetStateAction<number>>;
-  selectedTimeButtonId: number | null;
-  setSelectedTimeButtonId: Dispatch<SetStateAction<number | null>>;
-  setSelectedDateValue: any;
-  handleTileDisabled: any;
 }
 
 function ReservationModal({
-  selectedDateValue,
-  setSelectedTimeButtonId,
+  activityId,
   handleModalToggle,
+  selectedDateValue,
+  setSelectedDateValue,
+  selectedTimeButtonId,
+  setSelectedTimeButtonId,
   participantsValue,
   setParticipantsValue,
-  selectedTimeButtonId,
-  setSelectedDateValue,
-  handleDateButtonText,
   handleTileDisabled,
+  handleDateButtonText,
 }: ReservationModalProps) {
   const [clickedTimeButtonId, setClickedTimeButtonId] = useState(selectedTimeButtonId);
   const [clickedDateValue, setClickedDateValue] = useState<Value>(selectedDateValue);
   const [filteredTimes, setFilteredTimes] = useState<Time[]>();
-
-  // const handleTileDisabled = ({ date, view }: TileArgs) => {
-  //   if (view === 'year') {
-  //     return false; // 연도 뷰에서는 비활성화하지 않음
-  //   }
-
-  //   const formattedDate = dayjs(date).format('YYYY-MM-DD');
-  //   const availableDate = monthlyAvailableScheduleData?.find((item) => item.date === formattedDate);
-
-  //   if (!availableDate) {
-  //     return true; // 해당 날짜에 사용 가능한 일정이 없으면 비활성화
-  //   }
-
-  //   // 오늘이지만, 이미 시간이 지나버린 데이터만 존재한다면 거르기
-  //   let filteredTimes;
-  //   if (currentTime.isSame(date, 'date')) {
-  //     filteredTimes = availableDate.times.filter((time) => {
-  //       const startTime = time.startTime;
-  //       return currentTime.isBefore(dayjs(startTime, 'HH:mm'));
-  //     });
-  //   } else {
-  //     filteredTimes = availableDate.times;
-  //   }
-
-  //   return filteredTimes.length === 0;
-  // };
 
   const handleSelectButtonClick = () => {
     handleModalToggle();
@@ -106,8 +82,8 @@ function ReservationModal({
   const currentTime = dayjs();
 
   const { data: monthlyAvailableScheduleData } = useQuery({
-    queryKey: [QUERY_KEYS.activity, 15, formattedYear, formattedMonth],
-    queryFn: () => getAvailableSchedule({ activityId: 15, year: formattedYear, month: formattedMonth }),
+    queryKey: [QUERY_KEYS.activity, activityId, formattedYear, formattedMonth],
+    queryFn: () => getAvailableSchedule({ activityId, year: formattedYear, month: formattedMonth }),
   });
 
   useEffect(() => {
