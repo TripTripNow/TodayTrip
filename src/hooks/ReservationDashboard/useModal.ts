@@ -13,7 +13,7 @@ interface UseModalProps {
 
 const useModal = ({ date, activityId }: UseModalProps) => {
   const { data: dailyReservationData, isError } = useQuery({
-    queryKey: [QUERY_KEYS.dailyReservation, date],
+    queryKey: [QUERY_KEYS.dailyReservation, activityId, date],
     queryFn: () => getReservedSchedule({ activityId, date }),
   });
 

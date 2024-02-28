@@ -12,12 +12,14 @@ export interface ModalDetailedCardProps {
   item: ScheduledReservation;
   tabStatus: keyof DailyReservationStatusCount;
   isPassedTime: boolean;
+  activityId: number;
 }
 
-function ModalDetailedCard({ item, tabStatus, isPassedTime }: ModalDetailedCardProps) {
+function ModalDetailedCard({ item, tabStatus, isPassedTime, activityId }: ModalDetailedCardProps) {
   const { handleConfirm, handleDecline, alertModalState, handleAlertModalToggle } = useModalDetailedCard({
     item,
     tabStatus,
+    activityId,
   });
 
   return (

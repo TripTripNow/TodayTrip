@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-const useModalDetailedCard = ({ item, tabStatus }: Omit<ModalDetailedCardProps, 'isPassedTime'>) => {
+const useModalDetailedCard = ({ item, tabStatus, activityId }: Omit<ModalDetailedCardProps, 'isPassedTime'>) => {
   const [alertModalState, setAlertModalState] = useState<{ isConfirmModalOpen: boolean; isDeclineModalOpen: boolean }>({
     isConfirmModalOpen: false,
     isDeclineModalOpen: false,
@@ -18,7 +18,7 @@ const useModalDetailedCard = ({ item, tabStatus }: Omit<ModalDetailedCardProps, 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.monthlyReservation] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.timeReservation, item.scheduleId, tabStatus] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.dailyReservation, item.date] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.dailyReservation, activityId, item.date] });
     },
     onError: () => {
       toast.error('동작에 실패하였습니다.');
