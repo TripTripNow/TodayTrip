@@ -22,7 +22,7 @@ function Navbar() {
 
   const { data: userData } = useSession();
 
-  const { data, fetchNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.myNotifications],
     queryFn: ({ pageParam }) => getMyNotifications(pageParam),
     initialPageParam: 0,
@@ -58,7 +58,7 @@ function Navbar() {
   };
 
   const handleAlarmModalClick = () => {
-    setIsModalOpen((prev) => !prev);
+    if (!isFetching) setIsModalOpen((prev) => !prev);
   };
 
   useEffect(() => {
