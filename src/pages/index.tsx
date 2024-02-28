@@ -2,26 +2,20 @@ import { GetServerSideProps } from 'next';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 
 import PopularExperience from '@/components/Home/PopularExperience/PopularExperience';
-import Searchbar from '@/components/Home/Searchbar/Searchbar';
 import AllExperience from '@/components/Home/AllExperience/AllExperience';
-import Banner from '@/components/Home/Banner/Banner';
+import Searchbar from '@/components/Home/Searchbar/Searchbar';
 import NoResult from '@/components/common/NoResult/NoResult';
+import HeadMeta from '@/components/HeadMeta/HeadMeta';
+import Banner from '@/components/Home/Banner/Banner';
 import { getActivities } from '@/api/activities';
 import { setContext } from '@/api/axiosInstance';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { useHome } from '@/hooks/Home/useHome';
-import styles from './Home.module.css';
-import HeadMeta from '@/components/HeadMeta/HeadMeta';
 import { META_TAG } from '@/constants/metaTag';
+import styles from './Home.module.css';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   setContext(context);
-
-  if (context.resolvedUrl !== '/') {
-    return {
-      notFound: true,
-    };
-  }
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({

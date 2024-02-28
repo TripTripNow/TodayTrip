@@ -105,6 +105,11 @@
   height: 18rem;
 }
 
+.modalTimeMenu {
+  composes: timeMenu;
+  height: 22rem;
+}
+
 .placeholder {
   color: var(--grayA4);
 }

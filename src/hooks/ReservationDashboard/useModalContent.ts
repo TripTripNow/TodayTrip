@@ -17,7 +17,12 @@ interface UseModalContentProps {
 }
 
 const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModalContentProps) => {
-  const { data, fetchNextPage, isError, isPending } = useInfiniteQuery({
+  const {
+    data,
+    fetchNextPage,
+    isError,
+    isFetching: isFetchingGetReservationByTime,
+  } = useInfiniteQuery({
     queryKey: [QUERY_KEYS.timeReservation, dropdownItem.id, tabStatus],
     queryFn: ({ pageParam }) =>
       getReservationsByTime({
@@ -37,9 +42,11 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModal
 
   const { curYear, curMonth, curDay, curHour, curMinute } = showTodayDate();
   let isPassedTime = false;
-  if (new Date(`${curYear}-${curMonth}-${curDay}`) <= new Date(date)) {
-    const splitedTime = dropdownItem.title.split(' ~ ')[0].split(':');
 
+  if (
+    new Date(`${curYear}-${String(curMonth).padStart(2, '0')}-${String(curDay).padStart(2, '0')}`) >= new Date(date)
+  ) {
+    const splitedTime = dropdownItem.title.split(' ~ ')[0].split(':');
     if (curHour * 60 + curMinute >= Number(splitedTime[0]) * 60 + Number(splitedTime[1])) isPassedTime = true;
   }
 
@@ -56,7 +63,7 @@ const useModalContent = ({ tabStatus, activityId, dropdownItem, date }: UseModal
     if (isError) toast.error('데이터를 불러올 수 없습니다.');
   }, [isError]);
 
-  return { isPending, targetRef, data, showItems, isPassedTime };
+  return { isFetchingGetReservationByTime, targetRef, data, showItems, isPassedTime };
 };
 
 export default useModalContent;

@@ -23,6 +23,7 @@ interface ReservationDetailsProps {
   tabStatus: keyof DailyReservationStatusCount;
   targetRef: RefObject<HTMLDivElement>;
   isPassedTime: boolean;
+  isFetchingGetReservationByTime: boolean;
 }
 
 type ReservationDateProps = Pick<ModalContentProps, 'setDropdownItem' | 'items' | 'dropdownItem' | 'date'>;
@@ -35,17 +36,16 @@ function ModalContent({
   tabStatus,
   activityId,
 }: ModalContentProps) {
-  const { targetRef, isPending, data, showItems, isPassedTime } = useModalContent({
+  const { targetRef, isFetchingGetReservationByTime, data, showItems, isPassedTime } = useModalContent({
     tabStatus,
     dropdownItem,
     activityId,
     date,
   });
 
-  if (isPending) return null;
   return (
     <div className={styles.mainContainer}>
-      {timeItems && data ? (
+      {timeItems && data && (
         <>
           <ReservationDate
             setDropdownItem={setDropdownItem}
@@ -58,11 +58,11 @@ function ModalContent({
             tabStatus={tabStatus}
             targetRef={targetRef}
             isPassedTime={isPassedTime}
+            isFetchingGetReservationByTime={isFetchingGetReservationByTime}
           />
         </>
-      ) : (
-        <NoResult text="예약 정보가 없습니다." />
       )}
+      {!isFetchingGetReservationByTime && timeItems.length <= 0 && !data && <NoResult text="예약 정보가 없습니다." />}
     </div>
   );
 }
@@ -94,20 +94,25 @@ function ReservationDate({ setDropdownItem, items, dropdownItem, date }: Reserva
   );
 }
 
-function ReservationDetails({ items, tabStatus, targetRef, isPassedTime }: ReservationDetailsProps) {
+function ReservationDetails({
+  items,
+  tabStatus,
+  targetRef,
+  isPassedTime,
+  isFetchingGetReservationByTime,
+}: ReservationDetailsProps) {
   return (
     <div>
       <h2 className={styles.subTitle}>예약 내역</h2>
-      {items.length > 0 ? (
+      {items.length > 0 && (
         <div className={styles.cardsWrapper}>
           {items.map((item) => (
             <ModalDetailedCard item={item} key={item.id} tabStatus={tabStatus} isPassedTime={isPassedTime} />
           ))}
           <div ref={targetRef}></div>
         </div>
-      ) : (
-        <NoResult text={NO_DATA_RESERVATION[tabStatus]} />
       )}
+      {!isFetchingGetReservationByTime && items.length <= 0 && <NoResult text={NO_DATA_RESERVATION[tabStatus]} />}
     </div>
   );
 }

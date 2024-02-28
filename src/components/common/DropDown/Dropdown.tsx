@@ -81,6 +81,7 @@ function Dropdown({ dropDownItems, setDropdownItem, type, placeholder, fetchNext
             styles.menu,
             type === '시간' && styles.timeMenu,
             type === '체험' && InitialDropdownLength.current > 4 && styles.activityMenu,
+            type === '예약한 시간' && InitialDropdownLength.current > 4 && styles.modalTimeMenu,
           )}
         >
           {dropDownItems.map((itemValue) => (

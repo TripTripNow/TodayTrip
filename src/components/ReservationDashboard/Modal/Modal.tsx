@@ -1,16 +1,12 @@
-import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import toast from 'react-hot-toast';
-import { useQuery } from '@tanstack/react-query';
 
 import ModalLayout from '@/components/Modal/ModalLayout/ModalLayout';
 import ModalContent from '@/components/ReservationDashboard/Modal/ModalContent';
 import { CALENDAR_MODAL_MAP, STATUS_ARR } from '@/constants/calendar';
 import { DailyReservationStatusCount } from '@/types/common/api';
-import { getReservedSchedule } from '@/api/myActivities';
-import QUERY_KEYS from '@/constants/queryKeys';
 import CloseIcon from '#/icons/icon-close.svg';
 import styles from './Modal.module.css';
+import useModal from '@/hooks/ReservationDashboard/useModal';
 
 interface ModalProps {
   handleModalClose: () => void;
@@ -25,50 +21,29 @@ interface ModalTabProps {
 }
 
 function Modal({ handleModalClose, date, activityId }: ModalProps) {
-  const {
-    data: dailyReservationData,
-    isError,
-    isPending,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.dailyReservation, date],
-    queryFn: () => getReservedSchedule({ activityId, date }),
+  const { dailyReservationData, handleStatus, tabStatus, tabCount, setDropdownItem, dropdownItem } = useModal({
+    date,
+    activityId,
   });
 
-  const [dropdownItem, setDropdownItem] = useState<{ id: number; title: string }>({ id: 0, title: '' });
-  const [tabStatus, setTabStatus] = useState<keyof DailyReservationStatusCount>('pending');
-
-  const handleStatus = (status: keyof DailyReservationStatusCount) => {
-    setTabStatus(status);
-  };
-
-  const tabCount = dailyReservationData?.find((item) => item.scheduleId === dropdownItem.id)?.count;
-
-  useEffect(() => {
-    if (dailyReservationData && dailyReservationData.length > 0 && dropdownItem.id === 0)
-      setDropdownItem({
-        id: dailyReservationData[0].scheduleId,
-        title: `${dailyReservationData[0].startTime} ~ ${dailyReservationData[0].endTime}`,
-      });
-  }, [dailyReservationData]);
-
-  useEffect(() => {
-    if (isError) toast.error('데이터를 불러올 수 없습니다.');
-  }, [isError]);
-
-  if (!dailyReservationData || dailyReservationData.length === 0 || dropdownItem.id === 0 || isPending) return null;
+  if (!dailyReservationData || dropdownItem.id === 0) return null;
   return (
     <ModalLayout handleModalClose={handleModalClose}>
       <div className={styles.container}>
-        <ModalHeader handleModalClose={handleModalClose} />
-        <ModalTab handleStatus={handleStatus} tabStatus={tabStatus} item={tabCount} />
-        <ModalContent
-          setDropdownItem={setDropdownItem}
-          items={dailyReservationData}
-          dropdownItem={dropdownItem}
-          date={date}
-          tabStatus={tabStatus}
-          activityId={activityId}
-        />
+        {dailyReservationData && (
+          <>
+            <ModalHeader handleModalClose={handleModalClose} />
+            <ModalTab handleStatus={handleStatus} tabStatus={tabStatus} item={tabCount} />
+            <ModalContent
+              setDropdownItem={setDropdownItem}
+              items={dailyReservationData}
+              dropdownItem={dropdownItem}
+              date={date}
+              tabStatus={tabStatus}
+              activityId={activityId}
+            />
+          </>
+        )}
       </div>
     </ModalLayout>
   );
