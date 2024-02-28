@@ -16,6 +16,7 @@ import { SOCIAL_EMAIL_CONTENT } from '@/constants/user';
 import toast from 'react-hot-toast';
 import HeadMeta from '@/components/HeadMeta/HeadMeta';
 import { META_TAG } from '@/constants/metaTag';
+import CheckboxInput from '@/components/Input/CheckboxInput';
 
 interface MyPageProps {
   userData: GetUsersMeRes;
@@ -44,6 +45,7 @@ function MyPage({ userData, type }: MyPageProps) {
       mypageEmail: type === 'credentials' ? userData.email : SOCIAL_EMAIL_CONTENT[type],
       mypagePassword: '',
       mypagePasswordCheck: '',
+      checkbox: false,
     },
   });
 
@@ -52,6 +54,8 @@ function MyPage({ userData, type }: MyPageProps) {
   const { getValues } = useFormContext();
   const queryClient = useQueryClient();
   const { update } = useSession();
+
+  const isPasswordVisible = methods.watch('checkbox');
 
   const patchUserMeMutation = useMutation({
     mutationFn: (data: PatchUsersMeReq) => patchUsersMe(data),
@@ -113,7 +117,7 @@ function MyPage({ userData, type }: MyPageProps) {
             control={control}
             label={'비밀번호'}
             placeholder={'8자 이상 입력해 주세요'}
-            type={'password'}
+            type={isPasswordVisible ? 'text' : 'password'}
             isDisabled={type !== 'credentials'}
           />
           <Input
@@ -121,9 +125,10 @@ function MyPage({ userData, type }: MyPageProps) {
             control={control}
             label={'비밀번호 확인'}
             placeholder={'비밀번호를 한번 더 입력해 주세요'}
-            type={'password'}
+            type={isPasswordVisible ? 'text' : 'password'}
             isDisabled={type !== 'credentials'}
           />
+          {type === 'credentials' && <CheckboxInput control={control} name="checkbox" />}
         </div>
       </form>
     </>
