@@ -1,4 +1,4 @@
-import { QueryClient, dehydrate, useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -19,6 +19,7 @@ import CheckStatus from '@/components/MyPage/Reservations/Details/CheckStatus';
 import Button from '@/components/common/Button/Button';
 import Map from '@/components/common/Map/Map';
 import { META_TAG } from '@/constants/metaTag';
+import QUERY_KEYS from '@/constants/queryKeys';
 import { RESERVATION_STATUS } from '@/constants/reservation';
 import { ReservationStatus } from '@/types/common/api';
 import { priceFormat } from '@/utils/priceFormat';
@@ -76,8 +77,8 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
   const res = router.query as unknown as ResTypes;
   const { status, reviewSubmitted, headCount, date, startTime, endTime, totalPrice, id } = res;
   const [isReviewSubmit, setIsReviewSubmit] = useState<boolean>(reviewSubmitted === 'true');
-
   const [currentStatus, setCurrentStatus] = useState(status);
+  const queryClient = useQueryClient();
 
   const hasResult = Object.keys(res).length > 1;
 
@@ -92,6 +93,7 @@ function ReservationID({ activityId }: InferGetServerSidePropsType<typeof getSer
     onSuccess: () => {
       toast.success('예약이 취소되었습니다.');
       setCurrentStatus('canceled');
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.reservations] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
