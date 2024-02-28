@@ -2,17 +2,15 @@ import styles from './ReservationDateTimePicker.module.css';
 import style from '@/pages/activities/[id]/Activity.module.css';
 import Button from '@/components/common/Button/Button';
 import dayjs from 'dayjs';
-import Calendar, { OnArgs, TileArgs } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ReservationModal from '@/components/Modal/ReservationModal/ReservationModal';
-import { Activity, Time, TimeSlot } from '@/types/common/api';
+import { Activity, Time } from '@/types/common/api';
 import { Value } from '@/types/Calendar';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import QUERY_KEYS from '@/constants/queryKeys';
-import { getAvailableSchedule, postReservation } from '@/api/activities';
+import { postReservation } from '@/api/activities';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useRouter } from 'next/router';
 import AlertModal from '@/components/Modal/AlertModal/AlertModal';
@@ -20,20 +18,20 @@ import { useSession } from 'next-auth/react';
 import { priceFormat } from '@/utils/priceFormat';
 import ParticipantsPicker from '@/components/Activities/ReservationDateTimePicker/ParticipantsPicker/ParticipantsPicker';
 import AvailableSchedules from '@/components/Activities/ReservationDateTimePicker/AvailableSchedules/AvailableSchedules';
+import ReservationCalendar from '@/components/Activities/ReservationDateTimePicker/ReservationCalendar/ReservationCalendar';
+import useAvailableScheduleFilter from '@/hooks/Activities/useAvailableScheduleFilter';
 dayjs.extend(customParseFormat);
 
 interface ReservationDateTimePickerProps {
   data: Activity;
 }
 function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
-  // 캘린더
+  // 선택된 날짜
   const [selectedDateValue, setSelectedDateValue] = useState<Value>(new Date());
-  // 예약 가능한 시간을 선택한 경우, 선택한 버튼만 초록색이 되게 만들기 위한 state
+  // 선택된 시간
   const [selectedTimeButtonId, setSelectedTimeButtonId] = useState<number | null>(null);
 
-  const [filteredTimes, setFilteredTimes] = useState<Time[]>();
-
-  // 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
+  // 날짜 선택하기 버튼 이름 : 초기엔 날짜 선택하기 => 선택한 이후에는 선택한 값으로 보이게 하는 state
   const [dateButtonText, setDateButtonText] = useState('날짜 선택하기');
 
   // 날짜 및 시간 선택하는 모달
@@ -55,62 +53,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
   const router = useRouter();
   const userData = useSession();
 
-  const formattedDate = dayjs(selectedDateValue as Date).format('YYYY-MM-DD');
-  const formattedYear = dayjs(selectedDateValue as Date).format('YYYY');
-  const formattedMonth = dayjs(selectedDateValue as Date).format('MM');
-  const currentTime = dayjs();
-
-  const { data: monthlyAvailableScheduleData } = useQuery({
-    queryKey: [QUERY_KEYS.activity, data.id, formattedYear, formattedMonth],
-    queryFn: () => getAvailableSchedule({ activityId: data.id, year: formattedYear, month: formattedMonth }),
+  const { filteredTimes, setFilteredTimes, monthlyAvailableScheduleData } = useAvailableScheduleFilter({
+    dateValue: selectedDateValue,
+    activityId: data.id,
   });
-
-  useEffect(() => {
-    if (!selectedDateValue) {
-      return;
-    }
-    if (!monthlyAvailableScheduleData) {
-      return;
-    }
-
-    const availableDate = monthlyAvailableScheduleData.find((slot) => slot.date === formattedDate);
-
-    const filteredTimes = availableDate?.times.filter((time) => {
-      const startTime = time.startTime;
-
-      /* 오늘 날짜의 경우 현재 시간이 시작 시간 이전인 것만 보여줘야함 
-    만약 현재 시간이 시작 시간 이후라면 false를 리턴시켜 필터링 */
-      return currentTime.isSame(formattedDate, 'date') ? currentTime.isBefore(dayjs(startTime, 'HH:mm')) : true;
-    });
-
-    setFilteredTimes(filteredTimes);
-  }, [selectedDateValue, formattedDate, monthlyAvailableScheduleData]);
-
-  const handleTileDisabled = ({ date, view }: TileArgs, monthlyAvailableScheduleData: TimeSlot[] | undefined) => {
-    if (view === 'year') {
-      return false; // 연도 뷰에서는 비활성화하지 않음
-    }
-
-    const formattedDate = dayjs(date).format('YYYY-MM-DD');
-    const availableDate = monthlyAvailableScheduleData?.find((item) => item.date === formattedDate);
-
-    if (!availableDate) {
-      return true; // 해당 날짜에 사용 가능한 일정이 없으면 비활성화
-    }
-
-    // 오늘이지만, 이미 시간이 지나버린 데이터만 존재한다면 거르기
-    let filteredTimes;
-    if (currentTime.isSame(date, 'date')) {
-      filteredTimes = availableDate.times.filter((time) => {
-        const startTime = time.startTime;
-        return currentTime.isBefore(dayjs(startTime, 'HH:mm'));
-      });
-    } else {
-      filteredTimes = availableDate.times;
-    }
-
-    return filteredTimes.length === 0;
-  };
 
   const handleDateButtonText = (filteredTimes: Time[] | undefined, date: Value, clickedTimeButtonId: number | null) => {
     setDateButtonText(`
@@ -119,22 +65,10 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
     ${filteredTimes?.find((e) => e.id === clickedTimeButtonId)?.endTime}`);
   };
 
-  const handleCalendarDateChange = (value: Value) => {
-    setSelectedDateValue(value);
-    if (selectedTimeButtonId) {
-      setSelectedTimeButtonId(null);
-    }
-  };
-
   const handleResetFilteredData = () => {
     setSelectedTimeButtonId(null);
     setFilteredTimes([]);
     setSelectedDateValue(null);
-  };
-
-  const handleOnActiveStartDateChange = ({ activeStartDate }: OnArgs) => {
-    setSelectedTimeButtonId(null);
-    setSelectedDateValue(activeStartDate);
   };
 
   const queryClient = useQueryClient();
@@ -188,20 +122,13 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           <button className={styles.selectButton} onClick={handleReserveModalToggle}>
             {dateButtonText}
           </button>
-          <Calendar
-            prev2Label={null}
-            next2Label={null}
-            calendarType="gregory"
-            locale="en"
-            onChange={handleCalendarDateChange}
-            className={styles.customCalendar}
-            onActiveStartDateChange={handleOnActiveStartDateChange}
-            value={selectedDateValue}
-            tileDisabled={({ date, view, activeStartDate }) =>
-              handleTileDisabled({ date, view, activeStartDate }, monthlyAvailableScheduleData)
-            }
-            minDate={new Date()}
-            minDetail="year"
+          <ReservationCalendar
+            dateValue={selectedDateValue}
+            setDateValue={setSelectedDateValue}
+            timeButtonId={selectedTimeButtonId}
+            setTimeButtonId={setSelectedTimeButtonId}
+            monthlyAvailableScheduleData={monthlyAvailableScheduleData}
+            usage="outer"
           />
         </div>
 
@@ -260,7 +187,6 @@ function ReservationDateTimePicker({ data }: ReservationDateTimePickerProps) {
           setSelectedTimeButtonId={setSelectedTimeButtonId}
           participantsValue={participantsValue}
           setParticipantsValue={setParticipantsValue}
-          handleTileDisabled={handleTileDisabled}
           handleDateButtonText={handleDateButtonText}
         />
       )}
