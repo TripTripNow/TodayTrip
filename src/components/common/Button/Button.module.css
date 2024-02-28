@@ -16,7 +16,7 @@
 }
 
 .green {
-  background: var(--nomad_black);
+  background: var(--green0B);
   color: var(--whiteFF);
 }
 
@@ -89,6 +89,10 @@
     width: 11.2rem;
   }
 
+  @media tablet {
+    width: 9rem;
+  }
+
   @media mobile {
     width: 8rem;
     height: 3.2rem;
@@ -151,4 +155,14 @@
     padding: 1.2rem 0;
     font-size: 1.4rem;
   }
+}
+
+.button:hover:not(.white) {
+  background: var(--nomad_black);
+  color: var(--whiteFF);
+}
+
+.button:hover:not(.green) {
+  background: var(--nomad_black);
+  color: var(--whiteFF);
 }
