@@ -67,6 +67,9 @@ TodayTrip은 세계 각지에서 즐길 수 있는 **다양한 체험을 등록�
 - 캘린더 내에서 각 날짜를 클릭하면 모달을 통해 예약 수락 및 거절 가능
 
 ## 서비스 화면
+![main](https://github.com/TripTripNow/TodayTrip/assets/97735859/a50e9785-efae-4222-8a09-80468d48601e)
+![experienceDetailed](https://github.com/TripTripNow/TodayTrip/assets/97735859/73eee9e7-5827-4e4d-bf7e-e9b41fa62144)
+
 
 ## 🪧 협업
 
