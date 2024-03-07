@@ -19,18 +19,12 @@ TodayTrip은 세계 각지에서 즐길 수 있는 **다양한 체험을 등록�
 
 ## ⚒️ Stacks
 
-<img alt="TypeScript" src ="https://img.shields.io/badge/
-TypeScript-3776AB.svg?&style=for-the-badge&logo=typescript&logoColor=white"/>&nbsp;&nbsp;&nbsp;
-<img alt="React" src ="https://img.shields.io/badge/
-React-61DAFB.svg?&style=for-the-badge&logo=react&logoColor=white"/>&nbsp;&nbsp;
-<img alt="Next.js" src ="https://img.shields.io/badge/
-Next.js-000000.svg?&style=for-the-badge&logo=Next.js&logoColor=white"/>&nbsp;&nbsp;
-<img alt="CSS Modules" src ="https://img.shields.io/badge/
-CSS Modules-000000.svg?&style=for-the-badge&logo=css-modules&logoColor=white"/>&nbsp;&nbsp;
-<img alt="React Query" src ="https://img.shields.io/badge/
-React Query-FF4154.svg?&style=for-the-badge&logo=react query&logoColor=white"/>&nbsp;&nbsp;
-<img alt="Vercel" src ="https://img.shields.io/badge/
-Vercel-black.svg?&style=for-the-badge&logo=Vercel&logoColor=white"/>
+<img alt="TypeScript" src ="https://img.shields.io/badge/TypeScript-3776AB.svg?&style=for-the-badge&logo=typescript&logoColor=white"/>&nbsp;&nbsp;&nbsp;
+<img alt="React" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=react&logoColor=white"/>&nbsp;&nbsp;
+<img alt="Next.js" src ="https://img.shields.io/badge/Next.js-000000.svg?&style=for-the-badge&logo=Next.js&logoColor=white"/>&nbsp;&nbsp;
+<img alt="CSS Modules" src ="https://img.shields.io/badge/CSS Modules-000000.svg?&style=for-the-badge&logo=css-modules&logoColor=white"/>&nbsp;&nbsp;
+<img alt="React Query" src ="https://img.shields.io/badge/React Query-FF4154.svg?&style=for-the-badge&logo=react query&logoColor=white"/>&nbsp;&nbsp;
+<img alt="Vercel" src ="https://img.shields.io/badge/Vercel-black.svg?&style=for-the-badge&logo=Vercel&logoColor=white"/>
 
 ## 📝 서비스 내용
 
